@@ -1,0 +1,40 @@
+import QueryParameters from '../../components/QueryParameters';
+import RestGet from '../../components/RestGet';
+import { Tab, Tabs } from 'nextra-theme-docs'
+
+# Latest Price Feeds
+**/api/latest_price_feeds**
+
+Get the latest price update for a given set of price ids.
+
+<QueryParameters
+  queryParams={[
+    { key: 'ids[]', required: true, type: "hex", example: "6e3f3fa8253588df9326580180233eb791e03b443a3ba7a1d892e73874e19a54", description: 'The ID of the todo item you want to retrieve.' },
+    { key: 'verbose', required: false, type: "boolean", example: "", description: 'If true, return extra metadata in the response.' },
+    { key: 'binary', required: false, type: "boolean", example: "", description: 'If true, return extra metadata in the response.' },
+    { key: 'target_chain', required: false, type: "enum", example: "evm", description: 'If provided, return extra metadata in the response.' }
+  ]}
+/>
+
+<RestGet
+  endpoint="https://xc-mainnet.pyth.network/api/latest_price_feeds"
+  queryParams={['ids[]', 'verbose', 'binary', 'target_chain']}
+/>
+
+## Examples
+
+<Tabs items={['javascript', 'npm', 'yarn']}>
+  <Tab>
+  ```js filename="demo.js" {3} copy
+  let a = 1;
+
+  console.log(a);
+  ```
+  </Tab>
+  <Tab>
+    **npm** is a package manager for the JavaScript programming language.
+  </Tab>
+  <Tab>
+    **Yarn** is a software packaging system.
+  </Tab>
+</Tabs>

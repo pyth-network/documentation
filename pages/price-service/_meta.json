@@ -1,0 +1,12 @@
+{
+  "--- Price Service": {
+    "title": "Price Service",
+    "type": "separator"
+  },
+  "introduction": "",
+  "--- Endpoints": {
+    "title": "API Endpoints",
+    "type": "separator"
+  },
+  "latest-price-feeds": "latest_price_feeds"
+}

@@ -1,0 +1,43 @@
+{
+  "index": {
+    "title": "Introduction",
+    "type":  "page",
+    "display": "hidden"
+  },
+  "documentation": {
+    "title": "Documentation",
+    "type":  "page"
+  },
+  "api-explorer": {
+    "title": "API Explorer",
+    "type": "menu",
+    "items": {
+      "evm": {
+        "title": "EVM",
+        "href":  "/evm/introduction",
+        "type": "page"
+      },
+      "price-service": {
+        "title": "Price Service",
+        "href":  "/price-service/introduction",
+        "type": "page"
+      }
+    }
+  },
+  "price-service": {
+    "title": "Price Service",
+    "type": "page",
+    "display": "hidden"
+  },
+  "evm": {
+    "title": "EVM",
+    "type": "page",
+    "display": "hidden"
+  },
+  "contact": {
+    "title": "Contact ↗",
+    "type": "page",
+    "href": "https://twitter.com/shuding_",
+    "newWindow": true
+  }
+}

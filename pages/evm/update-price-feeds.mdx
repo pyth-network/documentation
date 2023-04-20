@@ -1,0 +1,66 @@
+import QueryParameters from '../../components/QueryParameters';
+import DynamicCode from '../../components/DynamicCode';
+import DisplayGlobalVar from '../../components/DisplayGlobalVar';
+import EvmSend from '../../components/EvmSend';
+import { Tab, Tabs } from 'nextra-theme-docs';
+
+# Update Price Feeds
+**updatePriceFeeds(updateData: bytes[])**
+
+Update the on-chain price feeds using the provided data payloads.
+You can retrieve these data payloads using the Price Service API.
+
+<QueryParameters
+  queryParams={[
+    { key: 'updateData', required: true, type: "hex", example: "", description: 'The price update data for the contract to verify.' },
+    { key: 'fee', required: true, type: "wei", example: "1", description: 'The update fee in wei.' },
+  ]}
+  >
+</QueryParameters>
+
+<EvmSend
+  functionName="updatePriceFeeds"
+  params={["updateData"]}
+  feeParam="fee"
+/>
+
+## Example Code
+
+<Tabs items={['Solidity', 'ethers.js', 'web3.js']}>
+  <Tab>
+    <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
+      ```solidity
+      import "pyth-sdk-solidity/IPyth.sol";
+      import "pyth-sdk-solidity/PythStructs.sol";
+
+      IPyth pyth = IPyth(0x0000);
+      PythStructs.Price memory currentBasePrice = pyth.getPriceUnsafe(0x1111);
+      ```
+    </DynamicCode>
+  </Tab>
+
+  <Tab>
+    <DynamicCode targets={[{findToken: "'0x1111'", replacementParam: "id", transform: (x) => `'${x}'` }]}>
+      ```typescript
+      const contractAddress = '0x0000';
+      const priceId = '0x1111';
+      const PythAbi = require('./abis/IPyth.json');
+      const contract = new ethers.Contract(contractAddress, PythAbi, provider);
+      const [price, conf, expo, timestamp] = await contract.getPriceUnsafe(priceId);
+      ```
+    </DynamicCode>
+  </Tab>
+
+  <Tab>
+    <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
+      ```js
+
+      this can be different
+      ```
+    </DynamicCode>
+  </Tab>
+</Tabs>
+
+## Messing around here
+
+<DisplayGlobalVar />

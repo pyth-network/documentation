@@ -1,0 +1,14 @@
+{
+  "--- EVM Contract": {
+    "title": "EVM Contract",
+    "type": "separator"
+  },
+  "introduction": "",
+  "configuration": "",
+  "--- Methods": {
+    "title": "Methods",
+    "type": "separator"
+  },
+  "get-price": "getPrice",
+  "get-price-unsafe": "getPriceUnsafe"
+}

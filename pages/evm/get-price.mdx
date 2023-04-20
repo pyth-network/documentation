@@ -1,0 +1,65 @@
+import QueryParameters from '../../components/QueryParameters';
+import DynamicCode from '../../components/DynamicCode';
+import DisplayGlobalVar from '../../components/DisplayGlobalVar';
+import EvmCall from '../../components/EvmCall';
+import { Tab, Tabs } from 'nextra-theme-docs';
+
+# Get Price
+**getPrice(id)**
+
+Get the latest on-chain price for the requested price feed id.
+Note: you typically need to update the on-chain price using (link) before calling this function.
+
+<QueryParameters
+  queryParams={[
+    { key: 'id', required: true, type: "hex", example: "0x6e3f3fa8253588df9326580180233eb791e03b443a3ba7a1d892e73874e19a54", description: 'The ID of the price feed you want to read' },
+  ]}
+  >
+</QueryParameters>
+
+<EvmCall
+  functionName="getPrice"
+  params={["id"]}
+/>
+
+## Example Code
+
+<Tabs items={['Solidity', 'ethers.js', 'web3.js']}>
+  <Tab>
+    <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
+      ```solidity
+      import "pyth-sdk-solidity/IPyth.sol";
+      import "pyth-sdk-solidity/PythStructs.sol";
+
+      IPyth pyth = IPyth(0x0000);
+      PythStructs.Price memory currentBasePrice = pyth.getPrice(0x1111);
+      ```
+    </DynamicCode>
+  </Tab>
+
+  <Tab>
+    <DynamicCode targets={[{findToken: "'0x1111'", replacementParam: "id", transform: (x) => `'${x}'` }]}>
+      ```typescript
+      const contractAddress = '0x0000';
+      const priceId = '0x1111';
+      const PythAbi = require('./abis/IPyth.json');
+      const contract = new ethers.Contract(contractAddress, PythAbi, provider);
+      const [price, conf, expo, timestamp] = await contract.getPrice(priceId);
+      ```
+    </DynamicCode>
+  </Tab>
+
+  <Tab>
+    <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
+      ```js
+
+      this can be different
+      ```
+    </DynamicCode>
+  </Tab>
+</Tabs>
+
+
+## Messing around here
+
+<DisplayGlobalVar />
