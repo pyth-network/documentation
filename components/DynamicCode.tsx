@@ -3,15 +3,22 @@ import { useGlobalContext } from '../contexts/GlobalContext';
 import {global} from "styled-jsx/css";
 
 export interface ReplacementTarget {
+  // The token to find in the code block
   findToken: string,
+  // The string to replace the found token with
   replacementParam: string,
+  // A transformation to apply to the replacement string before
   transform?: ((string) => string),
 }
 
-
-// Note: contractAddress is a special target
+/**
+ * A syntax-highlighted code block with dynamic text. Nextra typically performs all syntax highlighting on the
+ * server side, so we can't simply generate text in a syntax highlighting component. This component works around
+ * the problem by finding and replacing specific tokens in an already-highlighted code block with new
+ * caller-specified values.
+ */
 export default function DynamicCode ({ targets, children }) {
-  const { queryParameters, contractAddress } = useGlobalContext();
+  const { keyValueStore, pythContractAddress } = useGlobalContext();
 
   const divRef = useRef();
   const targetRefs = useRef();
@@ -30,7 +37,7 @@ export default function DynamicCode ({ targets, children }) {
     }
 
     const possibleReplacements = {
-      contractAddress, ...queryParameters
+      pythContractAddress: pythContractAddress, ...keyValueStore
     }
 
     for (let target of targetRefs.current) {
@@ -41,7 +48,7 @@ export default function DynamicCode ({ targets, children }) {
 
       target.token.innerText = value;
     }
-  }, [queryParameters, contractAddress])
+  }, [keyValueStore, pythContractAddress])
 
   return <>
     <div ref={divRef} style={{ marginTop: '1.5rem' }}>{children}</div>

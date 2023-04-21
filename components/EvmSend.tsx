@@ -5,25 +5,27 @@ import { useGlobalContext } from '../contexts/GlobalContext';
 
 interface EvmSendProps {
   functionName: string,
-  params: string[],
-  feeParam: string | undefined
+  argumentKeys: string[],
+  feeKey: string | undefined
 }
 
-function renderResponse(response: any[], params: ReadonlyArray<ParamType>) {
-  let s = "";
-  params[0].walk(response, (type, v) => {
-    s += `${type}=${v.toString()} `;
-  })
-  return s;
-}
-
+/**
+ * Allow the user to send a transaction to an EVM chain and visualize the response.
+ * This component will invoke `functionName` on the pyth contract provided in the global context.
+ * The arguments to the function will be the values of argumentKeys[] in the global key-value store, i.e.,
+ * `pythContract.functionName(valueOf(argumentKeys[0]), valueOf(argumentKeys[1]), ...)`. If `feeKey` is provided,
+ * the value of this key will be parsed as a number of wei and passed as the value of the transaction.
+ *
+ * TODO: probably better to pass the contract address / ABI as arguments (?)
+ * TODO: support array-valued arguments
+ */
 const EvmSend: React.FC<EvmSendProps> = ({
                                                                functionName,
-                                                               params,
-                                           feeParam
+                                                               argumentKeys,
+                                           feeKey
                                                              }) => {
 
-  const { queryParameters, provider, setProvider, signer, setSigner, chainId, setChainId, contractAddress, contractAbi } = useGlobalContext();
+  const { keyValueStore, provider, setProvider, signer, setSigner, chainId, setChainId, pythContractAddress, pythContractAbi } = useGlobalContext();
 
   const [solidityQuery, setSolidityQuery] = useState<string>(null);
   const [response, setResponse] = useState<string | undefined>(undefined);
@@ -32,7 +34,7 @@ const EvmSend: React.FC<EvmSendProps> = ({
 
   useEffect(() => {
     setIsStale(true);
-  }, [queryParameters])
+  }, [keyValueStore])
 
   const connectWallet = async () => {
     const ethereumProvider = await detectEthereumProvider();
@@ -56,19 +58,17 @@ const EvmSend: React.FC<EvmSendProps> = ({
 
   const sendTransaction = async () => {
     if (signer != undefined) {
-      const contract = new ethers.Contract(contractAddress, contractAbi, provider);
+      const contract = new ethers.Contract(pythContractAddress, pythContractAbi, provider);
       const contractWithSigner = contract.connect(signer);
 
-      console.log(`params: ${params}`);
-      const args: any[] = params.map((v) => queryParameters[v]);
-      console.log(`args: ${args}`);
+      const args: any[] = argumentKeys.map((v) => keyValueStore[v]);
 
       const extraArguments = {};
       let feeString = '';
-      if (feeParam !== undefined) {
+      if (feeKey !== undefined) {
         // TODO: validate argument
-        extraArguments["value"] = ethers.toBigInt(queryParameters[feeParam]);
-        feeString = queryParameters[feeParam];
+        extraArguments["value"] = ethers.toBigInt(keyValueStore[feeKey]);
+        feeString = keyValueStore[feeKey];
       }
 
       // TODO: validate arguments

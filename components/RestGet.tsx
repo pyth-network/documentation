@@ -7,6 +7,14 @@ interface RestGetProps {
   queryParams: string[];
 }
 
+/**
+ * Allow the user to submit an HTTP GET request to `endpoint?queryParam1=value1&queryParam2=value2`,
+ * where the values are obtained by retrieving the value of the corresponding queryParam from
+ * the global key-value store.
+ *
+ * TODO: queryParams should probably be a mapping from the query parameter name to the global store key,
+ * so that the two sets of names aren't coupled.
+ */
 const RestGet: React.FC<RestGetProps> = ({
                                                                endpoint,
                                                                queryParams,
@@ -16,13 +24,15 @@ const RestGet: React.FC<RestGetProps> = ({
 
   const [isStale, setIsStale] = useState<boolean>(false);
 
-  const { queryParameters } = useGlobalContext();
+  const { keyValueStore } = useGlobalContext();
 
   useEffect(() => {
     setIsStale(true);
-  }, [queryParameters])
+  }, [keyValueStore])
 
-
+  /** Create a GET query string for the key/value pairs in data. Pass `urlEncode=true`
+   * if you're actually querying the endpoint, or `false` to have the url display better for users.
+   */
   function encodeQueryData(data, urlEncode: boolean) {
     if (data === undefined) {
       return ''
@@ -43,8 +53,8 @@ const RestGet: React.FC<RestGetProps> = ({
     let queryParameterValues = {}
 
     for (let key of queryParams) {
-      if (queryParameters[key] !== undefined) {
-        queryParameterValues[key] = queryParameters[key];
+      if (keyValueStore[key] !== undefined) {
+        queryParameterValues[key] = keyValueStore[key];
       }
     }
 

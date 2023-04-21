@@ -4,9 +4,14 @@ import { useGlobalContext } from '../contexts/GlobalContext';
 
 interface EvmCallProps {
   functionName: string;
-  params: string[]
+  argumentKeys: string[]
 }
 
+/**
+ * Render the response from the EVM contract as a human-readable string.
+ *
+ * TODO: the generated string for structs looks like type=value. It would be better to have field names in the future
+ */
 function renderResponse(response: any[], params: ReadonlyArray<ParamType>) {
   let s = "";
   params[0].walk(response, (type, v) => {
@@ -15,9 +20,18 @@ function renderResponse(response: any[], params: ReadonlyArray<ParamType>) {
   return s;
 }
 
+/**
+ * Allow the user to call a read-only function on an EVM chain and visualize the response.
+ * This component will invoke `functionName` on the pyth contract provided in the global context.
+ * The arguments to the function will be the values of argumentKeys[] in the global key-value store, i.e.,
+ * `pythContract.functionName(valueOf(argumentKeys[0]), valueOf(argumentKeys[1]), ...)`.
+ *
+ * TODO: probably better to pass the contract address / ABI as arguments (?)
+ * TODO: support array-valued arguments
+ */
 const EvmCall: React.FC<EvmCallProps> = ({
                                                                functionName,
-                                                               params,
+                                                               argumentKeys,
                                                              }) => {
 
   const [solidityQuery, setSolidityQuery] = useState<string>(null);
@@ -25,17 +39,17 @@ const EvmCall: React.FC<EvmCallProps> = ({
 
   const [isStale, setIsStale] = useState<boolean>(false);
 
-  const { queryParameters, provider, contractAddress, contractAbi } = useGlobalContext();
+  const { keyValueStore, provider, pythContractAddress, pythContractAbi } = useGlobalContext();
 
   useEffect(() => {
     setIsStale(true);
-  }, [queryParameters])
+  }, [keyValueStore])
 
 
   const sendTransaction = async () => {
-    const contract = new ethers.Contract(contractAddress, contractAbi, provider);
+    const contract = new ethers.Contract(pythContractAddress, pythContractAbi, provider);
 
-    const args: any[] = params.map((v) => queryParameters[v]);
+    const args: any[] = argumentKeys.map((v) => keyValueStore[v]);
 
     // TODO: validate arguments
     if (args.some((value) => value === undefined)) {

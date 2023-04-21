@@ -4,19 +4,19 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import {EvmNetworks, useGlobalContext} from '../contexts/GlobalContext';
 
 const ContractInfo: React.FC<{}> = ({}) => {
-  const { queryParameters, provider, chainId, contractAddress, contractAbi, setProvider, setChainId, setSigner } = useGlobalContext();
+  const { keyValueStore, provider, chainId, pythContractAddress, pythContractAbi, setProvider, setChainId, setSigner } = useGlobalContext();
 
   let [fee, setFee] = useState<string>('');
   let [validTimePeriod, setValidTimePeriod] = useState<string>('foo');
 
   useEffect(() => {
     async function helper() {
-      const contract = new ethers.Contract(contractAddress, contractAbi, provider);
+      const contract = new ethers.Contract(pythContractAddress, pythContractAbi, provider);
       setFee((await contract.getUpdateFee(["0x01"])).toString());
       setValidTimePeriod((await contract.getValidTimePeriod()).toString())
     }
     helper();
-  }, [provider, contractAddress, contractAbi])
+  }, [provider, pythContractAddress, pythContractAbi])
 
   const selectNetwork = async (networkId) => {
     const ethereumProvider = await detectEthereumProvider();
@@ -46,7 +46,7 @@ const ContractInfo: React.FC<{}> = ({}) => {
     })}
     <table>
       <tbody>
-      <tr><td>Contract address</td><td>{contractAddress}</td></tr>
+      <tr><td>Contract address</td><td>{pythContractAddress}</td></tr>
       <tr><td>Chain id</td><td> {chainId}</td></tr>
       <tr><td>Update fee</td><td> {fee}</td></tr>
       <tr><td>Valid time period</td><td> {validTimePeriod}</td></tr>

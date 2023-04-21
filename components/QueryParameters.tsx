@@ -13,14 +13,23 @@ interface QueryParametersProps {
   queryParams: QueryParam[];
 }
 
+/**
+ * Generate a table of fillable query parameters. Each row describes a single `QueryParam`.
+ * Any filled values of a given `param` are set as the value of the `param.key` in the global key-value store.
+ *
+ * TODO: this may be too large of an abstraction. It would be more flexible to let users write the table as
+ * markdown and restrict this to a single form-fillable field.
+ *
+ * TODO: add input validation
+ */
 const QueryParameters: React.FC<QueryParametersProps> = ({
                                                            queryParams,
                                                          }) => {
 
-  const { queryParameters, setQueryParameters } = useGlobalContext();
+  const { keyValueStore, setKeyValueStore } = useGlobalContext();
 
   const handleQueryChange = (key: string, value: string) => {
-    setQueryParameters((prev) => {
+    setKeyValueStore((prev) => {
       const next = { ...prev, [key]: value}
       if (value === '') {
         delete next[key]
@@ -29,15 +38,15 @@ const QueryParameters: React.FC<QueryParametersProps> = ({
     });
   };
 
-  // initialize query parameters from the given example values.
+  // Initialize query parameters from the given example values.
   useEffect(() => {
-    let initialQuery = {...queryParameters};
+    let initialQuery = {...keyValueStore};
     for (let param of queryParams) {
-      if (param.example !== '' && queryParameters[param.key] === undefined) {
+      if (param.example !== '' && keyValueStore[param.key] === undefined) {
         initialQuery[param.key] = param.example;
       }
     }
-    setQueryParameters(initialQuery);
+    setKeyValueStore(initialQuery);
   }, []);
 
   return (<div className={"api-params"}>
@@ -53,7 +62,7 @@ const QueryParameters: React.FC<QueryParametersProps> = ({
               type="text"
               id={param.key}
               name={param.key}
-              value={queryParameters[param.key] ? queryParameters[param.key] : ''}
+              value={keyValueStore[param.key] ? keyValueStore[param.key] : ''}
               onChange={(e) => handleQueryChange(param.key, e.target.value)}
             />
           </td>
