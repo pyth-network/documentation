@@ -14,17 +14,7 @@ Note: you typically need to update the on-chain price using (link) before callin
 
 | Argument                                      |  | Description |
 |-----------------------------------------| --- | --- |
-| <Arg required={true} type="hex">id</Arg> | <Input id="id" example="0x6e3f3fa8253588df9326580180233eb791e03b443a3ba7a1d892e73874e19a54" /> | The ID of the price feed you want to read |
-
-<Input id="id" example="0x6e3f3fa8253588df9326580180233eb791e03b443a3ba7a1d892e73874e19a54" />
-
-<QueryParameters
-  queryParams={[
-    { key: 'id', required: true, type: "hex", example: "0x6e3f3fa8253588df9326580180233eb791e03b443a3ba7a1d892e73874e19a54", description: 'The ID of the price feed you want to read' },
-  ]}
-  >
-</QueryParameters>
-
+| <Arg required={true} type="hex">id</Arg> | <Input id="id" /> | The ID of the price feed you want to read |
 
 <EvmCall
   functionName="getPrice"
@@ -35,7 +25,10 @@ Note: you typically need to update the on-chain price using (link) before callin
 
 <Tabs items={['Solidity', 'ethers.js', 'web3.js']}>
   <Tab>
-    <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
+    <DynamicCode targets={{
+        "0x0000": ({ addr }) => addr,
+        "0x1111": ({ get }) => get("id", "<id>"),
+    }}>
       ```solidity
       import "pyth-sdk-solidity/IPyth.sol";
       import "pyth-sdk-solidity/PythStructs.sol";
@@ -47,7 +40,10 @@ Note: you typically need to update the on-chain price using (link) before callin
   </Tab>
 
   <Tab>
-    <DynamicCode targets={[{findToken: "'0x1111'", replacementParam: "id", transform: (x) => `'${x}'` }]}>
+    <DynamicCode targets={{
+        "'0x0000'": ({ addr }) => `'${addr}'`,
+        "'0x1111'": ({ kv }) => `'${kv["id"]}'`,
+    }}>
       ```typescript
       const contractAddress = '0x0000';
       const priceId = '0x1111';
@@ -59,7 +55,10 @@ Note: you typically need to update the on-chain price using (link) before callin
   </Tab>
 
   <Tab>
-    <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
+    <DynamicCode targets={{
+        "0x0000": ({ addr }) => addr,
+        "0x1111": ({ kv }) => kv["id"],
+    }}>
       ```js
 
       this can be different

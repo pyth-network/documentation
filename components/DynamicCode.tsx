@@ -2,14 +2,13 @@ import React, {useEffect, useRef} from 'react';
 import { useGlobalContext } from '../contexts/GlobalContext';
 import {global} from "styled-jsx/css";
 
-export interface ReplacementTarget {
-  // The token to find in the code block
-  findToken: string,
-  // The string to replace the found token with
-  replacementParam: string,
-  // A transformation to apply to the replacement string before
-  transform?: ((string) => string),
+interface State {
+  kv: Record<string, string>,
+  get: (key: string, orElse?: string) => string
+  addr: string
 }
+
+export type Targets = Record<string, ((State) => string)>
 
 /**
  * A syntax-highlighted code block with dynamic text. Nextra typically performs all syntax highlighting on the
@@ -18,7 +17,7 @@ export interface ReplacementTarget {
  * caller-specified values.
  */
 export default function DynamicCode ({ targets, children }) {
-  const { keyValueStore, pythContractAddress } = useGlobalContext();
+  const {keyValueStore, pythContractAddress} = useGlobalContext();
 
   const divRef = useRef();
   const targetRefs = useRef();
@@ -26,27 +25,27 @@ export default function DynamicCode ({ targets, children }) {
   useEffect(() => {
     if (divRef.current && !targetRefs.current) {
       let tokens = []
-      for (let target of targets) {
+      for (let [target, replacement] of Object.entries(targets)) {
+        console.log(`target: ${target}`)
+
         // TODO: may need to find more than one
-        const token = [...divRef.current.querySelectorAll('code span')].find((el) => el.innerText === target.findToken);
+        const token = [...divRef.current.querySelectorAll('code span')].find((el) => el.innerText === target);
         if (token !== undefined) {
-          tokens.push( { token, ...target });
+          tokens.push( { token, target, replacement });
         }
       }
       targetRefs.current = tokens
     }
 
-    const possibleReplacements = {
-      pythContractAddress: pythContractAddress, ...keyValueStore
-    }
-
-    for (let target of targetRefs.current) {
-      let value = possibleReplacements[target.replacementParam]
-      if (target.transform !== undefined) {
-        value = target.transform(value);
-      }
-
-      target.token.innerText = value;
+    let state = {
+      kv: keyValueStore,
+      get: (k, o) => keyValueStore[k] !== undefined ? keyValueStore[k] : o,
+      addr: pythContractAddress
+    };
+    for (let {token, replacement} of targetRefs.current) {
+      // let value = possibleReplacements[target.replacementParam]
+      let value = replacement(state);
+      token.innerText = value;
     }
   }, [keyValueStore, pythContractAddress])
 
