@@ -10,5 +10,6 @@
     "type": "separator"
   },
   "get-price": "getPrice",
-  "get-price-unsafe": "getPriceUnsafe"
+  "get-price-unsafe": "getPriceUnsafe",
+  "update-price-feeds": "updatePriceFeeds"
 }

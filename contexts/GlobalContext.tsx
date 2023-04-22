@@ -51,13 +51,26 @@ export const GlobalContextProvider: React.FC = ({ children }) => {
 };
 
 
+/**
+ * A projection of the GlobalContextData to a subset of properties useful for rendering text.
+ * This type is often the argument to functions that render strings on the page.
+ * The properties intentionally have short names to make it efficient to write rendering functions.
+ * (It's not clear this is a good decision.)
+ *
+ * TODO: this type needs a better name.
+ */
 interface State {
+  // The global key-value store
   kv: Record<string, string>,
+  // Get the value of key from kv, or return a default value if the key's value is undefined.
   get: (key: string, orElse?: string) => string,
 
+  // the pyth contract address
   addr: string,
+  // mainnet or testnet
   networkType: string,
 
+  // return one of the two arguments depending on whether this is a mainnet or testnet network.
   mOrT: (mainnet: string, testnet: string) => string
 }
 

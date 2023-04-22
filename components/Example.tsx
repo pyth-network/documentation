@@ -1,16 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {getState, useGlobalContext} from '../contexts/GlobalContext';
 
-interface SampleProps {
+interface ExampleProps {
   keyValues: Record<string, (State) => string>,
   children?: React.ReactNode
 }
 
 /**
- * Automatically populate the `keyValue` store with an example set of
- * key/value pairs.
+ * A button that populates the `keyValue` store with an example set of
+ * key/value pairs when clicked. Use this to auto-generate sample queries
+ * that users can try out.
+ *
+ * The values of the keys are provided as functions from the current global state
+ * to string values. This allows the values to depend on e.g., the currently chosen network.
  */
-const Sample: React.FC<SampleProps> = ({
+const Example: React.FC<ExampleProps> = ({
                                        keyValues,
                                          children
                                        }) => {
@@ -30,4 +34,4 @@ const Sample: React.FC<SampleProps> = ({
   return (<button onClick={handleClick}>{children}</button>);
 };
 
-export default Sample;
+export default Example;

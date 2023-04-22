@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {ethers, ParamType, Provider} from 'ethers';
+import {ethers} from 'ethers';
 import detectEthereumProvider from '@metamask/detect-provider';
-import {EvmNetworks, useGlobalContext} from '../contexts/GlobalContext';
+import {useGlobalContext} from '../contexts/GlobalContext';
 
+/**
+ * A component that displays information about the current EVM network and
+ * the configuration of the Pyth contract deployed on that network.
+ */
 const ContractInfo: React.FC<{}> = ({}) => {
-  const { keyValueStore, provider, chainId, pythContractAddress, pythContractAbi, setProvider, setChainId, setSigner } = useGlobalContext();
+  const { provider, chainId, pythContractAddress, pythContractAbi, setProvider, setChainId, setSigner } = useGlobalContext();
 
   let [fee, setFee] = useState<string>('');
   let [validTimePeriod, setValidTimePeriod] = useState<string>('foo');
@@ -18,32 +22,8 @@ const ContractInfo: React.FC<{}> = ({}) => {
     helper();
   }, [provider, pythContractAddress, pythContractAbi])
 
-  const selectNetwork = async (networkId) => {
-    const ethereumProvider = await detectEthereumProvider();
-
-    if (ethereumProvider) {
-      // @ts-ignore
-      const myProvider = new ethers.BrowserProvider(ethereumProvider, 1);
-      setProvider(myProvider);
-      // It also provides an opportunity to request access to write
-      // operations, which will be performed by the private key
-      // that MetaMask manages for the user.
-      const mySigner = await myProvider.getSigner();
-      setSigner(mySigner);
-      // Get the current network ID
-      const networkId = (await myProvider.getNetwork()).chainId.toString();
-      setChainId(networkId);
-    } else {
-      alert('Please install MetaMask!');
-    }
-
-  }
-
   return (<div>
     Connected to the {chainId} network.
-    {Object.entries(EvmNetworks).map(([network, networkConfig]) => {
-      return (<p onClick={(e) => selectNetwork(network)}>{network}</p>);
-    })}
     <table>
       <tbody>
       <tr><td>Contract address</td><td>{pythContractAddress}</td></tr>

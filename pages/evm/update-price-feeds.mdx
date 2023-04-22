@@ -1,6 +1,8 @@
-import QueryParameters from '../../components/QueryParameters';
+import Input from '../../components/Input';
+import Arg from '../../components/Arg';
+import Example from '../../components/Example';
 import DynamicCode from '../../components/DynamicCode';
-import DisplayGlobalVar from '../../components/DisplayGlobalVar';
+import DisplayKeyValueStore from '../../components/DisplayKeyValueStore';
 import EvmSend from '../../components/EvmSend';
 import { Tab, Tabs } from 'nextra-theme-docs';
 
@@ -10,17 +12,14 @@ import { Tab, Tabs } from 'nextra-theme-docs';
 Update the on-chain price feeds using the provided data payloads.
 You can retrieve these data payloads using the Price Service API.
 
-<QueryParameters
-  queryParams={[
-    { key: 'updateData', required: true, type: "hex", example: "", description: 'The price update data for the contract to verify.' },
-    { key: 'fee', required: true, type: "wei", example: "1", description: 'The update fee in wei.' },
-  ]}
-  >
-</QueryParameters>
+| Argument                                                  |                           | Description |
+|-----------------------------------------------------------|---------------------------| --- |
+| <Arg required={true} type="hex[]">updateData</Arg>        | <Input id="updateData" /> | The price update data for the contract to verify. |
+| <Arg required={true} type="wei">fee</Arg>                    | <Input id="fee" />           | The update fee in wei. |
 
 <EvmSend
   functionName="updatePriceFeeds"
-  params={["updateData"]}
+  argumentKeys={["updateData"]}
   feeParam="fee"
 />
 
@@ -63,4 +62,4 @@ You can retrieve these data payloads using the Price Service API.
 
 ## Messing around here
 
-<DisplayGlobalVar />
+<DisplayKeyValueStore />

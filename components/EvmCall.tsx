@@ -8,19 +8,6 @@ interface EvmCallProps {
 }
 
 /**
- * Render the response from the EVM contract as a human-readable string.
- *
- * TODO: the generated string for structs looks like type=value. It would be better to have field names in the future
- */
-function renderResponse(response: any[], params: ReadonlyArray<ParamType>) {
-  let s = "";
-  params[0].walk(response, (type, v) => {
-    s += `${type}=${v.toString()} `;
-  })
-  return s;
-}
-
-/**
  * Allow the user to call a read-only function on an EVM chain and visualize the response.
  * This component will invoke `functionName` on the pyth contract provided in the global context.
  * The arguments to the function will be the values of argumentKeys[] in the global key-value store, i.e.,
@@ -88,3 +75,16 @@ const EvmCall: React.FC<EvmCallProps> = ({
 };
 
 export default EvmCall;
+
+/**
+ * Render the response from the EVM contract as a human-readable string.
+ *
+ * TODO: the generated string for structs looks like type=value. It would be better to have field names in the future
+ */
+function renderResponse(response: any[], params: ReadonlyArray<ParamType>) {
+  let s = "";
+  params[0].walk(response, (type, v) => {
+    s += `${type}=${v.toString()} `;
+  })
+  return s;
+}

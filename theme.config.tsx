@@ -5,12 +5,12 @@ import { DocsThemeConfig } from 'nextra-theme-docs'
 const config: DocsThemeConfig = {
   logo: <span>Pyth Network Documentation</span>,
   project: {
-    link: 'https://github.com/pyth-network',
+    link: 'https://github.com/pyth-network/',
   },
   chat: {
-    link: 'https://discord.com',
+    link: 'https://discord.gg/invite/PythNetwork',
   },
-  docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
+  docsRepositoryBase: 'https://github.com/pyth-network/documentation',
   footer: {
     text: 'Pyth Network Documentation',
   },

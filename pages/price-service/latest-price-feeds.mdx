@@ -1,4 +1,6 @@
-import QueryParameters from '../../components/QueryParameters';
+import Input from '../../components/Input';
+import Arg from '../../components/Arg';
+import Example from '../../components/Example';
 import RestGet from '../../components/RestGet';
 import { Tab, Tabs } from 'nextra-theme-docs'
 
@@ -7,14 +9,18 @@ import { Tab, Tabs } from 'nextra-theme-docs'
 
 Get the latest price update for a given set of price ids.
 
-<QueryParameters
-  queryParams={[
-    { key: 'ids[]', required: true, type: "hex", example: "6e3f3fa8253588df9326580180233eb791e03b443a3ba7a1d892e73874e19a54", description: 'The ID of the todo item you want to retrieve.' },
-    { key: 'verbose', required: false, type: "boolean", example: "", description: 'If true, return extra metadata in the response.' },
-    { key: 'binary', required: false, type: "boolean", example: "", description: 'If true, return extra metadata in the response.' },
-    { key: 'target_chain', required: false, type: "enum", example: "evm", description: 'If provided, return extra metadata in the response.' }
-  ]}
-/>
+| Argument                                                                              |                                                | Description                                                                                                                                                                                                                                                           |
+|---------------------------------------------------------------------------------------|------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <Arg required={true} type="hex">ids</Arg>                                             | <Input id="ids[]" />                           | The ID of the price update to retrieve.                                                                                                                                                                                                                               |
+| <Arg type="boolean">verbose</Arg>                                                     | <Input id="verbose" />                         | If true, return extra metadata in the response.                                                                                                                                                                                                                       |
+| <Arg type="boolean">binary</Arg>                                                      | <Input id="binary" />                          | If true, return the binary price update data in the response. (deprecated, use `target_chain` instead)                                                                                                                                                                |
+| <Arg type="enum">target_chain</Arg>                                                       | <Input id="target_chain" /> | If provided, get the binary price update data formatted in the proper string format for the given chain. Choose from `["evm", "default"]`.   |
+
+Examples:
+<Example keyValues={{
+    "ids[]": ({ mOrT }) => mOrT("0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", "0xf9c0172ba10dfa4d19088d94f5bf61d3b54d5bd7483a322a982e1373ee8ea31b"),
+    "target_chain": () => "evm"
+}}>BTC/USD on EVM</Example>
 
 <RestGet
   endpoint="https://xc-mainnet.pyth.network/api/latest_price_feeds"

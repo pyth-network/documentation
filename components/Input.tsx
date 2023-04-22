@@ -3,7 +3,6 @@ import { useGlobalContext } from '../contexts/GlobalContext';
 
 interface InputProps {
   id: string,
-  example?: string,
 }
 
 /**
@@ -14,8 +13,7 @@ interface InputProps {
  */
 const Input: React.FC<InputProps> = ({
                                        id,
-                                       example
-                                                         }) => {
+                                     }) => {
   const { keyValueStore, setKeyValueStore } = useGlobalContext();
 
   const handleQueryChange = (key: string, value: string) => {
@@ -27,15 +25,6 @@ const Input: React.FC<InputProps> = ({
       return next;
     });
   };
-
-  // Initialize query parameters from the given example values.
-  useEffect(() => {
-    let initialQuery = {...keyValueStore};
-    if (example !== '' && keyValueStore[id] === undefined) {
-      initialQuery[id] = example;
-    }
-    setKeyValueStore(initialQuery);
-  }, []);
 
   return (<input
               type="text"

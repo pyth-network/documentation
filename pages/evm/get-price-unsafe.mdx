@@ -1,8 +1,10 @@
-import QueryParameters from '../../components/QueryParameters';
+import Input from '../../components/Input';
+import Arg from '../../components/Arg';
+import Example from '../../components/Example';
 import DynamicCode from '../../components/DynamicCode';
-import DisplayGlobalVar from '../../components/DisplayGlobalVar';
+import DisplayKeyValueStore from '../../components/DisplayKeyValueStore';
 import EvmCall from '../../components/EvmCall';
-import { Tab, Tabs } from 'nextra-theme-docs';
+import {Tab, Tabs} from 'nextra-theme-docs';
 
 # Get Price Unsafe
 **getPriceUnsafe(id)**
@@ -10,12 +12,18 @@ import { Tab, Tabs } from 'nextra-theme-docs';
 Get the latest on-chain price for the requested price feed id.
 Note: you typically need to update the on-chain price using (link) before calling this function.
 
-<QueryParameters
-  queryParams={[
-    { key: 'id', required: true, type: "hex", example: "0x6e3f3fa8253588df9326580180233eb791e03b443a3ba7a1d892e73874e19a54", description: 'The ID of the price feed you want to read' },
-  ]}
-  >
-</QueryParameters>
+
+| Argument                                      |  | Description |
+|-----------------------------------------| --- | --- |
+| <Arg required={true} type="hex">id</Arg> | <Input id="id" /> | The ID of the price feed you want to read |
+
+Examples:
+<Example keyValues={{
+    "id": ({ mOrT }) => mOrT("0x0", "0x3")
+}}>BTC/USD</Example>
+<Example keyValues={{
+    "id": ({mOrT}) => mOrT("0x1", "0x4")
+}}>ETH/USD</Example>
 
 <EvmCall
   functionName="getPriceUnsafe"
@@ -61,4 +69,4 @@ Note: you typically need to update the on-chain price using (link) before callin
 
 ## Messing around here
 
-<DisplayGlobalVar />
+<DisplayKeyValueStore />

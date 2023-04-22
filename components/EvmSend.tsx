@@ -84,7 +84,6 @@ const EvmSend: React.FC<EvmSendProps> = ({
           const tx = await contractWithSigner[functionName]([...args], extraArguments);
           const receipt = await tx.wait();
           const responseString = JSON.stringify(receipt);
-          // const responseString = renderResponse(response, contract.interface.getFunction(functionName).outputs)
           setResponse(responseString);
           setIsStale(false);
         } catch (error) {
