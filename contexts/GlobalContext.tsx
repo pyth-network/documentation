@@ -26,6 +26,7 @@ interface GlobalContextData {
   // Address and ABI of the pyth contract on the current chain
   pythContractAddress: string,
   pythContractAbi: object,
+  networkType: string, // mainnet or testnet
 }
 
 const GlobalContext = createContext<GlobalContextData>({} as GlobalContextData);
@@ -40,10 +41,32 @@ export const GlobalContextProvider: React.FC = ({ children }) => {
   const [signer, setSigner] = useState<ethers.Signer | undefined>(undefined);
   const contractAddress = '0xff1a0f4744e8582DF1aE09D5611b887B6a12925C';
   const contractAbi = require('../abis/IPyth.json');
+  const networkType = 'mainnet'
 
   return (
-    <GlobalContext.Provider value={{ keyValueStore: queryParameters, setKeyValueStore: setQueryParameters, chainId, setChainId, provider, setProvider, signer, setSigner, pythContractAddress: contractAddress, pythContractAbi: contractAbi }}>
+    <GlobalContext.Provider value={{ keyValueStore: queryParameters, setKeyValueStore: setQueryParameters, chainId, setChainId, provider, setProvider, signer, setSigner, pythContractAddress: contractAddress, pythContractAbi: contractAbi, networkType }}>
       {children}
     </GlobalContext.Provider>
   );
 };
+
+
+interface State {
+  kv: Record<string, string>,
+  get: (key: string, orElse?: string) => string,
+
+  addr: string,
+  networkType: string,
+
+  mOrT: (mainnet: string, testnet: string) => string
+}
+
+export function getState(context: GlobalContextData): State {
+  return {
+    kv: context.keyValueStore,
+    get: (k, o) => context.keyValueStore[k] !== undefined ? context.keyValueStore[k] : o,
+    addr: context.pythContractAddress,
+    networkType: context.networkType,
+    mOrT: (mainnet, testnet) => (context.networkType == 'mainnet' ? mainnet : testnet),
+  }
+}

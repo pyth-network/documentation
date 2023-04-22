@@ -1,12 +1,6 @@
 import React, {useEffect, useRef} from 'react';
-import { useGlobalContext } from '../contexts/GlobalContext';
+import { getState, useGlobalContext } from '../contexts/GlobalContext';
 import {global} from "styled-jsx/css";
-
-interface State {
-  kv: Record<string, string>,
-  get: (key: string, orElse?: string) => string
-  addr: string
-}
 
 export type Targets = Record<string, ((State) => string)>
 
@@ -17,7 +11,8 @@ export type Targets = Record<string, ((State) => string)>
  * caller-specified values.
  */
 export default function DynamicCode ({ targets, children }) {
-  const {keyValueStore, pythContractAddress} = useGlobalContext();
+  const globalContext = useGlobalContext();
+  const state = getState(globalContext);
 
   const divRef = useRef();
   const targetRefs = useRef();
@@ -37,17 +32,12 @@ export default function DynamicCode ({ targets, children }) {
       targetRefs.current = tokens
     }
 
-    let state = {
-      kv: keyValueStore,
-      get: (k, o) => keyValueStore[k] !== undefined ? keyValueStore[k] : o,
-      addr: pythContractAddress
-    };
     for (let {token, replacement} of targetRefs.current) {
       // let value = possibleReplacements[target.replacementParam]
       let value = replacement(state);
       token.innerText = value;
     }
-  }, [keyValueStore, pythContractAddress])
+  }, [state])
 
   return <>
     <div ref={divRef} style={{ marginTop: '1.5rem' }}>{children}</div>
