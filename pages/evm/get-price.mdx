@@ -1,4 +1,6 @@
 import QueryParameters from '../../components/QueryParameters';
+import Input from '../../components/Input';
+import Arg from '../../components/Arg';
 import DynamicCode from '../../components/DynamicCode';
 import DisplayGlobalVar from '../../components/DisplayGlobalVar';
 import EvmCall from '../../components/EvmCall';
@@ -10,6 +12,12 @@ import { Tab, Tabs } from 'nextra-theme-docs';
 Get the latest on-chain price for the requested price feed id.
 Note: you typically need to update the on-chain price using (link) before calling this function.
 
+| Argument                                      |  | Description |
+|-----------------------------------------| --- | --- |
+| <Arg required={true} type="hex">id</Arg> | <Input id="id" example="0x6e3f3fa8253588df9326580180233eb791e03b443a3ba7a1d892e73874e19a54" /> | The ID of the price feed you want to read |
+
+<Input id="id" example="0x6e3f3fa8253588df9326580180233eb791e03b443a3ba7a1d892e73874e19a54" />
+
 <QueryParameters
   queryParams={[
     { key: 'id', required: true, type: "hex", example: "0x6e3f3fa8253588df9326580180233eb791e03b443a3ba7a1d892e73874e19a54", description: 'The ID of the price feed you want to read' },
@@ -17,9 +25,10 @@ Note: you typically need to update the on-chain price using (link) before callin
   >
 </QueryParameters>
 
+
 <EvmCall
   functionName="getPrice"
-  params={["id"]}
+  argumentKeys={["id"]}
 />
 
 ## Example Code

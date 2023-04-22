@@ -22,15 +22,15 @@ th {
     font-weight: bold;
 }
 
-.api-params .param-name {
+.param-name {
     font-weight: bold;
 }
 
-.api-params .param-type {
+.param-type {
     color: grey;
 }
 
-.api-params .required {
+.required {
     color: red;
 }
 
