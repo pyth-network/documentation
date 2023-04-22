@@ -24,7 +24,9 @@ export default function DynamicCode ({ targets, children }) {
         console.log(`target: ${target}`)
 
         // TODO: may need to find more than one
-        const token = [...divRef.current.querySelectorAll('code span')].find((el) => el.innerText === target);
+        // note: this explicitly filters out entire lines and only finds spans within lines
+        // to preserve highlighting
+        const token = [...divRef.current.querySelectorAll('code span')].find((el) => el.innerText === target && el.className != "line");
         if (token !== undefined) {
           tokens.push( { token, target, replacement });
         }
@@ -33,7 +35,6 @@ export default function DynamicCode ({ targets, children }) {
     }
 
     for (let {token, replacement} of targetRefs.current) {
-      // let value = possibleReplacements[target.replacementParam]
       let value = replacement(state);
       token.innerText = value;
     }

@@ -37,11 +37,14 @@ Examples:
     <DynamicCode targets={{
         "0x0000": ({ addr }) => addr,
         "0x1111": ({ get }) => get("id", "<id>"),
+        "// network": ({ networkType }) => `// ${networkType}`,
     }}>
       ```solidity
       import "pyth-sdk-solidity/IPyth.sol";
       import "pyth-sdk-solidity/PythStructs.sol";
 
+      // contract address for:
+      // @param
       address contractAddress = 0x0000;
       bytes32 priceId = 0x1111;
       IPyth pyth = IPyth(contractAddress);
