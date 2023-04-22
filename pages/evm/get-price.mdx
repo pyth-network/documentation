@@ -33,8 +33,10 @@ Note: you typically need to update the on-chain price using (link) before callin
       import "pyth-sdk-solidity/IPyth.sol";
       import "pyth-sdk-solidity/PythStructs.sol";
 
-      IPyth pyth = IPyth(0x0000);
-      PythStructs.Price memory currentBasePrice = pyth.getPrice(0x1111);
+      address contractAddress = 0x0000;
+      bytes32 priceId = 0x1111;
+      IPyth pyth = IPyth(contractAddress);
+      giPythStructs.Price memory currentBasePrice = pyth.getPrice(priceId);
       ```
     </DynamicCode>
   </Tab>
