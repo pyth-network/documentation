@@ -5,11 +5,21 @@
   },
   "introduction": "",
   "configuration": "",
+  "sdks": "SDKs",
   "--- Methods": {
     "title": "Methods",
     "type": "separator"
   },
+
   "get-price": "getPrice",
   "get-price-unsafe": "getPriceUnsafe",
-  "update-price-feeds": "updatePriceFeeds"
+  "get-price-no-older-than": "getPriceNoOlderThan",
+  "get-ema-price": "getEmaPrice",
+  "get-ema-price-unsafe": "getEmaPriceUnsafe",
+  "get-ema-price-no-older-than": "getEmaPriceNoOlderThan",
+  "get-update-fee": "getUpdateFee",
+  "get-valid-time-period": "getValidTimePeriod",
+  "parse-price-feed-updates": "parsePriceFeedUpdates",
+  "update-price-feeds": "updatePriceFeeds",
+  "update-price-feeds-if-necessary": "updatePriceFeedsIfNecessary"
 }

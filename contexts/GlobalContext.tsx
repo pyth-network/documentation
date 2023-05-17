@@ -29,6 +29,24 @@ interface GlobalContextData {
   networkType: string, // mainnet or testnet
 }
 
+interface EvmNetworkConfig {
+  name: string,
+  chainId: string,
+  rpcUrl: string,
+  pythAddress: string,
+  networkType: "mainnet" | "testnet",
+}
+
+const networks: EvmNetworkConfig = [
+  {
+    name: "arbitrum",
+    chainId: "42161",
+    rpcUrl: "https://arb1.arbitrum.io/rpc",
+    pythAddress: '0xff1a0f4744e8582DF1aE09D5611b887B6a12925C',
+    networkType: 'mainnet'
+  }
+]
+
 const GlobalContext = createContext<GlobalContextData>({} as GlobalContextData);
 
 export const useGlobalContext = () => useContext(GlobalContext);
