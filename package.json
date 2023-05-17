@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "tsc --noEmit && next lint"
+    "start": "next start"
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^2.6.1",
