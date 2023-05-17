@@ -5,12 +5,11 @@ COPY --chown=1000:1000 ./ ./
 
 USER 1000
 
-RUN npm install
+RUN npm ci
+RUN npm run build
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
-
-WORKDIR /home/node/
 
 EXPOSE 3000
 

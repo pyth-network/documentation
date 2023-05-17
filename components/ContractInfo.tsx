@@ -15,7 +15,7 @@ const ContractInfo: React.FC<{}> = ({}) => {
 
   useEffect(() => {
     async function helper() {
-      const contract = new ethers.Contract(pythContractAddress, pythContractAbi, provider);
+      const contract = new ethers.Contract(pythContractAddress, pythContractAbi as any, provider);
       setFee((await contract.getUpdateFee(["0x01"])).toString());
       setValidTimePeriod((await contract.getValidTimePeriod()).toString())
     }

@@ -26,8 +26,8 @@ export default function DynamicCode ({ targets, children }) {
   const globalContext = useGlobalContext();
   const state = getState(globalContext);
 
-  const divRef = useRef();
-  const targetRefs = useRef();
+  const divRef = useRef<any>();
+  const targetRefs = useRef<any>();
   // Find the corresponding token from the DOM
   useEffect(() => {
     if (divRef.current && !targetRefs.current) {

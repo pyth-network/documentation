@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
-import {ethers} from 'ethers';
+import React, {createContext, ReactNode, useContext, useState} from 'react';
+import {ethers, InterfaceAbi} from 'ethers';
 
 /** Global information available to all components on any page. */
 interface GlobalContextData {
@@ -25,7 +25,7 @@ interface GlobalContextData {
 
   // Address and ABI of the pyth contract on the current chain
   pythContractAddress: string,
-  pythContractAbi: object,
+  pythContractAbi: InterfaceAbi,
   networkType: string, // mainnet or testnet
 }
 
@@ -33,7 +33,7 @@ const GlobalContext = createContext<GlobalContextData>({} as GlobalContextData);
 
 export const useGlobalContext = () => useContext(GlobalContext);
 
-export const GlobalContextProvider: React.FC = ({ children }) => {
+export const GlobalContextProvider: React.FC<{children: ReactNode}> = ({ children }) => {
   const [queryParameters, setQueryParameters] = useState<Record<string, string>>({});
   // FIXME: The chain id and provider logic is hardcoded to arbitrum. We need to implement a network selector.
   const [chainId, setChainId] = useState<string>("42161");
