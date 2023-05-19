@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ethers, ParamType, Provider} from 'ethers';
+import {ethers, ParamType, Provider, Result} from 'ethers';
 import { useGlobalContext } from '../contexts/GlobalContext';
 
 interface EvmCallProps {
@@ -34,6 +34,7 @@ const EvmCall: React.FC<EvmCallProps> = ({
 
 
   const sendTransaction = async () => {
+    const pythInterface = new ethers.Interface(pythContractAbi);
     const contract = new ethers.Contract(networkConfig.pythAddress, pythContractAbi, provider);
 
     const args: any[] = argumentKeys.map((v) => keyValueStore[v]);
@@ -46,12 +47,18 @@ const EvmCall: React.FC<EvmCallProps> = ({
       setSolidityQuery(`${functionName}(${[...args]})`);
 
       try {
-        const response = await contract[functionName](...args);
-        const responseString = renderResponse(response, contract.interface.getFunction(functionName).outputs)
+        const response: Result = await contract[functionName].staticCallResult(...args);
+        // let responseString = `response: ${JSON.stringify(response[0].names)}`;
+
+        let responseString = `response: ${renderResponse(response)}`;
+
+        // const responseString = JSON.stringify(response.toObject());
+
+        // const responseString = renderResponse(response, contract.interface.getFunction(functionName).outputs)
         setResponse(responseString);
         setIsStale(false);
       } catch (error) {
-        setResponse(error.toString());
+        setResponse(`Caught exception: ${error.toString()}`);
         setIsStale(false);
       }
     }
@@ -81,10 +88,17 @@ export default EvmCall;
  *
  * TODO: the generated string for structs looks like type=value. It would be better to have field names in the future
  */
-function renderResponse(response: any[], params: ReadonlyArray<ParamType>) {
-  let s = "";
-  params[0].walk(response, (type, v) => {
-    s += `${type}=${v.toString()} `;
-  })
-  return s;
+function renderResponse(response: any) {
+  if (response instanceof Result) {
+    console.log("result")
+    const obj = response.toObject()
+    let responseString = "{";
+    for (const key in obj) {
+      responseString += `${key}: ${renderResponse(obj[key])},`
+    }
+    responseString += ` (${response.length})}`;
+    return responseString
+  } else {
+    return response.toString();
+  }
 }
