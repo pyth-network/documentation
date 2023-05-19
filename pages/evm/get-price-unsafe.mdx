@@ -19,10 +19,10 @@ Note: you typically need to update the on-chain price using (link) before callin
 
 Examples:
 <Example keyValues={{
-    "id": ({ mOrT }) => mOrT("0x0", "0x3")
+    "id": (ctx) => ctx.getFeedId('Crypto.BTC/USD')
 }}>BTC/USD</Example>
 <Example keyValues={{
-    "id": ({mOrT}) => mOrT("0x1", "0x4")
+    "id": (ctx) => ctx.getFeedId('Crypto.ETH/USD')
 }}>ETH/USD</Example>
 
 <EvmCall

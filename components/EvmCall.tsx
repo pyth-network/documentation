@@ -26,7 +26,7 @@ const EvmCall: React.FC<EvmCallProps> = ({
 
   const [isStale, setIsStale] = useState<boolean>(false);
 
-  const { keyValueStore, provider, pythContractAddress, pythContractAbi } = useGlobalContext();
+  const { keyValueStore, provider, networkConfig, pythContractAbi } = useGlobalContext();
 
   useEffect(() => {
     setIsStale(true);
@@ -34,7 +34,7 @@ const EvmCall: React.FC<EvmCallProps> = ({
 
 
   const sendTransaction = async () => {
-    const contract = new ethers.Contract(pythContractAddress, pythContractAbi, provider);
+    const contract = new ethers.Contract(networkConfig.pythAddress, pythContractAbi, provider);
 
     const args: any[] = argumentKeys.map((v) => keyValueStore[v]);
 

@@ -24,8 +24,9 @@ Examples:
     "id": (ctx) => ctx.getFeedId('Crypto.ETH/USD')
 }}>ETH/USD</Example>
 
+// TODO: fix this functionName
 <EvmCall
-  functionName="getPrice"
+  functionName="getPriceUnsafe"
   argumentKeys={["id"]}
 />
 
@@ -54,33 +55,16 @@ Examples:
 
   <Tab>
     <DynamicCode targets={{
-        "'0x0000'": ({ addr }) => `'${addr}'`,
-        "'0x1111'": ({ kv }) => `'${kv["id"]}'`,
+        "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
+        "'0x1111'": (ctx) => `'${ctx.get("id", "<id>")}'`,
     }}>
       ```typescript
       const contractAddress = '0x0000';
       const priceId = '0x1111';
-      const PythAbi = require('./abis/IPyth.json');
-      const contract = new ethers.Contract(contractAddress, PythAbi, provider);
+      const pythAbi = require('./abis/IPyth.json');
+      const contract = new ethers.Contract(contractAddress, pythAbi, provider);
       const [price, conf, expo, timestamp] = await contract.getPrice(priceId);
       ```
     </DynamicCode>
   </Tab>
-
-  <Tab>
-    <DynamicCode targets={{
-        "0x0000": ({ addr }) => addr,
-        "0x1111": ({ kv }) => kv["id"],
-    }}>
-      ```js
-
-      this can be different
-      ```
-    </DynamicCode>
-  </Tab>
 </Tabs>
-
-
-## Messing around here
-
-<DisplayKeyValueStore />
