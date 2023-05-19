@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {getState, useGlobalContext} from '../contexts/GlobalContext';
+import {GlobalContextData, EvmNetworkConfig, useGlobalContext} from '../contexts/GlobalContext';
 
 interface DynamicCodeProps {
   targets: Targets,
@@ -23,8 +23,8 @@ export type Targets = Record<string, ((State) => string)>
  *                 like ```javascript myJavascriptCode() ```
  */
 export default function DynamicCode ({ targets, children }) {
-  const globalContext = useGlobalContext();
-  const state = getState(globalContext);
+  const context: GlobalContextData = useGlobalContext();
+  const state = new DynamicCodeRenderingContext(context.keyValueStore, context.networkConfig)
 
   const divRef = useRef();
   const targetRefs = useRef();
@@ -54,4 +54,28 @@ export default function DynamicCode ({ targets, children }) {
   return <>
     <div ref={divRef} style={{ marginTop: '1.5rem' }}>{children}</div>
   </>
+}
+
+/**
+ * A projection of the GlobalContextData to a subset of properties useful for rendering text.
+ * This type is often the argument to functions that render strings on the page.
+ * The properties intentionally have short names to make it efficient to write rendering functions.
+ * (It's not clear this is a good decision.)
+ *
+ * TODO: this type needs a better name.
+ */
+export class DynamicCodeRenderingContext {
+  // The global key-value store
+  kv: Record<string, string>
+  public evmConfig: EvmNetworkConfig | undefined;
+
+  constructor(kv: Record<string, string>, evmConfig: EvmNetworkConfig | undefined) {
+    this.kv = kv;
+    this.evmConfig = evmConfig;
+  }
+
+  // Get the value of key from kv, or return a default value if the key's value is undefined.
+  public get(key: string, orElse?: string): string {
+    return this.kv[key] !== undefined ? this.kv[key] : orElse;
+  }
 }

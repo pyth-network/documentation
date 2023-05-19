@@ -25,7 +25,7 @@ const EvmSend: React.FC<EvmSendProps> = ({
                                            feeKey
                                                              }) => {
 
-  const { keyValueStore, provider, setProvider, signer, setSigner, chainId, setChainId, pythContractAddress, pythContractAbi } = useGlobalContext();
+  const { keyValueStore, provider, setProvider, signer, setSigner, networkName, setNetworkName, networkConfig, pythContractAbi } = useGlobalContext();
 
   const [solidityQuery, setSolidityQuery] = useState<string>(null);
   const [response, setResponse] = useState<string | undefined>(undefined);
@@ -50,7 +50,7 @@ const EvmSend: React.FC<EvmSendProps> = ({
       setSigner(mySigner);
       // Get the current network ID
       const networkId = (await myProvider.getNetwork()).chainId.toString();
-      setChainId(networkId);
+      setNetworkName(networkId);
     } else {
       alert('Please install MetaMask!');
     }
@@ -58,7 +58,7 @@ const EvmSend: React.FC<EvmSendProps> = ({
 
   const sendTransaction = async () => {
     if (signer != undefined) {
-      const contract = new ethers.Contract(pythContractAddress, pythContractAbi, provider);
+      const contract = new ethers.Contract(networkConfig.pythAddress, pythContractAbi, provider);
       const contractWithSigner = contract.connect(signer);
 
       const args: any[] = argumentKeys.map((v) => keyValueStore[v]);
@@ -103,7 +103,7 @@ const EvmSend: React.FC<EvmSendProps> = ({
   return (<div className={"api-params"}>
     { signer !== undefined ? <div>
       <p>Connected wallet: {signer.address}</p>
-      <p>Network id: {chainId}</p>
+      <p>Network id: {networkName}</p>
       <button onClick={sendTransaction}>Execute</button>
       <button onClick={clearResponse}>Clear</button>
       {response !== undefined ?

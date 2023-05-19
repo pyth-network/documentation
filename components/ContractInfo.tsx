@@ -1,33 +1,39 @@
 import React, {useEffect, useState} from 'react';
 import {ethers} from 'ethers';
-import detectEthereumProvider from '@metamask/detect-provider';
 import {useGlobalContext} from '../contexts/GlobalContext';
+import EvmNetworkSelector from "./EvmNetworkSelector";
 
 /**
  * A component that displays information about the current EVM network and
  * the configuration of the Pyth contract deployed on that network.
  */
 const ContractInfo: React.FC<{}> = ({}) => {
-  const { provider, chainId, pythContractAddress, pythContractAbi, setProvider, setChainId, setSigner } = useGlobalContext();
+  const { provider, networkConfig, pythContractAbi } = useGlobalContext();
 
-  let [fee, setFee] = useState<string>('');
-  let [validTimePeriod, setValidTimePeriod] = useState<string>('foo');
+  let [fee, setFee] = useState<string>('loading...');
+  let [validTimePeriod, setValidTimePeriod] = useState<string>('loading...');
 
   useEffect(() => {
     async function helper() {
-      const contract = new ethers.Contract(pythContractAddress, pythContractAbi, provider);
-      setFee((await contract.getUpdateFee(["0x01"])).toString());
-      setValidTimePeriod((await contract.getValidTimePeriod()).toString())
+      const contract = new ethers.Contract(networkConfig.pythAddress, pythContractAbi, provider);
+      try {
+        setFee((await contract.getUpdateFee(["0x01"])).toString());
+        setValidTimePeriod((await contract.getValidTimePeriod()).toString())
+      } catch (error: any) {
+        setFee("loading...")
+        setValidTimePeriod("loading...")
+      }
     }
     helper();
-  }, [provider, pythContractAddress, pythContractAbi])
+  }, [provider, networkConfig, pythContractAbi])
 
   return (<div>
-    Connected to the {chainId} network.
+    Connected to the <EvmNetworkSelector /> network.
+
     <table>
       <tbody>
-      <tr><td>Contract address</td><td>{pythContractAddress}</td></tr>
-      <tr><td>Chain id</td><td> {chainId}</td></tr>
+      <tr><td>Contract address</td><td>{networkConfig.pythAddress}</td></tr>
+      <tr><td>Chain id</td><td> {networkConfig.info.chainId}</td></tr>
       <tr><td>Update fee</td><td> {fee}</td></tr>
       <tr><td>Valid time period</td><td> {validTimePeriod}</td></tr>
       </tbody>
