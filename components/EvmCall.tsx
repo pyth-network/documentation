@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ethers, ParamType, Provider, Result} from 'ethers';
+import {ethers, isError, ParamType, Provider, Result} from 'ethers';
 import { useGlobalContext } from '../contexts/GlobalContext';
 
 interface EvmCallProps {
@@ -34,7 +34,6 @@ const EvmCall: React.FC<EvmCallProps> = ({
 
 
   const sendTransaction = async () => {
-    const pythInterface = new ethers.Interface(pythContractAbi);
     const contract = new ethers.Contract(networkConfig.pythAddress, pythContractAbi, provider);
 
     const args: any[] = argumentKeys.map((v) => keyValueStore[v]);
@@ -48,18 +47,19 @@ const EvmCall: React.FC<EvmCallProps> = ({
 
       try {
         const response: Result = await contract[functionName].staticCallResult(...args);
-        // let responseString = `response: ${JSON.stringify(response[0].names)}`;
-
         let responseString = `response: ${renderResponse(response)}`;
 
-        // const responseString = JSON.stringify(response.toObject());
-
-        // const responseString = renderResponse(response, contract.interface.getFunction(functionName).outputs)
         setResponse(responseString);
         setIsStale(false);
       } catch (error) {
-        setResponse(`Caught exception: ${error.toString()}`);
-        setIsStale(false);
+        if (isError(error, 'CALL_EXCEPTION')) {
+          const ethError = contract.interface.parseError(error.data);
+          setResponse(`Call exception: ${ethError.name}(${renderResponse(ethError.args)})`);
+          setIsStale(false);
+        } else {
+          setResponse(`other error`);
+          setIsStale(false);
+        }
       }
     }
   }
@@ -90,14 +90,17 @@ export default EvmCall;
  */
 function renderResponse(response: any) {
   if (response instanceof Result) {
-    console.log("result")
-    const obj = response.toObject()
-    let responseString = "{";
-    for (const key in obj) {
-      responseString += `${key}: ${renderResponse(obj[key])},`
+    if (response.length == 0) {
+      return ""
+    } else {
+      const obj = response.toObject()
+      let responseString = "{";
+      for (const key in obj) {
+        responseString += `${key}: ${renderResponse(obj[key])},`
+      }
+      responseString += `}`;
+      return responseString
     }
-    responseString += ` (${response.length})}`;
-    return responseString
   } else {
     return response.toString();
   }

@@ -107,7 +107,9 @@ export const GlobalContextProvider: React.FC = ({ children }) => {
   const [provider, setProvider] = useState<ethers.Provider>(ethers.getDefaultProvider("https://arb1.arbitrum.io/rpc"));
   const [signer, setSigner] = useState<ethers.Signer | undefined>(undefined);
 
-  const contractAbi = require('../abis/IPyth.json');
+  const iPythAbi = require('../abis/IPyth.json');
+  const errorAbi = require('../abis/PythErrors.json');
+  const contractAbi = iPythAbi.concat(errorAbi);
 
   useEffect(() => {
     async function helper() {
