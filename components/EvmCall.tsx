@@ -20,10 +20,9 @@ const EvmCall: React.FC<EvmCallProps> = ({
                                                                functionName,
                                                                argumentKeys,
                                                              }) => {
-
-  const [solidityQuery, setSolidityQuery] = useState<string>(null);
   const [response, setResponse] = useState<string | undefined>(undefined);
-
+  // text that will show up before the response itself
+  const [responsePreface, setResponsePreface] = useState<string>('');
   const [isStale, setIsStale] = useState<boolean>(false);
 
   const { keyValueStore, provider, networkConfig, pythContractAbi } = useGlobalContext();
@@ -43,21 +42,22 @@ const EvmCall: React.FC<EvmCallProps> = ({
       setResponse(`missing some arguments: ${args}`);
     } else {
 
-      setSolidityQuery(`${functionName}(${[...args]})`);
-
       try {
         const response: Result = await contract[functionName].staticCallResult(...args);
-        let responseString = `response: ${renderResponse(response)}`;
+        let responseString = renderResponse(response, "");
 
+        setResponsePreface("EVM call succeeded with result:");
         setResponse(responseString);
         setIsStale(false);
       } catch (error) {
         if (isError(error, 'CALL_EXCEPTION')) {
           const ethError = contract.interface.parseError(error.data);
-          setResponse(`Call exception: ${ethError.name}(${renderResponse(ethError.args)})`);
+          setResponsePreface("EVM call reverted with exception:")
+          setResponse(`${ethError.name}(${renderResponse(ethError.args, "")})`);
           setIsStale(false);
         } else {
-          setResponse(`other error`);
+          setResponsePreface("An unknown error occurred. Error details:")
+          setResponse(error.toString);
           setIsStale(false);
         }
       }
@@ -72,8 +72,8 @@ const EvmCall: React.FC<EvmCallProps> = ({
       <button onClick={sendTransaction}>Execute</button>
       <button onClick={clearResponse}>Clear</button>
       {response !== undefined ?
-        <div className={"trial " + (isStale ? "stale" : "")} >
-          <div className={"request"}>{solidityQuery}</div>
+        <div className={"response " + (isStale ? "stale" : "")} >
+          <p>{responsePreface}</p>
           <pre>{response}</pre>
         </div>
         : <div className={"trial"} />
@@ -85,20 +85,19 @@ export default EvmCall;
 
 /**
  * Render the response from the EVM contract as a human-readable string.
- *
- * TODO: the generated string for structs looks like type=value. It would be better to have field names in the future
  */
-function renderResponse(response: any) {
+function renderResponse(response: any, indent: string) {
   if (response instanceof Result) {
     if (response.length == 0) {
       return ""
     } else {
       const obj = response.toObject()
-      let responseString = "{";
+      let responseString = "{\n";
+      let nextIndent = indent + "  ";
       for (const key in obj) {
-        responseString += `${key}: ${renderResponse(obj[key])},`
+        responseString += nextIndent + `${key}: ${renderResponse(obj[key], nextIndent)},\n`
       }
-      responseString += `}`;
+      responseString += indent + `}`;
       return responseString
     }
   } else {

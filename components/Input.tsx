@@ -32,6 +32,7 @@ const Input: React.FC<InputProps> = ({
               name={id}
               value={keyValueStore[id] ? keyValueStore[id] : ''}
               onChange={(e) => handleQueryChange(id, e.target.value)}
+              className={"context-input"}
             />
           );
 };
