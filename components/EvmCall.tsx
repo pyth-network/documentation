@@ -21,7 +21,7 @@ const EvmCall: React.FC<EvmCallProps> = ({
                                                                argumentKeys,
                                                              }) => {
   const [response, setResponse] = useState<string | undefined>(undefined);
-  // text that will show up before the response itself
+  // The preface is explainer text that shows up before the response itself.
   const [responsePreface, setResponsePreface] = useState<string>('');
   const [isStale, setIsStale] = useState<boolean>(false);
 
@@ -40,20 +40,21 @@ const EvmCall: React.FC<EvmCallProps> = ({
     // TODO: validate arguments
     if (args.some((value) => value === undefined)) {
       setResponse(`missing some arguments: ${args}`);
+      setIsStale(false);
     } else {
 
       try {
-        const response: Result = await contract[functionName].staticCallResult(...args);
-        let responseString = renderResponse(response, "");
+        const result: Result = await contract[functionName].staticCallResult(...args);
+        let resultString = renderResult(result, "");
 
         setResponsePreface("EVM call succeeded with result:");
-        setResponse(responseString);
+        setResponse(resultString);
         setIsStale(false);
       } catch (error) {
         if (isError(error, 'CALL_EXCEPTION')) {
           const ethError = contract.interface.parseError(error.data);
           setResponsePreface("EVM call reverted with exception:")
-          setResponse(`${ethError.name}(${renderResponse(ethError.args, "")})`);
+          setResponse(`${ethError.name}(${renderResult(ethError.args, "")})`);
           setIsStale(false);
         } else {
           setResponsePreface("An unknown error occurred. Error details:")
@@ -85,22 +86,24 @@ export default EvmCall;
 
 /**
  * Render the response from the EVM contract as a human-readable string.
+ * This function is janky because ethers doesn't provide a nice way to iterate over
+ * Results with named key/values.
  */
-function renderResponse(response: any, indent: string) {
-  if (response instanceof Result) {
-    if (response.length == 0) {
+function renderResult(result: any, indent: string) {
+  if (result instanceof Result) {
+    if (result.length == 0) {
       return ""
     } else {
-      const obj = response.toObject()
+      const obj = result.toObject()
       let responseString = "{\n";
       let nextIndent = indent + "  ";
       for (const key in obj) {
-        responseString += nextIndent + `${key}: ${renderResponse(obj[key], nextIndent)},\n`
+        responseString += nextIndent + `${key}: ${renderResult(obj[key], nextIndent)},\n`
       }
       responseString += indent + `}`;
       return responseString
     }
   } else {
-    return response.toString();
+    return result.toString();
   }
 }

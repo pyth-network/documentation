@@ -6,7 +6,7 @@ interface DynamicCodeProps {
   children: React.ReactNode
 }
 
-export type Targets = Record<string, ((State) => string)>
+export type Targets = Record<string, ((DynamicCodeRenderingContext) => string)>
 
 /**
  * A syntax-highlighted code block with dynamic text. Nextra typically performs all syntax highlighting on the
@@ -57,16 +57,12 @@ export default function DynamicCode ({ targets, children }) {
 }
 
 /**
- * A projection of the GlobalContextData to a subset of properties useful for rendering text.
- * This type is often the argument to functions that render strings on the page.
- * The properties intentionally have short names to make it efficient to write rendering functions.
- * (It's not clear this is a good decision.)
- *
- * TODO: this type needs a better name.
+ * Context provided to dynamically render elements in the code block.
  */
 export class DynamicCodeRenderingContext {
   // The global key-value store
   kv: Record<string, string>
+  /** The currently selected EVM network. */
   public evmConfig: EvmNetworkConfig | undefined;
 
   constructor(kv: Record<string, string>, evmConfig: EvmNetworkConfig | undefined) {
@@ -74,7 +70,7 @@ export class DynamicCodeRenderingContext {
     this.evmConfig = evmConfig;
   }
 
-  // Get the value of key from kv, or return a default value if the key's value is undefined.
+  /** Get the value of key from the global context, returning `orElse` if the key is not defined. */
   public get(key: string, orElse?: string): string {
     return this.kv[key] !== undefined ? this.kv[key] : orElse;
   }

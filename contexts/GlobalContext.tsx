@@ -84,8 +84,8 @@ export const Networks: Record<string, EvmNetworkConfig> = {
       chainName: 'Arbitrum Mainnet',
       rpcUrls: ['https://arb1.arbitrum.io/rpc'],
       nativeCurrency: {
-        name: 'ETH',
-        symbol: 'ETH',
+        name: 'AETH',
+        symbol: 'AETH',
         decimals: 18,
       },
       blockExplorerUrls: [],

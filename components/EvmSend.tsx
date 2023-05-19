@@ -43,14 +43,12 @@ const EvmSend: React.FC<EvmSendProps> = ({
       // @ts-ignore
       const myProvider = new ethers.BrowserProvider(ethereumProvider)
       setProvider(myProvider);
+
       // It also provides an opportunity to request access to write
       // operations, which will be performed by the private key
       // that MetaMask manages for the user.
       const mySigner = await myProvider.getSigner();
       setSigner(mySigner);
-      // Get the current network ID
-      const networkId = (await myProvider.getNetwork()).chainId.toString();
-      setNetworkName(networkId);
     } else {
       alert('Please install MetaMask!');
     }
@@ -74,6 +72,7 @@ const EvmSend: React.FC<EvmSendProps> = ({
       // TODO: validate arguments
       if (args.some((value) => value === undefined)) {
         setResponse(`missing some arguments: ${args}`);
+        setIsStale(false);
       } else {
 
         setSolidityQuery(`${functionName}(${[...args]}) value: ${feeString}`);
