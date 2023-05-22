@@ -18,7 +18,7 @@ Get the latest price update for a given set of price ids.
 
 Examples:
 <Example keyValues={{
-    "ids[]": ({ mOrT }) => mOrT("0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", "0xf9c0172ba10dfa4d19088d94f5bf61d3b54d5bd7483a322a982e1373ee8ea31b"),
+    "ids[]": (ctx) => ctx.getFeedId('Crypto.BTC/USD'),
     "target_chain": () => "evm"
 }}>BTC/USD on EVM</Example>
 

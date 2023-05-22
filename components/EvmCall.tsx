@@ -4,7 +4,7 @@ import { useGlobalContext } from '../contexts/GlobalContext';
 
 interface EvmCallProps {
   functionName: string;
-  argumentKeys: string[]
+  buildArguments: (kvs: Record<string, string>) => any[] | undefined,
 }
 
 /**
@@ -18,7 +18,7 @@ interface EvmCallProps {
  */
 const EvmCall: React.FC<EvmCallProps> = ({
                                                                functionName,
-                                                               argumentKeys,
+                                                               buildArguments,
                                                              }) => {
   const [response, setResponse] = useState<string | undefined>(undefined);
   // The preface is explainer text that shows up before the response itself.
@@ -35,14 +35,13 @@ const EvmCall: React.FC<EvmCallProps> = ({
   const sendTransaction = async () => {
     const contract = new ethers.Contract(networkConfig.pythAddress, pythContractAbi, provider);
 
-    const args: any[] = argumentKeys.map((v) => keyValueStore[v]);
+    const args: any[] | undefined = buildArguments(keyValueStore);
 
     // TODO: validate arguments
-    if (args.some((value) => value === undefined)) {
-      setResponse(`missing some arguments: ${args}`);
+    if (args === undefined) {
+      setResponse(`Please populate all of the arguments with valid values.`);
       setIsStale(false);
     } else {
-
       try {
         const result: Result = await contract[functionName].staticCallResult(...args);
         let resultString = renderResult(result, "");

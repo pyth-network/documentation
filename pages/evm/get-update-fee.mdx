@@ -1,0 +1,71 @@
+import Input from '../../components/Input';
+import Arg from '../../components/Arg';
+import Example from '../../components/Example';
+import DynamicCode from '../../components/DynamicCode';
+import DisplayKeyValueStore from '../../components/DisplayKeyValueStore';
+import EvmCall from '../../components/EvmCall';
+import { Tab, Tabs } from 'nextra-theme-docs';
+
+# Get Update Fee
+**getUpdateFee(updateData: bytes[])**
+
+Get the fee required to update the on-chain price feeds with the provided `updateData`.
+The `updateData` can be retrieved from the price service API.
+
+| Argument                                                  |                           | Description |
+|-----------------------------------------------------------|---------------------------| --- |
+| <Arg required={true} type="hex[]">updateData</Arg>        | <Input id="updateData" /> | The price update data for the contract to verify. |
+
+<Example
+    keyValues={{
+        updateData: (ctx) => ctx.getLatestVaa('Crypto.BTC/USD'),
+    }}
+>
+    Latest BTC/USD update data
+</Example>
+
+<EvmCall
+    functionName="getUpdateFee"
+    buildArguments={(kvs) => [[kvs["updateData"]]]}
+/>
+
+## Example Code
+
+<Tabs items={['Solidity', 'ethers.js', 'web3.js']}>
+    <Tab>
+        <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
+            ```solidity
+            import "pyth-sdk-solidity/IPyth.sol";
+            import "pyth-sdk-solidity/PythStructs.sol";
+
+            IPyth pyth = IPyth(0x0000);
+            PythStructs.Price memory currentBasePrice = pyth.getPriceUnsafe(0x1111);
+            ```
+        </DynamicCode>
+    </Tab>
+
+    <Tab>
+        <DynamicCode targets={[{findToken: "'0x1111'", replacementParam: "id", transform: (x) => `'${x}'` }]}>
+            ```typescript
+            const contractAddress = '0x0000';
+            const priceId = '0x1111';
+            const PythAbi = require('./abis/IPyth.json');
+            const contract = new ethers.Contract(contractAddress, PythAbi, provider);
+            const [price, conf, expo, timestamp] = await contract.getPriceUnsafe(priceId);
+            ```
+        </DynamicCode>
+    </Tab>
+
+    <Tab>
+        <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
+            ```js
+
+            this can be different
+            ```
+        </DynamicCode>
+    </Tab>
+</Tabs>
+
+## Messing around here
+
+<DisplayKeyValueStore />
