@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ethers, ParamType, Provider} from 'ethers';
+import {ethers, isError, ParamType, Provider, Result} from 'ethers';
 import { useGlobalContext } from '../contexts/GlobalContext';
 
 interface EvmCallProps {
@@ -20,13 +20,12 @@ const EvmCall: React.FC<EvmCallProps> = ({
                                                                functionName,
                                                                argumentKeys,
                                                              }) => {
-
-  const [solidityQuery, setSolidityQuery] = useState<string>(null);
   const [response, setResponse] = useState<string | undefined>(undefined);
-
+  // The preface is explainer text that shows up before the response itself.
+  const [responsePreface, setResponsePreface] = useState<string>('');
   const [isStale, setIsStale] = useState<boolean>(false);
 
-  const { keyValueStore, provider, pythContractAddress, pythContractAbi } = useGlobalContext();
+  const { keyValueStore, provider, networkConfig, pythContractAbi } = useGlobalContext();
 
   useEffect(() => {
     setIsStale(true);
@@ -34,25 +33,34 @@ const EvmCall: React.FC<EvmCallProps> = ({
 
 
   const sendTransaction = async () => {
-    const contract = new ethers.Contract(pythContractAddress, pythContractAbi, provider);
+    const contract = new ethers.Contract(networkConfig.pythAddress, pythContractAbi, provider);
 
     const args: any[] = argumentKeys.map((v) => keyValueStore[v]);
 
     // TODO: validate arguments
     if (args.some((value) => value === undefined)) {
       setResponse(`missing some arguments: ${args}`);
+      setIsStale(false);
     } else {
 
-      setSolidityQuery(`${functionName}(${[...args]})`);
-
       try {
-        const response = await contract[functionName](...args);
-        const responseString = renderResponse(response, contract.interface.getFunction(functionName).outputs)
-        setResponse(responseString);
+        const result: Result = await contract[functionName].staticCallResult(...args);
+        let resultString = renderResult(result, "");
+
+        setResponsePreface("EVM call succeeded with result:");
+        setResponse(resultString);
         setIsStale(false);
       } catch (error) {
-        setResponse(error.toString());
-        setIsStale(false);
+        if (isError(error, 'CALL_EXCEPTION')) {
+          const ethError = contract.interface.parseError(error.data);
+          setResponsePreface("EVM call reverted with exception:")
+          setResponse(`${ethError.name}(${renderResult(ethError.args, "")})`);
+          setIsStale(false);
+        } else {
+          setResponsePreface("An unknown error occurred. Error details:")
+          setResponse(error.toString);
+          setIsStale(false);
+        }
       }
     }
   }
@@ -65,8 +73,8 @@ const EvmCall: React.FC<EvmCallProps> = ({
       <button onClick={sendTransaction}>Execute</button>
       <button onClick={clearResponse}>Clear</button>
       {response !== undefined ?
-        <div className={"trial " + (isStale ? "stale" : "")} >
-          <div className={"request"}>{solidityQuery}</div>
+        <div className={"response " + (isStale ? "stale" : "")} >
+          <p>{responsePreface}</p>
           <pre>{response}</pre>
         </div>
         : <div className={"trial"} />
@@ -78,13 +86,24 @@ export default EvmCall;
 
 /**
  * Render the response from the EVM contract as a human-readable string.
- *
- * TODO: the generated string for structs looks like type=value. It would be better to have field names in the future
+ * This function is janky because ethers doesn't provide a nice way to iterate over
+ * Results with named key/values.
  */
-function renderResponse(response: any[], params: ReadonlyArray<ParamType>) {
-  let s = "";
-  params[0].walk(response, (type, v) => {
-    s += `${type}=${v.toString()} `;
-  })
-  return s;
+function renderResult(result: any, indent: string) {
+  if (result instanceof Result) {
+    if (result.length == 0) {
+      return ""
+    } else {
+      const obj = result.toObject()
+      let responseString = "{\n";
+      let nextIndent = indent + "  ";
+      for (const key in obj) {
+        responseString += nextIndent + `${key}: ${renderResult(obj[key], nextIndent)},\n`
+      }
+      responseString += indent + `}`;
+      return responseString
+    }
+  } else {
+    return result.toString();
+  }
 }

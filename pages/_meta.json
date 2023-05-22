@@ -13,7 +13,7 @@
     "type": "menu",
     "items": {
       "evm": {
-        "title": "EVM",
+        "title": "EVM Contract",
         "href":  "/evm/introduction",
         "type": "page"
       },

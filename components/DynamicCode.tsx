@@ -1,12 +1,12 @@
 import React, {useEffect, useRef} from 'react';
-import {getState, useGlobalContext} from '../contexts/GlobalContext';
+import {GlobalContextData, EvmNetworkConfig, useGlobalContext} from '../contexts/GlobalContext';
 
 interface DynamicCodeProps {
   targets: Targets,
   children: React.ReactNode
 }
 
-export type Targets = Record<string, ((State) => string)>
+export type Targets = Record<string, ((DynamicCodeRenderingContext) => string)>
 
 /**
  * A syntax-highlighted code block with dynamic text. Nextra typically performs all syntax highlighting on the
@@ -23,8 +23,8 @@ export type Targets = Record<string, ((State) => string)>
  *                 like ```javascript myJavascriptCode() ```
  */
 export default function DynamicCode ({ targets, children }) {
-  const globalContext = useGlobalContext();
-  const state = getState(globalContext);
+  const context: GlobalContextData = useGlobalContext();
+  const state = new DynamicCodeRenderingContext(context.keyValueStore, context.networkConfig)
 
   // These types are pretty gnarly so leave them as any
   const divRef = useRef<any>();
@@ -55,4 +55,24 @@ export default function DynamicCode ({ targets, children }) {
   return <>
     <div ref={divRef} style={{ marginTop: '1.5rem' }}>{children}</div>
   </>
+}
+
+/**
+ * Context provided to dynamically render elements in the code block.
+ */
+export class DynamicCodeRenderingContext {
+  // The global key-value store
+  kv: Record<string, string>
+  /** The currently selected EVM network. */
+  public evmConfig: EvmNetworkConfig | undefined;
+
+  constructor(kv: Record<string, string>, evmConfig: EvmNetworkConfig | undefined) {
+    this.kv = kv;
+    this.evmConfig = evmConfig;
+  }
+
+  /** Get the value of key from the global context, returning `orElse` if the key is not defined. */
+  public get(key: string, orElse?: string): string {
+    return this.kv[key] !== undefined ? this.kv[key] : orElse;
+  }
 }

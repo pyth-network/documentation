@@ -18,10 +18,10 @@ Note: you typically need to update the on-chain price using (link) before callin
 
 Examples:
 <Example keyValues={{
-    "id": ({ mOrT }) => mOrT("0x0", "0x3")
+    "id": (ctx) => ctx.getFeedId('Crypto.BTC/USD')
 }}>BTC/USD</Example>
 <Example keyValues={{
-    "id": ({mOrT}) => mOrT("0x1", "0x4")
+    "id": (ctx) => ctx.getFeedId('Crypto.ETH/USD')
 }}>ETH/USD</Example>
 
 <EvmCall
@@ -34,53 +34,36 @@ Examples:
 <Tabs items={['Solidity', 'ethers.js', 'web3.js']}>
   <Tab>
     <DynamicCode targets={{
-        "0x0000": ({ addr }) => addr,
-        "0x1111": ({ get }) => get("id", "<id>"),
-        "// network": ({ networkType }) => `// ${networkType}`,
+        "0x0000": (ctx) => ctx.evmConfig.pythAddress,
+        "0x1111": (ctx) => ctx.get("id", "<id>"),
+        "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
     }}>
       ```solidity
       import "pyth-sdk-solidity/IPyth.sol";
       import "pyth-sdk-solidity/PythStructs.sol";
 
-      // contract address for:
-      // @param
+      // Sample code for
+      // NETWORK_NAME
       address contractAddress = 0x0000;
       bytes32 priceId = 0x1111;
       IPyth pyth = IPyth(contractAddress);
-      giPythStructs.Price memory currentBasePrice = pyth.getPrice(priceId);
+      PythStructs.Price memory currentBasePrice = pyth.getPrice(priceId);
       ```
     </DynamicCode>
   </Tab>
 
   <Tab>
     <DynamicCode targets={{
-        "'0x0000'": ({ addr }) => `'${addr}'`,
-        "'0x1111'": ({ kv }) => `'${kv["id"]}'`,
+        "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
+        "'0x1111'": (ctx) => `'${ctx.get("id", "<id>")}'`,
     }}>
       ```typescript
       const contractAddress = '0x0000';
       const priceId = '0x1111';
-      const PythAbi = require('./abis/IPyth.json');
-      const contract = new ethers.Contract(contractAddress, PythAbi, provider);
+      const pythAbi = require('./abis/IPyth.json');
+      const contract = new ethers.Contract(contractAddress, pythAbi, provider);
       const [price, conf, expo, timestamp] = await contract.getPrice(priceId);
       ```
     </DynamicCode>
   </Tab>
-
-  <Tab>
-    <DynamicCode targets={{
-        "0x0000": ({ addr }) => addr,
-        "0x1111": ({ kv }) => kv["id"],
-    }}>
-      ```js
-
-      this can be different
-      ```
-    </DynamicCode>
-  </Tab>
 </Tabs>
-
-
-## Messing around here
-
-<DisplayKeyValueStore />

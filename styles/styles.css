@@ -34,8 +34,8 @@ th {
     color: red;
 }
 
-.api-params .request {
-
+.context-input {
+    min-width: 200px;
 }
 
 button {
@@ -47,10 +47,9 @@ button {
 
 .api-params pre {
     border: 1px solid grey;
-    background-color: #666;
 }
 
-.api-params .trial {
+.api-params .response {
     margin: 20px 0 0 0;
 }
 
