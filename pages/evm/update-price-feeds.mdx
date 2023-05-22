@@ -19,7 +19,7 @@ You can retrieve these data payloads using the Price Service API.
 
 <EvmSend
   functionName="updatePriceFeeds"
-  argumentKeys={["updateData"]}
+  buildArguments={(kvs) => [[kvs["updateData"]]]}
   feeKey="fee"
 />
 

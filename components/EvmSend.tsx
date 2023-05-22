@@ -5,7 +5,7 @@ import { useGlobalContext } from '../contexts/GlobalContext';
 
 interface EvmSendProps {
   functionName: string,
-  argumentKeys: string[],
+  buildArguments: (kvs: Record<string, string>) => any[] | undefined,
   feeKey: string | undefined
 }
 
@@ -17,32 +17,23 @@ interface EvmSendProps {
  * the value of this key will be parsed as a number of wei and passed as the value of the transaction.
  *
  * TODO: probably better to pass the contract address / ABI as arguments (?)
- * TODO: support array-valued arguments
  */
 const EvmSend: React.FC<EvmSendProps> = ({
-                                                               functionName,
-                                                               argumentKeys,
+                                           functionName,
+                                           buildArguments,
                                            feeKey
-                                                             }) => {
+                                         }) => {
 
-  const { keyValueStore, provider, setProvider, signer, setSigner, networkName, setNetworkName, networkConfig, pythContractAbi } = useGlobalContext();
+  const { keyValueStore, provider, setProvider, signer, setSigner, networkName, networkConfig, pythContractAbi } = useGlobalContext();
 
   const [solidityQuery, setSolidityQuery] = useState<string>(null);
   const [response, setResponse] = useState<string | undefined>(undefined);
-  const [address, setAddress] = useState<string | undefined>(undefined);
 
   const [isStale, setIsStale] = useState<boolean>(false);
 
   useEffect(() => {
     setIsStale(true);
   }, [keyValueStore])
-
-  useEffect(() => {
-    async function helper() {
-      setAddress(await signer.getAddress());
-    }
-    helper();
-  }, [signer])
 
   const connectWallet = async () => {
     const ethereumProvider = await detectEthereumProvider();
@@ -67,19 +58,23 @@ const EvmSend: React.FC<EvmSendProps> = ({
       const contract = new ethers.Contract(networkConfig.pythAddress, pythContractAbi, provider);
       const contractWithSigner = contract.connect(signer);
 
-      const args: any[] = argumentKeys.map((v) => keyValueStore[v]);
+      const args: any[] | undefined = buildArguments(keyValueStore);
 
-      const extraArguments = {};
+      let extraArguments: any | undefined = {};
       let feeString = '';
       if (feeKey !== undefined) {
         // TODO: validate argument
-        extraArguments["value"] = ethers.toBigInt(keyValueStore[feeKey]);
-        feeString = keyValueStore[feeKey];
+        try {
+          extraArguments["value"] = ethers.toBigInt(keyValueStore[feeKey]);
+          feeString = keyValueStore[feeKey];
+        } catch (error) {
+          extraArguments = undefined;
+        }
       }
 
       // TODO: validate arguments
-      if (args.some((value) => value === undefined)) {
-        setResponse(`missing some arguments: ${args}`);
+      if (args === undefined || extraArguments === undefined) {
+        setResponse(`Please populate all of the arguments with valid values.`);
         setIsStale(false);
       } else {
 
@@ -88,7 +83,7 @@ const EvmSend: React.FC<EvmSendProps> = ({
         try {
           // FIXME: The args spread here is wrong (has an array around it)
           // as a hack to support array-valued parameters.
-          const tx = await contractWithSigner[functionName]([...args], extraArguments);
+          const tx = await contractWithSigner[functionName](...args, extraArguments);
           const receipt = await tx.wait();
           const responseString = JSON.stringify(receipt);
           setResponse(responseString);
@@ -109,16 +104,14 @@ const EvmSend: React.FC<EvmSendProps> = ({
 
   return (<div className={"api-params"}>
     { signer !== undefined ? <div>
-      <p>Connected wallet: {address !== undefined ? address : "loading..."}</p>
-      <p>Network id: {networkName}</p>
       <button onClick={sendTransaction}>Execute</button>
       <button onClick={clearResponse}>Clear</button>
       {response !== undefined ?
-        <div className={"trial " + (isStale ? "stale" : "")} >
+        <div className={"response " + (isStale ? "stale" : "")} >
           <div className={"request"}>{solidityQuery}</div>
           <pre>{response}</pre>
         </div>
-        : <div className={"trial"} />
+        : <div className={"response"} />
       }
 
     </div> : <button onClick={connectWallet}>Connect your wallet </button>}
