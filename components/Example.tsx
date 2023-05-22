@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {NetworkType, useGlobalContext} from '../contexts/GlobalContext';
+import {NetworkType, PriceServiceUrls, useGlobalContext} from '../contexts/GlobalContext';
 
 interface ExampleProps {
   keyValues: Record<string, (ExampleRenderingContext) => (string | Promise<string>)>,
@@ -55,14 +55,7 @@ export class ExampleRenderingContext {
   public async getLatestVaa(symbolName: string): Promise<string> {
     const feedId = this.getFeedId(symbolName);
 
-    // FIXME: make the price service URL retrievable from the global context (?)
-    let endpoint: string = "";
-    if (this.networkType == "mainnet") {
-      endpoint = "https://xc-mainnet.pyth.network/api/latest_price_feeds";
-    } else {
-      endpoint = "https://xc-testnet.pyth.network/api/latest_price_feeds";
-    }
-
+    let endpoint: string = `${PriceServiceUrls[this.networkType]}/api/latest_price_feeds`;
     const result = await fetch(`${endpoint}?ids[]=${feedId}&target_chain=evm`)
     return (await result.json())[0].vaa as string;
   }
