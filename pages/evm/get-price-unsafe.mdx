@@ -27,7 +27,7 @@ Examples:
 
 <EvmCall
   functionName="getPriceUnsafe"
-  argumentKeys={["id"]}
+  buildArguments={(kvs) => [kvs["id"]]}
 />
 
 ## Example Code

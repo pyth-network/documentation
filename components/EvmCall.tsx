@@ -14,12 +14,11 @@ interface EvmCallProps {
  * `pythContract.functionName(valueOf(argumentKeys[0]), valueOf(argumentKeys[1]), ...)`.
  *
  * TODO: probably better to pass the contract address / ABI as arguments (?)
- * TODO: support array-valued arguments
  */
 const EvmCall: React.FC<EvmCallProps> = ({
-                                                               functionName,
-                                                               buildArguments,
-                                                             }) => {
+                                           functionName,
+                                           buildArguments,
+                                         }) => {
   const [response, setResponse] = useState<string | undefined>(undefined);
   // The preface is explainer text that shows up before the response itself.
   const [responsePreface, setResponsePreface] = useState<string>('');
