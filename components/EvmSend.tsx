@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ethers, ParamType, Provider} from 'ethers';
+import {ethers} from 'ethers';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { useGlobalContext } from '../contexts/GlobalContext';
 
@@ -24,9 +24,8 @@ const EvmSend: React.FC<EvmSendProps> = ({
                                            feeKey
                                          }) => {
 
-  const { keyValueStore, provider, setProvider, signer, setSigner, networkName, networkConfig, pythContractAbi } = useGlobalContext();
+  const { keyValueStore, provider, setProvider, signer, setSigner, networkConfig, pythContractAbi } = useGlobalContext();
 
-  const [solidityQuery, setSolidityQuery] = useState<string>(null);
   const [response, setResponse] = useState<string | undefined>(undefined);
 
   const [isStale, setIsStale] = useState<boolean>(false);
@@ -77,12 +76,7 @@ const EvmSend: React.FC<EvmSendProps> = ({
         setResponse(`Please populate all of the arguments with valid values.`);
         setIsStale(false);
       } else {
-
-        setSolidityQuery(`${functionName}(${[...args]}) value: ${feeString}`);
-
         try {
-          // FIXME: The args spread here is wrong (has an array around it)
-          // as a hack to support array-valued parameters.
           const tx = await contractWithSigner[functionName](...args, extraArguments);
           const receipt = await tx.wait();
           const responseString = JSON.stringify(receipt);
@@ -108,7 +102,6 @@ const EvmSend: React.FC<EvmSendProps> = ({
       <button onClick={clearResponse}>Clear</button>
       {response !== undefined ?
         <div className={"response " + (isStale ? "stale" : "")} >
-          <div className={"request"}>{solidityQuery}</div>
           <pre>{response}</pre>
         </div>
         : <div className={"response"} />

@@ -10,12 +10,14 @@ import { Tab, Tabs } from 'nextra-theme-docs';
 **getUpdateFee(updateData: bytes[])**
 
 Get the fee required to update the on-chain price feeds with the provided `updateData`.
+The returned number of wei should be sent as the transaction value when calling [updatePriceFeeds](update-price-feeds).
 The `updateData` can be retrieved from the price service API.
 
-| Argument                                                  |                           | Description |
-|-----------------------------------------------------------|---------------------------| --- |
-| <Arg required={true} type="hex[]">updateData</Arg>        | <Input id="updateData" /> | The price update data for the contract to verify. |
+| Argument                                                  |                           | Description                                                                                               |
+|-----------------------------------------------------------|---------------------------|-----------------------------------------------------------------------------------------------------------|
+| <Arg required={true} type="hex[]">updateData</Arg>        | <Input id="updateData" /> | The price updates that you would like to submit to [updatePriceFeeds](update-price-feeds) |
 
+Examples:
 <Example
     keyValues={{
         updateData: (ctx) => ctx.getLatestVaa('Crypto.BTC/USD'),
@@ -31,41 +33,41 @@ The `updateData` can be retrieved from the price service API.
 
 ## Example Code
 
-<Tabs items={['Solidity', 'ethers.js', 'web3.js']}>
+<Tabs items={['Solidity', 'ethers.js v6']}>
     <Tab>
-        <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
+        <DynamicCode targets={{
+            "0x0000": (ctx) => ctx.evmConfig.pythAddress,
+            "0x1111": (ctx) => ctx.get("updateData", "<updateData>"),
+            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+        }}>
             ```solidity
             import "pyth-sdk-solidity/IPyth.sol";
             import "pyth-sdk-solidity/PythStructs.sol";
 
-            IPyth pyth = IPyth(0x0000);
-            PythStructs.Price memory currentBasePrice = pyth.getPriceUnsafe(0x1111);
+            // Sample code for
+            // NETWORK_NAME
+            address contractAddress = 0x0000;
+            bytes[] updateData = [0x1111];
+            IPyth pyth = IPyth(contractAddress);
+            uint feeAmount = pyth.getUpdateFee(updateData);
             ```
         </DynamicCode>
     </Tab>
 
     <Tab>
-        <DynamicCode targets={[{findToken: "'0x1111'", replacementParam: "id", transform: (x) => `'${x}'` }]}>
+        <DynamicCode targets={{
+            "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
+            "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
+        }}>
             ```typescript
             const contractAddress = '0x0000';
-            const priceId = '0x1111';
-            const PythAbi = require('./abis/IPyth.json');
-            const contract = new ethers.Contract(contractAddress, PythAbi, provider);
-            const [price, conf, expo, timestamp] = await contract.getPriceUnsafe(priceId);
-            ```
-        </DynamicCode>
-    </Tab>
+            const pythAbi = require('./abis/IPyth.json');
+            const provider = ethers.getDefaultProvider("<RPC URL>");
+            const contract = new ethers.Contract(contractAddress, pythAbi, provider);
 
-    <Tab>
-        <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
-            ```js
-
-            this can be different
+            const updateData = ['0x1111'];
+            const [feeAmount] = await contract.getUpdateFee(updateData);
             ```
         </DynamicCode>
     </Tab>
 </Tabs>
-
-## Messing around here
-
-<DisplayKeyValueStore />

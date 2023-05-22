@@ -9,8 +9,19 @@ import {Tab, Tabs} from 'nextra-theme-docs';
 # Get Price
 **getPrice(id)**
 
-Get the latest on-chain price for the requested price feed id.
-Note: you typically need to update the on-chain price using (link) before calling this function.
+Get the latest price and confidence interval for the requested price feed id.
+The price feed id is a 32-byte id written as a hexadecimal string; see the [price feed ids](https://pyth.network/developers/price-feed-ids) page to look up the id for a given symbol.
+The returned price and confidence are decimal numbers written in the form `a * 10^e`, where `e` is an exponent included in the result.
+For example, a price of 1234 with an exponent of -2 represents the number 12.34.
+The result also includes a `publishTime` which is the unix timestamp for the price update.
+
+This function reverts with a `StalePrice` error if the on-chain price has not been updated within the last [getValidTimePeriod()](get-valid-time-period) seconds.
+The default valid time period is set to a reasonable default on each chain and is typically around 1 minute.
+If you would like to configure the valid time period, see [getPriceNoOlderThan](get-price-no-older-than).
+If you want the latest price regardless of when it was updated, see [getPriceUnsafe](get-price-unsafe).
+
+Users of this method will typically invoke [updatePriceFeeds](update-price-feeds) to update the on-chain price before
+reading it. This step ensures that the on-chain price is fresh.
 
 | Argument                                      |  | Description |
 |-----------------------------------------| --- | --- |
@@ -31,7 +42,7 @@ Examples:
 
 ## Example Code
 
-<Tabs items={['Solidity', 'ethers.js', 'web3.js']}>
+<Tabs items={['Solidity', 'ethers.js v6']}>
   <Tab>
     <DynamicCode targets={{
         "0x0000": (ctx) => ctx.evmConfig.pythAddress,
@@ -59,9 +70,11 @@ Examples:
     }}>
       ```typescript
       const contractAddress = '0x0000';
-      const priceId = '0x1111';
       const pythAbi = require('./abis/IPyth.json');
+      const provider = ethers.getDefaultProvider("<RPC URL>");
       const contract = new ethers.Contract(contractAddress, pythAbi, provider);
+
+      const priceId = '0x1111';
       const [price, conf, expo, timestamp] = await contract.getPrice(priceId);
       ```
     </DynamicCode>

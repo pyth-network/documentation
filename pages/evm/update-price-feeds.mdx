@@ -2,7 +2,6 @@ import Input from '../../components/Input';
 import Arg from '../../components/Arg';
 import Example from '../../components/Example';
 import DynamicCode from '../../components/DynamicCode';
-import DisplayKeyValueStore from '../../components/DisplayKeyValueStore';
 import EvmSend from '../../components/EvmSend';
 import { Tab, Tabs } from 'nextra-theme-docs';
 
@@ -12,10 +11,10 @@ import { Tab, Tabs } from 'nextra-theme-docs';
 Update the on-chain price feeds using the provided data payloads.
 You can retrieve these data payloads using the Price Service API.
 
-| Argument                                                  |                           | Description |
-|-----------------------------------------------------------|---------------------------| --- |
+| Argument                                                  |                           | Description                                       |
+|-----------------------------------------------------------|---------------------------|---------------------------------------------------|
 | <Arg required={true} type="hex[]">updateData</Arg>        | <Input id="updateData" /> | The price update data for the contract to verify. |
-| <Arg required={true} type="wei">fee</Arg>                    | <Input id="fee" />           | The update fee in wei. |
+| <Arg required={true} type="wei">fee</Arg>                    | <Input id="fee" />           | The update fee in wei. This fee is sent as the value of the transaction. |
 
 <Example
     keyValues={{
@@ -34,7 +33,7 @@ You can retrieve these data payloads using the Price Service API.
 
 ## Example Code
 
-<Tabs items={['Solidity', 'ethers.js', 'web3.js']}>
+<Tabs items={['Solidity', 'ethers.js v6']}>
   <Tab>
     <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
       ```solidity
@@ -58,17 +57,4 @@ You can retrieve these data payloads using the Price Service API.
       ```
     </DynamicCode>
   </Tab>
-
-  <Tab>
-    <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
-      ```js
-
-      this can be different
-      ```
-    </DynamicCode>
-  </Tab>
 </Tabs>
-
-## Messing around here
-
-<DisplayKeyValueStore />
