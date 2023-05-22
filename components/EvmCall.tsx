@@ -10,8 +10,11 @@ interface EvmCallProps {
 /**
  * Allow the user to call a read-only function on an EVM chain and visualize the response.
  * This component will invoke `functionName` on the pyth contract provided in the global context.
- * The arguments to the function will be the values of argumentKeys[] in the global key-value store, i.e.,
- * `pythContract.functionName(valueOf(argumentKeys[0]), valueOf(argumentKeys[1]), ...)`.
+ * The arguments to the function will be the result of evaluating `buildArguments` on the global key-value store, i.e.,
+ * `pythContract.functionName(buildArguments(keyValueStore))`.
+ *
+ * `buildArguments` may return `undefined` to indicate that the key-value store does not contain all of the necessary
+ * arguments.
  *
  * TODO: probably better to pass the contract address / ABI as arguments (?)
  */

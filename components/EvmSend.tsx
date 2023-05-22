@@ -12,9 +12,12 @@ interface EvmSendProps {
 /**
  * Allow the user to send a transaction to an EVM chain and visualize the response.
  * This component will invoke `functionName` on the pyth contract provided in the global context.
- * The arguments to the function will be the values of argumentKeys[] in the global key-value store, i.e.,
- * `pythContract.functionName(valueOf(argumentKeys[0]), valueOf(argumentKeys[1]), ...)`. If `feeKey` is provided,
+ * The arguments to the function will be the result of evaluating `buildArguments` on the global key-value store, i.e.,
+ * `pythContract.functionName(buildArguments(keyValueStore))`. If `feeKey` is provided,
  * the value of this key will be parsed as a number of wei and passed as the value of the transaction.
+ *
+ * `buildArguments` may return `undefined` to indicate that the key-value store does not contain all of the necessary
+ *  arguments.
  *
  * TODO: probably better to pass the contract address / ABI as arguments (?)
  */

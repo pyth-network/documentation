@@ -55,6 +55,7 @@ export class ExampleRenderingContext {
   public async getLatestVaa(symbolName: string): Promise<string> {
     const feedId = this.getFeedId(symbolName);
 
+    // FIXME: make the price service URL retrievable from the global context (?)
     let endpoint: string = "";
     if (this.networkType == "mainnet") {
       endpoint = "https://xc-mainnet.pyth.network/api/latest_price_feeds";
@@ -65,13 +66,6 @@ export class ExampleRenderingContext {
     const result = await fetch(`${endpoint}?ids[]=${feedId}&target_chain=evm`)
     return (await result.json())[0].vaa as string;
   }
-
-  /*
-  public async getUpdateFee(symbolName: string): Promise<string> {
-    const vaa = await this.getLatestVaa(symbolName);
-
-  }
-   */
 }
 
 // TODO: generate this mapping from the blockchain instead of hardcoding it.

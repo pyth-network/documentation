@@ -101,7 +101,8 @@ export const useGlobalContext = () => useContext(GlobalContext);
 
 export const GlobalContextProvider: React.FC<{children: ReactNode}> = ({ children }) => {
   const [queryParameters, setQueryParameters] = useState<Record<string, string>>({});
-  // FIXME: The chain id and provider logic is hardcoded to arbitrum. We need to implement a network selector.
+
+  // TODO: we may need to support "no network" as the default, because this may require a wallet.
   const [networkName, setNetworkName] = useState<string>("arbitrum");
   const [networkConfig, setNetworkConfig] = useState<EvmNetworkConfig>(Networks['arbitrum']);
   const [provider, setProvider] = useState<ethers.Provider>(ethers.getDefaultProvider("https://arb1.arbitrum.io/rpc"));
