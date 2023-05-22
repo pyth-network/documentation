@@ -20,7 +20,7 @@ const RestGet: React.FC<RestGetProps> = ({
                                                                queryParams,
                                                              }) => {
   const [response, setResponse] = useState<string | undefined>(undefined);
-  const [url, setUrl] = useState();
+  const [url, setUrl] = useState<string>("");
 
   const [isStale, setIsStale] = useState<boolean>(false);
 
