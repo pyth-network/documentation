@@ -29,12 +29,20 @@ const EvmSend: React.FC<EvmSendProps> = ({
 
   const [solidityQuery, setSolidityQuery] = useState<string>(null);
   const [response, setResponse] = useState<string | undefined>(undefined);
+  const [address, setAddress] = useState<string | undefined>(undefined);
 
   const [isStale, setIsStale] = useState<boolean>(false);
 
   useEffect(() => {
     setIsStale(true);
   }, [keyValueStore])
+
+  useEffect(() => {
+    async function helper() {
+      setAddress(await signer.getAddress());
+    }
+    helper();
+  }, [signer])
 
   const connectWallet = async () => {
     const ethereumProvider = await detectEthereumProvider();
@@ -101,7 +109,7 @@ const EvmSend: React.FC<EvmSendProps> = ({
 
   return (<div className={"api-params"}>
     { signer !== undefined ? <div>
-      <p>Connected wallet: {signer.address}</p>
+      <p>Connected wallet: {address !== undefined ? address : "loading..."}</p>
       <p>Network id: {networkName}</p>
       <button onClick={sendTransaction}>Execute</button>
       <button onClick={clearResponse}>Clear</button>

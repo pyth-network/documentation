@@ -26,8 +26,9 @@ export default function DynamicCode ({ targets, children }) {
   const context: GlobalContextData = useGlobalContext();
   const state = new DynamicCodeRenderingContext(context.keyValueStore, context.networkConfig)
 
-  const divRef = useRef();
-  const targetRefs = useRef();
+  // These types are pretty gnarly so leave them as any
+  const divRef = useRef<any>();
+  const targetRefs = useRef<any>();
   // Find the corresponding token from the DOM
   useEffect(() => {
     if (divRef.current && !targetRefs.current) {
