@@ -4,22 +4,24 @@ import { useGlobalContext } from '../contexts/GlobalContext';
 
 interface EvmCallProps {
   functionName: string;
-  argumentKeys: string[]
+  buildArguments: (kvs: Record<string, string>) => any[] | undefined,
 }
 
 /**
  * Allow the user to call a read-only function on an EVM chain and visualize the response.
  * This component will invoke `functionName` on the pyth contract provided in the global context.
- * The arguments to the function will be the values of argumentKeys[] in the global key-value store, i.e.,
- * `pythContract.functionName(valueOf(argumentKeys[0]), valueOf(argumentKeys[1]), ...)`.
+ * The arguments to the function will be the result of evaluating `buildArguments` on the global key-value store, i.e.,
+ * `pythContract.functionName(buildArguments(keyValueStore))`.
+ *
+ * `buildArguments` may return `undefined` to indicate that the key-value store does not contain all of the necessary
+ * arguments.
  *
  * TODO: probably better to pass the contract address / ABI as arguments (?)
- * TODO: support array-valued arguments
  */
 const EvmCall: React.FC<EvmCallProps> = ({
-                                                               functionName,
-                                                               argumentKeys,
-                                                             }) => {
+                                           functionName,
+                                           buildArguments,
+                                         }) => {
   const [response, setResponse] = useState<string | undefined>(undefined);
   // The preface is explainer text that shows up before the response itself.
   const [responsePreface, setResponsePreface] = useState<string>('');
@@ -35,14 +37,13 @@ const EvmCall: React.FC<EvmCallProps> = ({
   const sendTransaction = async () => {
     const contract = new ethers.Contract(networkConfig.pythAddress, pythContractAbi, provider);
 
-    const args: any[] = argumentKeys.map((v) => keyValueStore[v]);
+    const args: any[] | undefined = buildArguments(keyValueStore);
 
     // TODO: validate arguments
-    if (args.some((value) => value === undefined)) {
-      setResponse(`missing some arguments: ${args}`);
+    if (args === undefined) {
+      setResponse(`Please populate all of the arguments with valid values.`);
       setIsStale(false);
     } else {
-
       try {
         const result: Result = await contract[functionName].staticCallResult(...args);
         let resultString = renderResult(result, "");

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {NetworkType, useGlobalContext} from '../contexts/GlobalContext';
+import {NetworkType, PriceServiceUrls, useGlobalContext} from '../contexts/GlobalContext';
 
 interface ExampleProps {
-  keyValues: Record<string, (State) => string>,
+  keyValues: Record<string, (ExampleRenderingContext) => (string | Promise<string>)>,
   children?: React.ReactNode
 }
 
@@ -22,12 +22,15 @@ const Example: React.FC<ExampleProps> = ({
   const renderingContext = new ExampleRenderingContext(globalContext.networkConfig.networkType);
 
   const handleClick = () => {
-    const nextKeyValues = {}
-    for (let [key, value] of Object.entries(keyValues)) {
-      nextKeyValues[key] = value(renderingContext)
-    }
+    async function helper() {
+      const nextKeyValues = {}
+      for (let [key, value] of Object.entries(keyValues)) {
+        nextKeyValues[key] = await Promise.resolve(value(renderingContext));
+      }
 
-    globalContext.setKeyValueStore(() => nextKeyValues);
+      globalContext.setKeyValueStore(() => nextKeyValues);
+    }
+    helper();
   };
 
   return (<button onClick={handleClick}>{children}</button>);
@@ -37,7 +40,6 @@ export default Example;
 
 
 export class ExampleRenderingContext {
-  // The global key-value store
   networkType: NetworkType;
 
   constructor(networkType: NetworkType) {
@@ -48,6 +50,14 @@ export class ExampleRenderingContext {
   // This function will automatically account for different networks.
   public getFeedId(symbolName: string): string {
     return KnownFeedIds[this.networkType][symbolName];
+  }
+
+  public async getLatestVaa(symbolName: string): Promise<string> {
+    const feedId = this.getFeedId(symbolName);
+
+    let endpoint: string = `${PriceServiceUrls[this.networkType]}/api/latest_price_feeds`;
+    const result = await fetch(`${endpoint}?ids[]=${feedId}&target_chain=evm`)
+    return (await result.json())[0].vaa as string;
   }
 }
 
