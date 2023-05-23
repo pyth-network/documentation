@@ -31,8 +31,8 @@ export interface GlobalContextData {
 export type NetworkType = "mainnet" | "testnet";
 
 export const PriceServiceUrls: Record<string, string> = {
-  "mainnet": "https://xc-mainnet.pyth.network/",
-  "testnet": "https://xc-testnet.pyth.network/",
+  "mainnet": "https://xc-mainnet.pyth.network",
+  "testnet": "https://xc-testnet.pyth.network",
 }
 
 export interface EvmNetworkConfig {

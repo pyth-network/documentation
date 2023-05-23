@@ -1,5 +1,6 @@
 import Input from '../../components/Input';
 import Arg from '../../components/Arg';
+import {InputFormats} from '../../utils/InputFormat';
 import Example from '../../components/Example';
 import DynamicCode from '../../components/DynamicCode';
 import EvmSend from '../../components/EvmSend';
@@ -13,8 +14,8 @@ You can retrieve these data payloads using the Price Service API.
 
 | Argument                                                  |                           | Description                                       |
 |-----------------------------------------------------------|---------------------------|---------------------------------------------------|
-| <Arg required={true} type="hex[]">updateData</Arg>        | <Input id="updateData" /> | The price update data for the contract to verify. |
-| <Arg required={true} type="wei">fee</Arg>                    | <Input id="fee" />           | The update fee in wei. This fee is sent as the value of the transaction. |
+| <Arg required={true} type="hex[]">updateData</Arg>        | <Input id="updateData" format={InputFormats.ZeroX} /> | The price update data for the contract to verify. |
+| <Arg required={true} type="wei">fee</Arg>                    | <Input id="fee" format={InputFormats.BigInt}/>           | The update fee in wei. This fee is sent as the value of the transaction. |
 
 <Example
     keyValues={{

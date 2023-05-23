@@ -34,8 +34,12 @@ th {
     color: red;
 }
 
-.context-input {
+.input-box {
     min-width: 200px;
+}
+
+.input-error {
+    color: red;
 }
 
 button {
@@ -67,3 +71,4 @@ button {
     background-color: rgba(0, 0, 0, 0.5); /* Set the background color with transparency */
     z-index: 1; /* Set the pseudo-element's z-index lower than the element */
 }
+

@@ -63,12 +63,10 @@ const EvmSend: React.FC<EvmSendProps> = ({
       const args: any[] | undefined = buildArguments(keyValueStore);
 
       let extraArguments: any | undefined = {};
-      let feeString = '';
       if (feeKey !== undefined) {
         // TODO: validate argument
         try {
           extraArguments["value"] = ethers.toBigInt(keyValueStore[feeKey]);
-          feeString = keyValueStore[feeKey];
         } catch (error) {
           extraArguments = undefined;
         }
