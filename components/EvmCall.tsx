@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ethers, isError, ParamType, Provider, Result } from "ethers";
+import { ethers, isError, Result } from "ethers";
 import { useGlobalContext } from "../contexts/GlobalContext";
 
 interface EvmCallProps {
@@ -18,7 +18,7 @@ interface EvmCallProps {
  *
  * TODO: probably better to pass the contract address / ABI as arguments (?)
  */
-const EvmCall: React.FC<EvmCallProps> = ({ functionName, buildArguments }) => {
+const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
   const [response, setResponse] = useState<string | undefined>(undefined);
   // The preface is explainer text that shows up before the response itself.
   const [responsePreface, setResponsePreface] = useState<string>("");
@@ -49,7 +49,7 @@ const EvmCall: React.FC<EvmCallProps> = ({ functionName, buildArguments }) => {
         const result: Result = await contract[functionName].staticCallResult(
           ...args
         );
-        let resultString = renderResult(result, "");
+        const resultString = renderResult(result, "");
 
         setResponsePreface("EVM call succeeded with result:");
         setResponse(resultString);
@@ -103,7 +103,7 @@ function renderResult(result: any, indent: string) {
     } else {
       const obj = result.toObject();
       let responseString = "{\n";
-      let nextIndent = indent + "  ";
+      const nextIndent = indent + "  ";
       for (const key in obj) {
         responseString +=
           nextIndent + `${key}: ${renderResult(obj[key], nextIndent)},\n`;

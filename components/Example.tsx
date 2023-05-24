@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   NetworkType,
   PriceServiceUrls,
@@ -21,7 +21,7 @@ interface ExampleProps {
  * The values of the keys are provided as functions from the current global state
  * to string values. This allows the values to depend on e.g., the currently chosen network.
  */
-const Example: React.FC<ExampleProps> = ({ keyValues, children }) => {
+const Example = ({ keyValues, children }: ExampleProps) => {
   const globalContext = useGlobalContext();
   const renderingContext = new ExampleRenderingContext(
     globalContext.networkConfig.networkType
@@ -30,7 +30,7 @@ const Example: React.FC<ExampleProps> = ({ keyValues, children }) => {
   const handleClick = () => {
     async function helper() {
       const nextKeyValues = {};
-      for (let [key, value] of Object.entries(keyValues)) {
+      for (const [key, value] of Object.entries(keyValues)) {
         nextKeyValues[key] = await Promise.resolve(value(renderingContext));
       }
 
@@ -60,7 +60,7 @@ export class ExampleRenderingContext {
   public async getLatestVaa(symbolName: string): Promise<string> {
     const feedId = this.getFeedId(symbolName);
 
-    let endpoint: string = `${
+    const endpoint: string = `${
       PriceServiceUrls[this.networkType]
     }/api/latest_price_feeds`;
     const result = await fetch(`${endpoint}?ids[]=${feedId}&target_chain=evm`);

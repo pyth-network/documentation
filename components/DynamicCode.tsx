@@ -26,7 +26,7 @@ export type Targets = Record<string, (DynamicCodeRenderingContext) => string>;
  * @param children The element to which the find/replace targets are applied. You should typically provide a code block
  *                 like ```javascript myJavascriptCode() ```
  */
-export default function DynamicCode({ targets, children }) {
+export const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
   const context: GlobalContextData = useGlobalContext();
   const state = useMemo(
     () =>
@@ -43,8 +43,8 @@ export default function DynamicCode({ targets, children }) {
   // Find the corresponding token from the DOM
   useEffect(() => {
     if (divRef.current && !targetRefs.current) {
-      let tokens = [];
-      for (let [target, replacement] of Object.entries(targets)) {
+      const tokens = [];
+      for (const [target, replacement] of Object.entries(targets)) {
         console.log(`target: ${target}`);
 
         // TODO: may need to find more than one
@@ -60,7 +60,7 @@ export default function DynamicCode({ targets, children }) {
       targetRefs.current = tokens;
     }
 
-    for (let { token, replacement } of targetRefs.current) {
+    for (const { token, replacement } of targetRefs.current) {
       token.innerText = replacement(state);
     }
   }, [state, targets]);
@@ -72,7 +72,7 @@ export default function DynamicCode({ targets, children }) {
       </div>
     </>
   );
-}
+};
 
 /**
  * Context provided to dynamically render elements in the code block.

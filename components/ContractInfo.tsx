@@ -7,11 +7,11 @@ import EvmNetworkSelector from "./EvmNetworkSelector";
  * A component that displays information about the current EVM network and
  * the configuration of the Pyth contract deployed on that network.
  */
-const ContractInfo: React.FC<{}> = ({}) => {
+const ContractInfo = () => {
   const { provider, networkConfig, pythContractAbi } = useGlobalContext();
 
-  let [fee, setFee] = useState<string>("loading...");
-  let [validTimePeriod, setValidTimePeriod] = useState<string>("loading...");
+  const [fee, setFee] = useState<string>("loading...");
+  const [validTimePeriod, setValidTimePeriod] = useState<string>("loading...");
 
   useEffect(() => {
     async function helper() {

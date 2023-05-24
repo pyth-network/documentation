@@ -15,7 +15,7 @@ interface ArgProps {
  * @param children - the name of the parameter
  * @constructor
  */
-const Arg: React.FC<ArgProps> = ({ required, type, children }) => {
+const Arg = ({ required, type, children }: ArgProps) => {
   return (
     <div>
       <p className={"param-name"}>

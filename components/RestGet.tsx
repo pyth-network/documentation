@@ -14,7 +14,7 @@ interface RestGetProps {
  * TODO: queryParams should probably be a mapping from the query parameter name to the global store key,
  * so that the two sets of names aren't coupled.
  */
-const RestGet: React.FC<RestGetProps> = ({ endpoint, queryParams }) => {
+const RestGet = ({ endpoint, queryParams }: RestGetProps) => {
   const [response, setResponse] = useState<string | undefined>(undefined);
   const [url, setUrl] = useState<string>("");
 
@@ -48,9 +48,9 @@ const RestGet: React.FC<RestGetProps> = ({ endpoint, queryParams }) => {
   }
 
   const handleRunCode = async () => {
-    let queryParameterValues = {};
+    const queryParameterValues = {};
 
-    for (let key of queryParams) {
+    for (const key of queryParams) {
       if (keyValueStore[key] !== undefined) {
         queryParameterValues[key] = keyValueStore[key];
       }

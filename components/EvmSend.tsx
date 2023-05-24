@@ -21,11 +21,7 @@ interface EvmSendProps {
  *
  * TODO: probably better to pass the contract address / ABI as arguments (?)
  */
-const EvmSend: React.FC<EvmSendProps> = ({
-  functionName,
-  buildArguments,
-  feeKey,
-}) => {
+const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
   const {
     keyValueStore,
     provider,

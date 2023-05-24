@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useGlobalContext } from "../contexts/GlobalContext";
 import { InputFormat } from "../utils/InputFormat";
 
@@ -13,7 +13,7 @@ interface InputProps {
  *
  * @param id - the key in the global store that this input sets.
  */
-const Input: React.FC<InputProps> = ({ id, format }) => {
+const Input = ({ id, format }: InputProps) => {
   const { keyValueStore, setKeyValueStore } = useGlobalContext();
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined

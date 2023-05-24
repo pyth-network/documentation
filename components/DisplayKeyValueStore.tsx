@@ -4,7 +4,7 @@ import { useGlobalContext } from "../contexts/GlobalContext";
 /**
  * Debugging component that displays the current contents of the key/value store.
  */
-const DisplayKeyValueStore: React.FC = () => {
+const DisplayKeyValueStore = () => {
   const { keyValueStore } = useGlobalContext();
 
   return (

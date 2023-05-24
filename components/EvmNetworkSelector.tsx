@@ -1,8 +1,8 @@
 import { Networks, useGlobalContext } from "../contexts/GlobalContext";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // React component for network selection
-const EvmNetworkSelector: React.FC = () => {
+const EvmNetworkSelector = () => {
   const { networkName, setNetworkName } = useGlobalContext();
 
   // Get the network names as an array
