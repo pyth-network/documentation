@@ -11,7 +11,7 @@ const EvmNetworkSelector: React.FC = () => {
   // Switch network when the selection changes
   useEffect(() => {
     setNetworkName(networkName);
-  }, [networkName]);
+  }, [networkName, setNetworkName]);
 
   return (
     <select

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import {
   GlobalContextData,
   EvmNetworkConfig,
@@ -28,9 +28,13 @@ export type Targets = Record<string, (DynamicCodeRenderingContext) => string>;
  */
 export default function DynamicCode({ targets, children }) {
   const context: GlobalContextData = useGlobalContext();
-  const state = new DynamicCodeRenderingContext(
-    context.keyValueStore,
-    context.networkConfig
+  const state = useMemo(
+    () =>
+      new DynamicCodeRenderingContext(
+        context.keyValueStore,
+        context.networkConfig
+      ),
+    [context.keyValueStore, context.networkConfig]
   );
 
   // These types are pretty gnarly so leave them as any
@@ -59,7 +63,7 @@ export default function DynamicCode({ targets, children }) {
     for (let { token, replacement } of targetRefs.current) {
       token.innerText = replacement(state);
     }
-  }, [state]);
+  }, [state, targets]);
 
   return (
     <>
