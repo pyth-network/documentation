@@ -14,5 +14,7 @@ jobs:
           cache: "npm"
       - name: Install deps
         run: npm ci
-      - name: Build
+      - name: Lint
         run: npm run lint
+      - name: Build
+        run: npm run build

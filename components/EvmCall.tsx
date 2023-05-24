@@ -89,8 +89,6 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
   );
 };
 
-export default EvmCall;
-
 /**
  * Render the response from the EVM contract as a human-readable string.
  * This function is janky because ethers doesn't provide a nice way to iterate over
@@ -115,3 +113,5 @@ function renderResult(result: any, indent: string) {
     return result.toString();
   }
 }
+
+export default EvmCall;

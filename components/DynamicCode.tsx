@@ -26,7 +26,7 @@ export type Targets = Record<string, (DynamicCodeRenderingContext) => string>;
  * @param children The element to which the find/replace targets are applied. You should typically provide a code block
  *                 like ```javascript myJavascriptCode() ```
  */
-export const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
+const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
   const context: GlobalContextData = useGlobalContext();
   const state = useMemo(
     () =>
@@ -96,3 +96,5 @@ export class DynamicCodeRenderingContext {
     return this.kv[key] !== undefined ? this.kv[key] : orElse;
   }
 }
+
+export default DynamicCode;

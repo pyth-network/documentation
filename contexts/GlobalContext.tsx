@@ -112,7 +112,11 @@ const GlobalContext = createContext<GlobalContextData>({} as GlobalContextData);
 
 export const useGlobalContext = () => useContext(GlobalContext);
 
-export const GlobalContextProvider = ({ children: ReactNode }) => {
+export const GlobalContextProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const [queryParameters, setQueryParameters] = useState<
     Record<string, string>
   >({});
