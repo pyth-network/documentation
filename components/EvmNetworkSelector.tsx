@@ -1,5 +1,5 @@
-import {Networks, useGlobalContext} from '../contexts/GlobalContext';
-import {useEffect, useState} from "react";
+import { Networks, useGlobalContext } from "../contexts/GlobalContext";
+import { useEffect, useState } from "react";
 
 // React component for network selection
 const EvmNetworkSelector: React.FC = () => {
@@ -14,12 +14,15 @@ const EvmNetworkSelector: React.FC = () => {
   }, [networkName]);
 
   return (
-    <select value={networkName} onChange={event => setNetworkName(event.target.value)}>
-      {networkNames.map(networkName =>
+    <select
+      value={networkName}
+      onChange={(event) => setNetworkName(event.target.value)}
+    >
+      {networkNames.map((networkName) => (
         <option key={networkName} value={networkName}>
           {Networks[networkName].info.chainName}
         </option>
-      )}
+      ))}
     </select>
   );
 };

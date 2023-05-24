@@ -1,12 +1,12 @@
 {
   "index": {
     "title": "Introduction",
-    "type":  "page",
+    "type": "page",
     "display": "hidden"
   },
   "documentation": {
     "title": "Documentation",
-    "type":  "page"
+    "type": "page"
   },
   "api-explorer": {
     "title": "API Explorer",
@@ -14,12 +14,12 @@
     "items": {
       "evm": {
         "title": "EVM Contract",
-        "href":  "/evm/introduction",
+        "href": "/evm/introduction",
         "type": "page"
       },
       "price-service": {
         "title": "Price Service",
-        "href":  "/price-service/introduction",
+        "href": "/price-service/introduction",
         "type": "page"
       }
     }

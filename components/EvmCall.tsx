@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {ethers, isError, ParamType, Provider, Result} from 'ethers';
-import { useGlobalContext } from '../contexts/GlobalContext';
+import React, { useEffect, useState } from "react";
+import { ethers, isError, ParamType, Provider, Result } from "ethers";
+import { useGlobalContext } from "../contexts/GlobalContext";
 
 interface EvmCallProps {
   functionName: string;
-  buildArguments: (kvs: Record<string, string>) => any[] | undefined,
+  buildArguments: (kvs: Record<string, string>) => any[] | undefined;
 }
 
 /**
@@ -18,24 +18,25 @@ interface EvmCallProps {
  *
  * TODO: probably better to pass the contract address / ABI as arguments (?)
  */
-const EvmCall: React.FC<EvmCallProps> = ({
-                                           functionName,
-                                           buildArguments,
-                                         }) => {
+const EvmCall: React.FC<EvmCallProps> = ({ functionName, buildArguments }) => {
   const [response, setResponse] = useState<string | undefined>(undefined);
   // The preface is explainer text that shows up before the response itself.
-  const [responsePreface, setResponsePreface] = useState<string>('');
+  const [responsePreface, setResponsePreface] = useState<string>("");
   const [isStale, setIsStale] = useState<boolean>(false);
 
-  const { keyValueStore, provider, networkConfig, pythContractAbi } = useGlobalContext();
+  const { keyValueStore, provider, networkConfig, pythContractAbi } =
+    useGlobalContext();
 
   useEffect(() => {
     setIsStale(true);
-  }, [keyValueStore])
-
+  }, [keyValueStore]);
 
   const sendTransaction = async () => {
-    const contract = new ethers.Contract(networkConfig.pythAddress, pythContractAbi, provider);
+    const contract = new ethers.Contract(
+      networkConfig.pythAddress,
+      pythContractAbi,
+      provider
+    );
 
     const args: any[] | undefined = buildArguments(keyValueStore);
 
@@ -45,42 +46,47 @@ const EvmCall: React.FC<EvmCallProps> = ({
       setIsStale(false);
     } else {
       try {
-        const result: Result = await contract[functionName].staticCallResult(...args);
+        const result: Result = await contract[functionName].staticCallResult(
+          ...args
+        );
         let resultString = renderResult(result, "");
 
         setResponsePreface("EVM call succeeded with result:");
         setResponse(resultString);
         setIsStale(false);
       } catch (error) {
-        if (isError(error, 'CALL_EXCEPTION')) {
+        if (isError(error, "CALL_EXCEPTION")) {
           const ethError = contract.interface.parseError(error.data);
-          setResponsePreface("EVM call reverted with exception:")
+          setResponsePreface("EVM call reverted with exception:");
           setResponse(`${ethError.name}(${renderResult(ethError.args, "")})`);
           setIsStale(false);
         } else {
-          setResponsePreface("An unknown error occurred. Error details:")
+          setResponsePreface("An unknown error occurred. Error details:");
           setResponse(error.toString);
           setIsStale(false);
         }
       }
     }
-  }
+  };
 
   const clearResponse = async () => {
-    setResponse(undefined)
-  }
+    setResponse(undefined);
+  };
 
-  return (<div className={"api-params"}>
+  return (
+    <div className={"api-params"}>
       <button onClick={sendTransaction}>Execute</button>
       <button onClick={clearResponse}>Clear</button>
-      {response !== undefined ?
-        <div className={"response " + (isStale ? "stale" : "")} >
+      {response !== undefined ? (
+        <div className={"response " + (isStale ? "stale" : "")}>
           <p>{responsePreface}</p>
           <pre>{response}</pre>
         </div>
-        : <div className={"trial"} />
-      }
-  </div>);
+      ) : (
+        <div className={"trial"} />
+      )}
+    </div>
+  );
 };
 
 export default EvmCall;
@@ -93,16 +99,17 @@ export default EvmCall;
 function renderResult(result: any, indent: string) {
   if (result instanceof Result) {
     if (result.length == 0) {
-      return ""
+      return "";
     } else {
-      const obj = result.toObject()
+      const obj = result.toObject();
       let responseString = "{\n";
       let nextIndent = indent + "  ";
       for (const key in obj) {
-        responseString += nextIndent + `${key}: ${renderResult(obj[key], nextIndent)},\n`
+        responseString +=
+          nextIndent + `${key}: ${renderResult(obj[key], nextIndent)},\n`;
       }
       responseString += indent + `}`;
-      return responseString
+      return responseString;
     }
   } else {
     return result.toString();

@@ -1,30 +1,36 @@
-import Input from '../../components/Input';
-import Arg from '../../components/Arg';
-import Example from '../../components/Example';
-import RestGet from '../../components/RestGet';
-import { Tab, Tabs } from 'nextra-theme-docs'
+import Input from "../../components/Input";
+import Arg from "../../components/Arg";
+import Example from "../../components/Example";
+import RestGet from "../../components/RestGet";
+import { Tab, Tabs } from "nextra-theme-docs";
 
 # Latest Price Feeds
+
 **/api/latest_price_feeds**
 
 Get the latest price update for a given set of price ids.
 
-| Argument                                                                              |                                                | Description                                                                                                                                                                                                                                                           |
-|---------------------------------------------------------------------------------------|------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <Arg required={true} type="hex">ids</Arg>                                             | <Input id="ids[]" />                           | The ID of the price update to retrieve.                                                                                                                                                                                                                               |
-| <Arg type="boolean">verbose</Arg>                                                     | <Input id="verbose" />                         | If true, return extra metadata in the response.                                                                                                                                                                                                                       |
-| <Arg type="boolean">binary</Arg>                                                      | <Input id="binary" />                          | If true, return the binary price update data in the response. (deprecated, use `target_chain` instead)                                                                                                                                                                |
-| <Arg type="enum">target_chain</Arg>                                                       | <Input id="target_chain" /> | If provided, get the binary price update data formatted in the proper string format for the given chain. Choose from `["evm", "default"]`.   |
+| Argument                                  |                             | Description                                                                                                                                |
+| ----------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| <Arg required={true} type="hex">ids</Arg> | <Input id="ids[]" />        | The ID of the price update to retrieve.                                                                                                    |
+| <Arg type="boolean">verbose</Arg>         | <Input id="verbose" />      | If true, return extra metadata in the response.                                                                                            |
+| <Arg type="boolean">binary</Arg>          | <Input id="binary" />       | If true, return the binary price update data in the response. (deprecated, use `target_chain` instead)                                     |
+| <Arg type="enum">target_chain</Arg>       | <Input id="target_chain" /> | If provided, get the binary price update data formatted in the proper string format for the given chain. Choose from `["evm", "default"]`. |
 
 Examples:
-<Example keyValues={{
-    "ids[]": (ctx) => ctx.getFeedId('Crypto.BTC/USD'),
-    "target_chain": () => "evm"
-}}>BTC/USD on EVM</Example>
+
+<Example
+  keyValues={{
+    "ids[]": (ctx) => ctx.getFeedId("Crypto.BTC/USD"),
+    target_chain: () => "evm",
+  }}
+>
+  BTC/USD on EVM
+</Example>
 
 <RestGet
   endpoint="https://xc-mainnet.pyth.network/api/latest_price_feeds"
-  queryParams={['ids[]', 'verbose', 'binary', 'target_chain']}
+  queryParams={["ids[]", "verbose", "binary", "target_chain"]}
 />
 
 ## Examples
@@ -34,13 +40,15 @@ Examples:
   ```js filename="demo.js" {3} copy
   let a = 1;
 
-  console.log(a);
-  ```
-  </Tab>
-  <Tab>
-    **npm** is a package manager for the JavaScript programming language.
-  </Tab>
-  <Tab>
-    **Yarn** is a software packaging system.
-  </Tab>
+console.log(a);
+
+```
+</Tab>
+<Tab>
+  **npm** is a package manager for the JavaScript programming language.
+</Tab>
+<Tab>
+  **Yarn** is a software packaging system.
+</Tab>
 </Tabs>
+```

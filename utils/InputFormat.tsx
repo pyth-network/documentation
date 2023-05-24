@@ -1,4 +1,4 @@
-import {ethers} from 'ethers';
+import { ethers } from "ethers";
 
 // Checks whether the value of an input is a valid value.
 // Returns undefined if valid, or an error message string if invalid.
@@ -12,7 +12,7 @@ function regexFormat(regex: string, errorMessage: string) {
     } else {
       return errorMessage;
     }
-  }
+  };
 }
 
 function bigIntInputFormat(x: string): string | undefined {
@@ -26,7 +26,13 @@ function bigIntInputFormat(x: string): string | undefined {
 
 export const InputFormats: Record<string, InputFormat> = {
   // The 0| condition below means we don't show an error message when the user starts typing 0 as the first character.
-  ZeroX: regexFormat('^(0|0x[0-9A-Fa-f]*)$', 'Please enter a hexadecimal string prefixed with 0x, for example "0xa19f"'),
-  Hex: regexFormat('^[0-9A-Fa-f]*$', 'Please enter a hexadecimal string prefixed with 0x, for example "a19f"'),
-  BigInt: bigIntInputFormat
-}
+  ZeroX: regexFormat(
+    "^(0|0x[0-9A-Fa-f]*)$",
+    'Please enter a hexadecimal string prefixed with 0x, for example "0xa19f"'
+  ),
+  Hex: regexFormat(
+    "^[0-9A-Fa-f]*$",
+    'Please enter a hexadecimal string prefixed with 0x, for example "a19f"'
+  ),
+  BigInt: bigIntInputFormat,
+};

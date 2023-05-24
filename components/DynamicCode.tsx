@@ -1,12 +1,16 @@
-import React, {useEffect, useRef} from 'react';
-import {GlobalContextData, EvmNetworkConfig, useGlobalContext} from '../contexts/GlobalContext';
+import React, { useEffect, useRef } from "react";
+import {
+  GlobalContextData,
+  EvmNetworkConfig,
+  useGlobalContext,
+} from "../contexts/GlobalContext";
 
 interface DynamicCodeProps {
-  targets: Targets,
-  children: React.ReactNode
+  targets: Targets;
+  children: React.ReactNode;
 }
 
-export type Targets = Record<string, ((DynamicCodeRenderingContext) => string)>
+export type Targets = Record<string, (DynamicCodeRenderingContext) => string>;
 
 /**
  * A syntax-highlighted code block with dynamic text. Nextra typically performs all syntax highlighting on the
@@ -22,9 +26,12 @@ export type Targets = Record<string, ((DynamicCodeRenderingContext) => string)>
  * @param children The element to which the find/replace targets are applied. You should typically provide a code block
  *                 like ```javascript myJavascriptCode() ```
  */
-export default function DynamicCode ({ targets, children }) {
+export default function DynamicCode({ targets, children }) {
   const context: GlobalContextData = useGlobalContext();
-  const state = new DynamicCodeRenderingContext(context.keyValueStore, context.networkConfig)
+  const state = new DynamicCodeRenderingContext(
+    context.keyValueStore,
+    context.networkConfig
+  );
 
   // These types are pretty gnarly so leave them as any
   const divRef = useRef<any>();
@@ -32,29 +39,35 @@ export default function DynamicCode ({ targets, children }) {
   // Find the corresponding token from the DOM
   useEffect(() => {
     if (divRef.current && !targetRefs.current) {
-      let tokens = []
+      let tokens = [];
       for (let [target, replacement] of Object.entries(targets)) {
-        console.log(`target: ${target}`)
+        console.log(`target: ${target}`);
 
         // TODO: may need to find more than one
         // note: this explicitly filters out entire lines and only finds spans within lines
         // to preserve highlighting
-        const token = [...divRef.current.querySelectorAll('code span')].find((el) => el.innerText === target && el.className != "line");
+        const token = [...divRef.current.querySelectorAll("code span")].find(
+          (el) => el.innerText === target && el.className != "line"
+        );
         if (token !== undefined) {
-          tokens.push( { token, target, replacement });
+          tokens.push({ token, target, replacement });
         }
       }
-      targetRefs.current = tokens
+      targetRefs.current = tokens;
     }
 
-    for (let {token, replacement} of targetRefs.current) {
+    for (let { token, replacement } of targetRefs.current) {
       token.innerText = replacement(state);
     }
-  }, [state])
+  }, [state]);
 
-  return <>
-    <div ref={divRef} style={{ marginTop: '1.5rem' }}>{children}</div>
-  </>
+  return (
+    <>
+      <div ref={divRef} style={{ marginTop: "1.5rem" }}>
+        {children}
+      </div>
+    </>
+  );
 }
 
 /**
@@ -62,11 +75,14 @@ export default function DynamicCode ({ targets, children }) {
  */
 export class DynamicCodeRenderingContext {
   // The global key-value store
-  kv: Record<string, string>
+  kv: Record<string, string>;
   /** The currently selected EVM network. */
   public evmConfig: EvmNetworkConfig | undefined;
 
-  constructor(kv: Record<string, string>, evmConfig: EvmNetworkConfig | undefined) {
+  constructor(
+    kv: Record<string, string>,
+    evmConfig: EvmNetworkConfig | undefined
+  ) {
     this.kv = kv;
     this.evmConfig = evmConfig;
   }

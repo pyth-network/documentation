@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
 interface ArgProps {
-  required?: boolean,
-  type: string,
-  children?: React.ReactNode
+  required?: boolean;
+  type: string;
+  children?: React.ReactNode;
 }
 
 /**
@@ -15,17 +15,16 @@ interface ArgProps {
  * @param children - the name of the parameter
  * @constructor
  */
-const Arg: React.FC<ArgProps> = ({
-                                       required,
-                                       type,
-  children
-                                     }) => {
-
-  return (<div><p className={"param-name"}>
-    {children}{required === true ? <span className={"required"}>*</span> : '' }
-  </p>
-    <p className={"param-type"}>{type}</p>
-  </div>);
+const Arg: React.FC<ArgProps> = ({ required, type, children }) => {
+  return (
+    <div>
+      <p className={"param-name"}>
+        {children}
+        {required === true ? <span className={"required"}>*</span> : ""}
+      </p>
+      <p className={"param-type"}>{type}</p>
+    </div>
+  );
 };
 
 export default Arg;

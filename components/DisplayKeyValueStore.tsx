@@ -1,5 +1,5 @@
-import React from 'react';
-import { useGlobalContext } from '../contexts/GlobalContext';
+import React from "react";
+import { useGlobalContext } from "../contexts/GlobalContext";
 
 /**
  * Debugging component that displays the current contents of the key/value store.
