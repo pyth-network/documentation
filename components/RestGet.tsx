@@ -1,6 +1,5 @@
-
-import React, {useEffect, useState} from 'react';
-import { useGlobalContext } from '../contexts/GlobalContext';
+import React, { useEffect, useState } from "react";
+import { useGlobalContext } from "../contexts/GlobalContext";
 
 interface RestGetProps {
   endpoint: string;
@@ -15,10 +14,7 @@ interface RestGetProps {
  * TODO: queryParams should probably be a mapping from the query parameter name to the global store key,
  * so that the two sets of names aren't coupled.
  */
-const RestGet: React.FC<RestGetProps> = ({
-                                                               endpoint,
-                                                               queryParams,
-                                                             }) => {
+const RestGet = ({ endpoint, queryParams }: RestGetProps) => {
   const [response, setResponse] = useState<string | undefined>(undefined);
   const [url, setUrl] = useState<string>("");
 
@@ -28,42 +24,44 @@ const RestGet: React.FC<RestGetProps> = ({
 
   useEffect(() => {
     setIsStale(true);
-  }, [keyValueStore])
+  }, [keyValueStore]);
 
   /** Create a GET query string for the key/value pairs in data. Pass `urlEncode=true`
    * if you're actually querying the endpoint, or `false` to have the url display better for users.
    */
   function encodeQueryData(data, urlEncode: boolean) {
     if (data === undefined) {
-      return ''
+      return "";
     }
 
     const ret = [];
     for (const [key, value] of Object.entries(data)) {
       if (urlEncode) {
-        ret.push(encodeURIComponent(key) + '=' + encodeURIComponent(value as string));
+        ret.push(
+          encodeURIComponent(key) + "=" + encodeURIComponent(value as string)
+        );
       } else {
-        ret.push(key + '=' + encodeURIComponent(value as string));
+        ret.push(key + "=" + encodeURIComponent(value as string));
       }
     }
-    return ret.join('&');
+    return ret.join("&");
   }
 
   const handleRunCode = async () => {
-    let queryParameterValues = {}
+    const queryParameterValues = {};
 
-    for (let key of queryParams) {
+    for (const key of queryParams) {
       if (keyValueStore[key] !== undefined) {
         queryParameterValues[key] = keyValueStore[key];
       }
     }
 
     const getParams = encodeQueryData(queryParameterValues, true);
-    const queryUrl = `${endpoint}${getParams ? '?' + getParams : ''}`;
+    const queryUrl = `${endpoint}${getParams ? "?" + getParams : ""}`;
     setUrl(queryUrl);
 
     try {
-      const res = await fetch(queryUrl, { method: 'GET' });
+      const res = await fetch(queryUrl, { method: "GET" });
       const data = await res.json();
       setResponse(JSON.stringify(data, null, 2));
       setIsStale(false);
@@ -74,20 +72,25 @@ const RestGet: React.FC<RestGetProps> = ({
   };
 
   const clearResponse = async () => {
-    setResponse(undefined)
-  }
+    setResponse(undefined);
+  };
 
-  return (<div className={"api-params"}>
-    <button onClick={handleRunCode}>Execute</button>
-    <button onClick={clearResponse}>Clear</button>
-    {response !== undefined ?
-      <div className={"trial " + (isStale ? "stale" : "")}>
-        <div className={"request"}><span className={"method"}>GET</span> {url}</div>
-        <pre>{response}</pre>
-      </div>
-      : <div className={"trial"} />
-    }
-  </div>);
+  return (
+    <div className={"api-params"}>
+      <button onClick={handleRunCode}>Execute</button>
+      <button onClick={clearResponse}>Clear</button>
+      {response !== undefined ? (
+        <div className={"trial " + (isStale ? "stale" : "")}>
+          <div className={"request"}>
+            <span className={"method"}>GET</span> {url}
+          </div>
+          <pre>{response}</pre>
+        </div>
+      ) : (
+        <div className={"trial"} />
+      )}
+    </div>
+  );
 };
 
 export default RestGet;

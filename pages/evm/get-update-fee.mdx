@@ -1,35 +1,36 @@
-import Input from '../../components/Input';
-import Arg from '../../components/Arg';
-import {InputFormats} from '../../utils/InputFormat';
-import Example from '../../components/Example';
-import DynamicCode from '../../components/DynamicCode';
-import DisplayKeyValueStore from '../../components/DisplayKeyValueStore';
-import EvmCall from '../../components/EvmCall';
-import { Tab, Tabs } from 'nextra-theme-docs';
+import Input from "../../components/Input";
+import Arg from "../../components/Arg";
+import { InputFormats } from "../../utils/InputFormat";
+import Example from "../../components/Example";
+import DynamicCode from "../../components/DynamicCode";
+import EvmCall from "../../components/EvmCall";
+import { Tab, Tabs } from "nextra-theme-docs";
 
 # Get Update Fee
+
 **getUpdateFee(updateData: bytes[])**
 
 Get the fee required to update the on-chain price feeds with the provided `updateData`.
 The returned number of wei should be sent as the transaction value when calling [updatePriceFeeds](update-price-feeds).
 The `updateData` can be retrieved from the price service API.
 
-| Argument                                                  |                           | Description                                                                                               |
-|-----------------------------------------------------------|---------------------------|-----------------------------------------------------------------------------------------------------------|
-| <Arg required={true} type="hex[]">updateData</Arg>        | <Input id="updateData" format={InputFormats.ZeroX}/> | The price updates that you would like to submit to [updatePriceFeeds](update-price-feeds) |
+| Argument                                           |                                                      | Description                                                                               |
+| -------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| <Arg required={true} type="hex[]">updateData</Arg> | <Input id="updateData" format={InputFormats.ZeroX}/> | The price updates that you would like to submit to [updatePriceFeeds](update-price-feeds) |
 
 Examples:
+
 <Example
-    keyValues={{
-        updateData: (ctx) => ctx.getLatestVaa('Crypto.BTC/USD'),
-    }}
+  keyValues={{
+    updateData: (ctx) => ctx.getLatestVaa("Crypto.BTC/USD"),
+  }}
 >
-    Latest BTC/USD update data
+  Latest BTC/USD update data
 </Example>
 
 <EvmCall
-    functionName="getUpdateFee"
-    buildArguments={(kvs) => [[kvs["updateData"]]]}
+  functionName="getUpdateFee"
+  buildArguments={(kvs) => [[kvs["updateData"]]]}
 />
 
 ## Example Code
@@ -71,4 +72,5 @@ Examples:
             ```
         </DynamicCode>
     </Tab>
+
 </Tabs>

@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {ethers} from 'ethers';
-import detectEthereumProvider from '@metamask/detect-provider';
-import { useGlobalContext } from '../contexts/GlobalContext';
+import React, { useEffect, useState } from "react";
+import { ethers } from "ethers";
+import detectEthereumProvider from "@metamask/detect-provider";
+import { useGlobalContext } from "../contexts/GlobalContext";
 
 interface EvmSendProps {
-  functionName: string,
-  buildArguments: (kvs: Record<string, string>) => any[] | undefined,
-  feeKey: string | undefined
+  functionName: string;
+  buildArguments: (kvs: Record<string, string>) => any[] | undefined;
+  feeKey: string | undefined;
 }
 
 /**
@@ -21,13 +21,16 @@ interface EvmSendProps {
  *
  * TODO: probably better to pass the contract address / ABI as arguments (?)
  */
-const EvmSend: React.FC<EvmSendProps> = ({
-                                           functionName,
-                                           buildArguments,
-                                           feeKey
-                                         }) => {
-
-  const { keyValueStore, provider, setProvider, signer, setSigner, networkConfig, pythContractAbi } = useGlobalContext();
+const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
+  const {
+    keyValueStore,
+    provider,
+    setProvider,
+    signer,
+    setSigner,
+    networkConfig,
+    pythContractAbi,
+  } = useGlobalContext();
 
   const [response, setResponse] = useState<string | undefined>(undefined);
 
@@ -35,14 +38,14 @@ const EvmSend: React.FC<EvmSendProps> = ({
 
   useEffect(() => {
     setIsStale(true);
-  }, [keyValueStore])
+  }, [keyValueStore]);
 
   const connectWallet = async () => {
     const ethereumProvider = await detectEthereumProvider();
 
     if (ethereumProvider) {
       // @ts-ignore
-      const myProvider = new ethers.BrowserProvider(ethereumProvider)
+      const myProvider = new ethers.BrowserProvider(ethereumProvider);
       setProvider(myProvider);
 
       // It also provides an opportunity to request access to write
@@ -51,13 +54,17 @@ const EvmSend: React.FC<EvmSendProps> = ({
       const mySigner = await myProvider.getSigner();
       setSigner(mySigner);
     } else {
-      alert('Please install MetaMask!');
+      alert("Please install MetaMask!");
     }
   };
 
   const sendTransaction = async () => {
     if (signer != undefined) {
-      const contract = new ethers.Contract(networkConfig.pythAddress, pythContractAbi, provider);
+      const contract = new ethers.Contract(
+        networkConfig.pythAddress,
+        pythContractAbi,
+        provider
+      );
       const contractWithSigner = contract.connect(signer);
 
       const args: any[] | undefined = buildArguments(keyValueStore);
@@ -78,7 +85,10 @@ const EvmSend: React.FC<EvmSendProps> = ({
         setIsStale(false);
       } else {
         try {
-          const tx = await contractWithSigner[functionName](...args, extraArguments);
+          const tx = await contractWithSigner[functionName](
+            ...args,
+            extraArguments
+          );
           const receipt = await tx.wait();
           const responseString = JSON.stringify(receipt);
           setResponse(responseString);
@@ -89,27 +99,33 @@ const EvmSend: React.FC<EvmSendProps> = ({
         }
       }
     } else {
-      alert('Please connect your wallet first!');
+      alert("Please connect your wallet first!");
     }
   };
 
   const clearResponse = async () => {
-    setResponse(undefined)
-  }
+    setResponse(undefined);
+  };
 
-  return (<div className={"api-params"}>
-    { signer !== undefined ? <div>
-      <button onClick={sendTransaction}>Execute</button>
-      <button onClick={clearResponse}>Clear</button>
-      {response !== undefined ?
-        <div className={"response " + (isStale ? "stale" : "")} >
-          <pre>{response}</pre>
+  return (
+    <div className={"api-params"}>
+      {signer !== undefined ? (
+        <div>
+          <button onClick={sendTransaction}>Execute</button>
+          <button onClick={clearResponse}>Clear</button>
+          {response !== undefined ? (
+            <div className={"response " + (isStale ? "stale" : "")}>
+              <pre>{response}</pre>
+            </div>
+          ) : (
+            <div className={"response"} />
+          )}
         </div>
-        : <div className={"response"} />
-      }
-
-    </div> : <button onClick={connectWallet}>Connect your wallet </button>}
-  </div>);
+      ) : (
+        <button onClick={connectWallet}>Connect your wallet </button>
+      )}
+    </div>
+  );
 };
 
 export default EvmSend;

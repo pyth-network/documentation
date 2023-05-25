@@ -1,29 +1,30 @@
-import Input from '../../components/Input';
-import Arg from '../../components/Arg';
-import {InputFormats} from '../../utils/InputFormat';
-import Example from '../../components/Example';
-import DynamicCode from '../../components/DynamicCode';
-import EvmSend from '../../components/EvmSend';
-import { Tab, Tabs } from 'nextra-theme-docs';
+import Input from "../../components/Input";
+import Arg from "../../components/Arg";
+import { InputFormats } from "../../utils/InputFormat";
+import Example from "../../components/Example";
+import DynamicCode from "../../components/DynamicCode";
+import EvmSend from "../../components/EvmSend";
+import { Tab, Tabs } from "nextra-theme-docs";
 
 # Update Price Feeds
+
 **updatePriceFeeds(updateData: bytes[])**
 
 Update the on-chain price feeds using the provided data payloads.
 You can retrieve these data payloads using the Price Service API.
 
-| Argument                                                  |                           | Description                                       |
-|-----------------------------------------------------------|---------------------------|---------------------------------------------------|
-| <Arg required={true} type="hex[]">updateData</Arg>        | <Input id="updateData" format={InputFormats.ZeroX} /> | The price update data for the contract to verify. |
-| <Arg required={true} type="wei">fee</Arg>                    | <Input id="fee" format={InputFormats.BigInt}/>           | The update fee in wei. This fee is sent as the value of the transaction. |
+| Argument                                           |                                                       | Description                                                              |
+| -------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------ |
+| <Arg required={true} type="hex[]">updateData</Arg> | <Input id="updateData" format={InputFormats.ZeroX} /> | The price update data for the contract to verify.                        |
+| <Arg required={true} type="wei">fee</Arg>          | <Input id="fee" format={InputFormats.BigInt}/>        | The update fee in wei. This fee is sent as the value of the transaction. |
 
 <Example
-    keyValues={{
-        updateData: (ctx) => ctx.getLatestVaa('Crypto.BTC/USD'),
-        fee: (ctx) => '1', // FIXME this needs to be populated correctly
-    }}
+  keyValues={{
+    updateData: (ctx) => ctx.getLatestVaa("Crypto.BTC/USD"),
+    fee: (ctx) => "1", // FIXME this needs to be populated correctly
+  }}
 >
-    Latest BTC/USD update data
+  Latest BTC/USD update data
 </Example>
 
 <EvmSend
@@ -45,6 +46,7 @@ You can retrieve these data payloads using the Price Service API.
       PythStructs.Price memory currentBasePrice = pyth.getPriceUnsafe(0x1111);
       ```
     </DynamicCode>
+
   </Tab>
 
   <Tab>

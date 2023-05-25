@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import { useGlobalContext } from '../contexts/GlobalContext';
-import {InputFormat} from '../utils/InputFormat';
+import React, { useState } from "react";
+import { useGlobalContext } from "../contexts/GlobalContext";
+import { InputFormat } from "../utils/InputFormat";
 
 interface InputProps {
-  id: string,
-  format?: InputFormat
+  id: string;
+  format?: InputFormat;
 }
 
 /**
@@ -13,22 +13,21 @@ interface InputProps {
  *
  * @param id - the key in the global store that this input sets.
  */
-const Input: React.FC<InputProps> = ({
-                                       id,
-                                       format
-                                     }) => {
+const Input = ({ id, format }: InputProps) => {
   const { keyValueStore, setKeyValueStore } = useGlobalContext();
-  const [ errorMessage, setErrorMessage ] = useState<string | undefined>(undefined);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
 
   const handleQueryChange = (key: string, value: string) => {
     setKeyValueStore((prev) => {
-      const next = { ...prev, [key]: value}
-      if (value === '') {
-        delete next[key]
+      const next = { ...prev, [key]: value };
+      if (value === "") {
+        delete next[key];
       }
 
       // generate an error message if the value is populated and has an expected format.
-      if (value != '' && format !== undefined) {
+      if (value != "" && format !== undefined) {
         setErrorMessage(format(value));
       } else {
         setErrorMessage(undefined);
@@ -38,15 +37,16 @@ const Input: React.FC<InputProps> = ({
     });
   };
 
-  return (<div>
-    <input
-              type="text"
-              id={id}
-              name={id}
-              value={keyValueStore[id] ? keyValueStore[id] : ''}
-              onChange={(e) => handleQueryChange(id, e.target.value)}
-              className={"input-box"}
-            />
+  return (
+    <div>
+      <input
+        type="text"
+        id={id}
+        name={id}
+        value={keyValueStore[id] ? keyValueStore[id] : ""}
+        onChange={(e) => handleQueryChange(id, e.target.value)}
+        className={"input-box"}
+      />
       <p className={"input-error"}>{errorMessage}</p>
     </div>
   );
