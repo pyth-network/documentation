@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { ethers } from "ethers";
 import { useGlobalContext } from "../contexts/GlobalContext";
 import EvmNetworkSelector from "./EvmNetworkSelector";
 
@@ -8,28 +7,25 @@ import EvmNetworkSelector from "./EvmNetworkSelector";
  * the configuration of the Pyth contract deployed on that network.
  */
 const ContractInfo = () => {
-  const { provider, networkConfig, pythContractAbi } = useGlobalContext();
+  const { networkConfig, pythContract } = useGlobalContext();
 
   const [fee, setFee] = useState<string>("loading...");
   const [validTimePeriod, setValidTimePeriod] = useState<string>("loading...");
 
   useEffect(() => {
     async function helper() {
-      const contract = new ethers.Contract(
-        networkConfig.pythAddress,
-        pythContractAbi,
-        provider
-      );
       try {
-        setFee((await contract.getUpdateFee(["0x01"])).toString());
-        setValidTimePeriod((await contract.getValidTimePeriod()).toString());
+        setFee((await pythContract.getUpdateFee(["0x01"])).toString());
+        setValidTimePeriod(
+          (await pythContract.getValidTimePeriod()).toString()
+        );
       } catch (error: any) {
         setFee("loading...");
         setValidTimePeriod("loading...");
       }
     }
     helper();
-  }, [provider, networkConfig, pythContractAbi]);
+  }, [pythContract]);
 
   return (
     <div>

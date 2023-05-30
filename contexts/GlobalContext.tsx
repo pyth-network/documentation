@@ -6,7 +6,7 @@ import React, {
   useState,
   useMemo,
 } from "react";
-import { ethers, InterfaceAbi } from "ethers";
+import { ethers } from "ethers";
 
 /** Global information available to all components on any page. */
 export interface GlobalContextData {

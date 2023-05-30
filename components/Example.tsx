@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { ethers, isError, Result } from "ethers";
+import { ethers } from "ethers";
 import {
   NetworkType,
   PriceServiceUrls,

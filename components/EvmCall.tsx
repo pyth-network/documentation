@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ethers, isError, Result } from "ethers";
+import { isError, Result } from "ethers";
 import { useGlobalContext } from "../contexts/GlobalContext";
 
 interface EvmCallProps {
