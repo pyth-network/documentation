@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { ethers, isError, Result } from "ethers";
 import {
   NetworkType,
   PriceServiceUrls,
@@ -23,8 +24,21 @@ interface ExampleProps {
  */
 const Example = ({ keyValues, children }: ExampleProps) => {
   const globalContext = useGlobalContext();
-  const renderingContext = new ExampleRenderingContext(
-    globalContext.networkConfig.networkType
+  const renderingContext = useMemo(
+    () =>
+      new ExampleRenderingContext(
+        globalContext.networkConfig.networkType,
+        new ethers.Contract(
+          globalContext.networkConfig.pythAddress,
+          globalContext.pythContractAbi,
+          globalContext.provider
+        )
+      ),
+    [
+      globalContext.networkConfig,
+      globalContext.pythContractAbi,
+      globalContext.provider,
+    ]
   );
 
   const handleClick = () => {
@@ -46,9 +60,11 @@ export default Example;
 
 export class ExampleRenderingContext {
   networkType: NetworkType;
+  pythContract: ethers.Contract;
 
-  constructor(networkType: NetworkType) {
+  constructor(networkType: NetworkType, pythContract: ethers.Contract) {
     this.networkType = networkType;
+    this.pythContract = pythContract;
   }
 
   // Get the price feed id for the provided symbol name (e.g., "Crypto.BTC/USD").
@@ -65,6 +81,13 @@ export class ExampleRenderingContext {
     }/api/latest_price_feeds`;
     const result = await fetch(`${endpoint}?ids[]=${feedId}&target_chain=evm`);
     return (await result.json())[0].vaa as string;
+  }
+
+  public async getUpdateFee(vaas: string[]): Promise<string> {
+    const result = await this.pythContract["getUpdateFee"].staticCallResult(
+      vaas
+    );
+    return result[0].toString();
   }
 }
 

@@ -65,6 +65,7 @@ export const Networks: Record<string, EvmNetworkConfig> = {
     info: {
       chainId: "0x1", // Ethereum Mainnet
       chainName: "Ethereum Mainnet",
+      // FIXME: this url obviously doesn't work
       rpcUrls: ["https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID"],
       nativeCurrency: {
         name: "Ether",
