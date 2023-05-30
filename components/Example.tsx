@@ -28,17 +28,9 @@ const Example = ({ keyValues, children }: ExampleProps) => {
     () =>
       new ExampleRenderingContext(
         globalContext.networkConfig.networkType,
-        new ethers.Contract(
-          globalContext.networkConfig.pythAddress,
-          globalContext.pythContractAbi,
-          globalContext.provider
-        )
+        globalContext.pythContract
       ),
-    [
-      globalContext.networkConfig,
-      globalContext.pythContractAbi,
-      globalContext.provider,
-    ]
+    [globalContext.networkConfig, globalContext.pythContract]
   );
 
   const handleClick = () => {

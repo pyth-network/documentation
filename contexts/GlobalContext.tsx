@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useState,
+  useMemo,
 } from "react";
 import { ethers, InterfaceAbi } from "ethers";
 
@@ -32,8 +33,8 @@ export interface GlobalContextData {
   signer: ethers.Signer | undefined;
   setSigner: React.Dispatch<React.SetStateAction<ethers.Signer | undefined>>;
 
-  // ABI of the pyth contract on the current chain
-  pythContractAbi: InterfaceAbi;
+  // The pyth contract on the current chain
+  pythContract: ethers.Contract;
 }
 
 export type NetworkType = "mainnet" | "testnet";
@@ -132,9 +133,19 @@ export const GlobalContextProvider = ({
   );
   const [signer, setSigner] = useState<ethers.Signer | undefined>(undefined);
 
-  const iPythAbi = require("../abis/IPyth.json");
-  const errorAbi = require("../abis/PythErrors.json");
-  const contractAbi = iPythAbi.concat(errorAbi);
+  const contractAbi = useMemo(() => {
+    const iPythAbi = require("../abis/IPyth.json");
+    const errorAbi = require("../abis/PythErrors.json");
+    return iPythAbi.concat(errorAbi);
+  }, []);
+
+  const pythContract = useMemo(() => {
+    return new ethers.Contract(
+      networkConfig.pythAddress,
+      contractAbi,
+      provider
+    );
+  }, [networkConfig, contractAbi, provider]);
 
   useEffect(() => {
     async function helper() {
@@ -165,7 +176,7 @@ export const GlobalContextProvider = ({
         setProvider,
         signer,
         setSigner,
-        pythContractAbi: contractAbi,
+        pythContract: pythContract,
       }}
     >
       {children}
