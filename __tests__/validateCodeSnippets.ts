@@ -1,7 +1,12 @@
 import fs from "fs";
-import { spawnSync } from "child_process";
+import { join } from "path";
+import { exec } from "child_process";
+import { promisify } from "util";
 
 const codeSnippetRegex = /```([a-zA-Z]+)[\s\S]*?```/g;
+const codeSnippetsDir = ".code_tests";
+
+const execPromise = promisify(exec);
 
 function extractCodeSnippetsFromFile(filePath: string): string[] {
   const fileContent = fs.readFileSync(filePath, "utf8");
@@ -9,33 +14,47 @@ function extractCodeSnippetsFromFile(filePath: string): string[] {
   return codeSnippets.map((snippet) => snippet.replace(/```/g, "").trim());
 }
 
-function runCodeSnippet(code: string, language: string): boolean {
+async function runCodeSnippet(
+  code: string,
+  language: string,
+  id: string
+): Promise<[boolean, string]> {
   let command: string;
-  let args: string[];
 
   if (language === "typescript") {
-    command = "ts-node";
-    args = ["-e", code];
+    const tempFilePath = join(codeSnippetsDir, `${id}.ts`);
+    fs.writeFileSync(tempFilePath, code, "utf8");
+    command = `npx ts-node --skip-project ${tempFilePath}`;
+    // skip-project ignores tsconfig.json, which has an isolatedModules setting that make it hard to
+    // run random code with -e
   } else if (language === "solidity") {
-    command = "solc";
-    args = ["--standard-json"];
+    // FIXME this is broken
+
+    const tempFilePath = join(codeSnippetsDir, `${id}.sol`);
+    fs.writeFileSync(tempFilePath, code, "utf8");
+    command = `npx solc --bin ${tempFilePath}`;
   } else {
-    console.log(`Unsupported language: ${language}`);
-    return false;
+    return [false, `Unsupported language: ${language}`];
   }
 
-  const result = spawnSync(command, args);
-  if (result.status === 0) {
-    console.log("Code snippet executed successfully!");
-    return true;
-  } else {
-    console.error("Error executing code snippet:");
-    console.error(result.stderr.toString());
-    return false;
+  try {
+    const result = await execPromise(command);
+    return [true, JSON.stringify(result.stdout)];
+  } catch (e: any) {
+    return [false, JSON.stringify(e)];
   }
 }
 
+function clearCodeSnippetsDir(): void {
+  if (fs.existsSync(codeSnippetsDir)) {
+    fs.rmSync(codeSnippetsDir, { recursive: true, force: true });
+  }
+  fs.mkdirSync(codeSnippetsDir);
+}
+
 function validateCodeSnippets(directoryPath: string): void {
+  clearCodeSnippetsDir();
+
   const files = fs.readdirSync(directoryPath);
 
   files.forEach((file) => {
@@ -49,10 +68,14 @@ function validateCodeSnippets(directoryPath: string): void {
       codeSnippets.forEach((snippet, index) => {
         const language = snippet.split("\n")[0].trim();
         const code = snippet.slice(language.length).trim();
-        it(`Snippet ${index + 1} in ${file}`, () => {
-          // runCodeSnippet(code, language);
-          console.log(language);
-          console.log(code);
+        const id = `${fullPath
+          .replace(new RegExp("^./*"), "")
+          .replaceAll("/", "-")
+          .replaceAll(".", "-")}-${index + 1}`;
+
+        it(`Snippet ${index + 1} (${language}) in ${file}`, async () => {
+          const [success, error] = await runCodeSnippet(code, language, id);
+          expect(success, error).toBe(true);
         });
       });
     }
