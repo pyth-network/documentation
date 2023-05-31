@@ -1,6 +1,6 @@
 import fs from "fs";
 import { join } from "path";
-import { exec } from "child_process";
+import { exec, ExecException } from "child_process";
 import { promisify } from "util";
 import { tmpdir } from "os";
 
@@ -46,6 +46,8 @@ function wrapSolCode(code: string): string {
     const coreLogic = code.replace(importStatementsRegex, "").trim();
 
     const wrappedCode = `
+      // SPDX-License-Identifier: UNLICENSED
+      pragma solidity ^0.8.20;
       ${importStatements}
 
       contract ExampleContract {
@@ -85,7 +87,8 @@ async function runCodeSnippet(
     const result = await execPromise(command);
     return [true, JSON.stringify(result.stdout)];
   } catch (e: any) {
-    return [false, JSON.stringify(e)];
+    const errorMsg = `Error running command ${e.cmd}\n--stdout--\n${e.stdout}\n\n--stderr--\n${e.stderr}`;
+    return [false, errorMsg];
   }
 }
 
@@ -117,7 +120,7 @@ function validateCodeSnippets(directoryPath: string): void {
           .replaceAll("/", "-")
           .replaceAll(".", "-")}-${index + 1}`;
 
-        it(`Snippet ${index + 1} (${language}) in ${file}`, async () => {
+        it(`${file} snippet #${index + 1} (${language})`, async () => {
           const [success, error] = await runCodeSnippet(code, language, id);
           expect(success, error).toBe(true);
         });
