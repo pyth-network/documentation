@@ -15,6 +15,28 @@ function extractCodeSnippetsFromFile(filePath: string): string[] {
   return codeSnippets.map((snippet) => snippet.replace(/```/g, "").trim());
 }
 
+function wrapTsCodeInAsyncFunction(code: string): string {
+  const importStatementsRegex = /^(\s*import\s+.*;\s*)+/gm;
+  const importStatementsMatch = code.match(importStatementsRegex);
+
+  if (importStatementsMatch) {
+    const importStatements = importStatementsMatch.join('\n');
+    const coreLogic = code.replace(importStatementsRegex, '').trim();
+
+    const wrappedCode = `
+      ${importStatements}
+
+      (async () => {
+        ${coreLogic}
+      })();
+    `;
+
+    return wrappedCode;
+  }
+
+  return code;
+}
+
 async function runCodeSnippet(
   code: string,
   language: string,
@@ -25,10 +47,8 @@ async function runCodeSnippet(
   if (language === "typescript") {
     const tempFilePath = join(codeSnippetsDir, `${id}.ts`);
 
-    fs.writeFileSync(tempFilePath, code, "utf8");
-    command = `npx ts-node --skip-project --esm ${tempFilePath}`;
-    // skip-project ignores tsconfig.json, which has an isolatedModules setting that make it hard to
-    // run random code with -e
+    fs.writeFileSync(tempFilePath, wrapTsCodeInAsyncFunction(code), "utf8");
+    command = `npx tsc --target es5 --module esnext  --esModuleInterop --moduleResolution node --skipLibCheck --noEmit ${tempFilePath}`;
   } else if (language === "solidity") {
     // FIXME this is broken
 

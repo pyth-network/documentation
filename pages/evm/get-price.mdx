@@ -66,7 +66,7 @@ Examples:
       address contractAddress = 0x0000;
       bytes32 priceId = 0x1111;
       IPyth pyth = IPyth(contractAddress);
-      PythStructs.Price memory currentBasePrice = pyth.getPrice(priceId);
+      PythStructs.Price currentBasePrice = pyth.getPrice(priceId);
       ```
     </DynamicCode>
 
@@ -81,8 +81,8 @@ Examples:
       import { ethers } from "ethers";
 
       const contractAddress = '0x0000';
-      const pythAbi = require('./abis/IPyth.json');
-      const provider = ethers.getDefaultProvider("<RPC URL>");
+      const pythAbi = require('../abis/IPyth.json');
+      const provider = ethers.getDefaultProvider("YOUR_RPC_URL");
       const contract = new ethers.Contract(contractAddress, pythAbi, provider);
 
       const priceId = '0x1111';
