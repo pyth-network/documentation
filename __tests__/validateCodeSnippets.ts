@@ -2,10 +2,10 @@ import fs from "fs";
 import { join } from "path";
 import { exec } from "child_process";
 import { promisify } from "util";
+import { tmpdir } from "os";
 
 const codeSnippetRegex = /```([a-zA-Z]+)[\s\S]*?```/g;
 const codeSnippetsDir = ".code_tests";
-
 
 const execPromise = promisify(exec);
 
@@ -20,8 +20,8 @@ function wrapTsCodeInAsyncFunction(code: string): string {
   const importStatementsMatch = code.match(importStatementsRegex);
 
   if (importStatementsMatch) {
-    const importStatements = importStatementsMatch.join('\n');
-    const coreLogic = code.replace(importStatementsRegex, '').trim();
+    const importStatements = importStatementsMatch.join("\n");
+    const coreLogic = code.replace(importStatementsRegex, "").trim();
 
     const wrappedCode = `
       ${importStatements}
@@ -29,6 +29,30 @@ function wrapTsCodeInAsyncFunction(code: string): string {
       (async () => {
         ${coreLogic}
       })();
+    `;
+
+    return wrappedCode;
+  }
+
+  return code;
+}
+
+function wrapSolCode(code: string): string {
+  const importStatementsRegex = /^(\s*import\s+.*;\s*)+/gm;
+  const importStatementsMatch = code.match(importStatementsRegex);
+
+  if (importStatementsMatch) {
+    const importStatements = importStatementsMatch.join("\n");
+    const coreLogic = code.replace(importStatementsRegex, "").trim();
+
+    const wrappedCode = `
+      ${importStatements}
+
+      contract ExampleContract {
+         function wrapper() public {
+           ${coreLogic}
+         }
+      }
     `;
 
     return wrappedCode;
@@ -50,11 +74,9 @@ async function runCodeSnippet(
     fs.writeFileSync(tempFilePath, wrapTsCodeInAsyncFunction(code), "utf8");
     command = `npx tsc --target es5 --module esnext  --esModuleInterop --moduleResolution node --skipLibCheck --noEmit ${tempFilePath}`;
   } else if (language === "solidity") {
-    // FIXME this is broken
-
     const tempFilePath = join(codeSnippetsDir, `${id}.sol`);
-    fs.writeFileSync(tempFilePath, code, "utf8");
-    command = `npx solc --bin ${tempFilePath}`;
+    fs.writeFileSync(tempFilePath, wrapSolCode(code), "utf8");
+    command = `npx solc --base-path . --include-path node_modules/\\@pythnetwork --output-dir ${tmpdir()} --bin ${tempFilePath}`;
   } else {
     return [false, `Unsupported language: ${language}`];
   }
