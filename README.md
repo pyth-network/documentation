@@ -27,6 +27,14 @@ docker run -d -p 3000:3000 documentation
 
 Then navigate to localhost:3000 in the browser.
 
+## Tests
+
+To run the code tests for a specific file:
+
+```
+npm run test -- -t get-price.mdx
+```
+
 ## License
 
 This project is derived from the [Nextra Docs Template](https://github.com/shuding/nextra-docs-template).

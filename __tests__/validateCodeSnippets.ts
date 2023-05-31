@@ -6,6 +6,7 @@ import { promisify } from "util";
 const codeSnippetRegex = /```([a-zA-Z]+)[\s\S]*?```/g;
 const codeSnippetsDir = ".code_tests";
 
+
 const execPromise = promisify(exec);
 
 function extractCodeSnippetsFromFile(filePath: string): string[] {
@@ -23,8 +24,9 @@ async function runCodeSnippet(
 
   if (language === "typescript") {
     const tempFilePath = join(codeSnippetsDir, `${id}.ts`);
+
     fs.writeFileSync(tempFilePath, code, "utf8");
-    command = `npx ts-node --skip-project ${tempFilePath}`;
+    command = `npx ts-node --skip-project --esm ${tempFilePath}`;
     // skip-project ignores tsconfig.json, which has an isolatedModules setting that make it hard to
     // run random code with -e
   } else if (language === "solidity") {

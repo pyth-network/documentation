@@ -78,6 +78,8 @@ Examples:
         "'0x1111'": (ctx) => `'${ctx.get("id", "<id>")}'`,
     }}>
       ```typescript
+      import { ethers } from "ethers";
+
       const contractAddress = '0x0000';
       const pythAbi = require('./abis/IPyth.json');
       const provider = ethers.getDefaultProvider("<RPC URL>");
