@@ -40,7 +40,7 @@ You can retrieve these data payloads using the Price Service API.
 
       <DynamicCode targets={{
           "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
-          "\"11\"": (ctx) => ctx.get("updateData", "<updateData>"),
+          "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
           "2": (ctx) => ctx.get("fee", "<fee>"),
       }}>
           ```solidity
