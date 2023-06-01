@@ -15,6 +15,8 @@ function extractCodeSnippetsFromFile(filePath: string): string[] {
   return codeSnippets.map((snippet) => snippet.replace(/```/g, "").trim());
 }
 
+// Add an async() function around a typescript code block so that you can use
+// await statements in the block without triggering a compiler error.
 function wrapTsCodeInAsyncFunction(code: string): string {
   const importStatementsRegex = /^(\s*import\s+.*;\s*)+/gm;
   const importStatementsMatch = code.match(importStatementsRegex);
@@ -37,6 +39,7 @@ function wrapTsCodeInAsyncFunction(code: string): string {
   return code;
 }
 
+// Wrap a solidity code snippet in a contract and function so the compiler is happy.
 function wrapSolCode(code: string): string {
   const importStatementsRegex = /^(\s*import\s+.*;\s*)+/gm;
   const importStatementsMatch = code.match(importStatementsRegex);
@@ -72,8 +75,9 @@ async function runCodeSnippet(
 
   if (language === "typescript") {
     const tempFilePath = join(codeSnippetsDir, `${id}.ts`);
-
     fs.writeFileSync(tempFilePath, wrapTsCodeInAsyncFunction(code), "utf8");
+    // Note: it's unfortunate that we have to repeat the tsconfig options here, but there doesn't
+    // seem to be a way to read the flags in the config file from the command line without getting the entire project.
     command = `npx tsc --target es5 --module esnext  --esModuleInterop --moduleResolution node --skipLibCheck --noEmit ${tempFilePath}`;
   } else if (language === "solidity") {
     const tempFilePath = join(codeSnippetsDir, `${id}.sol`);
@@ -92,6 +96,7 @@ async function runCodeSnippet(
   }
 }
 
+// Delete everything in the code snippets directory
 function clearCodeSnippetsDir(): void {
   if (fs.existsSync(codeSnippetsDir)) {
     fs.rmSync(codeSnippetsDir, { recursive: true, force: true });
@@ -99,6 +104,8 @@ function clearCodeSnippetsDir(): void {
   fs.mkdirSync(codeSnippetsDir);
 }
 
+// Finds all .mdx files under directoryPath, looks for code snippets in them, and then
+// validates them using the run function above.
 function validateCodeSnippets(directoryPath: string): void {
   clearCodeSnippetsDir();
 
@@ -129,7 +136,6 @@ function validateCodeSnippets(directoryPath: string): void {
   });
 }
 
-// Specify the root directory containing the .mdx files
 describe("Validate code snippets", () => {
   const rootDirectory = "./";
   validateCodeSnippets(rootDirectory);
