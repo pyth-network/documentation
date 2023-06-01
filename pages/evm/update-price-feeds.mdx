@@ -21,7 +21,13 @@ You can retrieve these data payloads using the Price Service API.
 <Example
   keyValues={{
     updateData: (ctx) => ctx.getLatestVaa("Crypto.BTC/USD"),
-    fee: (ctx) => "1", // FIXME this needs to be populated correctly
+    fee: (ctx) => {
+      // NOTE: this technically could get the update fee for a different VAA than the one above.
+      // This shouldn't affect the update fee as long as the fee is only dependent on the price feed ids
+      // and not the specific content of the price update.
+      let vaa = ctx.getLatestVaa("Crypto.BTC/USD");
+      return ctx.getUpdateFee([vaa]);
+    },
   }}
 >
   Latest BTC/USD update data

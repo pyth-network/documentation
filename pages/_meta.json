@@ -9,7 +9,7 @@
     "type": "page"
   },
   "api-explorer": {
-    "title": "API Explorer",
+    "title": "API Reference",
     "type": "menu",
     "items": {
       "evm": {

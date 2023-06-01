@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ethers, isError, Result } from "ethers";
+import { isError, Result } from "ethers";
 import { useGlobalContext } from "../contexts/GlobalContext";
 
 interface EvmCallProps {
@@ -24,20 +24,13 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
   const [responsePreface, setResponsePreface] = useState<string>("");
   const [isStale, setIsStale] = useState<boolean>(false);
 
-  const { keyValueStore, provider, networkConfig, pythContractAbi } =
-    useGlobalContext();
+  const { keyValueStore, pythContract } = useGlobalContext();
 
   useEffect(() => {
     setIsStale(true);
   }, [keyValueStore]);
 
   const sendTransaction = async () => {
-    const contract = new ethers.Contract(
-      networkConfig.pythAddress,
-      pythContractAbi,
-      provider
-    );
-
     const args: any[] | undefined = buildArguments(keyValueStore);
 
     // TODO: validate arguments
@@ -46,9 +39,9 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
       setIsStale(false);
     } else {
       try {
-        const result: Result = await contract[functionName].staticCallResult(
-          ...args
-        );
+        const result: Result = await pythContract[
+          functionName
+        ].staticCallResult(...args);
         const resultString = renderResult(result, "");
 
         setResponsePreface("EVM call succeeded with result:");
@@ -56,7 +49,7 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
         setIsStale(false);
       } catch (error) {
         if (isError(error, "CALL_EXCEPTION")) {
-          const ethError = contract.interface.parseError(error.data);
+          const ethError = pythContract.interface.parseError(error.data);
           setResponsePreface("EVM call reverted with exception:");
           setResponse(`${ethError.name}(${renderResult(ethError.args, "")})`);
           setIsStale(false);

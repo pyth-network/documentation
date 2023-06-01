@@ -4,8 +4,9 @@ import React, {
   useContext,
   useEffect,
   useState,
+  useMemo,
 } from "react";
-import { ethers, InterfaceAbi } from "ethers";
+import { ethers } from "ethers";
 
 /** Global information available to all components on any page. */
 export interface GlobalContextData {
@@ -32,8 +33,8 @@ export interface GlobalContextData {
   signer: ethers.Signer | undefined;
   setSigner: React.Dispatch<React.SetStateAction<ethers.Signer | undefined>>;
 
-  // ABI of the pyth contract on the current chain
-  pythContractAbi: InterfaceAbi;
+  // The pyth contract on the current chain
+  pythContract: ethers.Contract;
 }
 
 export type NetworkType = "mainnet" | "testnet";
@@ -65,6 +66,7 @@ export const Networks: Record<string, EvmNetworkConfig> = {
     info: {
       chainId: "0x1", // Ethereum Mainnet
       chainName: "Ethereum Mainnet",
+      // FIXME: this url obviously doesn't work
       rpcUrls: ["https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID"],
       nativeCurrency: {
         name: "Ether",
@@ -131,9 +133,19 @@ export const GlobalContextProvider = ({
   );
   const [signer, setSigner] = useState<ethers.Signer | undefined>(undefined);
 
-  const iPythAbi = require("../abis/IPyth.json");
-  const errorAbi = require("../abis/PythErrors.json");
-  const contractAbi = iPythAbi.concat(errorAbi);
+  const contractAbi = useMemo(() => {
+    const iPythAbi = require("../abis/IPyth.json");
+    const errorAbi = require("../abis/PythErrors.json");
+    return iPythAbi.concat(errorAbi);
+  }, []);
+
+  const pythContract = useMemo(() => {
+    return new ethers.Contract(
+      networkConfig.pythAddress,
+      contractAbi,
+      provider
+    );
+  }, [networkConfig, contractAbi, provider]);
 
   useEffect(() => {
     async function helper() {
@@ -164,7 +176,7 @@ export const GlobalContextProvider = ({
         setProvider,
         signer,
         setSigner,
-        pythContractAbi: contractAbi,
+        pythContract: pythContract,
       }}
     >
       {children}

@@ -22,15 +22,8 @@ interface EvmSendProps {
  * TODO: probably better to pass the contract address / ABI as arguments (?)
  */
 const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
-  const {
-    keyValueStore,
-    provider,
-    setProvider,
-    signer,
-    setSigner,
-    networkConfig,
-    pythContractAbi,
-  } = useGlobalContext();
+  const { keyValueStore, setProvider, signer, setSigner, pythContract } =
+    useGlobalContext();
 
   const [response, setResponse] = useState<string | undefined>(undefined);
 
@@ -60,12 +53,7 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
 
   const sendTransaction = async () => {
     if (signer != undefined) {
-      const contract = new ethers.Contract(
-        networkConfig.pythAddress,
-        pythContractAbi,
-        provider
-      );
-      const contractWithSigner = contract.connect(signer);
+      const contractWithSigner = pythContract.connect(signer);
 
       const args: any[] | undefined = buildArguments(keyValueStore);
 

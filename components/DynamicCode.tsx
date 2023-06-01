@@ -45,8 +45,6 @@ const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
     if (divRef.current && !targetRefs.current) {
       const tokens = [];
       for (const [target, replacement] of Object.entries(targets)) {
-        console.log(`target: ${target}`);
-
         // TODO: may need to find more than one
         // note: this explicitly filters out entire lines and only finds spans within lines
         // to preserve highlighting
