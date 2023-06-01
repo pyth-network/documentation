@@ -74,11 +74,11 @@ You can retrieve these data payloads using the Price Service API.
       }}>
           ```typescript
           import { ethers } from "ethers";
+          import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 
           const contractAddress = '0x0000';
-          const pythAbi = require('./abis/IPyth.json');
           const provider = ethers.getDefaultProvider("YOUR_RPC_URL");
-          const contract = new ethers.Contract(contractAddress, pythAbi, provider);
+          const contract = new ethers.Contract(contractAddress, PythAbi, provider);
 
           const fee = ethers.toBigInt(2)
 

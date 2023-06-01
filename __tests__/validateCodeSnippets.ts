@@ -78,7 +78,7 @@ async function runCodeSnippet(
     fs.writeFileSync(tempFilePath, wrapTsCodeInAsyncFunction(code), "utf8");
     // Note: it's unfortunate that we have to repeat the tsconfig options here, but there doesn't
     // seem to be a way to read the flags in the config file from the command line without getting the entire project.
-    command = `npx tsc --target es5 --module esnext  --esModuleInterop --moduleResolution node --skipLibCheck --noEmit ${tempFilePath}`;
+    command = `npx tsc --target es5 --module esnext  --esModuleInterop --moduleResolution node --skipLibCheck --resolveJsonModule --noEmit ${tempFilePath}`;
   } else if (language === "solidity") {
     const tempFilePath = join(codeSnippetsDir, `${id}.sol`);
     fs.writeFileSync(tempFilePath, wrapSolCode(code), "utf8");
