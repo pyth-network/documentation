@@ -43,27 +43,50 @@ You can retrieve these data payloads using the Price Service API.
 
 <Tabs items={['Solidity', 'ethers.js v6']}>
   <Tab>
-    <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
-      ```solidity
-      import "pyth-sdk-solidity/IPyth.sol";
-      import "pyth-sdk-solidity/PythStructs.sol";
 
-      IPyth pyth = IPyth(0x0000);
-      PythStructs.Price memory currentBasePrice = pyth.getPriceUnsafe(0x1111);
-      ```
-    </DynamicCode>
+      <DynamicCode targets={{
+          "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
+          "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
+          "2": (ctx) => ctx.get("fee", "<fee>"),
+      }}>
+          ```solidity
+          import "pyth-sdk-solidity/IPyth.sol";
+          import "pyth-sdk-solidity/PythStructs.sol";
+
+          address contractAddress = 0x0000000000000000000000000000000000000000;
+          IPyth pyth = IPyth(contractAddress);
+
+          bytes[] memory updateData = new bytes[](1);
+          updateData[0] = hex"11";
+
+          uint fee = 2;
+          pyth.updatePriceFeeds{value: fee}(updateData);
+          ```
+      </DynamicCode>
 
   </Tab>
 
   <Tab>
-    <DynamicCode targets={[{findToken: "'0x1111'", replacementParam: "id", transform: (x) => `'${x}'` }]}>
-      ```typescript
-      const contractAddress = '0x0000';
-      const priceId = '0x1111';
-      const PythAbi = require('./abis/IPyth.json');
-      const contract = new ethers.Contract(contractAddress, PythAbi, provider);
-      const [price, conf, expo, timestamp] = await contract.getPriceUnsafe(priceId);
-      ```
-    </DynamicCode>
+      <DynamicCode targets={{
+          "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
+          "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
+          "2": (ctx) => ctx.get("fee", "<fee>")
+      }}>
+          ```typescript
+          import { ethers } from "ethers";
+
+          const contractAddress = '0x0000';
+          const pythAbi = require('./abis/IPyth.json');
+          const provider = ethers.getDefaultProvider("YOUR_RPC_URL");
+          const contract = new ethers.Contract(contractAddress, pythAbi, provider);
+
+          const fee = ethers.toBigInt(2)
+
+          const updateData = ['0x1111'];
+          const tx = await contract.updatePriceFeeds(updateData, {value: fee});
+          const receipt = await tx.wait();
+          ```
+      </DynamicCode>
+
   </Tab>
 </Tabs>

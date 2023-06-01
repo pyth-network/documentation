@@ -38,48 +38,47 @@ Examples:
 
 ## Example Code
 
-<Tabs items={['Solidity', 'ethers.js', 'web3.js']}>
+<Tabs items={['Solidity', 'ethers.js v6']}>
   <Tab>
-    <DynamicCode targets={[{findToken: "0x0000", replacementParam: "contractAddress"}, {findToken: "0x1111", replacementParam: "id"}]}>
-      ```solidity
-      import "pyth-sdk-solidity/IPyth.sol";
-      import "pyth-sdk-solidity/PythStructs.sol";
+      <DynamicCode targets={{
+          "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
+          "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("id", "<id>"),
+          "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+      }}>
+          ```solidity
+          import "pyth-sdk-solidity/IPyth.sol";
+          import "pyth-sdk-solidity/PythStructs.sol";
 
-      IPyth pyth = IPyth(0x0000);
-      PythStructs.Price memory currentBasePrice = pyth.getPriceUnsafe(0x1111);
-      ```
-    </DynamicCode>
+          // Sample code for
+          // NETWORK_NAME
+          address contractAddress = 0x0000000000000000000000000000000000000000;
+          bytes32 priceId = 0x1111111111111111111111111111111111111111111111111111111111111111;
+          IPyth pyth = IPyth(contractAddress);
+          PythStructs.Price memory currentPrice = pyth.getPriceUnsafe(priceId);
+          ```
+      </DynamicCode>
 
   </Tab>
 
-{" "}
+    <Tab>
+        <DynamicCode targets={{
+            "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
+            "'0x1111'": (ctx) => `'${ctx.get("id", "<id>")}'`,
+        }}>
+            ```typescript
+            import { ethers } from "ethers";
 
-<Tab>
-  <DynamicCode
-    targets={[
-      {
-        findToken: "'0x1111'",
-        replacementParam: "id",
-        transform: (x) => `'${x}'`,
-      },
-    ]}
-  >
-    ```typescript const contractAddress = '0x0000'; const priceId = '0x1111';
-    const PythAbi = require('./abis/IPyth.json'); const contract = new
-    ethers.Contract(contractAddress, PythAbi, provider); const [price, conf,
-    expo, timestamp] = await contract.getPriceUnsafe(priceId); ```
-  </DynamicCode>
-</Tab>
+            const contractAddress = '0x0000';
+            const pythAbi = require('../abis/IPyth.json');
+            const provider = ethers.getDefaultProvider("YOUR_RPC_URL");
+            const contract = new ethers.Contract(contractAddress, pythAbi, provider);
 
-  <Tab>
-    <DynamicCode targets={[{findToken: "0x1111", replacementParam: "id"}]}>
-      ```js
+            const priceId = '0x1111';
+            const [price, conf, expo, timestamp] = await contract.getPriceUnsafe(priceId);
+            ```
+        </DynamicCode>
+    </Tab>
 
-      this can be different
-      ```
-    </DynamicCode>
-
-  </Tab>
 </Tabs>
 
 ## Messing around here

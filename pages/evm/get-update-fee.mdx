@@ -38,8 +38,8 @@ Examples:
 <Tabs items={['Solidity', 'ethers.js v6']}>
     <Tab>
         <DynamicCode targets={{
-            "0x0000": (ctx) => ctx.evmConfig.pythAddress,
-            "0x1111": (ctx) => ctx.get("updateData", "<updateData>"),
+            "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
+            "\"11\"": (ctx) => ctx.get("updateData", "<updateData>"),
             "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
         }}>
             ```solidity
@@ -48,8 +48,9 @@ Examples:
 
             // Sample code for
             // NETWORK_NAME
-            address contractAddress = 0x0000;
-            bytes[] updateData = [0x1111];
+            address contractAddress = 0x0000000000000000000000000000000000000000;
+            bytes[] memory updateData = new bytes[](1);
+            updateData[0] = hex"11";
             IPyth pyth = IPyth(contractAddress);
             uint feeAmount = pyth.getUpdateFee(updateData);
             ```
@@ -62,9 +63,11 @@ Examples:
             "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
         }}>
             ```typescript
+            import { ethers } from "ethers";
+
             const contractAddress = '0x0000';
             const pythAbi = require('./abis/IPyth.json');
-            const provider = ethers.getDefaultProvider("<RPC URL>");
+            const provider = ethers.getDefaultProvider("YOUR_RPC_URL");
             const contract = new ethers.Contract(contractAddress, pythAbi, provider);
 
             const updateData = ['0x1111'];

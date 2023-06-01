@@ -53,8 +53,8 @@ Examples:
 <Tabs items={['Solidity', 'ethers.js v6']}>
   <Tab>
     <DynamicCode targets={{
-        "0x0000": (ctx) => ctx.evmConfig.pythAddress,
-        "0x1111": (ctx) => ctx.get("id", "<id>"),
+        "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
+        "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("id", "<id>"),
         "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
     }}>
       ```solidity
@@ -63,8 +63,8 @@ Examples:
 
       // Sample code for
       // NETWORK_NAME
-      address contractAddress = 0x0000;
-      bytes32 priceId = 0x1111;
+      address contractAddress = 0x0000000000000000000000000000000000000000;
+      bytes32 priceId = 0x1111111111111111111111111111111111111111111111111111111111111111;
       IPyth pyth = IPyth(contractAddress);
       PythStructs.Price memory currentBasePrice = pyth.getPrice(priceId);
       ```
@@ -78,9 +78,11 @@ Examples:
         "'0x1111'": (ctx) => `'${ctx.get("id", "<id>")}'`,
     }}>
       ```typescript
+      import { ethers } from "ethers";
+
       const contractAddress = '0x0000';
-      const pythAbi = require('./abis/IPyth.json');
-      const provider = ethers.getDefaultProvider("<RPC URL>");
+      const pythAbi = require('../abis/IPyth.json');
+      const provider = ethers.getDefaultProvider("YOUR_RPC_URL");
       const contract = new ethers.Contract(contractAddress, pythAbi, provider);
 
       const priceId = '0x1111';
