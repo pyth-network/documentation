@@ -8,8 +8,6 @@ import { Tab, Tabs } from "nextra-theme-docs";
 
 # Get Update Fee
 
-**getUpdateFee(updateData: bytes[])**
-
 Get the fee required to update the on-chain price feeds with the provided `updateData`.
 The returned number of wei should be sent as the transaction value when calling [updatePriceFeeds](update-price-feeds).
 The `updateData` can be retrieved from the price service API.
@@ -21,16 +19,16 @@ The `updateData` can be retrieved from the price service API.
 Examples:
 
 <Example
-  keyValues={{
-    updateData: (ctx) => ctx.getLatestVaa("Crypto.BTC/USD"),
-  }}
+    keyValues={{
+        updateData: (ctx) => ctx.getLatestVaa("Crypto.BTC/USD"),
+    }}
 >
-  Latest BTC/USD update data
+    Latest BTC/USD update data
 </Example>
 
 <EvmCall
-  functionName="getUpdateFee"
-  buildArguments={(kvs) => [[kvs["updateData"]]]}
+    functionName="getUpdateFee"
+    buildArguments={(kvs) => [[kvs["updateData"]]]}
 />
 
 ## Example Code
@@ -39,19 +37,20 @@ Examples:
     <Tab>
         <DynamicCode targets={{
             "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
-            "\"11\"": (ctx) => ctx.get("updateData", "<updateData>"),
+            "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("id", "<id>"),
             "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+            "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
         }}>
             ```solidity
             import "pyth-sdk-solidity/IPyth.sol";
             import "pyth-sdk-solidity/PythStructs.sol";
 
-            // Sample code for
             // NETWORK_NAME
             address contractAddress = 0x0000000000000000000000000000000000000000;
+            IPyth pyth = IPyth(contractAddress);
+
             bytes[] memory updateData = new bytes[](1);
             updateData[0] = hex"11";
-            IPyth pyth = IPyth(contractAddress);
             uint feeAmount = pyth.getUpdateFee(updateData);
             ```
         </DynamicCode>
@@ -60,20 +59,22 @@ Examples:
     <Tab>
         <DynamicCode targets={{
             "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+            "'RPC_URL'": (ctx) => ctx.evmConfig.info.rpcUrls.length > 0 ? `'${ctx.evmConfig.info.rpcUrls[0]}'` : 'RPC_URL',
             "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
         }}>
             ```typescript
             import { ethers } from "ethers";
+            import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 
+            // NETWORK_NAME
             const contractAddress = '0x0000';
-            const pythAbi = require('./abis/IPyth.json');
-            const provider = ethers.getDefaultProvider("YOUR_RPC_URL");
-            const contract = new ethers.Contract(contractAddress, pythAbi, provider);
+            const provider = ethers.getDefaultProvider('RPC_URL');
+            const contract = new ethers.Contract(contractAddress, PythAbi, provider);
 
             const updateData = ['0x1111'];
             const [feeAmount] = await contract.getUpdateFee(updateData);
             ```
         </DynamicCode>
     </Tab>
-
 </Tabs>
