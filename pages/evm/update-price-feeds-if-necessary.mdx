@@ -77,8 +77,10 @@ Reverts if the required fee is not paid, or the `updateData` is incorrectly sign
             bytes[] memory updateData = new bytes[](1);
             updateData[0] = hex"11";
 
-            bytes32[] priceIds = [0x1111111111111111111111111111111111111111111111111111111111111111];
-            uint64[] publishTimes = [3];
+            bytes32[] memory priceIds = new bytes32[](1);
+            priceIds[0] = 0x1111111111111111111111111111111111111111111111111111111111111111;
+            uint64[] memory publishTimes = new uint64[](1);
+            publishTimes[0] = 3;
             uint fee = 2;
             pyth.updatePriceFeedsIfNecessary{value: fee}(updateData, priceIds, publishTimes);
             ```

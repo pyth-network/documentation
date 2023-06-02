@@ -13,11 +13,7 @@ This quantity is the maximum age of price updates returned by functions like [ge
 these functions revert if the current on-chain price is older than this period.
 The valid time period is configured to be a sane default for each blockchain.
 
-
-<EvmCall
-    functionName="getValidTimePeriod"
-    buildArguments={() => []}
-/>
+<EvmCall functionName="getValidTimePeriod" buildArguments={() => []} />
 
 ## Example Code
 
@@ -25,9 +21,7 @@ The valid time period is configured to be a sane default for each blockchain.
     <Tab>
         <DynamicCode targets={{
             "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
-            "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("id", "<id>"),
             "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
-            "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
         }}>
             ```solidity
             import "pyth-sdk-solidity/IPyth.sol";
@@ -37,7 +31,7 @@ The valid time period is configured to be a sane default for each blockchain.
             address contractAddress = 0x0000000000000000000000000000000000000000;
             IPyth pyth = IPyth(contractAddress);
 
-            uint validTimePeriod = pyth.getValidTimePeriod(updateData);
+            uint validTimePeriod = pyth.getValidTimePeriod();
             ```
         </DynamicCode>
     </Tab>
@@ -47,7 +41,6 @@ The valid time period is configured to be a sane default for each blockchain.
             "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
             "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
             "'RPC_URL'": (ctx) => ctx.evmConfig.info.rpcUrls.length > 0 ? `'${ctx.evmConfig.info.rpcUrls[0]}'` : 'RPC_URL',
-            "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
         }}>
             ```typescript
             import { ethers } from "ethers";
@@ -62,4 +55,5 @@ The valid time period is configured to be a sane default for each blockchain.
             ```
         </DynamicCode>
     </Tab>
+
 </Tabs>

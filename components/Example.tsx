@@ -71,8 +71,9 @@ export class ExampleRenderingContext {
     const endpoint: string = `${
       PriceServiceUrls[this.networkType]
     }/api/latest_price_feeds`;
-    const result = await (await fetch(`${endpoint}?ids[]=${feedId}&target_chain=evm`)).json();
-    console.log(result[0].price)
+    const result = await (
+      await fetch(`${endpoint}?ids[]=${feedId}&target_chain=evm`)
+    ).json();
     return result[0];
   }
 

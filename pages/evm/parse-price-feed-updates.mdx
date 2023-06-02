@@ -18,13 +18,13 @@ This method requires the caller to pay a fee in wei; the required fee can be com
 Reverts if the transferred fee is not sufficient, or `updateData` is invalid, or `updateData` does not
 contain an update for any of the given `priceIds` within the given time range.
 
-| Argument                                                   |                                                            | Description                                                              |
-| ---------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------ |
-| <Arg required={true} type="hex[]">updateData</Arg>         | <Input id="updateData" format={InputFormats.ZeroX} />      | The price update data to parse.                                          |
-| <Arg required={true} type="bytes32[]">priceIds</Arg>       | <Input id="priceId" format={InputFormats.ZeroX} />         | The price ids whose feeds will be returned.                              |
-| <Arg required={true} type="uint64[]">minPublishTimes</Arg> | <Input id="minPublishTime" format={InputFormats.BigInt} /> | The minimum timestamp for each price id.                                 |
-| <Arg required={true} type="uint64[]">maxPublishTimes</Arg> | <Input id="maxPublishTime" format={InputFormats.BigInt} /> | The maximum timestamp for each price id.                                 |
-| <Arg required={true} type="wei">fee</Arg>                  | <Input id="fee" format={InputFormats.BigInt}/>             | The update fee in wei. This fee is sent as the value of the transaction. |
+| Argument                                                |                                                            | Description                                                              |
+| ------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------ |
+| <Arg required={true} type="hex[]">updateData</Arg>      | <Input id="updateData" format={InputFormats.ZeroX} />      | The price update data to parse.                                          |
+| <Arg required={true} type="bytes32[]">priceIds</Arg>    | <Input id="priceId" format={InputFormats.ZeroX} />         | The price ids whose feeds will be returned.                              |
+| <Arg required={true} type="uint64">minPublishTime</Arg> | <Input id="minPublishTime" format={InputFormats.BigInt} /> | The minimum timestamp for each returned feed.                            |
+| <Arg required={true} type="uint64">maxPublishTime</Arg> | <Input id="maxPublishTime" format={InputFormats.BigInt} /> | The maximum timestamp for each returned feed.                            |
+| <Arg required={true} type="wei">fee</Arg>               | <Input id="fee" format={InputFormats.BigInt}/>             | The update fee in wei. This fee is sent as the value of the transaction. |
 
 <Example
   keyValues={{
@@ -49,8 +49,8 @@ contain an update for any of the given `priceIds` within the given time range.
   buildArguments={(kvs) => [
     [kvs["updateData"]],
     [kvs["priceId"]],
-    [kvs["minPublishTime"]],
-    [kvs["maxPublishTime"]],
+    kvs["minPublishTime"],
+    kvs["maxPublishTime"],
   ]}
   feeKey="fee"
 />
@@ -78,12 +78,13 @@ contain an update for any of the given `priceIds` within the given time range.
 
             bytes[] memory updateData = new bytes[](1);
             updateData[0] = hex"11";
+            bytes32[] memory priceIds = new bytes32[](1);
+            priceIds[0] = 0x1111111111111111111111111111111111111111111111111111111111111111;
+            uint64 minPublishTime = 3;
+            uint64 maxPublishTime = 4;
 
-            bytes32[] priceIds = [0x1111111111111111111111111111111111111111111111111111111111111111];
-            uint64[] minPublishTimes = [3];
-            uint64[] maxPublishTimes = [4];
             uint fee = 2;
-            pyth.parsePriceFeedUpdates{value: fee}(updateData, priceIds, minPublishTimes, maxPublishTimes);
+            pyth.parsePriceFeedUpdates{value: fee}(updateData, priceIds, minPublishTime, maxPublishTime);
             ```
         </DynamicCode>
     </Tab>
@@ -112,9 +113,9 @@ contain an update for any of the given `priceIds` within the given time range.
 
             const updateData = ['0x1111'];
             const priceIds = ['0x2222'];
-            const minPublishTimes = [ethers.toBigInt(3)];
-            const maxPublishTimes = [ethers.toBigInt(4)];
-            const tx = await contract.parsePriceFeedUpdates(updateData, priceIds, minPublishTimes, maxPublishTimes, {value: fee});
+            const minPublishTime = ethers.toBigInt(3);
+            const maxPublishTime = ethers.toBigInt(4);
+            const tx = await contract.parsePriceFeedUpdates(updateData, priceIds, minPublishTime, maxPublishTime, {value: fee});
             const receipt = await tx.wait();
             ```
         </DynamicCode>
