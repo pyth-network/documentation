@@ -26,8 +26,9 @@ Reverts if the required fee is not paid, or the `updateData` is incorrectly sign
 
 <Example
   keyValues={{
-    updateData: async ctx => (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
-    fee: async ctx => {
+    updateData: async (ctx) =>
+      (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
+    fee: async (ctx) => {
       // NOTE: this technically could get the update fee for a different VAA than the one above.
       // This shouldn't affect the update fee as long as the fee is only dependent on the price feed ids
       // and not the specific content of the price update.
@@ -96,4 +97,5 @@ Reverts if the required fee is not paid, or the `updateData` is incorrectly sign
             ```
         </DynamicCode>
     </Tab>
+
 </Tabs>

@@ -19,16 +19,16 @@ The `updateData` can be retrieved from the price service API.
 Examples:
 
 <Example
-    keyValues={{
-        updateData: (ctx) => ctx.getLatestVaa("Crypto.BTC/USD"),
-    }}
+  keyValues={{
+    updateData: (ctx) => ctx.getLatestVaa("Crypto.BTC/USD"),
+  }}
 >
-    Latest BTC/USD update data
+  Latest BTC/USD update data
 </Example>
 
 <EvmCall
-    functionName="getUpdateFee"
-    buildArguments={(kvs) => [[kvs["updateData"]]]}
+  functionName="getUpdateFee"
+  buildArguments={(kvs) => [[kvs["updateData"]]]}
 />
 
 ## Example Code
@@ -77,4 +77,5 @@ Examples:
             ```
         </DynamicCode>
     </Tab>
+
 </Tabs>

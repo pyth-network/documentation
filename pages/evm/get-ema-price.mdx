@@ -31,18 +31,18 @@ reading it. This step ensures that the on-chain price is fresh.
 Examples:
 
 <Example
-    keyValues={{
-        id: (ctx) => ctx.getFeedId("Crypto.BTC/USD"),
-    }}
+  keyValues={{
+    id: (ctx) => ctx.getFeedId("Crypto.BTC/USD"),
+  }}
 >
-    BTC/USD
+  BTC/USD
 </Example>
 <Example
-    keyValues={{
-        id: (ctx) => ctx.getFeedId("Crypto.ETH/USD"),
-    }}
+  keyValues={{
+    id: (ctx) => ctx.getFeedId("Crypto.ETH/USD"),
+  }}
 >
-    ETH/USD
+  ETH/USD
 </Example>
 
 <EvmCall functionName="getEmaPrice" buildArguments={(kvs) => [kvs["id"]]} />
@@ -93,4 +93,5 @@ Examples:
         </DynamicCode>
 
     </Tab>
+
 </Tabs>
