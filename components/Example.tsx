@@ -65,14 +65,16 @@ export class ExampleRenderingContext {
     return KnownFeedIds[this.networkType][symbolName];
   }
 
-  public async getLatestVaa(symbolName: string): Promise<string> {
+  public async getLatestPriceFeed(symbolName: string): Promise<any> {
     const feedId = this.getFeedId(symbolName);
 
     const endpoint: string = `${
       PriceServiceUrls[this.networkType]
     }/api/latest_price_feeds`;
-    const result = await fetch(`${endpoint}?ids[]=${feedId}&target_chain=evm`);
-    return (await result.json())[0].vaa as string;
+    const result = await (
+      await fetch(`${endpoint}?ids[]=${feedId}&target_chain=evm`)
+    ).json();
+    return result[0];
   }
 
   public async getUpdateFee(vaas: string[]): Promise<string> {

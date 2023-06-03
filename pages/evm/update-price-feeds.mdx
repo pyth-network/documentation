@@ -8,10 +8,16 @@ import { Tab, Tabs } from "nextra-theme-docs";
 
 # Update Price Feeds
 
-**updatePriceFeeds(updateData: bytes[])**
+Update the on-chain price feeds using the provided `updateData`, which contains serialized and signed price update data from Pyth Network.
+You can retrieve the latest price `updateData` for a given set of price feeds from the price service API.
+This function updates the on-chain price if the provided update is more recent than the current on-chain price.
+Otherwise, the provided update will be ignored.
+The function call will succeed even if the update is ignored.
 
-Update the on-chain price feeds using the provided data payloads.
-You can retrieve these data payloads using the Price Service API.
+This function requires the caller to pay a fee to perform the update.
+The required fee for a given set of updates can be computed by passing them to [getUpdateFee](get-update-fee).
+
+Reverts if the required fee is not paid, or the `updateData` is incorrectly signed or formatted.
 
 | Argument                                           |                                                       | Description                                                              |
 | -------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------ |
@@ -20,13 +26,14 @@ You can retrieve these data payloads using the Price Service API.
 
 <Example
   keyValues={{
-    updateData: (ctx) => ctx.getLatestVaa("Crypto.BTC/USD"),
-    fee: (ctx) => {
+    updateData: async (ctx) =>
+      (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
+    fee: async (ctx) => {
       // NOTE: this technically could get the update fee for a different VAA than the one above.
       // This shouldn't affect the update fee as long as the fee is only dependent on the price feed ids
       // and not the specific content of the price update.
-      let vaa = ctx.getLatestVaa("Crypto.BTC/USD");
-      return ctx.getUpdateFee([vaa]);
+      let vaa = (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa;
+      return await ctx.getUpdateFee([vaa]);
     },
   }}
 >
@@ -42,51 +49,53 @@ You can retrieve these data payloads using the Price Service API.
 ## Example Code
 
 <Tabs items={['Solidity', 'ethers.js v6']}>
-  <Tab>
+    <Tab>
+        <DynamicCode targets={{
+            "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+            "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
+            "2": (ctx) => ctx.get("fee", "<fee>"),
+        }}>
+            ```solidity
+            import "pyth-sdk-solidity/IPyth.sol";
+            import "pyth-sdk-solidity/PythStructs.sol";
 
-      <DynamicCode targets={{
-          "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
-          "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
-          "2": (ctx) => ctx.get("fee", "<fee>"),
-      }}>
-          ```solidity
-          import "pyth-sdk-solidity/IPyth.sol";
-          import "pyth-sdk-solidity/PythStructs.sol";
+            // NETWORK_NAME
+            address contractAddress = 0x0000000000000000000000000000000000000000;
+            IPyth pyth = IPyth(contractAddress);
 
-          address contractAddress = 0x0000000000000000000000000000000000000000;
-          IPyth pyth = IPyth(contractAddress);
+            bytes[] memory updateData = new bytes[](1);
+            updateData[0] = hex"11";
+            uint fee = 2;
+            pyth.updatePriceFeeds{value: fee}(updateData);
+            ```
+        </DynamicCode>
+    </Tab>
 
-          bytes[] memory updateData = new bytes[](1);
-          updateData[0] = hex"11";
+    <Tab>
+        <DynamicCode targets={{
+            "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+            "'RPC_URL'": (ctx) => ctx.evmConfig.info.rpcUrls.length > 0 ? `'${ctx.evmConfig.info.rpcUrls[0]}'` : 'RPC_URL',
+            "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
+            "2": (ctx) => ctx.get("fee", "<fee>")
+        }}>
+            ```typescript
+            import { ethers } from "ethers";
+            import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 
-          uint fee = 2;
-          pyth.updatePriceFeeds{value: fee}(updateData);
-          ```
-      </DynamicCode>
+            // NETWORK_NAME
+            const contractAddress = '0x0000';
+            const provider = ethers.getDefaultProvider('RPC_URL');
+            const contract = new ethers.Contract(contractAddress, PythAbi, provider);
 
-  </Tab>
+            const fee = ethers.toBigInt(2)
 
-  <Tab>
-      <DynamicCode targets={{
-          "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
-          "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
-          "2": (ctx) => ctx.get("fee", "<fee>")
-      }}>
-          ```typescript
-          import { ethers } from "ethers";
+            const updateData = ['0x1111'];
+            const tx = await contract.updatePriceFeeds(updateData, {value: fee});
+            const receipt = await tx.wait();
+            ```
+        </DynamicCode>
+    </Tab>
 
-          const contractAddress = '0x0000';
-          const pythAbi = require('./abis/IPyth.json');
-          const provider = ethers.getDefaultProvider("YOUR_RPC_URL");
-          const contract = new ethers.Contract(contractAddress, pythAbi, provider);
-
-          const fee = ethers.toBigInt(2)
-
-          const updateData = ['0x1111'];
-          const tx = await contract.updatePriceFeeds(updateData, {value: fee});
-          const receipt = await tx.wait();
-          ```
-      </DynamicCode>
-
-  </Tab>
 </Tabs>

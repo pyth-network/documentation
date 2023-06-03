@@ -9,8 +9,6 @@ import { Tab, Tabs } from "nextra-theme-docs";
 
 # Get Price
 
-**getPrice(id)**
-
 Get the latest price and confidence interval for the requested price feed id.
 The price feed id is a 32-byte id written as a hexadecimal string; see the [price feed ids](https://pyth.network/developers/price-feed-ids) page to look up the id for a given symbol.
 The returned price and confidence are decimal numbers written in the form `a * 10^e`, where `e` is an exponent included in the result.
@@ -61,11 +59,11 @@ Examples:
       import "pyth-sdk-solidity/IPyth.sol";
       import "pyth-sdk-solidity/PythStructs.sol";
 
-      // Sample code for
       // NETWORK_NAME
       address contractAddress = 0x0000000000000000000000000000000000000000;
-      bytes32 priceId = 0x1111111111111111111111111111111111111111111111111111111111111111;
       IPyth pyth = IPyth(contractAddress);
+
+      bytes32 priceId = 0x1111111111111111111111111111111111111111111111111111111111111111;
       PythStructs.Price memory currentBasePrice = pyth.getPrice(priceId);
       ```
     </DynamicCode>
@@ -76,14 +74,17 @@ Examples:
     <DynamicCode targets={{
         "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
         "'0x1111'": (ctx) => `'${ctx.get("id", "<id>")}'`,
+        "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+        "'RPC_URL'": (ctx) => ctx.evmConfig.info.rpcUrls.length > 0 ? `'${ctx.evmConfig.info.rpcUrls[0]}'` : 'RPC_URL',
     }}>
       ```typescript
       import { ethers } from "ethers";
+      import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 
+      // NETWORK_NAME
       const contractAddress = '0x0000';
-      const pythAbi = require('../abis/IPyth.json');
-      const provider = ethers.getDefaultProvider("YOUR_RPC_URL");
-      const contract = new ethers.Contract(contractAddress, pythAbi, provider);
+      const provider = ethers.getDefaultProvider('RPC_URL');
+      const contract = new ethers.Contract(contractAddress, PythAbi, provider);
 
       const priceId = '0x1111';
       const [price, conf, expo, timestamp] = await contract.getPrice(priceId);
