@@ -14,6 +14,10 @@ const config: DocsThemeConfig = {
   footer: {
     text: "Pyth Network Documentation",
   },
+  darkMode: false,
+  nextThemes: {
+    forcedTheme: "dark",
+  },
 };
 
 export default config;

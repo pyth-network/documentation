@@ -49,8 +49,12 @@ button {
   margin: 12px 0 0;
 }
 
-.api-params pre {
+.response {
   border: 1px solid grey;
+  padding: 5px;
+}
+
+.response pre {
 }
 
 .api-params .response {
@@ -75,4 +79,13 @@ button {
     0.5
   ); /* Set the background color with transparency */
   z-index: 1; /* Set the pseudo-element's z-index lower than the element */
+}
+
+.examples {
+  margin-top: 8px;
+}
+
+.button {
+  padding: 1px 4px 1px 4px;
+  margin-right: 3px;
 }

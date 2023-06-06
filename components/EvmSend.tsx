@@ -73,11 +73,14 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
         setIsStale(false);
       } else {
         try {
+          console.log("trying to send tx");
           const tx = await contractWithSigner[functionName](
             ...args,
             extraArguments
           );
+          console.log("awaiting response");
           const receipt = await tx.wait();
+          console.log("got response");
           const responseString = JSON.stringify(receipt);
           setResponse(responseString);
           setIsStale(false);

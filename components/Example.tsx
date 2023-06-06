@@ -45,7 +45,11 @@ const Example = ({ keyValues, children }: ExampleProps) => {
     helper();
   };
 
-  return <button onClick={handleClick}>{children}</button>;
+  return (
+    <button className={"example button"} onClick={handleClick}>
+      {children}
+    </button>
+  );
 };
 
 export default Example;

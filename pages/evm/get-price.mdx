@@ -2,6 +2,7 @@ import Input from "../../components/Input";
 import Arg from "../../components/Arg";
 import { InputFormats } from "../../utils/InputFormat";
 import Example from "../../components/Example";
+import Examples from "../../components/Examples";
 import DynamicCode from "../../components/DynamicCode";
 import DisplayKeyValueStore from "../../components/DisplayKeyValueStore";
 import EvmCall from "../../components/EvmCall";
@@ -27,22 +28,22 @@ reading it. This step ensures that the on-chain price is fresh.
 | ---------------------------------------- | --------------------------------------------- | ----------------------------------------- |
 | <Arg required={true} type="hex">id</Arg> | <Input id="id" format={InputFormats.ZeroX} /> | The ID of the price feed you want to read |
 
-Examples:
-
-<Example
-  keyValues={{
-    id: (ctx) => ctx.getFeedId("Crypto.BTC/USD"),
-  }}
->
-  BTC/USD
-</Example>
-<Example
-  keyValues={{
-    id: (ctx) => ctx.getFeedId("Crypto.ETH/USD"),
-  }}
->
-  ETH/USD
-</Example>
+<Examples>
+  <Example
+    keyValues={{
+      id: (ctx) => ctx.getFeedId("Crypto.BTC/USD"),
+    }}
+  >
+    BTC/USD
+  </Example>
+  <Example
+    keyValues={{
+      id: (ctx) => ctx.getFeedId("Crypto.ETH/USD"),
+    }}
+  >
+    ETH/USD
+  </Example>
+</Examples>
 
 <EvmCall functionName="getPrice" buildArguments={(kvs) => [kvs["id"]]} />
 

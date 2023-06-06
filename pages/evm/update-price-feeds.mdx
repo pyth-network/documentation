@@ -2,6 +2,7 @@ import Input from "../../components/Input";
 import Arg from "../../components/Arg";
 import { InputFormats } from "../../utils/InputFormat";
 import Example from "../../components/Example";
+import Examples from "../../components/Examples";
 import DynamicCode from "../../components/DynamicCode";
 import EvmSend from "../../components/EvmSend";
 import { Tab, Tabs } from "nextra-theme-docs";
@@ -24,21 +25,23 @@ Reverts if the required fee is not paid, or the `updateData` is incorrectly sign
 | <Arg required={true} type="hex[]">updateData</Arg> | <Input id="updateData" format={InputFormats.ZeroX} /> | The price update data for the contract to verify.                        |
 | <Arg required={true} type="wei">fee</Arg>          | <Input id="fee" format={InputFormats.BigInt}/>        | The update fee in wei. This fee is sent as the value of the transaction. |
 
-<Example
-  keyValues={{
-    updateData: async (ctx) =>
-      (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
-    fee: async (ctx) => {
-      // NOTE: this technically could get the update fee for a different VAA than the one above.
-      // This shouldn't affect the update fee as long as the fee is only dependent on the price feed ids
-      // and not the specific content of the price update.
-      let vaa = (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa;
-      return await ctx.getUpdateFee([vaa]);
-    },
-  }}
->
-  Latest BTC/USD update data
-</Example>
+<Examples>
+  <Example
+    keyValues={{
+      updateData: async (ctx) =>
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
+      fee: async (ctx) => {
+        // NOTE: this technically could get the update fee for a different VAA than the one above.
+        // This shouldn't affect the update fee as long as the fee is only dependent on the price feed ids
+        // and not the specific content of the price update.
+        let vaa = (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa;
+        return await ctx.getUpdateFee([vaa]);
+      },
+    }}
+  >
+    Latest BTC/USD update data
+  </Example>
+</Examples>
 
 <EvmSend
   functionName="updatePriceFeeds"

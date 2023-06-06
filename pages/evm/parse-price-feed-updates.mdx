@@ -2,6 +2,7 @@ import Input from "../../components/Input";
 import Arg from "../../components/Arg";
 import { InputFormats } from "../../utils/InputFormat";
 import Example from "../../components/Example";
+import Examples from "../../components/Examples";
 import DynamicCode from "../../components/DynamicCode";
 import EvmSend from "../../components/EvmSend";
 import { Tab, Tabs } from "nextra-theme-docs";
@@ -26,26 +27,28 @@ contain an update for any of the given `priceIds` within the given time range.
 | <Arg required={true} type="uint64">maxPublishTime</Arg> | <Input id="maxPublishTime" format={InputFormats.BigInt} /> | The maximum timestamp for each returned feed.                            |
 | <Arg required={true} type="wei">fee</Arg>               | <Input id="fee" format={InputFormats.BigInt}/>             | The update fee in wei. This fee is sent as the value of the transaction. |
 
-<Example
-  keyValues={{
-    updateData: async (ctx) =>
-      (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
-    priceId: (ctx) => ctx.getFeedId("Crypto.BTC/USD"),
-    minPublishTime: async (ctx) =>
-      (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).price.publish_time - 5,
-    maxPublishTime: async (ctx) =>
-      (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).price.publish_time + 5,
-    fee: async (ctx) => {
-      let vaa = (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa;
-      return await ctx.getUpdateFee([vaa]);
-    },
-  }}
->
-  Latest BTC/USD update data
-</Example>
+<Examples>
+  <Example
+    keyValues={{
+      updateData: async (ctx) =>
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
+      priceId: (ctx) => ctx.getFeedId("Crypto.BTC/USD"),
+      minPublishTime: async (ctx) =>
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).price.publish_time - 5,
+      maxPublishTime: async (ctx) =>
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).price.publish_time + 5,
+      fee: async (ctx) => {
+        let vaa = (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa;
+        return await ctx.getUpdateFee([vaa]);
+      },
+    }}
+  >
+    Latest BTC/USD update data
+  </Example>
+</Examples>
 
 <EvmSend
-  functionName="updatePriceFeedsIfNecessary"
+  functionName="parsePriceFeedUpdates"
   buildArguments={(kvs) => [
     [kvs["updateData"]],
     [kvs["priceId"]],
