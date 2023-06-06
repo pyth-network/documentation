@@ -55,6 +55,10 @@ button {
 }
 
 .response pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    Liberation Mono, Courier New, monospace;
+  font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+  line-height: 1.25rem;
 }
 
 .api-params .response {

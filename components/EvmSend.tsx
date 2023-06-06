@@ -73,19 +73,24 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
         setIsStale(false);
       } else {
         try {
-          console.log("trying to send tx");
           const tx = await contractWithSigner[functionName](
             ...args,
             extraArguments
           );
-          console.log("awaiting response");
           const receipt = await tx.wait();
-          console.log("got response");
           const responseString = JSON.stringify(receipt);
           setResponse(responseString);
           setIsStale(false);
         } catch (error) {
-          setResponse(error.toString());
+          // MetaMask RPC errors show up in this field of the response
+          const metamaskError = error.info?.error?.message;
+          if (metamaskError !== undefined) {
+            const errorDetails = error.info?.error?.data?.message;
+            setResponse(`${metamaskError}\n${errorDetails}`);
+          } else {
+            error.toString();
+          }
+
           setIsStale(false);
         }
       }
