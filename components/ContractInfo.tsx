@@ -29,7 +29,9 @@ const ContractInfo = () => {
 
   return (
     <div>
-      Connected to the <EvmNetworkSelector /> network.
+      <p>
+        Contract configuration for the <EvmNetworkSelector /> network:
+      </p>
       <table>
         <tbody>
           <tr>

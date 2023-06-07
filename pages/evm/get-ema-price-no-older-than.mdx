@@ -5,6 +5,7 @@ import DynamicCode from "../../components/DynamicCode";
 import DisplayKeyValueStore from "../../components/DisplayKeyValueStore";
 import EvmCall from "../../components/EvmCall";
 import { Tab, Tabs } from "nextra-theme-docs";
+import Examples from "../../components/Examples";
 
 # Get EMA Price No Older Than
 
@@ -26,24 +27,24 @@ reading it. This step ensures that the on-chain price is fresh and the call does
 | <Arg required={true} type="hex">id</Arg>  | <Input id="id" />  | The ID of the price feed you want to read     |
 | <Arg required={true} type="int">age</Arg> | <Input id="age" /> | Maximum age of the on-chain price in seconds. |
 
-Examples:
-
-<Example
-  keyValues={{
-    id: (ctx) => ctx.getFeedId("Crypto.BTC/USD"),
-    age: () => 60,
-  }}
->
-  BTC/USD
-</Example>
-<Example
-  keyValues={{
-    id: (ctx) => ctx.getFeedId("Crypto.ETH/USD"),
-    age: () => 60,
-  }}
->
-  ETH/USD
-</Example>
+<Examples>
+  <Example
+    keyValues={{
+      id: (ctx) => ctx.getFeedId("Crypto.BTC/USD"),
+      age: () => 60,
+    }}
+  >
+    BTC/USD
+  </Example>
+  <Example
+    keyValues={{
+      id: (ctx) => ctx.getFeedId("Crypto.ETH/USD"),
+      age: () => 60,
+    }}
+  >
+    ETH/USD
+  </Example>
+</Examples>
 
 <EvmCall
   functionName="getEmaPriceNoOlderThan"

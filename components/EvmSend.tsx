@@ -82,7 +82,15 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
           setResponse(responseString);
           setIsStale(false);
         } catch (error) {
-          setResponse(error.toString());
+          // MetaMask RPC errors show up in this field of the response
+          const metamaskError = error.info?.error?.message;
+          if (metamaskError !== undefined) {
+            const errorDetails = error.info?.error?.data?.message;
+            setResponse(`${metamaskError}\n${errorDetails}`);
+          } else {
+            error.toString();
+          }
+
           setIsStale(false);
         }
       }

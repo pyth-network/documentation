@@ -49,8 +49,16 @@ button {
   margin: 12px 0 0;
 }
 
-.api-params pre {
+.response {
   border: 1px solid grey;
+  padding: 5px;
+}
+
+.response pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    Liberation Mono, Courier New, monospace;
+  font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+  line-height: 1.25rem;
 }
 
 .api-params .response {
@@ -75,4 +83,13 @@ button {
     0.5
   ); /* Set the background color with transparency */
   z-index: 1; /* Set the pseudo-element's z-index lower than the element */
+}
+
+.examples {
+  margin-top: 8px;
+}
+
+.button {
+  padding: 1px 4px 1px 4px;
+  margin-right: 3px;
 }

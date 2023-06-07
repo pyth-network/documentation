@@ -4,8 +4,8 @@
     "type": "separator"
   },
   "introduction": "",
-  "configuration": "",
   "sdks": "SDKs",
+  "configuration": "Contract Configuration",
   "--- Methods": {
     "title": "Methods",
     "type": "separator"

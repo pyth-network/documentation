@@ -2,6 +2,7 @@ import Input from "../../components/Input";
 import Arg from "../../components/Arg";
 import { InputFormats } from "../../utils/InputFormat";
 import Example from "../../components/Example";
+import Examples from "../../components/Examples";
 import DynamicCode from "../../components/DynamicCode";
 import EvmCall from "../../components/EvmCall";
 import { Tab, Tabs } from "nextra-theme-docs";
@@ -16,15 +17,16 @@ The `updateData` can be retrieved from the price service API.
 | -------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | <Arg required={true} type="hex[]">updateData</Arg> | <Input id="updateData" format={InputFormats.ZeroX}/> | The price updates that you would like to submit to [updatePriceFeeds](update-price-feeds) |
 
-Examples:
-
-<Example
-  keyValues={{
-    updateData: (ctx) => ctx.getLatestVaa("Crypto.BTC/USD"),
-  }}
->
-  Latest BTC/USD update data
-</Example>
+<Examples>
+  <Example
+    keyValues={{
+      updateData: async (ctx) =>
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
+    }}
+  >
+    Latest BTC/USD update data
+  </Example>
+</Examples>
 
 <EvmCall
   functionName="getUpdateFee"

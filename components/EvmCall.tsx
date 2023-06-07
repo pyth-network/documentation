@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { isError, Result } from "ethers";
 import { useGlobalContext } from "../contexts/GlobalContext";
+import EvmNetworkSelector from "./EvmNetworkSelector";
 
 interface EvmCallProps {
   functionName: string;
@@ -28,7 +29,7 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
 
   useEffect(() => {
     setIsStale(true);
-  }, [keyValueStore]);
+  }, [keyValueStore, pythContract]);
 
   const sendTransaction = async () => {
     const args: any[] | undefined = buildArguments(keyValueStore);
@@ -62,14 +63,12 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
     }
   };
 
-  const clearResponse = async () => {
-    setResponse(undefined);
-  };
-
   return (
     <div className={"api-params"}>
-      <button onClick={sendTransaction}>Execute</button>
-      <button onClick={clearResponse}>Clear</button>
+      <button className={"button"} onClick={sendTransaction}>
+        Execute
+      </button>
+      this query on the <EvmNetworkSelector /> network{" "}
       {response !== undefined ? (
         <div className={"response " + (isStale ? "stale" : "")}>
           <p>{responsePreface}</p>
