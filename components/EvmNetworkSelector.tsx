@@ -17,6 +17,7 @@ const EvmNetworkSelector = () => {
     <select
       value={networkName}
       onChange={(event) => setNetworkName(event.target.value)}
+      className={"network-selector"}
     >
       {networkNames.map((networkName) => (
         <option key={networkName} value={networkName}>

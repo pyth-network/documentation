@@ -85,11 +85,32 @@ button {
   z-index: 1; /* Set the pseudo-element's z-index lower than the element */
 }
 
-.examples {
+.examples-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px 0px;
+}
+
+.examples-box h4 {
+  font-weight: bold;
+  display: inline;
+  padding: 10px 10px 10px 0px;
   margin-top: 8px;
 }
 
 .button {
-  padding: 1px 4px 1px 4px;
+  padding: 4px 8px 4px 8px;
   margin-right: 3px;
+  border-radius: 0;
+}
+
+:is(table[class~="nx-block"]) {
+  table-layout: auto;
+  display: table;
+  width: 100%;
+}
+
+.network-selector {
+  padding: 4px 8px 4px 8px;
 }
