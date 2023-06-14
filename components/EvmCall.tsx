@@ -63,17 +63,37 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
     }
   };
 
+  const clearResponse = async () => {
+    setResponsePreface("");
+    setResponse(undefined);
+  };
+
   return (
     <div className={"api-params"}>
       <button className={"button"} onClick={sendTransaction}>
         Execute Query
       </button>
+      <button className={"button"} onClick={clearResponse}>
+        Clear
+      </button>
       {response !== undefined ? (
         <div>
-          <h3>Result</h3>
+          <h3
+            className={
+              "nx-font-semibold nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-8 nx-text-2xl"
+            }
+          >
+            Response
+          </h3>
           <div className={"response " + (isStale ? "stale" : "")}>
             <p>{responsePreface}</p>
-            <pre>{response}</pre>
+            <pre
+              className={
+                "nx-bg-primary-700/5 nx-mb-4 nx-overflow-x-auto nx-rounded-xl nx-font-medium nx-subpixel-antialiased dark:nx-bg-primary-300/10 nx-text-[.9em] contrast-more:nx-border contrast-more:nx-border-primary-900/20 contrast-more:nx-contrast-150 contrast-more:dark:nx-border-primary-100/40 nx-py-4"
+              }
+            >
+              {response}
+            </pre>
           </div>
         </div>
       ) : (

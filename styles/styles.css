@@ -49,20 +49,8 @@ button {
   margin: 12px 0 0;
 }
 
-.response {
-  border: 1px solid grey;
-  padding: 5px;
-}
-
-.response pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    Liberation Mono, Courier New, monospace;
-  font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
-  line-height: 1.25rem;
-}
-
-.api-params .response {
-  margin: 20px 0 0 0;
+.api-params .response p {
+  margin: 5px 0 10px 0;
 }
 
 .stale {
@@ -113,4 +101,8 @@ button {
 
 .network-selector {
   padding: 4px 8px 4px 8px;
+}
+
+.api-params {
+  margin: 15px 0px;
 }
