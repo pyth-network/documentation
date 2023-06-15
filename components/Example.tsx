@@ -46,7 +46,7 @@ const Example = ({ keyValues, children }: ExampleProps) => {
   };
 
   return (
-    <button className={"example button"} onClick={handleClick}>
+    <button className="mx-1" onClick={handleClick}>
       {children}
     </button>
   );

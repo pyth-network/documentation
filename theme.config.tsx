@@ -1,8 +1,9 @@
 import { DocsThemeConfig } from "nextra-theme-docs";
+import Logo from "./components/Logo";
 
 // TODO: populate this properly
 const config: DocsThemeConfig = {
-  logo: <span>Pyth Network Documentation</span>,
+  logo: <Logo />,
   project: {
     link: "https://github.com/pyth-network/",
   },

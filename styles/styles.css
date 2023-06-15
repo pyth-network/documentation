@@ -16,6 +16,14 @@
   p {
     @apply text-base16 tracking-[0.06em] text-light;
   }
+
+  button {
+    @apply relative inline-block rounded-lg py-1 px-2 text-sm transition-all bg-[#282639]  ;
+  }
+}
+
+.nx-bg-neutral-800 {
+  @apply bg-darkBlue;
 }
 
 .nx-text-primary-600 {
@@ -36,6 +44,49 @@ html[class~="dark"] .dark\:nx-shadow-\[0_-12px_16px_\#111\] {
 
 html[class~="dark"] .dark\:nx-border-neutral-800 {
   @apply border-light;
+}
+
+html[class~="dark"] .dark\:nx-text-gray-400 {
+  @apply text-light;
+}
+
+/* Header menu */
+html[class~="dark"] .dark\:nx-bg-neutral-800 {
+  @apply bg-dark;
+}
+
+html[class~="dark"] .dark\:nx-ring-white\/20 {
+  @apply ring-light;
+}
+
+/* Footer */
+html[class~="dark"] .dark\:nx-bg-neutral-900 {
+  @apply bg-dark;
+}
+
+html[class~="dark"] .dark\:nx-border-neutral-800 {
+  @apply border-[#292739];
+}
+
+/* Sidebar */
+html[class~="dark"] .dark\:nx-text-primary-600 {
+  @apply text-light font-header font-semibold;
+}
+
+html[class~="dark"] .dark\:nx-text-neutral-500 {
+  @apply text-light font-header font-light;
+}
+
+html[class~="dark"] .dark\:hover\:nx-text-gray-50:hover {
+  @apply text-light;
+}
+
+input {
+  @apply bg-[#282639];
+}
+
+select {
+  @apply bg-[#282639];
 }
 
 .api-params table {
@@ -80,12 +131,6 @@ th {
   color: red;
 }
 
-button {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 2px 6px;
-}
-
 .response {
   border: 1px solid grey;
   padding: 5px;
@@ -124,9 +169,7 @@ button {
 
 .examples {
   margin-top: 8px;
+  margin-bottom: 8px;
 }
 
-.button {
-  padding: 1px 4px 1px 4px;
-  margin-right: 3px;
-}
+
