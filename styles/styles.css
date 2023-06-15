@@ -18,7 +18,7 @@
   }
 
   button {
-    @apply relative inline-block rounded-lg py-1 px-2 text-sm transition-all bg-[#282639]  ;
+    @apply relative inline-block rounded-lg py-1 px-2 text-sm transition-all bg-[#282639];
   }
 }
 
@@ -171,5 +171,3 @@ th {
   margin-top: 8px;
   margin-bottom: 8px;
 }
-
-
