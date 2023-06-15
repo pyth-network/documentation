@@ -1,4 +1,42 @@
-/* styles.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-darkBlue font-body text-light !important;
+  }
+}
+
+@layer components {
+  h1 {
+    @apply text-5xl tracking-[0.01em] font-header font-light leading-[52px] text-light !important;
+  }
+
+  p {
+    @apply text-base16 tracking-[0.06em] text-light;
+  }
+}
+
+.nx-text-primary-600 {
+  @apply text-light font-semibold;
+}
+
+html[class~="dark"] .nextra-nav-container-blur {
+  @apply bg-dark text-light !important;
+}
+
+html[class~="dark"] .dark\:nx-bg-dark {
+  @apply bg-darkBlue text-light;
+}
+
+html[class~="dark"] .dark\:nx-shadow-\[0_-12px_16px_\#111\] {
+  @apply shadow-none;
+}
+
+html[class~="dark"] .dark\:nx-border-neutral-800 {
+  @apply border-light;
+}
 
 .api-params table {
   width: 100%;
@@ -46,7 +84,6 @@ button {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 2px 6px;
-  margin: 12px 0 0;
 }
 
 .response {
