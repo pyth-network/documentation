@@ -1,4 +1,93 @@
-/* styles.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-darkBlue font-body text-light !important;
+  }
+}
+
+@layer components {
+  h1 {
+    @apply text-5xl tracking-[0.01em] font-header font-light leading-[52px] text-light !important;
+  }
+
+  p {
+    @apply text-base16 tracking-[0.06em] text-light;
+  }
+
+  button {
+    @apply relative inline-block rounded-lg py-1 px-2 text-sm transition-all bg-[#282639];
+  }
+}
+
+.nx-bg-neutral-800 {
+  @apply bg-darkBlue;
+}
+
+.nx-text-primary-600 {
+  @apply text-light font-semibold;
+}
+
+html[class~="dark"] .nextra-nav-container-blur {
+  @apply bg-dark text-light !important;
+}
+
+html[class~="dark"] .dark\:nx-bg-dark {
+  @apply bg-darkBlue text-light;
+}
+
+html[class~="dark"] .dark\:nx-shadow-\[0_-12px_16px_\#111\] {
+  @apply shadow-none;
+}
+
+html[class~="dark"] .dark\:nx-border-neutral-800 {
+  @apply border-light;
+}
+
+html[class~="dark"] .dark\:nx-text-gray-400 {
+  @apply text-light;
+}
+
+/* Header menu */
+html[class~="dark"] .dark\:nx-bg-neutral-800 {
+  @apply bg-dark;
+}
+
+html[class~="dark"] .dark\:nx-ring-white\/20 {
+  @apply ring-light;
+}
+
+/* Footer */
+html[class~="dark"] .dark\:nx-bg-neutral-900 {
+  @apply bg-dark;
+}
+
+html[class~="dark"] .dark\:nx-border-neutral-800 {
+  @apply border-[#292739];
+}
+
+/* Sidebar */
+html[class~="dark"] .dark\:nx-text-primary-600 {
+  @apply text-light font-header font-semibold;
+}
+
+html[class~="dark"] .dark\:nx-text-neutral-500 {
+  @apply text-light font-header font-light;
+}
+
+html[class~="dark"] .dark\:hover\:nx-text-gray-50:hover {
+  @apply text-light;
+}
+
+input {
+  @apply bg-[#282639];
+}
+
+select {
+  @apply bg-[#282639];
+}
 
 .api-params table {
   width: 100%;
@@ -42,13 +131,6 @@ th {
   color: red;
 }
 
-button {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 2px 6px;
-  margin: 12px 0 0;
-}
-
 .response {
   border: 1px solid grey;
   padding: 5px;
@@ -87,9 +169,5 @@ button {
 
 .examples {
   margin-top: 8px;
-}
-
-.button {
-  padding: 1px 4px 1px 4px;
-  margin-right: 3px;
+  margin-bottom: 8px;
 }

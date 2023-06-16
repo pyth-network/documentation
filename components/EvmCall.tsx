@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { isError, Result } from "ethers";
+import { Result, isError } from "ethers";
+import { useEffect, useState } from "react";
 import { useGlobalContext } from "../contexts/GlobalContext";
 import EvmNetworkSelector from "./EvmNetworkSelector";
 
@@ -65,7 +65,7 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
 
   return (
     <div className={"api-params"}>
-      <button className={"button"} onClick={sendTransaction}>
+      <button className="mr-1" onClick={sendTransaction}>
         Execute
       </button>
       this query on the <EvmNetworkSelector /> network{" "}
