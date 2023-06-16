@@ -70,7 +70,7 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
           className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF] my-4"
           onClick={sendTransaction}
         >
-          execute this query
+          execute query
         </button>
         <EvmNetworkSelector />
       </div>
