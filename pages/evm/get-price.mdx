@@ -33,16 +33,14 @@ reading it. This step ensures that the on-chain price is fresh.
     keyValues={{
       id: (ctx) => ctx.getFeedId("Crypto.BTC/USD"),
     }}
-  >
-    BTC/USD
-  </Example>
+    value="BTC/USD"
+  />
   <Example
     keyValues={{
       id: (ctx) => ctx.getFeedId("Crypto.ETH/USD"),
     }}
-  >
-    ETH/USD
-  </Example>
+    value="ETH/USD"
+  />
 </Examples>
 
 <EvmCall functionName="getPrice" buildArguments={(kvs) => [kvs["id"]]} />

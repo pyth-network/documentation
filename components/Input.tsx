@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useGlobalContext } from "../contexts/GlobalContext";
 import { InputFormat } from "../utils/InputFormat";
 
@@ -45,7 +45,7 @@ const Input = ({ id, format }: InputProps) => {
         name={id}
         value={keyValueStore[id] ? keyValueStore[id] : ""}
         onChange={(e) => handleQueryChange(id, e.target.value)}
-        className={"input-box"}
+        className="w-full"
       />
       <p className={"input-error"}>{errorMessage}</p>
     </div>

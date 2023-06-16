@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { ethers } from "ethers";
 import detectEthereumProvider from "@metamask/detect-provider";
+import { ethers } from "ethers";
+import { useEffect, useState } from "react";
 import { useGlobalContext } from "../contexts/GlobalContext";
 
 interface EvmSendProps {
@@ -118,7 +118,12 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
           )}
         </div>
       ) : (
-        <button onClick={connectWallet}>Connect your wallet </button>
+        <button
+          className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF] my-4"
+          onClick={connectWallet}
+        >
+          connect wallet
+        </button>
       )}
     </div>
   );
