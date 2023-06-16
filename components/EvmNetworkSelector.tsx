@@ -38,7 +38,7 @@ const EvmNetworkSelector = () => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="absolute right-0 mt-2 w-full origin-top-right">
+            <Menu.Items className="absolute right-0 mt-2 w-full origin-top-right shadow-lg">
               {networkNames.map((n) => (
                 <Menu.Item key={n}>
                   <button
