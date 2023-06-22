@@ -64,11 +64,16 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
   };
 
   return (
-    <div className={"api-params"}>
-      <button className="mr-1" onClick={sendTransaction}>
-        Execute
-      </button>
-      this query on the <EvmNetworkSelector /> network{" "}
+    <div>
+      <div className="flex justify-between">
+        <button
+          className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF] my-4"
+          onClick={sendTransaction}
+        >
+          execute query
+        </button>
+        <EvmNetworkSelector />
+      </div>
       {response !== undefined ? (
         <div className={"response " + (isStale ? "stale" : "")}>
           <p>{responsePreface}</p>

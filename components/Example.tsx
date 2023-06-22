@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
 import { ethers } from "ethers";
+import { useMemo } from "react";
 import {
   NetworkType,
   PriceServiceUrls,
@@ -11,7 +11,7 @@ interface ExampleProps {
     string,
     (ExampleRenderingContext) => string | Promise<string>
   >;
-  children?: React.ReactNode;
+  value: string;
 }
 
 /**
@@ -22,7 +22,7 @@ interface ExampleProps {
  * The values of the keys are provided as functions from the current global state
  * to string values. This allows the values to depend on e.g., the currently chosen network.
  */
-const Example = ({ keyValues, children }: ExampleProps) => {
+const Example = ({ keyValues, value }: ExampleProps) => {
   const globalContext = useGlobalContext();
   const renderingContext = useMemo(
     () =>
@@ -46,8 +46,8 @@ const Example = ({ keyValues, children }: ExampleProps) => {
   };
 
   return (
-    <button className="mx-1" onClick={handleClick}>
-      {children}
+    <button className="bg-darkGray1 text-base text-light" onClick={handleClick}>
+      {value}
     </button>
   );
 };

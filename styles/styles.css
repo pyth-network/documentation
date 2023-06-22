@@ -13,12 +13,48 @@
     @apply text-5xl tracking-[0.01em] font-header font-light leading-[52px] text-light !important;
   }
 
+  h2 {
+    @apply text-light !important;
+  }
+
   p {
     @apply text-base16 tracking-[0.06em] text-light;
   }
 
   button {
-    @apply relative inline-block rounded-lg py-1 px-2 text-sm transition-all bg-[#282639];
+    @apply relative inline-block py-2 px-4 text-sm transition-all bg-[#282639] hover:bg-[#44415E];
+  }
+
+  ul {
+    @apply text-base16 tracking-[0.06em] text-light;
+  }
+
+  table {
+    @apply text-base16 tracking-[0.06em] text-light;
+  }
+
+  tr {
+    @apply border-b border-light bg-[#44415E];
+  }
+
+  th {
+    @apply bg-darkGray2 text-left py-2 px-4 !important;
+  }
+
+  td {
+    @apply py-2 px-4 !important;
+  }
+
+  input {
+    @apply bg-[#282639] p-2 font-semibold;
+  }
+
+  select {
+    @apply bg-[#282639];
+  }
+
+  table {
+    @apply w-full table !important;
   }
 }
 
@@ -81,12 +117,25 @@ html[class~="dark"] .dark\:hover\:nx-text-gray-50:hover {
   @apply text-light;
 }
 
-input {
-  @apply bg-[#282639];
+html[class~="dark"] .subheading-anchor:after {
+  @apply text-light;
 }
 
-select {
-  @apply bg-[#282639];
+html[class~="dark"] .even\:dark\:nx-bg-gray-600\/20:nth-child(even) {
+  @apply bg-[#44415E];
+}
+
+/* Sidebar Subheader */
+html[class~="dark"] .dark\:nx-text-gray-100 {
+  @apply text-light text-base16;
+}
+
+html[class~="dark"] .dark\:nx-text-gray-200 {
+  @apply text-light;
+}
+
+.nx-text-gray-500 {
+  @apply text-light;
 }
 
 .api-params table {
@@ -97,34 +146,8 @@ select {
   position: relative;
 }
 
-th,
-td {
-  text-align: left;
-  padding: 8px;
-}
-
-tr {
-  border-bottom: 1px solid #ccc;
-}
-
-th {
-  font-weight: bold;
-}
-
-.param-name {
-  font-weight: bold;
-}
-
-.param-type {
-  color: grey;
-}
-
 .required {
   color: red;
-}
-
-.input-box {
-  min-width: 200px;
 }
 
 .input-error {
@@ -165,9 +188,4 @@ th {
     0.5
   ); /* Set the background color with transparency */
   z-index: 1; /* Set the pseudo-element's z-index lower than the element */
-}
-
-.examples {
-  margin-top: 8px;
-  margin-bottom: 8px;
 }

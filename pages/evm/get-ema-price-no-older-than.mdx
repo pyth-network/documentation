@@ -33,17 +33,15 @@ reading it. This step ensures that the on-chain price is fresh and the call does
       id: (ctx) => ctx.getFeedId("Crypto.BTC/USD"),
       age: () => 60,
     }}
-  >
-    BTC/USD
-  </Example>
+    value="BTC/USD"
+  />
   <Example
     keyValues={{
       id: (ctx) => ctx.getFeedId("Crypto.ETH/USD"),
       age: () => 60,
     }}
-  >
-    ETH/USD
-  </Example>
+    value="ETH/USD"
+  />
 </Examples>
 
 <EvmCall

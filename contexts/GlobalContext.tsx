@@ -1,12 +1,12 @@
+import { ethers } from "ethers";
 import React, {
-  createContext,
   ReactNode,
+  createContext,
   useContext,
   useEffect,
-  useState,
   useMemo,
+  useState,
 } from "react";
-import { ethers } from "ethers";
 
 /** Global information available to all components on any page. */
 export interface GlobalContextData {

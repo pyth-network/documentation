@@ -29,26 +29,33 @@ const ContractInfo = () => {
 
   return (
     <div>
-      <p>
-        Contract configuration for the <EvmNetworkSelector /> network:
-      </p>
-      <table>
+      <EvmNetworkSelector />
+      <table className="w-full text-left">
         <tbody>
-          <tr>
-            <td>Contract address</td>
-            <td>{networkConfig.pythAddress}</td>
+          <tr
+            key="Contract Address"
+            className="border-t border-darkGray5 bg-darkGray border-none"
+          >
+            <td className="py-3 pl-6 pr-1 lg:pl-14">Contract Address</td>
+            <td className="py-3 pl-1 lg:pl-14">{networkConfig.pythAddress}</td>
           </tr>
-          <tr>
-            <td>Chain id</td>
-            <td> {networkConfig.info.chainId}</td>
+          <tr key="Chain ID" className="border-t border-darkGray5 bg-darkGray">
+            <td className="py-3 pl-6 pr-1 lg:pl-14">Chain ID</td>
+            <td className="py-3 pl-1 lg:pl-14">{networkConfig.info.chainId}</td>
           </tr>
-          <tr>
-            <td>Update fee</td>
-            <td> {fee}</td>
+          <tr
+            key="Update Fee"
+            className="border-t border-darkGray5 bg-darkGray"
+          >
+            <td className="py-3 pl-6 pr-1 lg:pl-14">Update Fee</td>
+            <td className="py-3 pl-1 lg:pl-14">{fee}</td>
           </tr>
-          <tr>
-            <td>Valid time period</td>
-            <td> {validTimePeriod}</td>
+          <tr
+            key="Valid Time Period"
+            className="border-t border-darkGray5 bg-darkGray border-none"
+          >
+            <td className="py-3 pl-6 pr-1 lg:pl-14">Valid Time Period</td>
+            <td className="py-3 pl-1 lg:pl-14">{validTimePeriod}</td>
           </tr>
         </tbody>
       </table>
