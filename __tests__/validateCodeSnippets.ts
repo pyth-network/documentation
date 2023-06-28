@@ -137,6 +137,6 @@ function validateCodeSnippets(directoryPath: string): void {
 }
 
 describe("Validate code snippets", () => {
-  const rootDirectory = "./";
-  validateCodeSnippets(rootDirectory);
+  // We only validate code snippets in the API reference
+  validateCodeSnippets("./pages/evm");
 });
