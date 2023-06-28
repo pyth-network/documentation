@@ -1,11 +1,9 @@
----
-description: Best Practices for using Pyth Price Feeds
----
+# Best Practices
 
 This page provides some technical details about Pyth price feeds that are necessary to use them safely and correctly.
 Please read this page before using Pyth price feeds in your application.
 
-# Price Feed Account IDs
+## Price Feed Account IDs
 
 Each Pyth Network price feed is stored in a Solana account and is uniquely identified by its corresponding Solana account key.
 Price feeds have different ids in mainnet than in testnet or devnet.
@@ -14,7 +12,7 @@ The [price feed ids page](https://pyth.network/developers/price-feed-ids#solana-
 To use a price feed on-chain, look up its id using this page, then store the feed id in your program.
 You should then pass in the corresponding Solana account to any instruction that requires the current price and validate in your program that the account key matches the stored price feed id.
 
-# Fixed-Point Numeric Representation
+## Fixed-Point Numeric Representation
 
 Price feeds represent numbers in a fixed-point format. The same exponent is used for both the price and confidence interval. The integer representation of these values can be computed by multiplying by `10^exponent`. As an example, imagine Pyth reported the following values for AAPL/USD:
 
@@ -26,7 +24,7 @@ Price feeds represent numbers in a fixed-point format. The same exponent is used
 
 The confidence interval is `1500 * 10^(-5) = $0.015`, and the price is `12276250 * 10^(-5) = $122.7625`.
 
-# Price Availability
+## Price Availability
 
 Sometimes, Pyth will not be able to provide a current price for a product.
 This situation can happen for various reasons.
@@ -51,7 +49,7 @@ Pyth price feeds follow the [traditional market hours](https://www.cmegroup.com/
 | FX          | From Sunday 5PM ET to Friday 5PM ET | Trading continues during most US holidays                                                                                        |
 | Metals      | From Sunday 5PM ET to Friday 5PM ET | Spot gold and silver trading also follow [CME holiday closures](https://www.cmegroup.com/tools-information/holiday-calendar.html)|
 
-# Latency
+## Latency
 
 Developers integrating Pyth Network price feeds should account for the difference in latency between on-chain oracles and off-chain sources (e.g. centralized exchanges).
 Although Pyth Network is designed with low latency in mind, no on-chain oracle can match the latency of an off-chain source due to the added overhead for consensus and security.
@@ -77,7 +75,7 @@ This analogy suggests two simple solutions to races:
    The protocol can require a short delay between the two transactions, and the user's request gets fulfilled at the Pyth price as of the second transaction.
    This technique gives the protocol extra time to observe price changes, giving it a head start in the latency race.
 
-# Confidence Intervals
+## Confidence Intervals
 
 At every point in time, Pyth publishes both a price and a confidence interval for each product. For example, Pyth may publish the current price of bitcoin as $50000 ± $10. Pyth publishes a confidence interval because, in real markets, there is _no one single price for a product_. For example, at any given time, bitcoin trades at different prices at different venues around the world. While these prices are typically similar, they can diverge for a number of reasons, such as when a cryptocurrency exchange blocks withdrawals on an asset. If this happens, prices diverge because arbitrageurs can no longer bring prices across exchanges into line. Alternatively, prices on different venues can differ simply because an asset is highly volatile at a particular point in time. At such times, bid/ask spreads tend to be wider, and trades on different markets at around the same time tend to occur at a wider range of prices.
 
