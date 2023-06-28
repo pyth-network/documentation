@@ -138,11 +138,11 @@ html[class~="dark"] .dark\:nx-text-gray-200 {
   @apply text-light;
 }
 
-html[class~=dark] .dark\:nx-text-slate-100 {
+html[class~="dark"] .dark\:nx-text-slate-100 {
   @apply text-light;
 }
 
-html[class~=dark] .dark\:nx-text-gray-300 {
+html[class~="dark"] .dark\:nx-text-gray-300 {
   @apply text-light;
 }
 
