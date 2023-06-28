@@ -29,6 +29,10 @@
     @apply text-base16 tracking-[0.06em] text-light;
   }
 
+  ol {
+    @apply text-base16 tracking-[0.06em] text-light;
+  }
+
   table {
     @apply text-base16 tracking-[0.06em] text-light;
   }
@@ -134,6 +138,14 @@ html[class~="dark"] .dark\:nx-text-gray-200 {
   @apply text-light;
 }
 
+html[class~=dark] .dark\:nx-text-slate-100 {
+  @apply text-light;
+}
+
+html[class~=dark] .dark\:nx-text-gray-300 {
+  @apply text-light;
+}
+
 .nx-text-gray-500 {
   @apply text-light;
 }
@@ -188,4 +200,17 @@ html[class~="dark"] .dark\:nx-text-gray-200 {
     0.5
   ); /* Set the background color with transparency */
   z-index: 1; /* Set the pseudo-element's z-index lower than the element */
+}
+
+.dark {
+  --shiki-color-text: #e6dafe;
+  --shiki-token-constant: #79b8ff;
+  --shiki-token-string: #ffab70;
+  --shiki-token-comment: #6b737c;
+  --shiki-token-keyword: #f97583;
+  --shiki-token-parameter: #ff9800;
+  --shiki-token-function: #b392f0;
+  --shiki-token-string-expression: #4bb74a;
+  --shiki-token-punctuation: #bbbbbb;
+  --shiki-token-link: #ffab70;
 }

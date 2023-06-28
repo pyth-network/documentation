@@ -1,0 +1,222 @@
+# Pyth Cross-chain Batches
+
+### Price Feeds Batches
+
+The Pythnet price feeds are batched together to optimize gas usage for applications using Pyth data on a blockchain. In other words, when your application retrieves one price feed and updates the price on-chain, it will automatically do it for four other assets—those available in the same batch.
+
+**Batches**
+
+Currently, the Pyth Data Association and contributors to the Pyth network are in charge of designing the rules around price feed batching—which feeds are batched together—and continuously maintaining those batches for an optimal user experience (more convenience, less cost) when interacting with Pyth data on-chain.  
+
+Batches are first segmented per asset type: Metal, FX, Equity, and Crypto. Crypto is the only asset class with sub-categories: stablecoins, fan tokens, or layer-1 types of tokens (ERC-20, SPL, TRC, BEP…), etc. Then (and for all asset types), batches are filled with price feeds in descending alphabetical order.  
+
+All existing batches are listed below:
+
+| group_name | symbols |
+| --- | --- |
+| batch_metal_1 | Metal.XAG/USD
+| | Metal.XAU/USD |
+| batch_fx_1 | FX.AUD/USD
+| | FX.EUR/USD
+| | FX.NZD/USD
+| | FX.GBP/USD
+| | FX.USD/CAD |
+| batch_fx_2 | FX.USD/CHF
+| | FX.USD/CHN
+| | FX.USD/HKD
+| | FX.USD/JPY
+| | FX.USD/MXN |
+| batch_fx_3 | FX.USD/RUB
+| | FX.USD/SGD
+| | FX.USD/ZAR |
+| batch_gb_equity_1 | Equity.GB.IB01/USD
+| | Equity.GB.IBTA/USD |
+| batch_us_equity_1 | Equity.US.AAPL/USD
+| | Equity.US.AMC/USD
+| | Equity.US.AMGN/USD
+| | Equity.US.AMZN/USD
+| | Equity.US.AXP/USD |
+| batch_us_equity_2 | Equity.US.BA/USD
+| | Equity.US.CAT/USD
+| | Equity.US.CRM/USD
+| | Equity.US.CSCO/USD
+| | Equity.US.CVX/USD |
+| batch_us_equity_3 | Equity.US.DIS/USD
+| | Equity.US.DOW/USD
+| | Equity.US.EFA/USD
+| | Equity.US.GE/USD
+| | Equity.US.GME/USD |
+| batch_us_equity_4 | Equity.US.GOOG/USD
+| | Equity.US.GOVT/USD
+| | Equity.US.GS/USD
+| | Equity.US.HD/USD
+| | Equity.US.HON/USD |
+| batch_us_equity_5 | Equity.US.IBM/USD
+| | Equity.US.INTC/USD
+| | Equity.US.IVV/USD
+| | Equity.US.IWM/USD
+| | Equity.US.JNJ/USD |
+| batch_us_equity_6 | Equity.US.JPM/USD
+| | Equity.US.KO/USD
+| | Equity.US.MCD/USD
+| | Equity.US.MINT/USD
+| | Equity.US.MMM/USD |
+| batch_us_equity_7 | Equity.US.MRK/USD
+| | Equity.US.MSFT/USD
+| | Equity.US.NFLX/USD
+| | Equity.US.NKE/USD
+| | Equity.US.PG/USD |
+| batch_us_equity_8 | Equity.US.QQQ/USD
+| | Equity.US.SHV/USD
+| | Equity.US.SPY/USD
+| | Equity.US.TLT/USD
+| | Equity.US.TRV/USD |
+| batch_us_equity_9 | Equity.US.TSLA/USD
+| | Equity.US.UNH/USD
+| | Equity.US.USO/USD
+| | Equity.US.V/USD
+| | Equity.US.VOO/USD |
+| batch_us_equity_10 | Equity.US.VZ/USD
+| | Equity.US.WBA/USD
+| | Equity.US.WMT/USD
+| | Equity.US.XLE/USD |
+| batch_crypto_stablecoin_1 | Crypto.BRZ/USD
+| | Crypto.BUSD/USD
+| | Crypto.CUSD/USD
+| | Crypto.DAI/USD
+| | Crypto.HAY/USD |
+| batch_crypto_stablecoin_2 | Crypto.TUSD/USD
+| | Crypto.USDC/USD
+| | Crypto.USDD/USD
+| | Crypto.USDT/USD
+| | Crypto.USTC/USD |
+| batch_crypto_stablecoin_3 | Crypto.VAI/USD |
+| batch_crypto_fantoken_1 | Crypto.ACM/USD
+| | Crypto.ALPINE/USD
+| | Crypto.ARG/USD
+| | Crypto.ASR/USD
+| | Crypto.ATM/USD |
+| batch_crypto_fantoken_2 | Crypto.BAR/USD
+| | Crypto.CHZ/USD
+| | Crypto.CITY/USD
+| | Crypto.GAL/USD
+| | Crypto.INTER/USD |
+| batch_crypto_fantoken_3 | Crypto.ITA/USD
+| | Crypto.JUV/USD
+| | Crypto.LAZIO/USD
+| | Crypto.OG/USD
+| | Crypto.POR/USD |
+| batch_crypto_fantoken_4 | Crypto.PORTO/USD
+| | Crypto.PSG/USD
+| | Crypto.SANTOS/USD |
+| batch_crypto_eth_stakedeth | Crypto.BETH/USD
+| | Crypto.CBETH/USD
+| | Crypto.ETH/USD
+| | Crypto.STETH/USD
+| | Crypto.RETH/USD |
+| batch_crypto_sol_stakedsol | Crypto.JITOSOL/USD
+| | Crypto.MSOL/USD
+| | Crypto.SCNSOL/USD
+| | Crypto.SOL/USD
+| | Crypto.STSOL/USD |
+| batch_crypto_apt_stakedapt | Crypto.APT/USD
+| | Crypto.TAPT/USD |
+| batch_crypto_near_stakednear | Crypto.NEAR/USD
+| | Crypto.STNEAR/USD |
+| batch_crypto_blochchain_1 | Crypto.ADA/USD
+| | Crypto.ALGO/USD
+| | Crypto.AMB/USD
+| | Crypto.ATOM/USD
+| | Crypto.AVAX/USD |
+| batch_crypto_blochchain_2 | Crypto.BCH/USD
+| | Crypto.BNB/USD
+| | Crypto.BTC/USD
+| | Crypto.CELO/USD
+| | Crypto.CRO/USD |
+| batch_crypto_blochchain_3 | Crypto.DOGE/USD
+| | Crypto.DOT/USD
+| | Crypto.FLOW/USD
+| | Crypto.FTM/USD
+| | Crypto.HNT/USD |
+| batch_crypto_blochchain_4 | Crypto.INJ/USD
+| | Crypto.KCS/USD
+| | Crypto.LTC/USD
+| | Crypto.LUNA/USD
+| | Crypto.LUNC/USD |
+| batch_crypto_blochchain_5 | Crypto.MATIC/USD
+| | Crypto.ONE/USD
+| | Crypto.OP/USD
+| | Crypto.STRK/USD
+| | Crypto.XMR/USD |
+| batch_crypto_spl_1 | Crypto.ATLAS/USD
+| | Crypto.COPE/USD
+| | Crypto.FIDA/USD
+| | Crypto.GMT/USD
+| | Crypto.GOFX/USD |
+| batch_crypto_spl_2 | Crypto.HXRO/USD
+| | Crypto.JET/USD
+| | Crypto.MEAN/USD
+| | Crypto.MER/USD
+| | Crypto.MNGO/USD |
+| batch_crypto_spl_3 | Crypto.ORCA/USD
+| | Crypto.PORT/USD
+| | Crypto.RAY/USD
+| | Crypto.SBR/USD
+| | Crypto.SLND/USD |
+| batch_crypto_spl_4 | Crypto.SNY/USD
+| | Crypto.SRM/USD
+| | Crypto.ZBC/USD |
+| batch_crypto_bep_1 | Crypto.ALPACA/USD
+| | Crypto.AUTO/USD
+| | Crypto.BANANA/USD
+| | Crypto.BIFI/USD
+| | Crypto.BNX/USD |
+| batch_crypto_bep_2 | Crypto.BSW/USD
+| | Crypto.C98/USD
+| | Crypto.CAKE/USD
+| | Crypto.DAR/USD
+| | Crypto.MBOX/USD |
+| batch_crypto_bep_3 | Crypto.PINKSALE/USD
+| | Crypto.RACA/USD
+| | Crypto.SFP/USD
+| | Crypto.THG/USD
+| | Crypto.TWT/USD |
+| batch_crypto_bep_4 | Crypto.WOM/USD
+| | Crypto.XVS/USD
+| | Crypto.XWG/USD |
+| batch_crypto_erc_1 | Crypto.1INCH/USD
+| | Crypto.AAVE/USD
+| | Crypto.ALICE/USD
+| | Crypto.AMP/USD
+| | Crypto.APE/USD |
+| batch_crypto_erc_2 | Crypto.AURORA/USD
+| | Crypto.AXS/USD
+| | Crypto.BIT/USD
+| | Crypto.CEL/USD
+| | Crypto.CHR/USD |
+| batch_crypto_erc_3 | Crypto.COW/USD
+| | Crypto.DYDX/USD
+| | Crypto.FET/USD
+| | Crypto.FLOKI/USD
+| | Crypto.FTT/USD |
+| batch_crypto_erc_4 | Crypto.GALA/USD
+| | Crypto.LINK/USD
+| | Crypto.OMI/USD
+| | Crypto.SHIB/USD
+| | Crypto.SWEAT/USD |
+| batch_crypto_erc_5 | Crypto.THETA/USD
+| | Crypto.TLM/USD
+| | Crypto.UNI/USD
+| | Crypto.WOO/USD |
+| batch_crypto_trc_1 | Crypto.BTT/USD
+| | Crypto.JST/USD
+| | Crypto.NFT/USD
+| | Crypto.SUN/USD
+| | Crypto.WIN/USD |
+| batch_crypto_cw_1 | Crypto.ANC/USD
+| | Crypto.MIR/USD |
+| batch_crypto_ht_1 | Crypto.MDX/USD |
+
+The above batches were deployed in production on 22/12/2022—as new feeds are created and supported on the network, those batches may become outdated. Without reorganization, any new price feed will automatically be added to an existing batch until full.
+
+The Pyth Data Association and contributors to the Pyth network will do their best to keep the above table up to date.

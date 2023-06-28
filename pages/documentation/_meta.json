@@ -1,5 +1,12 @@
 {
-  "sample": {
-    "title": "Sample"
-  }
+  "introduction": "Introduction",
+  "solana-price-feeds": "Solana Price Feeds",
+  "pythnet-price-feeds": "Pythnet Price Feeds",
+  "benchmarks": "Benchmarks",
+  "tradingview-integration": "TradingView Integration",
+  "publish-data": "Publish Data",
+  "how-pyth-works": "How Pyth Works",
+  "security": "Security",
+  "whitepaper": "Whitepaper",
+  "metrics": "Pyth Metrics"
 }
