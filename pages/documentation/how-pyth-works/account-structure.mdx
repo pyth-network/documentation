@@ -76,16 +76,16 @@ The on-chain relationship between different account types is as follows:
   |  mapping  |------->|  product  |------>|   price   |
   |           |        |           |       |           |
   -------------        -------------       -------------
-        |                                  
-        V                                  
-  -------------                            
-  |           |                            
-  |  mapping  |                            
-  |           |                            
-  -------------                            
-        |                                  
-        V                                  
-       ...                                      
+        |
+        V
+  -------------
+  |           |
+  |  mapping  |
+  |           |
+  -------------
+        |
+        V
+       ...
 ```
 
 Each mapping account contains a list of product account ids, plus an optional pointer to the subsequent mapping account. Each product account in turn points to the price account that stores the current price information for that product.&#x20;

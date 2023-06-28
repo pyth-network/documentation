@@ -3,63 +3,66 @@ description: Consume Pyth Network prices in applications on BNB Application Side
 ---
 
 # Deployment
+
 If, as is highly likely, your BAS chain doesn't already have a deployment of Pyth, you will need to deploy the `pyth-crosschain` receiver contracts yourself. This is easy to do and will enable contracts deployed on your BAS chain to consume Pyth price feeds from the `PythUpgradable` contract.
 
 To deploy the `pyth-crosschain` receiver contracts to your BAS chain:
+
 - Clone the [pyth-crosschain repo](https://github.com/pyth-network/pyth-crosschain).
 
 - Add your BAS network details to the [Truffle Networks configuration file](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/truffle-config.js). An example using BAS test net is configured as below:
-    ```json
-    my_bas_testnet: {
-        provider: () => new HDWalletProvider(
-            process.env.MNEMONIC,
-            "https://bas-aries-public.nodereal.io"
-        ),
-        confirmations: 10,
-        networkCheckTimeout: 1000000,
-        timeoutBlocks: 1000,
-        skipDryRun: true,
-      	network_id: 117,
-    }
-    ```
-    
- - Prepare a `.env.prod.my_bas_testnet` environment file in the `pyth-crosschain/target_chains/ethereum` directory. Please note if you test the deployment in the test net, you need use the Testnet pyth variable of PYTH_TO_WORMHOLE_EMITTER like below. 
-    ```shell
-    # The truffle network name of your BAS chain, defined in the configuration earlier
-    MIGRATIONS_NETWORK=my_bas_testnet
-    
-    # Keep these values the same
-    MIGRATIONS_DIR=./migrations/prod-receiver    
-    PYTH_TO_WORMHOLE_CHAIN_ID=0x1
-    
-    # Choose this value based on your network type (testnet, mainnet)
-    # Testnet Pyth
-    PYTH_TO_WORMHOLE_EMITTER=0xf346195ac02f37d60d4db8ffa6ef74cb1be3550047543a4a9ee9acf4d78697b0
-    INIT_SIGNERS=["0x13947Bd48b18E53fdAeEe77F3473391aC727C638"]
-    INIT_GOV_CHAIN_ID=0x1
-    INIT_GOV_CONTRACT=0x0000000000000000000000000000000000000000000000000000000000000004
-    # Mainnet Pyth
-    # PYTH_TO_WORMHOLE_EMITTER=0x6bb14509a612f01fbbc4cffeebd4bbfb492a86df717ebe92eb6df432a3f00a25
-    # INIT_SIGNERS=["0x58CC3AE5C097b213cE3c81979e1B9f9570746AA5"]
-    # INIT_GOV_CHAIN_ID=0x1
-    # INIT_GOV_CONTRACT=0x0000000000000000000000000000000000000000000000000000000000000004
-    
-    # Choose this value based on your network type (testnet, mainnet)
-    # Testnet Pyth
-    PYTH_TO_WORMHOLE_EMITTER=0xf346195ac02f37d60d4db8ffa6ef74cb1be3550047543a4a9ee9acf4d78697b0
-    # Mainnet Pyth
-    # PYTH_TO_WORMHOLE_EMITTER=0x6bb14509a612f01fbbc4cffeebd4bbfb492a86df717ebe92eb6df432a3f00a25
-    ```
-    
- - Now, under the pyth2wormhole/ethereum directory, install dependencies.
+  ```json
+  my_bas_testnet: {
+      provider: () => new HDWalletProvider(
+          process.env.MNEMONIC,
+          "https://bas-aries-public.nodereal.io"
+      ),
+      confirmations: 10,
+      networkCheckTimeout: 1000000,
+      timeoutBlocks: 1000,
+      skipDryRun: true,
+    	network_id: 117,
+  }
+  ```
+- Prepare a `.env.prod.my_bas_testnet` environment file in the `pyth-crosschain/target_chains/ethereum` directory. Please note if you test the deployment in the test net, you need use the Testnet pyth variable of PYTH_TO_WORMHOLE_EMITTER like below.
 
-    ```shell
-    npm install
-    ```
+  ```shell
+  # The truffle network name of your BAS chain, defined in the configuration earlier
+  MIGRATIONS_NETWORK=my_bas_testnet
 
- - Now run the Truffle migrations inside [`pyth-crosschain/target_chains/ethereum/migrations/prod-receiver/`](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/migrations/prod-receiver) using the instructions [here](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/Deploying.md). Make sure you are deploying using the right environment file and to the correct network.
+  # Keep these values the same
+  MIGRATIONS_DIR=./migrations/prod-receiver
+  PYTH_TO_WORMHOLE_CHAIN_ID=0x1
 
- - You can verify the contracts have been deployed successfully using the example [here](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/Deploying.md#testing).
+  # Choose this value based on your network type (testnet, mainnet)
+  # Testnet Pyth
+  PYTH_TO_WORMHOLE_EMITTER=0xf346195ac02f37d60d4db8ffa6ef74cb1be3550047543a4a9ee9acf4d78697b0
+  INIT_SIGNERS=["0x13947Bd48b18E53fdAeEe77F3473391aC727C638"]
+  INIT_GOV_CHAIN_ID=0x1
+  INIT_GOV_CONTRACT=0x0000000000000000000000000000000000000000000000000000000000000004
+  # Mainnet Pyth
+  # PYTH_TO_WORMHOLE_EMITTER=0x6bb14509a612f01fbbc4cffeebd4bbfb492a86df717ebe92eb6df432a3f00a25
+  # INIT_SIGNERS=["0x58CC3AE5C097b213cE3c81979e1B9f9570746AA5"]
+  # INIT_GOV_CHAIN_ID=0x1
+  # INIT_GOV_CONTRACT=0x0000000000000000000000000000000000000000000000000000000000000004
+
+  # Choose this value based on your network type (testnet, mainnet)
+  # Testnet Pyth
+  PYTH_TO_WORMHOLE_EMITTER=0xf346195ac02f37d60d4db8ffa6ef74cb1be3550047543a4a9ee9acf4d78697b0
+  # Mainnet Pyth
+  # PYTH_TO_WORMHOLE_EMITTER=0x6bb14509a612f01fbbc4cffeebd4bbfb492a86df717ebe92eb6df432a3f00a25
+  ```
+
+- Now, under the pyth2wormhole/ethereum directory, install dependencies.
+
+  ```shell
+  npm install
+  ```
+
+- Now run the Truffle migrations inside [`pyth-crosschain/target_chains/ethereum/migrations/prod-receiver/`](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/migrations/prod-receiver) using the instructions [here](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/Deploying.md). Make sure you are deploying using the right environment file and to the correct network.
+
+- You can verify the contracts have been deployed successfully using the example [here](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/Deploying.md#testing).
 
 # Usage
+
 After the pyth2wormhole contracts have been deployed to your BAS chain, please refer to the [Pyth on EVM-based chains documentation](evm.md) for how to consume price feeds.

@@ -42,12 +42,12 @@ The SDK provides a sane default for the staleness threshold, but users may confi
 ### Market Hours
 
 Pyth price feeds follow the [traditional market hours](https://www.cmegroup.com/trading-hours.html) of each asset classes and will be available at the following hours:
-| Asset Class | Opening Hours                                                                       | Exceptions                                                                                                                       |
+| Asset Class | Opening Hours | Exceptions |
 | ----------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Crypto      | 24/7                                                                                | No market close                                                                                                                  |
-| US Equities | Every weekday from 2.30PM UTC to 9PM UTC                                            | Markets are closed on weekends, US Holidays, and during extraordinary events                                                     |
-| FX          | From Sunday 5PM ET to Friday 5PM ET | Trading continues during most US holidays                                                                                        |
-| Metals      | From Sunday 5PM ET to Friday 5PM ET | Spot gold and silver trading also follow [CME holiday closures](https://www.cmegroup.com/tools-information/holiday-calendar.html)|
+| Crypto | 24/7 | No market close |
+| US Equities | Every weekday from 2.30PM UTC to 9PM UTC | Markets are closed on weekends, US Holidays, and during extraordinary events |
+| FX | From Sunday 5PM ET to Friday 5PM ET | Trading continues during most US holidays |
+| Metals | From Sunday 5PM ET to Friday 5PM ET | Spot gold and silver trading also follow [CME holiday closures](https://www.cmegroup.com/tools-information/holiday-calendar.html)|
 
 ## Latency
 
@@ -63,6 +63,7 @@ When the “true price” moves, these market makers get picked off by adverse �
 The smart flow is balanced by two-way flow, that is, people wanting to trade for other reasons besides a price change.
 
 This analogy suggests two simple solutions to races:
+
 1. Configure protocol parameters to balance the losses from smart flow against the gains from two-way flow.
    Market makers in traditional finance implement this approach by offering a bid/ask spread and limited liquidity.
    The limited liquidity caps the losses to smart flow, while still earning profits from the two-way flow.

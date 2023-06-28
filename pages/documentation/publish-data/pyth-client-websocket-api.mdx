@@ -2,15 +2,15 @@
 
 [pyth-agent](https://github.com/pyth-network/pyth-agent) supports a websocket interface based on the json-rpc 2.0 standard. Methods include:
 
-* [get\_product\_list](pyth-client-websocket-api.md#get\_product\_list)
-* [update\_price](pyth-client-websocket-api.md#update\_price)
-* [subscribe\_price\_sched](pyth-client-websocket-api.md#subscribe\_price\_sched)
-* [get\_product](pyth-client-websocket-api.md#get\_product)
-* [get\_all\_products](pyth-client-websocket-api.md#get\_all\_products)
+- [get_product_list](pyth-client-websocket-api.md#get_product_list)
+- [update_price](pyth-client-websocket-api.md#update_price)
+- [subscribe_price_sched](pyth-client-websocket-api.md#subscribe_price_sched)
+- [get_product](pyth-client-websocket-api.md#get_product)
+- [get_all_products](pyth-client-websocket-api.md#get_all_products)
 
 Batch requests are processed in the order the requests appear within the batch.
 
-## get\_product\_list
+## get_product_list
 
 Get the list of available symbols and associated metadata.
 
@@ -79,11 +79,11 @@ A successful response looks something like:
 }
 ```
 
-## update\_price
+## update_price
 
 Update component price of some symbols using the publishing key of pyth-agent.
 
-The request includes the pricing account from the get\_product\_list output and looks something like:
+The request includes the pricing account from the get_product_list output and looks something like:
 
 ```
 {
@@ -99,7 +99,7 @@ The request includes the pricing account from the get\_product\_list output and 
 }
 ```
 
-The price and confidence interval (conf) attributes are expressed as integers with an implied decimal point given by the price_exponent defined by the symbol. The price type is a string with one of the following values: "price" or "ema_\_price". The symbol status is a string with one of the following values: "trading" or "halted".
+The price and confidence interval (conf) attributes are expressed as integers with an implied decimal point given by the price*exponent defined by the symbol. The price type is a string with one of the following values: "price" or "ema*\_price". The symbol status is a string with one of the following values: "trading" or "halted".
 
 A successful response looks like:
 
@@ -111,7 +111,7 @@ A successful response looks like:
 }
 ```
 
-## subscribe\_price\_sched
+## subscribe_price_sched
 
 Subscribe to price update schedule. pyth-agent will notify the client whenever it should submit the next price for a subscribed symbol.
 
@@ -152,7 +152,7 @@ Where the result is an integer corresponding to a subscription identifier. All s
 }
 ```
 
-## get\_product
+## get_product
 
 Get the full set of data for the given product.
 
@@ -225,7 +225,7 @@ A successful response looks something like:
 }
 ```
 
-## get\_all\_products
+## get_all_products
 
 Get full set of data for the given product.
 

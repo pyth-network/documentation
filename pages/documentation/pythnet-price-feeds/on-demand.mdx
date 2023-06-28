@@ -6,7 +6,7 @@ In contrast, Pyth Network does not operate an off-chain process that pushes pric
 Instead, it delegates this work to Pyth Network users.
 Pyth price updates are created on [Pythnet](../how-pyth-works/pythnet.md) and streamed off-chain via the Wormhole Network, a cross-chain messaging protocol.
 These updates are signed such that the Pyth on-chain program can verify their authenticity.
-Updating the on-chain price is a *permissionless* operation: anyone can submit a valid Wormhole message to the Pyth contract to update the price.
+Updating the on-chain price is a _permissionless_ operation: anyone can submit a valid Wormhole message to the Pyth contract to update the price.
 Typically, users of Pyth Network prices will submit a single transaction that simultaneously updates the price and uses it in a downstream application.
 
 On-chain prices can only move forward in time. If a user submits a Wormhole message with a less recent price the Pyth program will not fail but will
@@ -34,7 +34,7 @@ The on-demand model has several benefits over the push model:
 - **Reliable in volatile conditions** -- Push oracles can fail to land price updates in volatile market conditions.
   In these conditions, the oracle competes with other more valuable transactions (such as DEX trades or liquidations) for bandwidth, and often cannot pay enough to land price updates.
   This problem does not occur in the on-demand model, as Pyth price updates are incorporated into the valuable transactions themselves.
-- **Common infrastructure** -- Every component of Pyth Network is *shared across blockchains* except for the contract deployed on the destination chain.
+- **Common infrastructure** -- Every component of Pyth Network is _shared across blockchains_ except for the contract deployed on the destination chain.
   These shared components can therefore be built with high reliability and accuracy targets, benefitting every chain the oracle is deployed on.
   This approach also allows Pyth Network to rapidly launch on new blockchains and ecosystems with all of the existing price feeds.
 - **Sustainable** -- The Pyth Network protocol has been designed to allow for the optional enablement of data fees to update the state of an on-chain price feed.

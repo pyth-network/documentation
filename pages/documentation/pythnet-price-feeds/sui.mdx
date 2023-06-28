@@ -25,9 +25,11 @@ public fun parse_and_verify(
       the_clock: &Clock
   ): VAA
 ```
+
 ### 2. `create_price_infos_hot_potato`
 
 Use the verified VAA and create a hot potato vector containing the latest price updates.
+
 ```Rust
 public fun create_price_infos_hot_potato(
         pyth_state: &PythState,
@@ -58,6 +60,7 @@ public fun update_single_price_feed(
 ### 4. `pyth::hot_potato_vector::destroy`
 
 Drop the hot potato. (You must call this function to drop the potato).
+
 ```Rust
 public fun destroy<T: copy + drop>(
     hot_potato_vector: HotPotatoVector<T>
@@ -67,6 +70,7 @@ public fun destroy<T: copy + drop>(
 ### 5. `pyth::pyth::get_price`
 
 Finally, get the price of the updated price feed in `PriceInfoObject` 🎉🎉🎉.
+
 ```Rust
 public fun get_price(
       state: &PythState,
@@ -78,9 +82,11 @@ public fun get_price(
 ## Examples
 
 See the `./scripts` folder for examples of programmable transactions for creating price feeds and updating price feeds.
+
 - [Demo for updating a price feed](https://github.com/pyth-network/pyth-crosschain/blob/sui/hot_potato/target_chains/sui/scripts/pyth/update_price_feeds.ts)
 
 To build and test the contracts, run the following
+
 ```
 $ make test
 $ make build
@@ -93,7 +99,6 @@ $ make build
 - PYTH_PACKAGE_ID: [0x975e063f398f720af4f33ec06a927f14ea76ca24f7f8dd544aa62ab9d5d15f44](https://explorer.sui.io/object/0x975e063f398f720af4f33ec06a927f14ea76ca24f7f8dd544aa62ab9d5d15f44?network=testnet)
 - PYTH_STATE_ID: [0xd8afde3a48b4ff7212bd6829a150f43f59043221200d63504d981f62bff2e27a](https://explorer.sui.io/object/0xd8afde3a48b4ff7212bd6829a150f43f59043221200d63504d981f62bff2e27a?network=testnet)
 - PYTH_PRICE_FEED_ID_TO_PRICE_INFO_OBJECT_ID: [0xf8929174008c662266a1adde78e1e8e33016eb7ad37d379481e860b911e40ed5](https://explorer.sui.io/object/0xf8929174008c662266a1adde78e1e8e33016eb7ad37d379481e860b911e40ed5?network=https%3A%2F%2Ffullnode.testnet.sui.io%3A443)
-
 
 ### Wormhole on Testnet
 
@@ -116,6 +121,7 @@ $ make build
 ### What is up with the "sui rev"? (`09b2081498366df936abae26eea4b2d5cafb2788`). Why does it point to a specific commit hash instead of "main" or "devnet"?
 
 Our Pyth `Move.toml` file contains the following dependencies. It depends on specific versions of the [Sui Framework](https://github.com/MystenLabs/sui) as well as [Wormhole](https://github.com/wormhole-foundation/wormhole). To make your Sui package compatible, you must also specify the following dependencies verbatim in your `Move.toml` file. We are locked in to this specific `rev` because our package depends on Wormhole, which [uses the `rev` `09b2081498366df936abae26eea4b2d5cafb2788`](https://github.com/wormhole-foundation/wormhole/blob/main/sui/wormhole/Move.mainnet.toml).
+
 ```
 [dependencies.Sui]
 git = "https://github.com/MystenLabs/sui.git"
@@ -135,5 +141,3 @@ The mapping of Pyth price feed IDs to `PriceInfoObject` object IDs can be found 
 This mapping is also stored on-chain, and can be queried on-chain using the getter function `pyth::state::get_price_info_object_id` defined in the Pyth package.
 
 Also recall that the list of Pyth price feed IDs can be found [here](https://pyth.network/developers/price-feed-ids#pyth-evm-testnet).
-
-

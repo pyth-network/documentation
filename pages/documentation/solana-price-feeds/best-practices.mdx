@@ -7,7 +7,7 @@ Please read this page before using Pyth price feeds in your application.
 
 Each Pyth Network price feed is stored in a Solana account and is uniquely identified by its corresponding Solana account key.
 Price feeds have different ids in mainnet than in testnet or devnet.
-The full list of price feeds available on Solana is listed on the [pyth.network website under the "mainnet-beta" tag](https://pyth.network/price-feeds?cluster=mainnet-beta). 
+The full list of price feeds available on Solana is listed on the [pyth.network website under the "mainnet-beta" tag](https://pyth.network/price-feeds?cluster=mainnet-beta).
 The [price feed ids page](https://pyth.network/developers/price-feed-ids#solana-mainnet-beta) lists the id of each available price feed.
 To use a price feed on-chain, look up its id using this page, then store the feed id in your program.
 You should then pass in the corresponding Solana account to any instruction that requires the current price and validate in your program that the account key matches the stored price feed id.
@@ -42,12 +42,12 @@ The SDK provides a sane default for the staleness threshold, but users may confi
 ### Market Hours
 
 Pyth price feeds follow the [traditional market hours](https://www.cmegroup.com/trading-hours.html) of each asset classes and will be available at the following hours:
-| Asset Class | Opening Hours                                                                       | Exceptions                                                                                                                       |
+| Asset Class | Opening Hours | Exceptions |
 | ----------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Crypto      | 24/7                                                                                | No market close                                                                                                                  |
-| US Equities | Every weekday from 9.30AM ET to 4PM ET | Markets are closed on weekends, US Holidays, and during extraordinary events                                                     |
-| FX          | From Sunday 5PM ET to Friday 5PM ET | Trading continues during most US holidays                                                                                        |
-| Metals      | From Sunday 5PM ET to Friday 5PM ET | Spot gold and silver trading also follow [CME holiday closures](https://www.cmegroup.com/tools-information/holiday-calendar.html)|
+| Crypto | 24/7 | No market close |
+| US Equities | Every weekday from 9.30AM ET to 4PM ET | Markets are closed on weekends, US Holidays, and during extraordinary events |
+| FX | From Sunday 5PM ET to Friday 5PM ET | Trading continues during most US holidays |
+| Metals | From Sunday 5PM ET to Friday 5PM ET | Spot gold and silver trading also follow [CME holiday closures](https://www.cmegroup.com/tools-information/holiday-calendar.html)|
 
 ## Latency
 
@@ -63,6 +63,7 @@ When the “true price” moves, these market makers get picked off by adverse �
 The smart flow is balanced by two-way flow, that is, people wanting to trade for other reasons besides a price change.
 
 This analogy suggests two simple solutions to races:
+
 1. Configure protocol parameters to balance the losses from smart flow against the gains from two-way flow.
    Market makers in traditional finance implement this approach by offering a bid/ask spread and limited liquidity.
    The limited liquidity caps the losses to smart flow, while still earning profits from the two-way flow.
