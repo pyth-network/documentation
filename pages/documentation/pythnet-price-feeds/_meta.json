@@ -1,0 +1,12 @@
+{
+  "on-demand": "On-Demand Updates",
+  "best-practices": "Using Price Feeds",
+  "evm": "Pyth on EVM",
+  "aptos": "Pyth on Aptos",
+  "sui": "Pyth on Sui",
+  "cosmwasm": "Pyth on CosmWasm",
+  "bas": "Pyth on BAS Chains",
+  "off-chain": "Pyth for Off-chain Apps",
+  "price-service": "Price Service",
+  "cross-chain-batches": "Price Feed Batches"
+}

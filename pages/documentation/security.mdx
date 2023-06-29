@@ -1,0 +1,7 @@
+# Security
+
+The Pyth software has undergone a number of audits from different firms.
+All of the audit reports are available in the [audits github repository](https://github.com/pyth-network/audit-reports).
+
+Pyth Network also offers a [bug bounty program](https://pyth.network/bounty) for reports of issues with the deployed code.
+Please visit the linked page for terms and conditions.

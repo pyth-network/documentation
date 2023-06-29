@@ -1,0 +1,32 @@
+import { Tab, Tabs } from "nextra-theme-docs";
+
+# Off-chain Applications
+
+We provide SDKs in various programming languages that allow you to read the values of Pyth price feeds in off-chain applications, such as web frontends:
+
+<Tabs items={['JavaScript', 'Rust', 'Python', 'Go']}>
+  <Tab>
+There are different javascript SDKs for different purposes.
+
+If you are developing an application that runs on any blockchain except Solana, then the javascript SDK for that blockchain supports querying and streaming live Pyth prices.
+You can find the code for this SDK in the [pyth-crosschain](https://github.com/pyth-network/pyth-crosschain) repository, under `target_chains/<chain name>/sdk/js`.
+These SDKs also support generating [on-demand price updates](on-demand.md) for your target blockchain.
+An example for querying and streaming prices using these SDKs is shown [here](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/js#off-chain-prices).
+
+If you are developing an application for Solana, or without any blockchain whatsoever, then the [@pythnetwork/client](https://www.npmjs.com/package/@pythnetwork/client) npm package can be used to consume Pyth prices inside off-chain JavaScript programs.
+An example can be found [here](https://github.com/pyth-network/pyth-client-js#example-usage).
+
+</Tab>
+<Tab>
+The [pyth-sdk-solana crate](https://crates.io/crates/pyth-sdk-solana) can be used to consume Pyth prices inside your off-chain Rust programs. An example can be found [here](https://github.com/pyth-network/pyth-sdk-rs/blob/main/pyth-sdk-solana/examples/eth_price.rs).
+</Tab>
+<Tab>
+The [pyth-client-py](https://github.com/pyth-network/pyth-client-py) Python library can be used to consume Pyth prices inside your off-chain Python programs. An example can be found [here](https://github.com/pyth-network/pyth-client-py/blob/main/examples/read_one_price_feed.py).
+</Tab>
+<Tab>
+The [Blockdaemon pyth-go](https://github.com/Blockdaemon/pyth-go) client can be used to consume Pyth prices inside your off-chain Go programs.
+</Tab>
+</Tabs>
+
+You can find an in-depth explanation from one of our contributors, Daniel:
+[How to Build with Pyth Data Off-chain: Pyth Tutorials](https://youtu.be/YgD4IWTKD2c)
