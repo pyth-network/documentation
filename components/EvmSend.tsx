@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../contexts/GlobalContext";
+import detectEthereumProvider from "@metamask/detect-provider";
 
 interface EvmSendProps {
   functionName: string;
