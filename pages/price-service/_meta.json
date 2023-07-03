@@ -3,7 +3,7 @@
     "title": "Price Service",
     "type": "separator"
   },
-  "introduction": "",
+  "index": "Introduction",
   "--- Endpoints": {
     "title": "API Endpoints",
     "type": "separator"

@@ -14,12 +14,12 @@
     "items": {
       "evm": {
         "title": "EVM Contract",
-        "href": "/evm/introduction",
+        "href": "/evm",
         "type": "page"
       },
       "price-service": {
         "title": "Price Service",
-        "href": "/price-service/introduction",
+        "href": "/price-service",
         "type": "page"
       }
     }
