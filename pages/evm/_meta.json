@@ -3,7 +3,7 @@
     "title": "EVM Contract",
     "type": "separator"
   },
-  "introduction": "",
+  "index": "Introduction",
   "sdks": "SDKs",
   "configuration": "Contract Configuration",
   "--- Methods": {

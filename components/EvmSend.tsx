@@ -1,7 +1,7 @@
-import detectEthereumProvider from "@metamask/detect-provider";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../contexts/GlobalContext";
+import detectEthereumProvider from "@metamask/detect-provider";
 
 interface EvmSendProps {
   functionName: string;
@@ -104,28 +104,40 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
   };
 
   return (
-    <div className={"api-params"}>
-      {signer !== undefined ? (
-        <div>
-          <button onClick={sendTransaction}>Execute</button>
-          <button onClick={clearResponse}>Clear</button>
-          {response !== undefined ? (
-            <div className={"response " + (isStale ? "stale" : "")}>
-              <pre>{response}</pre>
-            </div>
-          ) : (
-            <div className={"response"} />
-          )}
-        </div>
-      ) : (
-        <button
-          className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF] my-4"
-          onClick={connectWallet}
-        >
-          connect wallet
-        </button>
-      )}
-    </div>
+    <>
+      <div className="flex space-x-2">
+        {signer !== undefined ? (
+          <>
+            <button
+              className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF] my-4"
+              onClick={sendTransaction}
+            >
+              execute query
+            </button>
+            <button
+              className="font-normal text-base my-4"
+              onClick={clearResponse}
+            >
+              clear
+            </button>
+          </>
+        ) : (
+          <button
+            className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF] my-4"
+            onClick={connectWallet}
+          >
+            connect wallet
+          </button>
+        )}
+      </div>
+      <div>
+        {response !== undefined && (
+          <div className={"response " + (isStale ? "stale" : "")}>
+            <pre>{response}</pre>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

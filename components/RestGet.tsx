@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useGlobalContext } from "../contexts/GlobalContext";
 
 interface RestGetProps {
@@ -76,20 +76,29 @@ const RestGet = ({ endpoint, queryParams }: RestGetProps) => {
   };
 
   return (
-    <div className={"api-params"}>
-      <button onClick={handleRunCode}>Execute</button>
-      <button onClick={clearResponse}>Clear</button>
-      {response !== undefined ? (
-        <div className={"trial " + (isStale ? "stale" : "")}>
-          <div className={"request"}>
-            <span className={"method"}>GET</span> {url}
+    <>
+      <div className="flex space-x-2">
+        <button
+          className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF] my-4"
+          onClick={handleRunCode}
+        >
+          execute query
+        </button>
+        <button className="font-normal text-base my-4" onClick={clearResponse}>
+          clear
+        </button>
+      </div>
+      <div>
+        {response !== undefined && (
+          <div className={"response " + (isStale ? "stale" : "")}>
+            <div className={"request"}>
+              <span className={"method"}>GET</span> {url}
+            </div>
+            <pre>{response}</pre>
           </div>
-          <pre>{response}</pre>
-        </div>
-      ) : (
-        <div className={"trial"} />
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

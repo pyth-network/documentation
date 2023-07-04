@@ -4,6 +4,7 @@ import Logo from "./components/Logo";
 // TODO: populate this properly
 const config: DocsThemeConfig = {
   logo: <Logo />,
+  logoLink: "/documentation",
   project: {
     link: "https://github.com/pyth-network/",
   },
@@ -17,6 +18,9 @@ const config: DocsThemeConfig = {
   darkMode: false,
   nextThemes: {
     forcedTheme: "dark",
+  },
+  sidebar: {
+    defaultMenuCollapseLevel: 1,
   },
 };
 
