@@ -167,7 +167,7 @@ html[class~="dark"] .dark\:nx-text-gray-300 {
 }
 
 .response {
-  @apply p-4 text-light bg-darkGray rounded-xl;
+  @apply py-4 text-light bg-darkGray rounded-xl;
 }
 
 .stale {
@@ -205,4 +205,5 @@ html[class~="dark"] .dark\:nx-text-gray-300 {
 
 pre {
   overflow: auto;
+  padding: 0px;
 }

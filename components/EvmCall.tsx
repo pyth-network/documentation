@@ -85,7 +85,7 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
       </div>
       {responsePreface !== undefined && (
         <div className="response">
-          <p>{responsePreface}</p>
+          <p className="px-4">{responsePreface}</p>
           <pre>{response}</pre>
         </div>
       )}

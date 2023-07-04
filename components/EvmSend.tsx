@@ -1,7 +1,7 @@
+import detectEthereumProvider from "@metamask/detect-provider";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../contexts/GlobalContext";
-import detectEthereumProvider from "@metamask/detect-provider";
 
 interface EvmSendProps {
   functionName: string;
@@ -27,10 +27,8 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
 
   const [response, setResponse] = useState<string | undefined>(undefined);
 
-  const [isStale, setIsStale] = useState<boolean>(false);
-
   useEffect(() => {
-    setIsStale(true);
+    clearResponse();
   }, [keyValueStore]);
 
   const connectWallet = async () => {
@@ -70,7 +68,6 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
       // TODO: validate arguments
       if (args === undefined || extraArguments === undefined) {
         setResponse(`Please populate all of the arguments with valid values.`);
-        setIsStale(false);
       } else {
         try {
           const tx = await contractWithSigner[functionName](
@@ -80,7 +77,6 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
           const receipt = await tx.wait();
           const responseString = JSON.stringify(receipt);
           setResponse(responseString);
-          setIsStale(false);
         } catch (error) {
           // MetaMask RPC errors show up in this field of the response
           const metamaskError = error.info?.error?.message;
@@ -90,8 +86,6 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
           } else {
             error.toString();
           }
-
-          setIsStale(false);
         }
       }
     } else {
@@ -132,7 +126,7 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
       </div>
       <div>
         {response !== undefined && (
-          <div className={"response " + (isStale ? "stale" : "")}>
+          <div className="response">
             <pre>{response}</pre>
           </div>
         )}
