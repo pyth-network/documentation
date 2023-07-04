@@ -167,7 +167,7 @@ html[class~="dark"] .dark\:nx-text-gray-300 {
 }
 
 .response {
-  @apply p-4 text-light bg-darkGray rounded-xl overflow-x-auto;
+  @apply p-4 text-light bg-darkGray rounded-xl;
 }
 
 .stale {
@@ -201,4 +201,8 @@ html[class~="dark"] .dark\:nx-text-gray-300 {
   --shiki-token-string-expression: #4bb74a;
   --shiki-token-punctuation: #bbbbbb;
   --shiki-token-link: #ffab70;
+}
+
+pre {
+  overflow: auto;
 }
