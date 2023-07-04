@@ -167,11 +167,7 @@ html[class~="dark"] .dark\:nx-text-gray-300 {
 }
 
 .response {
-  @apply border border-gray-500 p-2 text-light;
-}
-
-.api-params .response {
-  margin: 20px 0 0 0;
+  @apply p-4 text-light bg-darkGray rounded-xl overflow-x-auto;
 }
 
 .stale {

@@ -55,7 +55,7 @@ reading it. This step ensures that the on-chain price is fresh.
             "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("id", "<id>"),
             "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
         }}>
-            ```solidity
+            ```solidity copy
             import "pyth-sdk-solidity/IPyth.sol";
             import "pyth-sdk-solidity/PythStructs.sol";
 
@@ -77,7 +77,7 @@ reading it. This step ensures that the on-chain price is fresh.
             "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
             "'RPC_URL'": (ctx) => ctx.evmConfig.info.rpcUrls.length > 0 ? `'${ctx.evmConfig.info.rpcUrls[0]}'` : 'RPC_URL',
         }}>
-            ```typescript
+            ```typescript copy
             import { ethers } from "ethers";
             import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 
