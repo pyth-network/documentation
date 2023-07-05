@@ -120,7 +120,7 @@ function validateCodeSnippets(directoryPath: string): void {
     } else if (stats.isFile() && file.endsWith(".mdx")) {
       const codeSnippets = extractCodeSnippetsFromFile(fullPath);
       codeSnippets.forEach((snippet, index) => {
-        const language = snippet.split("\n")[0].trim();
+        const language = snippet.split("\n")[0].split(" ")[0].trim();
         const code = snippet.slice(language.length).trim();
         const id = `${fullPath
           .replace(new RegExp("^./*"), "")
