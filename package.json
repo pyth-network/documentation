@@ -20,7 +20,10 @@
     "nextra-theme-docs": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-syntax-highlighter": "^15.5.0"
+    "react-syntax-highlighter": "^15.5.0",
+    "connectkit": "^1.4.0",
+    "viem": "^0.3.50",
+    "wagmi": "^1.2.0"
   },
   "devDependencies": {
     "@pythnetwork/pyth-sdk-solidity": "^2.2.1",
@@ -41,6 +44,6 @@
     "solc": "^0.8.20",
     "tailwindcss": "^3.3.2",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.3"
+    "typescript": "^5.1.6"
   }
 }
