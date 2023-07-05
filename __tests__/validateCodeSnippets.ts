@@ -121,7 +121,7 @@ function validateCodeSnippets(directoryPath: string): void {
       const codeSnippets = extractCodeSnippetsFromFile(fullPath);
       codeSnippets.forEach((snippet, index) => {
         const language = snippet.split("\n")[0].split(" ")[0].trim();
-        const code = snippet.slice(language.length).trim();
+        const code = snippet.slice(snippet.split("\n")[0].trim().length).trim();
         const id = `${fullPath
           .replace(new RegExp("^./*"), "")
           .replaceAll("/", "-")
