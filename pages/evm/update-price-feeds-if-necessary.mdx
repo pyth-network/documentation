@@ -68,7 +68,7 @@ Reverts if the required fee is not paid, or the `updateData` is incorrectly sign
             "2": (ctx) => ctx.get("fee", "<fee>"),
             "3": (ctx) => ctx.get("publishTime", "<publishTime>"),
         }}>
-            ```copysolidity copy
+            ```solidity copy
             import "pyth-sdk-solidity/IPyth.sol";
             import "pyth-sdk-solidity/PythStructs.sol";
 
@@ -99,7 +99,7 @@ Reverts if the required fee is not paid, or the `updateData` is incorrectly sign
             "3": (ctx) => ctx.get("publishTime", "<publishTime>"),
             "2": (ctx) => ctx.get("fee", "<fee>"),
         }}>
-            ```copytypescript copy
+            ```typescript copy
             import { ethers } from "ethers";
             import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 

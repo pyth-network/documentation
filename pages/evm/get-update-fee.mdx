@@ -42,7 +42,7 @@ The `updateData` can be retrieved from the price service API.
             "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
             "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
         }}>
-            ```copysolidity copy
+            ```solidity copy
             import "pyth-sdk-solidity/IPyth.sol";
             import "pyth-sdk-solidity/PythStructs.sol";
 
@@ -64,7 +64,7 @@ The `updateData` can be retrieved from the price service API.
             "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
             "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
         }}>
-            ```copytypescript copy
+            ```typescript copy
             import { ethers } from "ethers";
             import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 

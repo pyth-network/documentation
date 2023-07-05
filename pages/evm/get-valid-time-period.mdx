@@ -23,7 +23,7 @@ The valid time period is configured to be a sane default for each blockchain.
             "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
             "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
         }}>
-            ```copysolidity copy
+            ```solidity copy
             import "pyth-sdk-solidity/IPyth.sol";
             import "pyth-sdk-solidity/PythStructs.sol";
 
@@ -42,7 +42,7 @@ The valid time period is configured to be a sane default for each blockchain.
             "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
             "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
         }}>
-            ```copytypescript copy
+            ```typescript copy
             import { ethers } from "ethers";
             import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 

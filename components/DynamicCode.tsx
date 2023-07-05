@@ -24,7 +24,7 @@ export type Targets = Record<
  *                Note: at the moment, each key must be a complete syntax-highlighted unit of the formatted code
  *                (the complete `innerText` of an HTML element). This behavior could be generalized in the future.
  * @param children The element to which the find/replace targets are applied. You should typically provide a code block
- *                 like ```copyjavascript myJavascriptCode() ```
+ *                 like ```javascript myJavascriptCode() ```
  */
 const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
   const { keyValueStore, pythAddressConfig, currentChainConfig } =
