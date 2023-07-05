@@ -29,6 +29,7 @@ export type Targets = Record<
 const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
   const { keyValueStore, pythAddressConfig, currentChainConfig } =
     useGlobalContext();
+  console.log(currentChainConfig);
   const state = useMemo(
     () =>
       new DynamicCodeRenderingContext(

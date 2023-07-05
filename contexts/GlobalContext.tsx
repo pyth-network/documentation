@@ -8,6 +8,7 @@ import React, {
   useState,
 } from "react";
 import { Chain, useNetwork } from "wagmi";
+import { arbitrum, avalanche, mainnet } from "wagmi/chains";
 import PythAbi from "../abis/IPyth.json";
 import PythErrorsAbi from "../abis/PythErrors.json";
 
@@ -82,6 +83,8 @@ export const useGlobalContext = () => useContext(GlobalContext);
 
 const contractAbi = [...PythAbi, ...PythErrorsAbi];
 
+const CHAINS = [mainnet, avalanche, arbitrum];
+
 export const GlobalContextProvider = ({
   children,
 }: {
@@ -91,18 +94,21 @@ export const GlobalContextProvider = ({
     Record<string, string>
   >({});
 
+  const defaultChainName = "arbitrum";
   // TODO: we may need to support "no network" as the default, because this may require a wallet.
-  const [networkName, setNetworkName] = useState<string>("arbitrum");
+  const [networkName, setNetworkName] = useState<string>(defaultChainName);
   const [pythAddressConfig, setPythAddressConfig] = useState<PythAddressConfig>(
-    PythAddresses["arbitrum"]
+    PythAddresses[defaultChainName]
   );
   const [provider, setProvider] = useState<ethers.Provider>(
     ethers.getDefaultProvider("https://arb1.arbitrum.io/rpc")
   );
   const [signer, setSigner] = useState<ethers.Signer | undefined>(undefined);
 
-  const { chain, chains } = useNetwork();
-  const defaultChain = chains.find((chain) => chain.id === 42161);
+  const { chain } = useNetwork();
+  const defaultChain = CHAINS.find(
+    (chain) => chain.network === defaultChainName
+  );
   const [currentChainConfig, setCurrentChainConfig] = useState<
     Chain | undefined
   >(defaultChain);
@@ -119,7 +125,7 @@ export const GlobalContextProvider = ({
     async function helper() {
       setPythAddressConfig(PythAddresses[networkName]);
       const chainId = PythAddresses[networkName].chainId;
-      const chain = chains.find((chain) => chain.id === chainId);
+      const chain = CHAINS.find((chain) => chain.id === chainId);
       if (chain) {
         const rpcUrl = chain.rpcUrls.default.http[0];
         const provider = new JsonRpcProvider(rpcUrl);
@@ -128,7 +134,7 @@ export const GlobalContextProvider = ({
       }
     }
     helper();
-  }, [networkName, chains]);
+  }, [networkName]);
 
   useEffect(() => {
     if (chain) {
