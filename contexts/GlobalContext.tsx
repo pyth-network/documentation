@@ -1,7 +1,7 @@
-import { ethers } from "ethers";
+import { ethers, JsonRpcProvider } from "ethers";
 import React, {
-  ReactNode,
   createContext,
+  ReactNode,
   useContext,
   useEffect,
   useMemo,
@@ -67,7 +67,7 @@ export const Networks: Record<string, EvmNetworkConfig> = {
       chainId: "0x1", // Ethereum Mainnet
       chainName: "Ethereum Mainnet",
       // FIXME: this url obviously doesn't work
-      rpcUrls: ["https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID"],
+      rpcUrls: ["https://rpc.ankr.com/eth"],
       nativeCurrency: {
         name: "Ether",
         symbol: "ETH",
@@ -150,16 +150,9 @@ export const GlobalContextProvider = ({
   useEffect(() => {
     async function helper() {
       setNetworkConfig(Networks[networkName]);
-      await switchNetwork(networkName);
-      // @ts-ignore
-      if (window.ethereum) {
-        // @ts-ignore
-        setProvider(new ethers.BrowserProvider(window.ethereum));
-      } else {
-        setProvider(
-          ethers.getDefaultProvider(Networks[networkName].info.rpcUrls[0])
-        );
-      }
+      const rpcUrl = Networks[networkName].info.rpcUrls[0];
+      const provider = new JsonRpcProvider(rpcUrl);
+      setProvider(provider);
     }
     helper();
   }, [networkName]);
@@ -184,38 +177,39 @@ export const GlobalContextProvider = ({
   );
 };
 
-async function switchNetwork(networkName: string) {
-  const networkData = Networks[networkName];
+// TODO: use ConnectKit wallet adapter which supports switching networks
+// async function switchNetwork(networkName: string) {
+//   const networkData = Networks[networkName];
 
-  if (!networkData) {
-    throw new Error("Unsupported network");
-  }
+//   if (!networkData) {
+//     throw new Error("Unsupported network");
+//   }
 
-  // @ts-ignore
-  if (window.ethereum) {
-    // @ts-ignore
-    const ethereum = window.ethereum;
+//   // @ts-ignore
+//   if (window.ethereum) {
+//     // @ts-ignore
+//     const ethereum = window.ethereum;
 
-    try {
-      // Request the user to switch to the desired network
-      await ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: networkData.info.chainId }],
-      });
-    } catch (error: any) {
-      // If the chain does not exist then add it
-      if (error.code === 4902) {
-        try {
-          await ethereum.request({
-            method: "wallet_addEthereumChain",
-            params: [networkData.info],
-          });
-        } catch (addError: any) {
-          console.error(addError);
-        }
-      }
+//     try {
+//       // Request the user to switch to the desired network
+//       await ethereum.request({
+//         method: "wallet_switchEthereumChain",
+//         params: [{ chainId: networkData.info.chainId }],
+//       });
+//     } catch (error: any) {
+//       // If the chain does not exist then add it
+//       if (error.code === 4902) {
+//         try {
+//           await ethereum.request({
+//             method: "wallet_addEthereumChain",
+//             params: [networkData.info],
+//           });
+//         } catch (addError: any) {
+//           console.error(addError);
+//         }
+//       }
 
-      console.error(error);
-    }
-  }
-}
+//       console.error(error);
+//     }
+//   }
+// }
