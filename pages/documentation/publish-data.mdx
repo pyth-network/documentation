@@ -14,7 +14,7 @@ Every data provider is identified on the network by a public key, and their pric
 You will need a Solana public/private key pair for this purpose.
 If you do not already have a keypair, you can create one using the instructions below:
 
-```
+```sh copy
 # Install the Solana Tool Suite, needed for creating the key used to sign your transactions.
 # See https://docs.solana.com/cli/install-solana-cli-tools for the latest version
 sh -c "$(curl -sSfL https://release.solana.com/v1.14.13/install)"
@@ -26,14 +26,14 @@ solana-keygen new --no-bip39-passphrase --outfile publish_key_pair.json
 This command will create a public/private keypair in `publish_key_pair.json`.
 Please extract the public key from this file and share it with the Pyth Data Association so they can enable you to publish prices.
 
-```
+```sh copy
 # Print the public key of the keypair.
 solana-keygen pubkey publish_key_pair.json
 ```
 
 This command will output the public key in base58 encoding and will look something like:
 
-```
+```sh copy
 5rYvdyWAunZgD2EC1aKo7hQbutUUnkt7bBFM6xNq2z7Z
 ```
 

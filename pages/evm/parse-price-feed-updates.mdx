@@ -62,15 +62,15 @@ contain an update for any of the given `priceIds` within the given time range.
 <Tabs items={['Solidity', 'ethers.js v6']}>
     <Tab>
         <DynamicCode targets={{
-            "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
+            "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
             "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("priceId", "<priceId>"),
-            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
             "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
             "2": (ctx) => ctx.get("fee", "<fee>"),
             "3": (ctx) => ctx.get("minPublishTime", "<minPublishTime>"),
             "4": (ctx) => ctx.get("maxPublishTime", "<maxPublishTime>"),
         }}>
-            ```solidity copy
+            ```copysolidity copy
             import "pyth-sdk-solidity/IPyth.sol";
             import "pyth-sdk-solidity/PythStructs.sol";
 
@@ -93,16 +93,16 @@ contain an update for any of the given `priceIds` within the given time range.
 
     <Tab>
         <DynamicCode targets={{
-            "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
-            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
-            "'RPC_URL'": (ctx) => ctx.evmConfig.info.rpcUrls.length > 0 ? `'${ctx.evmConfig.info.rpcUrls[0]}'` : 'RPC_URL',
+            "'0x0000'": (ctx) => `'${ctx.pythAddressConfig.pythAddress}'`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
             "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
             "'0x2222'": (ctx) => `'${ctx.get("priceId", "<priceId>")}'`,
             "3": (ctx) => ctx.get("minPublishTime", "<minPublishTime>"),
             "4": (ctx) => ctx.get("maxPublishTime", "<maxPublishTime>"),
             "2": (ctx) => ctx.get("fee", "<fee>"),
         }}>
-            ```typescript copy
+            ```copytypescript copy
             import { ethers } from "ethers";
             import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 

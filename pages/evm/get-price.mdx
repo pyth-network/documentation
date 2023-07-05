@@ -50,11 +50,11 @@ reading it. This step ensures that the on-chain price is fresh.
 <Tabs items={['Solidity', 'ethers.js v6']}>
   <Tab>
     <DynamicCode targets={{
-        "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
+        "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
         "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("id", "<id>"),
-        "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+        "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
     }}>
-      ```solidity copy
+      ```copysolidity copy
       import "pyth-sdk-solidity/IPyth.sol";
       import "pyth-sdk-solidity/PythStructs.sol";
 
@@ -71,12 +71,12 @@ reading it. This step ensures that the on-chain price is fresh.
 
   <Tab>
     <DynamicCode targets={{
-        "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
+        "'0x0000'": (ctx) => `'${ctx.pythAddressConfig.pythAddress}'`,
         "'0x1111'": (ctx) => `'${ctx.get("id", "<id>")}'`,
-        "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
-        "'RPC_URL'": (ctx) => ctx.evmConfig.info.rpcUrls.length > 0 ? `'${ctx.evmConfig.info.rpcUrls[0]}'` : 'RPC_URL',
+        "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+        "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
     }}>
-      ```typescript copy
+      ```copytypescript copy
       import { ethers } from "ethers";
       import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 

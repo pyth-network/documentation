@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 
 // Checks whether the value of an input is a valid value.
 // Returns undefined if valid, or an error message string if invalid.
-export type InputFormat = (string) => string | undefined;
+export type InputFormat = (input: string) => string | undefined;
 
 function regexFormat(regex: string, errorMessage: string) {
   const regexObj = new RegExp(regex);

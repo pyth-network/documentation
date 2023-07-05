@@ -9,10 +9,6 @@
 }
 
 @layer components {
-  h1 {
-    @apply text-5xl tracking-[0.01em] font-header font-light leading-[52px] text-light !important;
-  }
-
   h2 {
     @apply text-light !important;
   }

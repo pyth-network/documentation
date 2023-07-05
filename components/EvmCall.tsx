@@ -34,8 +34,10 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
     const args: any[] | undefined = buildArguments(keyValueStore);
 
     // TODO: validate arguments
-    if (args === undefined || args.includes(undefined)) {
-      setResponse(`Please populate all of the arguments with valid values.`);
+    if (args === undefined || args.flat().includes(undefined)) {
+      setResponsePreface(
+        `Please populate all of the arguments with valid values.`
+      );
     } else {
       try {
         setResponsePreface("Loading...");
@@ -48,12 +50,18 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
         setResponse(resultString);
       } catch (error) {
         if (isError(error, "CALL_EXCEPTION")) {
-          const ethError = pythContract.interface.parseError(error.data);
-          setResponsePreface("EVM call reverted with exception:");
-          setResponse(`${ethError.name}(${renderResult(ethError.args, "")})`);
+          if (error.data !== null) {
+            const ethError = pythContract.interface.parseError(error.data);
+            if (ethError !== null) {
+              setResponsePreface("EVM call reverted with exception:");
+              setResponse(
+                `${ethError.name}(${renderResult(ethError.args, "")})`
+              );
+            }
+          }
         } else {
           setResponsePreface("An unknown error occurred. Error details:");
-          setResponse(error.toString);
+          setResponse((error as any).toString());
         }
       }
     }

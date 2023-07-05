@@ -12,7 +12,7 @@ The [Pyth Rust SDK](https://github.com/pyth-network/pyth-sdk-rs) contains a samp
 
 Product accounts store metadata about a product. This metadata is represented as a set of reference attributes, stored as a list of text key/value pairs. Not all product accounts follow the same structure; for a comprehensive overview, visit the [Product Metadata page](product-metadata.md). For example, the product account for AAPL contains the following fields:
 
-```
+```sh copy
 product_account .. G89jkM5wFLpmnbvRbeePUumxsJyzoXaRfgBVjyx2CPzQ
   symbol.......... Equity.US.AAPL/USD
   asset_type...... Equity
@@ -30,7 +30,7 @@ This snippet shows the reference attributes for AAPL. The set of available refer
 
 As another example, here is the product account for BTC/USD:
 
-```
+```sh copy
 product_account .. 3m1y5h2uv7EQL3KaJZehvAJa4yDNvgc5yAdL9KPMKwvk
   symbol.......... Crypto.BTC/USD
   asset_type...... Crypto
@@ -45,7 +45,7 @@ product_account .. 3m1y5h2uv7EQL3KaJZehvAJa4yDNvgc5yAdL9KPMKwvk
 
 Price accounts store the current price of a product along with additional useful information. For example, consider the following content of AAPL's price account:&#x20;
 
-```
+```sh copy
 price_account .. CqFJLrT4rSpA46RQkVYWn8tdBDuQ7p7RXcp6Um76oaph
     price ........ 16297000 x 10^-5
     conf ......... 27952 x 10^-5

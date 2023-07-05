@@ -1,6 +1,6 @@
 import fs from "fs";
 import { join } from "path";
-import { exec, ExecException } from "child_process";
+import { exec } from "child_process";
 import { promisify } from "util";
 import { tmpdir } from "os";
 

@@ -8,3 +8,4 @@ node_modules
 .code_tests
 
 .DS_Store
+.env.local

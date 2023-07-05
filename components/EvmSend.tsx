@@ -1,6 +1,8 @@
-import detectEthereumProvider from "@metamask/detect-provider";
-import { ethers } from "ethers";
+import { ConnectKitButton } from "connectkit";
 import { useEffect, useState } from "react";
+import { useAccount, useContractWrite } from "wagmi";
+
+import { ethers } from "ethers";
 import { useGlobalContext } from "../contexts/GlobalContext";
 
 interface EvmSendProps {
@@ -22,111 +24,83 @@ interface EvmSendProps {
  * TODO: probably better to pass the contract address / ABI as arguments (?)
  */
 const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
-  const { keyValueStore, setProvider, signer, setSigner, pythContract } =
-    useGlobalContext();
+  const { keyValueStore, pythAddressConfig, pythAbi } = useGlobalContext();
+  const { isConnected } = useAccount();
 
-  const [response, setResponse] = useState<string | undefined>(undefined);
+  const { data, isLoading, isSuccess, isError, write, error } =
+    useContractWrite({
+      address: pythAddressConfig.pythAddress as `0x${string}`,
+      abi: pythAbi,
+      functionName: functionName,
+    });
+
+  const [response, setResponse] = useState<string>();
+  const [responsePreface, setResponsePreface] = useState<string>();
 
   useEffect(() => {
     clearResponse();
   }, [keyValueStore]);
 
-  const connectWallet = async () => {
-    const ethereumProvider = await detectEthereumProvider();
-
-    if (ethereumProvider) {
-      // @ts-ignore
-      const myProvider = new ethers.BrowserProvider(ethereumProvider);
-      setProvider(myProvider);
-
-      // It also provides an opportunity to request access to write
-      // operations, which will be performed by the private key
-      // that MetaMask manages for the user.
-      const mySigner = await myProvider.getSigner();
-      setSigner(mySigner);
-    } else {
-      alert("Please install MetaMask!");
-    }
-  };
-
-  const sendTransaction = async () => {
-    if (signer != undefined) {
-      const contractWithSigner = pythContract.connect(signer);
-
-      const args: any[] | undefined = buildArguments(keyValueStore);
-
-      let extraArguments: any | undefined = {};
-      if (feeKey !== undefined) {
-        // TODO: validate argument
-        try {
-          extraArguments["value"] = ethers.toBigInt(keyValueStore[feeKey]);
-        } catch (error) {
-          extraArguments = undefined;
-        }
-      }
-
-      // TODO: validate arguments
-      if (args === undefined || extraArguments === undefined) {
-        setResponse(`Please populate all of the arguments with valid values.`);
-      } else {
-        try {
-          const tx = await contractWithSigner[functionName](
-            ...args,
-            extraArguments
-          );
-          const receipt = await tx.wait();
-          const responseString = JSON.stringify(receipt);
-          setResponse(responseString);
-        } catch (error) {
-          // MetaMask RPC errors show up in this field of the response
-          const metamaskError = error.info?.error?.message;
-          if (metamaskError !== undefined) {
-            const errorDetails = error.info?.error?.data?.message;
-            setResponse(`${metamaskError}\n${errorDetails}`);
-          } else {
-            error.toString();
-          }
-        }
-      }
-    } else {
-      alert("Please connect your wallet first!");
-    }
-  };
-
   const clearResponse = async () => {
+    setResponsePreface(undefined);
     setResponse(undefined);
+  };
+
+  useEffect(() => {
+    if (isLoading) {
+      setResponsePreface("Loading...");
+    } else if (isSuccess) {
+      const responseString = JSON.stringify(data);
+      setResponsePreface("EVM call succeeded with result:");
+      setResponse(responseString);
+    } else if (isError) {
+      setResponsePreface("EVM call reverted with exception:");
+      setResponse(JSON.stringify(error));
+    }
+  }, [isLoading, isSuccess, data, isError, error]);
+
+  const executeQuery = async () => {
+    const args: any[] | undefined = buildArguments(keyValueStore);
+
+    if (args === undefined || args.flat().includes(undefined)) {
+      setResponsePreface(
+        `Please populate all of the arguments with valid values.`
+      );
+    } else {
+      write?.({
+        args: buildArguments(keyValueStore),
+        value:
+          feeKey !== undefined
+            ? ethers.toBigInt(keyValueStore[feeKey])
+            : undefined,
+      });
+    }
   };
 
   return (
     <>
-      <div className="flex space-x-2">
-        {signer !== undefined ? (
-          <>
+      <div className="my-4">
+        <ConnectKitButton theme="midnight" />
+      </div>
+      <div className="flex">
+        {isConnected && (
+          <div className="space-x-2 mb-4">
             <button
-              className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF] my-4"
-              onClick={sendTransaction}
+              className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF]"
+              onClick={executeQuery}
             >
               execute query
             </button>
-            <button
-              className="font-normal text-base my-4"
-              onClick={clearResponse}
-            >
+            <button className="font-normal text-base" onClick={clearResponse}>
               clear
             </button>
-          </>
-        ) : (
-          <button
-            className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF] my-4"
-            onClick={connectWallet}
-          >
-            connect wallet
-          </button>
+          </div>
         )}
       </div>
       <div>
-        {response !== undefined && (
+        {responsePreface !== undefined && (
           <div className="response">
+            <p className="px-4">{responsePreface}</p>
             <pre>{response}</pre>
           </div>
         )}

@@ -29,7 +29,7 @@ const RestGet = ({ endpoint, queryParams }: RestGetProps) => {
   /** Create a GET query string for the key/value pairs in data. Pass `urlEncode=true`
    * if you're actually querying the endpoint, or `false` to have the url display better for users.
    */
-  function encodeQueryData(data, urlEncode: boolean) {
+  function encodeQueryData(data: any, urlEncode: boolean) {
     if (data === undefined) {
       return "";
     }
@@ -48,7 +48,7 @@ const RestGet = ({ endpoint, queryParams }: RestGetProps) => {
   }
 
   const handleRunCode = async () => {
-    const queryParameterValues = {};
+    const queryParameterValues: { [key: string]: string | undefined } = {};
 
     for (const key of queryParams) {
       if (keyValueStore[key] !== undefined) {
@@ -66,7 +66,7 @@ const RestGet = ({ endpoint, queryParams }: RestGetProps) => {
       setResponse(JSON.stringify(data, null, 2));
       setIsStale(false);
     } catch (error) {
-      setResponse(`Error: ${error.message}`);
+      setResponse(`Error: ${(error as Error).message}`);
       setIsStale(false);
     }
   };

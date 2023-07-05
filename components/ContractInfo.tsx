@@ -7,7 +7,7 @@ import EvmNetworkSelector from "./EvmNetworkSelector";
  * the configuration of the Pyth contract deployed on that network.
  */
 const ContractInfo = () => {
-  const { networkConfig, pythContract } = useGlobalContext();
+  const { pythAddressConfig, pythContract } = useGlobalContext();
 
   const [fee, setFee] = useState<string>();
   const [validTimePeriod, setValidTimePeriod] = useState<string>();
@@ -31,7 +31,7 @@ const ContractInfo = () => {
     helper();
   }, [pythContract]);
 
-  const configValue = (value: string) => {
+  const configValue = (value?: string) => {
     return isLoading ? "Loading..." : value;
   };
 
@@ -46,13 +46,13 @@ const ContractInfo = () => {
           >
             <td className="py-3 pl-6 pr-1 lg:pl-14 w-48">Contract Address</td>
             <td className="py-3 pl-1 lg:pl-14">
-              {configValue(networkConfig.pythAddress)}
+              {configValue(pythAddressConfig.pythAddress)}
             </td>
           </tr>
           <tr key="Chain ID" className="border-t border-darkGray5 bg-darkGray">
             <td className="py-3 pl-6 pr-1 lg:pl-14">Chain ID</td>
             <td className="py-3 pl-1 lg:pl-14">
-              {configValue(networkConfig.info.chainId)}
+              {configValue(pythAddressConfig.chainId.toString())}
             </td>
           </tr>
           <tr

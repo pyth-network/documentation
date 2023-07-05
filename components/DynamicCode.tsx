@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useRef } from "react";
-import {
-  GlobalContextData,
-  EvmNetworkConfig,
-  useGlobalContext,
-} from "../contexts/GlobalContext";
+import { Chain } from "wagmi";
+import { PythAddressConfig, useGlobalContext } from "../contexts/GlobalContext";
 
 interface DynamicCodeProps {
   targets: Targets;
   children: React.ReactNode;
 }
 
-export type Targets = Record<string, (DynamicCodeRenderingContext) => string>;
+export type Targets = Record<
+  string,
+  (ctx: DynamicCodeRenderingContext) => string
+>;
 
 /**
  * A syntax-highlighted code block with dynamic text. Nextra typically performs all syntax highlighting on the
@@ -24,17 +24,19 @@ export type Targets = Record<string, (DynamicCodeRenderingContext) => string>;
  *                Note: at the moment, each key must be a complete syntax-highlighted unit of the formatted code
  *                (the complete `innerText` of an HTML element). This behavior could be generalized in the future.
  * @param children The element to which the find/replace targets are applied. You should typically provide a code block
- *                 like ```javascript myJavascriptCode() ```
+ *                 like ```copyjavascript myJavascriptCode() ```
  */
 const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
-  const context: GlobalContextData = useGlobalContext();
+  const { keyValueStore, pythAddressConfig, currentChainConfig } =
+    useGlobalContext();
   const state = useMemo(
     () =>
       new DynamicCodeRenderingContext(
-        context.keyValueStore,
-        context.networkConfig
+        keyValueStore,
+        pythAddressConfig,
+        currentChainConfig
       ),
-    [context.keyValueStore, context.networkConfig]
+    [keyValueStore, pythAddressConfig, currentChainConfig]
   );
 
   // These types are pretty gnarly so leave them as any
@@ -79,18 +81,21 @@ export class DynamicCodeRenderingContext {
   // The global key-value store
   kv: Record<string, string>;
   /** The currently selected EVM network. */
-  public evmConfig: EvmNetworkConfig | undefined;
+  public pythAddressConfig?: PythAddressConfig;
+  public currentChainConfig?: Chain;
 
   constructor(
     kv: Record<string, string>,
-    evmConfig: EvmNetworkConfig | undefined
+    pythAddressConfig?: PythAddressConfig,
+    currentChainConfig?: Chain
   ) {
     this.kv = kv;
-    this.evmConfig = evmConfig;
+    this.pythAddressConfig = pythAddressConfig;
+    this.currentChainConfig = currentChainConfig;
   }
 
   /** Get the value of key from the global context, returning `orElse` if the key is not defined. */
-  public get(key: string, orElse?: string): string {
+  public get(key: string, orElse?: string): string | undefined {
     return this.kv[key] !== undefined ? this.kv[key] : orElse;
   }
 }
