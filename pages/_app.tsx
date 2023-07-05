@@ -7,7 +7,7 @@ import { arbitrum, avalanche, mainnet } from "wagmi/chains";
 import { GlobalContextProvider } from "../contexts/GlobalContext";
 import "../styles/styles.css";
 
-const chains = [mainnet, arbitrum, avalanche];
+const chains = [arbitrum, mainnet, avalanche];
 
 type NextraAppProps = AppProps & {
   Component: AppProps["Component"] & {
