@@ -143,7 +143,7 @@ html[class~="dark"] .dark\:nx-text-gray-300 {
 }
 
 html[class~="dark"] .nextra-sidebar-container {
-  @apply bg-dark;
+  @apply bg-darkBlue;
 }
 
 .nx-text-gray-500 {
