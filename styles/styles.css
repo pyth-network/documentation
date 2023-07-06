@@ -142,6 +142,10 @@ html[class~="dark"] .dark\:nx-text-gray-300 {
   @apply text-light;
 }
 
+html[class~="dark"] .nextra-sidebar-container {
+  @apply bg-dark;
+}
+
 .nx-text-gray-500 {
   @apply text-light;
 }

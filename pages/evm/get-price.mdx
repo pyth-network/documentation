@@ -4,7 +4,6 @@ import { InputFormats } from "../../utils/InputFormat";
 import Example from "../../components/Example";
 import Examples from "../../components/Examples";
 import DynamicCode from "../../components/DynamicCode";
-import DisplayKeyValueStore from "../../components/DisplayKeyValueStore";
 import EvmCall from "../../components/EvmCall";
 import { Tab, Tabs } from "nextra-theme-docs";
 
@@ -24,9 +23,13 @@ If you want the latest price regardless of when it was updated, see [getPriceUns
 Users of this method will typically invoke [updatePriceFeeds](update-price-feeds) to update the on-chain price before
 reading it. This step ensures that the on-chain price is fresh.
 
-| Argument                                 |                                               | Description                               |
+<div className="mt-6 overflow-x-auto">
+
+| Argument                                 | Input                                         | Description                               |
 | ---------------------------------------- | --------------------------------------------- | ----------------------------------------- |
 | <Arg required={true} type="hex">id</Arg> | <Input id="id" format={InputFormats.ZeroX} /> | The ID of the price feed you want to read |
+
+</div>
 
 <Examples>
   <Example

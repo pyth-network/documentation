@@ -6,7 +6,7 @@ interface ExamplesProps {
 
 const Examples = ({ children }: ExamplesProps) => {
   return (
-    <div className="mt-4">
+    <div className="mt-6">
       <div className="font-semibold font-header text-base16 tracking-[0.03em] pb-2">
         Examples
       </div>

@@ -20,7 +20,7 @@ const EvmNetworkSelector = () => {
   );
 
   return (
-    <Menu as="div" className="relative z-[2] block w-[180px] text-left my-4">
+    <Menu as="div" className="relative z-[2] block w-[180px] text-left">
       {({ open }) => (
         <>
           <Menu.Button

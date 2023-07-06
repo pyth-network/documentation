@@ -47,7 +47,7 @@ const Input = ({ id, format }: InputProps) => {
         onChange={(e) => handleQueryChange(id, e.target.value)}
         className="w-full"
       />
-      <p className={"input-error"}>{errorMessage}</p>
+      {errorMessage && <p className="input-error pt-2">{errorMessage}</p>}
     </div>
   );
 };

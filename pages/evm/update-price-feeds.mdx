@@ -20,10 +20,14 @@ The required fee for a given set of updates can be computed by passing them to [
 
 Reverts if the required fee is not paid, or the `updateData` is incorrectly signed or formatted.
 
-| Argument                                           |                                                       | Description                                                              |
+<div className="mt-6 overflow-x-auto">
+
+| Argument                                           | Input                                                 | Description                                                              |
 | -------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------ |
 | <Arg required={true} type="hex[]">updateData</Arg> | <Input id="updateData" format={InputFormats.ZeroX} /> | The price update data for the contract to verify.                        |
 | <Arg required={true} type="wei">fee</Arg>          | <Input id="fee" format={InputFormats.BigInt}/>        | The update fee in wei. This fee is sent as the value of the transaction. |
+
+</div>
 
 <Examples>
   <Example

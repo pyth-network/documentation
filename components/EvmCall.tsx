@@ -78,22 +78,21 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
 
   return (
     <div>
-      <div className="flex justify-between">
-        <div className="space-x-2">
+      <div className="flex flex-col md:flex-row md:justify-between">
+        <div className="space-x-2 my-4">
           <button
-            className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF] my-4"
+            className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF]"
             onClick={sendTransaction}
           >
             execute query
           </button>
-          <button
-            className="font-normal text-base my-4"
-            onClick={clearResponse}
-          >
+          <button className="font-normal text-base" onClick={clearResponse}>
             clear
           </button>
         </div>
-        <EvmNetworkSelector />
+        <div className="md:my-4">
+          <EvmNetworkSelector />
+        </div>
       </div>
       {responsePreface !== undefined && (
         <div className="response">

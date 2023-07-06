@@ -19,13 +19,17 @@ This method requires the caller to pay a fee in wei; the required fee can be com
 Reverts if the transferred fee is not sufficient, or `updateData` is invalid, or `updateData` does not
 contain an update for any of the given `priceIds` within the given time range.
 
-| Argument                                                |                                                            | Description                                                              |
+<div className="mt-6 overflow-x-auto">
+
+| Argument                                                | Input                                                      | Description                                                              |
 | ------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------ |
 | <Arg required={true} type="hex[]">updateData</Arg>      | <Input id="updateData" format={InputFormats.ZeroX} />      | The price update data to parse.                                          |
 | <Arg required={true} type="bytes32[]">priceIds</Arg>    | <Input id="priceId" format={InputFormats.ZeroX} />         | The price ids whose feeds will be returned.                              |
 | <Arg required={true} type="uint64">minPublishTime</Arg> | <Input id="minPublishTime" format={InputFormats.BigInt} /> | The minimum timestamp for each returned feed.                            |
 | <Arg required={true} type="uint64">maxPublishTime</Arg> | <Input id="maxPublishTime" format={InputFormats.BigInt} /> | The maximum timestamp for each returned feed.                            |
 | <Arg required={true} type="wei">fee</Arg>               | <Input id="fee" format={InputFormats.BigInt}/>             | The update fee in wei. This fee is sent as the value of the transaction. |
+
+</div>
 
 <Examples>
   <Example

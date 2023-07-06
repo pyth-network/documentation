@@ -37,7 +37,9 @@ const ContractInfo = () => {
 
   return (
     <div>
-      <EvmNetworkSelector />
+      <div className="my-4">
+        <EvmNetworkSelector />
+      </div>
       <table className="w-full text-left table-fixed">
         <tbody>
           <tr

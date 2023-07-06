@@ -13,9 +13,13 @@ Get the fee required to update the on-chain price feeds with the provided `updat
 The returned number of wei should be sent as the transaction value when calling [updatePriceFeeds](update-price-feeds).
 The `updateData` can be retrieved from the price service API.
 
-| Argument                                           |                                                      | Description                                                                               |
+<div className="mt-6 overflow-x-auto">
+
+| Argument                                           | Input                                                | Description                                                                               |
 | -------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | <Arg required={true} type="hex[]">updateData</Arg> | <Input id="updateData" format={InputFormats.ZeroX}/> | The price updates that you would like to submit to [updatePriceFeeds](update-price-feeds) |
+
+</div>
 
 <Examples>
   <Example
