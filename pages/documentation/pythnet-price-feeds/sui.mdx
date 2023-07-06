@@ -18,7 +18,7 @@ As with other chains, one first obtains a batch price attestation VAA (of type `
 
 Call `parse_and_verify` on the batch attestation VAA bytes to obtain a `VAA` hot potato object.
 
-```Rust
+```rs copy
 public fun parse_and_verify(
       wormhole_state: &State,
       buf: vector<u8>, // price update VAA bytes
@@ -30,7 +30,7 @@ public fun parse_and_verify(
 
 Use the verified VAA and create a hot potato vector containing the latest price updates.
 
-```Rust
+```rs copy
 public fun create_price_infos_hot_potato(
         pyth_state: &PythState,
         verified_vaas: vector<VAA>,
@@ -47,7 +47,7 @@ However, instead of passing in a Pyth price feed ID to update the price feed (wh
 
 The `PriceInfoObject` IDs are distinct from Pyth price feed IDs, and are stored in a map on-chain (Pyth price feed ID => PriceInfoObject ID). We pulled this map into a local json file [here](./scripts/generated). The `PriceInfoObject` ID can also be queried on-chain by calling the `pyth::state::get_price_info_object_id` found in the Pyth package. See the common questions section below for more info.
 
-```Rust
+```rs copy
 public fun update_single_price_feed(
     pyth_state: &PythState,
     price_updates: HotPotatoVector<PriceInfo>,
@@ -61,7 +61,7 @@ public fun update_single_price_feed(
 
 Drop the hot potato. (You must call this function to drop the potato).
 
-```Rust
+```rs copy
 public fun destroy<T: copy + drop>(
     hot_potato_vector: HotPotatoVector<T>
 )
@@ -71,7 +71,7 @@ public fun destroy<T: copy + drop>(
 
 Finally, get the price of the updated price feed in `PriceInfoObject` 🎉🎉🎉.
 
-```Rust
+```rs copy
 public fun get_price(
       state: &PythState,
       price_info_object: &PriceInfoObject,
@@ -87,7 +87,7 @@ See the `./scripts` folder for examples of programmable transactions for creatin
 
 To build and test the contracts, run the following
 
-```
+```sh copy
 $ make test
 $ make build
 ```
@@ -122,7 +122,7 @@ $ make build
 
 Our Pyth `Move.toml` file contains the following dependencies. It depends on specific versions of the [Sui Framework](https://github.com/MystenLabs/sui) as well as [Wormhole](https://github.com/wormhole-foundation/wormhole). To make your Sui package compatible, you must also specify the following dependencies verbatim in your `Move.toml` file. We are locked in to this specific `rev` because our package depends on Wormhole, which [uses the `rev` `09b2081498366df936abae26eea4b2d5cafb2788`](https://github.com/wormhole-foundation/wormhole/blob/main/sui/wormhole/Move.mainnet.toml).
 
-```
+```sh copy
 [dependencies.Sui]
 git = "https://github.com/MystenLabs/sui.git"
 subdir = "crates/sui-framework/packages/sui-framework"

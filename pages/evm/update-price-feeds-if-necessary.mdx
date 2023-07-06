@@ -22,12 +22,16 @@ The required fee for a given set of updates can be computed by passing them to [
 
 Reverts if the required fee is not paid, or the `updateData` is incorrectly signed or formatted.
 
-| Argument                                                |                                                         | Description                                                                  |
+<div className="mt-6 overflow-x-auto">
+
+| Argument                                                | Input                                                   | Description                                                                  |
 | ------------------------------------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | <Arg required={true} type="hex[]">updateData</Arg>      | <Input id="updateData" format={InputFormats.ZeroX} />   | The price update data for the contract to verify.                            |
 | <Arg required={true} type="bytes32[]">priceIds</Arg>    | <Input id="priceId" format={InputFormats.ZeroX} />      | The price ids to update                                                      |
 | <Arg required={true} type="uint64[]">publishTimes</Arg> | <Input id="publishTime" format={InputFormats.BigInt} /> | The timestamp for each price id that determines whether to apply the update. |
 | <Arg required={true} type="wei">fee</Arg>               | <Input id="fee" format={InputFormats.BigInt}/>          | The update fee in wei. This fee is sent as the value of the transaction.     |
+
+</div>
 
 <Examples>
   <Example
@@ -61,14 +65,14 @@ Reverts if the required fee is not paid, or the `updateData` is incorrectly sign
 <Tabs items={['Solidity', 'ethers.js v6']}>
     <Tab>
         <DynamicCode targets={{
-            "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
+            "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
             "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("priceId", "<priceId>"),
-            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
             "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
             "2": (ctx) => ctx.get("fee", "<fee>"),
             "3": (ctx) => ctx.get("publishTime", "<publishTime>"),
         }}>
-            ```solidity
+            ```solidity copy
             import "pyth-sdk-solidity/IPyth.sol";
             import "pyth-sdk-solidity/PythStructs.sol";
 
@@ -91,15 +95,15 @@ Reverts if the required fee is not paid, or the `updateData` is incorrectly sign
 
     <Tab>
         <DynamicCode targets={{
-            "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
-            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
-            "'RPC_URL'": (ctx) => ctx.evmConfig.info.rpcUrls.length > 0 ? `'${ctx.evmConfig.info.rpcUrls[0]}'` : 'RPC_URL',
+            "'0x0000'": (ctx) => `'${ctx.pythAddressConfig.pythAddress}'`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
             "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
             "'0x2222'": (ctx) => `'${ctx.get("priceId", "<priceId>")}'`,
             "3": (ctx) => ctx.get("publishTime", "<publishTime>"),
             "2": (ctx) => ctx.get("fee", "<fee>"),
         }}>
-            ```typescript
+            ```typescript copy
             import { ethers } from "ethers";
             import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 

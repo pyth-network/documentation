@@ -2,7 +2,7 @@ import Input from "../../components/Input";
 import Arg from "../../components/Arg";
 import Example from "../../components/Example";
 import DynamicCode from "../../components/DynamicCode";
-import DisplayKeyValueStore from "../../components/DisplayKeyValueStore";
+import { InputFormats } from "../../utils/InputFormat";
 import EvmCall from "../../components/EvmCall";
 import { Tab, Tabs } from "nextra-theme-docs";
 import Examples from "../../components/Examples";
@@ -22,10 +22,14 @@ The call reverts if the on-chain price is from more than `age` seconds in the pa
 Users of this method will typically invoke [updatePriceFeeds](update-price-feeds) to update the on-chain price before
 reading it. This step ensures that the on-chain price is fresh and the call does not revert.
 
-| Argument                                  |                    | Description                                   |
-| ----------------------------------------- | ------------------ | --------------------------------------------- |
-| <Arg required={true} type="hex">id</Arg>  | <Input id="id" />  | The ID of the price feed you want to read     |
-| <Arg required={true} type="int">age</Arg> | <Input id="age" /> | Maximum age of the on-chain price in seconds. |
+<div className="mt-6 overflow-x-auto">
+
+| Argument                                  | Input                                         | Description                                   |
+| ----------------------------------------- | --------------------------------------------- | --------------------------------------------- |
+| <Arg required={true} type="hex">id</Arg>  | <Input id="id" format={InputFormats.ZeroX} /> | The ID of the price feed you want to read     |
+| <Arg required={true} type="int">age</Arg> | <Input id="age" />                            | Maximum age of the on-chain price in seconds. |
+
+</div>
 
 <Examples>
   <Example
@@ -54,12 +58,12 @@ reading it. This step ensures that the on-chain price is fresh and the call does
 <Tabs items={['Solidity', 'ethers.js v6']}>
     <Tab>
         <DynamicCode targets={{
-            "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
+            "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
             "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("id", "<id>"),
-            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
             "0x2": (ctx) => ctx.get("age", "<age>"),
         }}>
-            ```solidity
+            ```solidity copy
             import "pyth-sdk-solidity/IPyth.sol";
             import "pyth-sdk-solidity/PythStructs.sol";
 
@@ -77,13 +81,13 @@ reading it. This step ensures that the on-chain price is fresh and the call does
 
     <Tab>
         <DynamicCode targets={{
-            "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
+            "'0x0000'": (ctx) => `'${ctx.pythAddressConfig.pythAddress}'`,
             "'0x1111'": (ctx) => `'${ctx.get("id", "<id>")}'`,
-            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
-            "'RPC_URL'": (ctx) => ctx.evmConfig.info.rpcUrls.length > 0 ? `'${ctx.evmConfig.info.rpcUrls[0]}'` : 'RPC_URL',
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
             "'0x2222'": (ctx) => `'${ctx.get("age", "<age>")}'`,
         }}>
-            ```typescript
+            ```typescript copy
             import { ethers } from "ethers";
             import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 

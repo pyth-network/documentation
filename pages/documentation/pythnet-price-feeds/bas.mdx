@@ -11,7 +11,7 @@ To deploy the `pyth-crosschain` receiver contracts to your BAS chain:
 - Clone the [pyth-crosschain repo](https://github.com/pyth-network/pyth-crosschain).
 
 - Add your BAS network details to the [Truffle Networks configuration file](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/truffle-config.js). An example using BAS test net is configured as below:
-  ```json
+  ```json copy
   my_bas_testnet: {
       provider: () => new HDWalletProvider(
           process.env.MNEMONIC,
@@ -26,7 +26,7 @@ To deploy the `pyth-crosschain` receiver contracts to your BAS chain:
   ```
 - Prepare a `.env.prod.my_bas_testnet` environment file in the `pyth-crosschain/target_chains/ethereum` directory. Please note if you test the deployment in the test net, you need use the Testnet pyth variable of PYTH_TO_WORMHOLE_EMITTER like below.
 
-  ```shell
+  ```sh copy
   # The truffle network name of your BAS chain, defined in the configuration earlier
   MIGRATIONS_NETWORK=my_bas_testnet
 
@@ -55,7 +55,7 @@ To deploy the `pyth-crosschain` receiver contracts to your BAS chain:
 
 - Now, under the pyth2wormhole/ethereum directory, install dependencies.
 
-  ```shell
+  ```sh copy
   npm install
   ```
 

@@ -8,7 +8,7 @@ Every product has `product_account`, `symbol`, `asset_type`, `quote_currency`, `
 
 As a rule, all products with `asset_type` = Equity will follow the below Product Account structure:
 
-```
+```sh copy
 product_account... Solana Account
   symbol.......... AssetType.Country.BaseCurrency/QuoteCurrency
   asset_type...... AssetType
@@ -30,7 +30,7 @@ product_account... Solana Account
 
 Here is a snapshot of the Apple product account:
 
-```
+```sh copy
 product_account .. G89jkM5wFLpmnbvRbeePUumxsJyzoXaRfgBVjyx2CPzQ
   symbol.......... Equity.US.AAPL/USD
   asset_type...... Equity
@@ -48,7 +48,7 @@ product_account .. G89jkM5wFLpmnbvRbeePUumxsJyzoXaRfgBVjyx2CPzQ
 
 As a rule, all products with `asset_type` = Crypto will follow the below Product Account structure:
 
-```
+```sh copy
 product_account .. Solana Account
   symbol.......... AssetType.BaseCurrency/QuoteCurrency
   asset_type...... AssetType
@@ -61,7 +61,7 @@ product_account .. Solana Account
 
 Here is a snapshot of the Luna product account:
 
-```
+```sh copy
 product_account .. 25tCF4ChvZyNP67xwLuYoAKuoAcSV13xrmP9YTwSPnZY
   symbol.......... Crypto.LUNA/USD
   asset_type...... Crypto
@@ -76,7 +76,7 @@ product_account .. 25tCF4ChvZyNP67xwLuYoAKuoAcSV13xrmP9YTwSPnZY
 
 Lastly, are Foreign Currencies (FX) and Metal assets. Those 2 `asset_type` share a common product account structure that follows the below template:
 
-```
+```sh copy
 product_account .. Solana Account
   symbol.......... AssetType.BaseCurrency/QuoteCurrency
   asset_type...... AssetType
@@ -90,7 +90,7 @@ product_account .. Solana Account
 
 Here is a snapshot of the Japanese Yen product account:
 
-```
+```sh copy
 product_account .. CiTV5gD8G53M1EQdo32jy5riYRU8fMFSVWC5wJj3vjcr
   symbol.......... FX.USD/JPY
   asset_type...... FX

@@ -1,7 +1,3 @@
-import Input from "../../components/Input";
-import Arg from "../../components/Arg";
-import { InputFormats } from "../../utils/InputFormat";
-import Example from "../../components/Example";
 import DynamicCode from "../../components/DynamicCode";
 import EvmCall from "../../components/EvmCall";
 import { Tab, Tabs } from "nextra-theme-docs";
@@ -20,10 +16,10 @@ The valid time period is configured to be a sane default for each blockchain.
 <Tabs items={['Solidity', 'ethers.js v6']}>
     <Tab>
         <DynamicCode targets={{
-            "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
-            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+            "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
         }}>
-            ```solidity
+            ```solidity copy
             import "pyth-sdk-solidity/IPyth.sol";
             import "pyth-sdk-solidity/PythStructs.sol";
 
@@ -38,11 +34,11 @@ The valid time period is configured to be a sane default for each blockchain.
 
     <Tab>
         <DynamicCode targets={{
-            "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
-            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
-            "'RPC_URL'": (ctx) => ctx.evmConfig.info.rpcUrls.length > 0 ? `'${ctx.evmConfig.info.rpcUrls[0]}'` : 'RPC_URL',
+            "'0x0000'": (ctx) => `'${ctx.pythAddressConfig.pythAddress}'`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
         }}>
-            ```typescript
+            ```typescript copy
             import { ethers } from "ethers";
             import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 

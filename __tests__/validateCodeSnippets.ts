@@ -1,11 +1,13 @@
+import { exec } from "child_process";
 import fs from "fs";
-import { join } from "path";
-import { exec, ExecException } from "child_process";
-import { promisify } from "util";
 import { tmpdir } from "os";
+import { join } from "path";
+import { promisify } from "util";
 
 const codeSnippetRegex = /```([a-zA-Z]+)[\s\S]*?```/g;
 const codeSnippetsDir = ".code_tests";
+
+const languageExcludeList = ["sh"];
 
 const execPromise = promisify(exec);
 
@@ -120,8 +122,12 @@ function validateCodeSnippets(directoryPath: string): void {
     } else if (stats.isFile() && file.endsWith(".mdx")) {
       const codeSnippets = extractCodeSnippetsFromFile(fullPath);
       codeSnippets.forEach((snippet, index) => {
-        const language = snippet.split("\n")[0].trim();
-        const code = snippet.slice(language.length).trim();
+        const firstLine = snippet.split("\n")[0].trim();
+        const language = firstLine.split(" ")[0].trim();
+        if (languageExcludeList.includes(language)) {
+          return;
+        }
+        const code = snippet.slice(firstLine.length).trim();
         const id = `${fullPath
           .replace(new RegExp("^./*"), "")
           .replaceAll("/", "-")

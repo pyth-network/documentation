@@ -2,7 +2,7 @@
 
 It is very important that publishers consider crypto exchange aggressive fees when calculating their price and confidence intervals from one or more exchange order books. Ask prices should be moved up by the best publicly available aggressive fee rate, and bid prices should be moved down by the same rate.
 
-```
+```sh copy
 ask_adjusted = ask * (1.0 + fee_rate)
 bid_adjusted = bid * (1.0 - fee_rate)
 ```

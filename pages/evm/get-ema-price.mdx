@@ -3,7 +3,6 @@ import Arg from "../../components/Arg";
 import { InputFormats } from "../../utils/InputFormat";
 import Example from "../../components/Example";
 import DynamicCode from "../../components/DynamicCode";
-import DisplayKeyValueStore from "../../components/DisplayKeyValueStore";
 import EvmCall from "../../components/EvmCall";
 import { Tab, Tabs } from "nextra-theme-docs";
 import Examples from "../../components/Examples";
@@ -25,9 +24,13 @@ If you want the latest price regardless of when it was updated, see [getEmaPrice
 Users of this method will typically invoke [updatePriceFeeds](update-price-feeds) to update the on-chain price before
 reading it. This step ensures that the on-chain price is fresh.
 
-| Argument                                 |                                               | Description                               |
+<div className="mt-6 overflow-x-auto">
+
+| Argument                                 | Input                                         | Description                               |
 | ---------------------------------------- | --------------------------------------------- | ----------------------------------------- |
 | <Arg required={true} type="hex">id</Arg> | <Input id="id" format={InputFormats.ZeroX} /> | The ID of the price feed you want to read |
+
+</div>
 
 <Examples>
   <Example
@@ -51,11 +54,11 @@ reading it. This step ensures that the on-chain price is fresh.
 <Tabs items={['Solidity', 'ethers.js v6']}>
     <Tab>
         <DynamicCode targets={{
-            "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
+            "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
             "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("id", "<id>"),
-            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
         }}>
-            ```solidity
+            ```solidity copy
             import "pyth-sdk-solidity/IPyth.sol";
             import "pyth-sdk-solidity/PythStructs.sol";
 
@@ -72,12 +75,12 @@ reading it. This step ensures that the on-chain price is fresh.
 
     <Tab>
         <DynamicCode targets={{
-            "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
+            "'0x0000'": (ctx) => `'${ctx.pythAddressConfig.pythAddress}'`,
             "'0x1111'": (ctx) => `'${ctx.get("id", "<id>")}'`,
-            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
-            "'RPC_URL'": (ctx) => ctx.evmConfig.info.rpcUrls.length > 0 ? `'${ctx.evmConfig.info.rpcUrls[0]}'` : 'RPC_URL',
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
         }}>
-            ```typescript
+            ```typescript copy
             import { ethers } from "ethers";
             import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 

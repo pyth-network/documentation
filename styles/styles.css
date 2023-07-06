@@ -9,10 +9,6 @@
 }
 
 @layer components {
-  h1 {
-    @apply text-5xl tracking-[0.01em] font-header font-light leading-[52px] text-light !important;
-  }
-
   h2 {
     @apply text-light !important;
   }
@@ -146,6 +142,10 @@ html[class~="dark"] .dark\:nx-text-gray-300 {
   @apply text-light;
 }
 
+html[class~="dark"] .nextra-sidebar-container {
+  @apply bg-darkBlue;
+}
+
 .nx-text-gray-500 {
   @apply text-light;
 }
@@ -167,11 +167,7 @@ html[class~="dark"] .dark\:nx-text-gray-300 {
 }
 
 .response {
-  @apply border border-gray-500 p-2 text-light;
-}
-
-.api-params .response {
-  margin: 20px 0 0 0;
+  @apply py-4 text-light bg-darkGray rounded-xl;
 }
 
 .stale {
@@ -205,4 +201,9 @@ html[class~="dark"] .dark\:nx-text-gray-300 {
   --shiki-token-string-expression: #4bb74a;
   --shiki-token-punctuation: #bbbbbb;
   --shiki-token-link: #ffab70;
+}
+
+pre {
+  overflow: auto;
+  padding: 0px;
 }

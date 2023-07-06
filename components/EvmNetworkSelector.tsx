@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useCallback } from "react";
-import { Networks, useGlobalContext } from "../contexts/GlobalContext";
+import { PythAddresses, useGlobalContext } from "../contexts/GlobalContext";
 import ArrowDownIcon from "./icons/ArrowDownIcon";
 
 // React component for network selection
@@ -8,7 +8,7 @@ const EvmNetworkSelector = () => {
   const { networkName, setNetworkName } = useGlobalContext();
 
   // Get the network names as an array
-  const networkNames = Object.keys(Networks);
+  const networkNames = Object.keys(PythAddresses);
 
   const handleChange = useCallback(
     (event: any) => {
@@ -20,7 +20,7 @@ const EvmNetworkSelector = () => {
   );
 
   return (
-    <Menu as="div" className="relative z-[2] block w-[180px] text-left my-4">
+    <Menu as="div" className="relative z-[2] block w-[180px] text-left">
       {({ open }) => (
         <>
           <Menu.Button

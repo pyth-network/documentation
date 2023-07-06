@@ -19,13 +19,17 @@ This method requires the caller to pay a fee in wei; the required fee can be com
 Reverts if the transferred fee is not sufficient, or `updateData` is invalid, or `updateData` does not
 contain an update for any of the given `priceIds` within the given time range.
 
-| Argument                                                |                                                            | Description                                                              |
+<div className="mt-6 overflow-x-auto">
+
+| Argument                                                | Input                                                      | Description                                                              |
 | ------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------ |
 | <Arg required={true} type="hex[]">updateData</Arg>      | <Input id="updateData" format={InputFormats.ZeroX} />      | The price update data to parse.                                          |
 | <Arg required={true} type="bytes32[]">priceIds</Arg>    | <Input id="priceId" format={InputFormats.ZeroX} />         | The price ids whose feeds will be returned.                              |
 | <Arg required={true} type="uint64">minPublishTime</Arg> | <Input id="minPublishTime" format={InputFormats.BigInt} /> | The minimum timestamp for each returned feed.                            |
 | <Arg required={true} type="uint64">maxPublishTime</Arg> | <Input id="maxPublishTime" format={InputFormats.BigInt} /> | The maximum timestamp for each returned feed.                            |
 | <Arg required={true} type="wei">fee</Arg>               | <Input id="fee" format={InputFormats.BigInt}/>             | The update fee in wei. This fee is sent as the value of the transaction. |
+
+</div>
 
 <Examples>
   <Example
@@ -62,15 +66,15 @@ contain an update for any of the given `priceIds` within the given time range.
 <Tabs items={['Solidity', 'ethers.js v6']}>
     <Tab>
         <DynamicCode targets={{
-            "0x0000000000000000000000000000000000000000": (ctx) => ctx.evmConfig.pythAddress,
+            "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
             "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("priceId", "<priceId>"),
-            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
             "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
             "2": (ctx) => ctx.get("fee", "<fee>"),
             "3": (ctx) => ctx.get("minPublishTime", "<minPublishTime>"),
             "4": (ctx) => ctx.get("maxPublishTime", "<maxPublishTime>"),
         }}>
-            ```solidity
+            ```solidity copy
             import "pyth-sdk-solidity/IPyth.sol";
             import "pyth-sdk-solidity/PythStructs.sol";
 
@@ -93,16 +97,16 @@ contain an update for any of the given `priceIds` within the given time range.
 
     <Tab>
         <DynamicCode targets={{
-            "'0x0000'": (ctx) => `'${ctx.evmConfig.pythAddress}'`,
-            "// NETWORK_NAME": (ctx) => `// ${ctx.evmConfig.info.chainName}`,
-            "'RPC_URL'": (ctx) => ctx.evmConfig.info.rpcUrls.length > 0 ? `'${ctx.evmConfig.info.rpcUrls[0]}'` : 'RPC_URL',
+            "'0x0000'": (ctx) => `'${ctx.pythAddressConfig.pythAddress}'`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
             "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
             "'0x2222'": (ctx) => `'${ctx.get("priceId", "<priceId>")}'`,
             "3": (ctx) => ctx.get("minPublishTime", "<minPublishTime>"),
             "4": (ctx) => ctx.get("maxPublishTime", "<maxPublishTime>"),
             "2": (ctx) => ctx.get("fee", "<fee>"),
         }}>
-            ```typescript
+            ```typescript copy
             import { ethers } from "ethers";
             import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
 

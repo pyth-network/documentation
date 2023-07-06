@@ -1,4 +1,4 @@
-const ArrowDownIcon = ({ className }) => {
+const ArrowDownIcon = ({ className }: { className: string }) => {
   return (
     <svg
       className={className}

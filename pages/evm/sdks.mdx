@@ -12,19 +12,19 @@ package provides solidity interfaces for the EVM contract as well as contract AB
     <Tab>
         First, install the SDK in your project by running:
 
-        ```
+        ```sh copy
         forge install pyth-network/pyth-sdk-solidity@v2.2.0
         ```
 
         Next, add the following line to `remappings.txt` in the root of your Foundry project.
 
-        ```
+        ```sh copy
         pyth-sdk-solidity/=lib/pyth-sdk-solidity/
         ```
 
         You can now import interfaces from the SDK in Solidity code as follows:
 
-        ```solidity
+        ```solidity copy
         import "pyth-sdk-solidity/IPyth.sol";
         ```
     </Tab>
@@ -36,7 +36,7 @@ package provides solidity interfaces for the EVM contract as well as contract AB
 
         Then you can import the contract ABI in your typescript code as follows:
 
-        ```typescript
+        ```typescript copy
         import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
         ```
 
