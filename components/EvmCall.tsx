@@ -41,6 +41,7 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
     } else {
       try {
         setResponsePreface("Loading...");
+        setResponse(undefined);
         const result: Result = await pythContract[
           functionName
         ].staticCallResult(...args);
@@ -57,6 +58,9 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
               setResponse(
                 `${ethError.name}(${renderResult(ethError.args, "")})`
               );
+            } else {
+              setResponsePreface("An unknown error occurred. Error details:");
+              setResponse((error as any).toString());
             }
           }
         } else {

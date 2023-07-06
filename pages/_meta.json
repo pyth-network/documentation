@@ -14,20 +14,9 @@
     "items": {
       "evm": {
         "title": "EVM Contract",
-        "href": "/evm",
-        "type": "page"
-      },
-      "price-service": {
-        "title": "Price Service",
-        "href": "/price-service",
-        "type": "page"
+        "href": "/evm"
       }
     }
-  },
-  "price-service": {
-    "title": "Price Service",
-    "type": "page",
-    "display": "hidden"
   },
   "evm": {
     "title": "EVM",

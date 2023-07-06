@@ -139,16 +139,12 @@ export const GlobalContextProvider = ({
   useEffect(() => {
     if (chain) {
       const chainId = chain.id;
-      const pythAddressConfig = Object.values(PythAddresses).find(
-        (pythAddressConfig) => pythAddressConfig.chainId === chainId
+      const pythAddressConfig = Object.entries(PythAddresses).find(
+        ([, value]) => value.chainId === chainId
       );
       if (pythAddressConfig) {
-        const key = Object.keys(PythAddresses).find(
-          (key) => PythAddresses[key] === pythAddressConfig
-        );
-        if (key) {
-          setNetworkName(key);
-        }
+        const [key] = pythAddressConfig;
+        setNetworkName(key);
       }
 
       setCurrentChainConfig(chain);

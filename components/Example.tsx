@@ -15,8 +15,8 @@ interface ExampleProps {
 }
 
 interface KnownFeedIds {
-  mainnet: { [key: string]: string };
-  testnet: { [key: string]: string };
+  mainnet: Record<string, string>;
+  testnet: Record<string, string>;
 }
 
 // TODO: generate this mapping from the blockchain instead of hardcoding it.
@@ -85,8 +85,8 @@ export class ExampleRenderingContext {
   // Get the price feed id for the provided symbol name (e.g., "Crypto.BTC/USD").
   // This function will automatically account for different networks.
   public getFeedId(symbolName: string): string {
-    const feedIds = KnownFeedIds[this.networkType] as { [key: string]: string };
-    if (feedIds) {
+    const feedIds: Record<string, string> = KnownFeedIds[this.networkType];
+    if (feedIds[symbolName]) {
       return feedIds[symbolName];
     }
     throw new Error(
