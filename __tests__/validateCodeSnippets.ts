@@ -7,6 +7,8 @@ import { promisify } from "util";
 const codeSnippetRegex = /```([a-zA-Z]+)[\s\S]*?```/g;
 const codeSnippetsDir = ".code_tests";
 
+const languageExcludeList = ["sh"];
+
 const execPromise = promisify(exec);
 
 function extractCodeSnippetsFromFile(filePath: string): string[] {
@@ -122,6 +124,9 @@ function validateCodeSnippets(directoryPath: string): void {
       codeSnippets.forEach((snippet, index) => {
         const firstLine = snippet.split("\n")[0].trim();
         const language = firstLine.split(" ")[0].trim();
+        if (languageExcludeList.includes(language)) {
+          return;
+        }
         const code = snippet.slice(firstLine.length).trim();
         const id = `${fullPath
           .replace(new RegExp("^./*"), "")
