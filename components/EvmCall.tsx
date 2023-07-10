@@ -79,7 +79,7 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
   return (
     <div>
       <div className="flex flex-col md:flex-row md:justify-between">
-        <div className="space-x-2 my-4">
+        <div className="space-x-2 mt-4 md:my-4">
           <button
             className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF]"
             onClick={sendTransaction}
@@ -90,7 +90,7 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
             clear
           </button>
         </div>
-        <div className="md:my-4">
+        <div className="my-4">
           <EvmNetworkSelector />
         </div>
       </div>
