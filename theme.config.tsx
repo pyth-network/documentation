@@ -25,6 +25,25 @@ const config: DocsThemeConfig = {
   useNextSeoProps() {
     return {
       titleTemplate: "%s – Pyth Network Documentation",
+      openGraph: {
+        url: "https://docs.pyth.network/",
+        title: "Pyth Network Documentation",
+        description: "Pyth Network Documentation",
+        images: [
+          {
+            url: "https://docs.pyth.network/og-image.png",
+            width: 1200,
+            height: 630,
+            alt: "Pyth Network Documentation OG Image",
+            type: "image/png",
+          },
+        ],
+      },
+      twitter: {
+        handle: "@PythNetwork",
+        site: "https://pyth.network/",
+        cardType: "summary_large_image",
+      },
     };
   },
 };
