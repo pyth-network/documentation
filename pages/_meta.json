@@ -5,7 +5,7 @@
     "display": "hidden"
   },
   "documentation": {
-    "title": "Documentation",
+    "title": "Overview",
     "type": "page"
   },
   "api-explorer": {
@@ -17,6 +17,10 @@
         "href": "/evm"
       }
     }
+  },
+  "how-to": {
+    "title": "How-To Guides",
+    "type": "page"
   },
   "evm": {
     "title": "EVM",
