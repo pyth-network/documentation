@@ -5,7 +5,7 @@
     "display": "hidden"
   },
   "documentation": {
-    "title": "Overview",
+    "title": "Documentation",
     "type": "page"
   },
   "api-explorer": {
@@ -18,7 +18,7 @@
       }
     }
   },
-  "how-to": {
+  "guides": {
     "title": "How-To Guides",
     "type": "page"
   },
