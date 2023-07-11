@@ -1,9 +1,10 @@
-# Price Pusher
+# Scheduler
 
-The [price pusher](https://github.com/pyth-network/pyth-crosschain/tree/main/price_pusher)
-is an off-chain application that regularly pushes price updates to the on-chain Pyth contract.
-Anyone can run this service to push regular updates to the on-chain Pyth price based on various conditions, such as a minimum update frequency, or a price change threshold.
-This service is useful for protocols that already depend on regular push updates and want to simplify migrating to Pyth.
+The [scheduler](https://github.com/pyth-network/pyth-crosschain/tree/main/price_pusher) (previously known as "price pusher")
+is an off-chain application that regularly pulls price updates on to a blockchain.
+Anyone can run this service to regularly update the on-chain Pyth price based on various conditions, such as a minimum update frequency, or a price change threshold.
+This service can simplify the process of migrating to Pyth from other oracles.
+Protocols that currently depend on regular push updates can simply run this service.
 Please see the README linked above for additional information about this service.
 
 In addition, you can find an in-depth explanation from one of our contributors, Ali:
