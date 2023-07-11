@@ -5,8 +5,8 @@
   "aptos": "Pyth on Aptos",
   "sui": "Pyth on Sui",
   "cosmwasm": "Pyth on CosmWasm",
-  "bas": "Pyth on BAS Chains",
   "off-chain": "Pyth for Off-chain Apps",
   "price-service": "Price Service",
+  "price-pusher": "Price Pusher",
   "cross-chain-batches": "Price Feed Batches"
 }

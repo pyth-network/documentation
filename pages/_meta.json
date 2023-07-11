@@ -18,6 +18,10 @@
       }
     }
   },
+  "guides": {
+    "title": "How-To Guides",
+    "type": "page"
+  },
   "evm": {
     "title": "EVM",
     "type": "page",
