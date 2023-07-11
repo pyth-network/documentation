@@ -16,7 +16,7 @@ Technically, each displayed price corresponds to the Pyth price update published
 
 ## On-Chain Contracts
 
-On-chain contracts can consume benchmark prices using the same on-demand model as [Pythnet Price Feeds](pythnet-price-feeds.md).
+On-chain contracts can consume benchmark prices using the same pull model as [Pythnet Price Feeds](pythnet-price-feeds.md).
 Integrators can follow these three steps:
 
 1. Use the [price service](pythnet-price-feeds/price-service.md) endpoint `/api/get_vaa` to retrieve a signed price update for the desired price feed and time.
@@ -27,6 +27,6 @@ Integrators can follow these three steps:
    This function will check the validity of the update and return the price of the requested asset (if valid).
    The price update will only be valid if the signatures are correct and the update falls within a user-configured time interval; integrators should set this time interval such that it matches their desired time.
 
-Note that this process is similar to the standard process for consuming on-demand updates.
+Note that this process is similar to the standard process for consuming pull updates.
 The main differences are that users call the `get_vaa` endpoint instead of `latest_vaas`, and the on-chain contract calls `parsePriceFeedUpdates` instead of `updatePriceFeeds`.
 The pyth-crosschain repo has [example code](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/js/src/examples/EvmBenchmark.ts) for an integration along the lines above for EVM chains.
