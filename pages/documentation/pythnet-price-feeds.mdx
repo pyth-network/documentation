@@ -1,9 +1,9 @@
 # Pythnet Price Feeds
 
-Pythnet price feeds use an on-demand price update model, where users are responsible for posting price updates on-chain when needed.
-Please see [_On-Demand Updates_](pythnet-price-feeds/on-demand.md) to learn more about this model and what this means for integrators.
+Pythnet price feeds use a "pull" price update model, where users are responsible for posting price updates on-chain when needed.
+Please see [_Pull Updates_](pythnet-price-feeds/on-demand.md) to learn more about this model and what this means for integrators.
 
-In the on-demand model, developers should integrate Pyth into both their on-chain and off-chain code:
+In the pull model, developers should integrate Pyth into both their on-chain and off-chain code:
 
 1. On-chain programs should read prices from the Pyth program deployed on the same chain
 2. Off-chain frontends and jobs should include Pyth price updates alongside (or within) their application-specific transactions.

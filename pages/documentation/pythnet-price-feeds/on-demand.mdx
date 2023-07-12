@@ -1,6 +1,6 @@
-# On-Demand Price Updates
+# Pull Updates
 
-Pyth Network uses an on-demand price update model that is slightly different from other oracles you may be more familiar with.
+Pyth Network uses an pull price update model that is slightly different from other oracles you may be more familiar with.
 Most oracles today use a push model, where the oracle runs an off-chain process that continuously sends transactions to update an on-chain price.
 In contrast, Pyth Network does not operate an off-chain process that pushes prices on-chain.
 Instead, it delegates this work to Pyth Network users.
@@ -14,11 +14,11 @@ also not update the price. This in particular means that there's no guarantee th
 the price that the application will read will be equal to the price the user submitted.
 
 You can find an in-depth explanation from one of our contributors, Jayant:
-[Explaining the Pyth Network On-Demand Oracle Model: Pyth Tutorials](https://youtu.be/qdwrs23Qc9g)
+[Explaining the Pyth Network Oracle Model: Pyth Tutorials](https://youtu.be/qdwrs23Qc9g)
 
 ## Advantages
 
-The on-demand model has several benefits over the push model:
+The pull model has several benefits over the push model:
 
 - **Gas efficiency** -- On-chain prices are only updated when they are needed.
   In the push model, the oracle can waste gas by submitting price updates that no one will use.
@@ -33,7 +33,7 @@ The on-demand model has several benefits over the push model:
   The oracle incurs no added costs for each additional feed, and users pay gas costs for new feeds only when those feeds are used on-chain.
 - **Reliable in volatile conditions** -- Push oracles can fail to land price updates in volatile market conditions.
   In these conditions, the oracle competes with other more valuable transactions (such as DEX trades or liquidations) for bandwidth, and often cannot pay enough to land price updates.
-  This problem does not occur in the on-demand model, as Pyth price updates are incorporated into the valuable transactions themselves.
+  This problem does not occur in the pull model, as Pyth price updates are incorporated into the valuable transactions themselves.
 - **Common infrastructure** -- Every component of Pyth Network is _shared across blockchains_ except for the contract deployed on the destination chain.
   These shared components can therefore be built with high reliability and accuracy targets, benefitting every chain the oracle is deployed on.
   This approach also allows Pyth Network to rapidly launch on new blockchains and ecosystems with all of the existing price feeds.
@@ -47,7 +47,7 @@ Developers integrating with Pyth Network should build their application to submi
 For example, if you need the BTC/USD price on-chain, then your frontend should submit the BTC/USD Pyth price update in every transaction that needs it.
 The Pyth Network SDKs cover both parts of this integration -- frontend and contract -- and are designed to simplify this process.
 These SDKs are blockchain-specific and are described in more detail in the subsequent sections of this documentation.
-Developers should also host an instance of the [price service](price-service.md), which is a convenient wrapper around the Wormhole Network that the frontend SDKs use to fetch on-demand updates.
+Developers should also host an instance of the [price service](price-service.md), which is a convenient wrapper around the Wormhole Network that the frontend SDKs use to pull updates.
 
 ## Fees
 
@@ -65,7 +65,7 @@ However, the cost of a single price update is minimal, so the combined gas and u
 
 ## Adversarial selection
 
-On-demand price updates gives users of Pyth Network some ability to select which price to use in a transaction.
+Pull updates gives users of Pyth Network some ability to select which price to use in a transaction.
 This ability is highly circumscribed by various constraints: on-chain prices must move forward in time and cannot be from too far in the past.
 However, users can still chose any price update that satisfies these constraints.
 This ability is functionally equivalent to latency: it allows users to see the price in the future before using a price from the past.
