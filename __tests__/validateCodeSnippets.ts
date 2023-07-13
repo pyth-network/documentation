@@ -143,6 +143,7 @@ function validateCodeSnippets(directoryPath: string): void {
 }
 
 describe("Validate code snippets", () => {
-  // We only validate code snippets in the API reference
+  // We only validate code snippets in the API reference.
+  // However, we exclude Aptos for now because it's annoying (and doesn't seem worth it).
   validateCodeSnippets("./pages/evm");
 });
