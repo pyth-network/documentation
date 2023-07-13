@@ -7,6 +7,6 @@
   "cosmwasm": "Pyth on CosmWasm",
   "off-chain": "Pyth for Off-chain Apps",
   "price-service": "Price Service",
-  "price-pusher": "Price Pusher",
+  "scheduler": "Scheduler",
   "cross-chain-batches": "Price Feed Batches"
 }
