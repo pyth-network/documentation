@@ -17,10 +17,13 @@ The result also includes a `publishTime` which is the unix timestamp for the pri
 The EMA methodology is described in more detail in this [blog post](https://pythnetwork.medium.com/whats-in-a-name-302a03e6c3e1).
 
 The caller provides an `age` argument that specifies how old the price can be.
-The call reverts if the on-chain price is from more than `age` seconds in the past (with respect to the current on-chain timestamp).
+The call reverts with a `StalePriceError` if the on-chain price is from more than `age` seconds in the past (with respect to the current on-chain timestamp).
+Call [updatePriceFeeds](update-price-feeds) to pull a fresh price on-chain and solve this problem.
 
-Users of this method will typically invoke [updatePriceFeeds](update-price-feeds) to update the on-chain price before
-reading it. This step ensures that the on-chain price is fresh and the call does not revert.
+This function reverts with a `PriceFeedNotFound` error if the requested feed id has never received a price update.
+This error could either mean that the provided price feed id is incorrect, or (more typically) that this is the first
+attempted use of that feed on-chain. In the second case, calling [updatePriceFeeds](update-price-feeds) will solve
+this problem.
 
 <div className="mt-6 overflow-x-auto">
 
