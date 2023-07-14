@@ -19,6 +19,10 @@
       "aptos": {
         "title": "Aptos Contract",
         "href": "/aptos"
+      },
+      "CosmWasm": {
+        "title": "Cosmwasm Contract",
+        "href": "/cosmwasm"
       }
     }
   },
@@ -33,6 +37,11 @@
   },
   "aptos": {
     "title": "Aptos",
+    "type": "page",
+    "display": "hidden"
+  },
+  "cosmwasm": {
+    "title": "CosmWasm",
     "type": "page",
     "display": "hidden"
   },
