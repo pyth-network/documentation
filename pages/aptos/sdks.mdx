@@ -12,11 +12,12 @@ Aptos contracts can program against the Pyth contract's interface by including i
 
         ```toml
         [dependencies]
-        Pyth = { git = "https://github.com/pyth-network/pyth-crosschain.git", subdir = "aptos/contracts", rev = "main" }
+        Pyth = { git = "https://github.com/pyth-network/pyth-crosschain.git", subdir = "target_chains/aptos/contracts", rev = "main" }
         ```
 
         Note that this dependency references the latest version of the Pyth contract code.
         You can also choose the most recent git sha in order to have a repeatable build.
+        This contract was compiled with [aptos-cli v1.0.4](https://github.com/aptos-labs/aptos-core/releases/download/aptos-cli-v1.0.4/aptos-cli-1.0.4-Ubuntu-22.04-x86_64.zip).
 
         Next, add the following named addresses to the `[addresses]` section of `Move.toml`:
 
