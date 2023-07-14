@@ -1,7 +1,7 @@
 import { Result, isError } from "ethers";
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../contexts/GlobalContext";
-import EvmNetworkSelector from "./EvmNetworkSelector";
+import CosmosNetworkSelector from "./CosmosNetworkSelector";
 import { CosmWasmClient, JsonObject } from "@cosmjs/cosmwasm-stargate";
 
 interface CosmWasmQueryProps {
@@ -24,18 +24,16 @@ const CosmWasmQuery = ({ buildQuery }: CosmWasmQueryProps) => {
   // The preface is explainer text that shows up before the response itself.
   const [responsePreface, setResponsePreface] = useState<string>();
 
-  const { keyValueStore, pythContract } = useGlobalContext();
+  const { keyValueStore, cosmosChainConfig } = useGlobalContext();
 
   useEffect(() => {
     clearResponse();
-  }, [keyValueStore, pythContract]);
+  }, [keyValueStore, cosmosChainConfig]);
 
   const sendTransaction = async () => {
     const queryJson: JsonObject | undefined = buildQuery(keyValueStore);
 
-    const client = await CosmWasmClient.connect(
-      "https://rpc-kralum.neutron-1.neutron.org"
-    );
+    const client = await CosmWasmClient.connect(cosmosChainConfig.rpcUrl);
 
     // TODO: validate arguments
     if (queryJson === undefined) {
@@ -48,7 +46,7 @@ const CosmWasmQuery = ({ buildQuery }: CosmWasmQueryProps) => {
         setResponse(undefined);
 
         let result = await client.queryContractSmart(
-          "neutron1m2emc93m9gpwgsrsf2vylv9xvgqh654630v7dfrhrkmr5slly53spg85wv",
+          cosmosChainConfig.pythAddress,
           queryJson
         );
 
@@ -83,7 +81,7 @@ const CosmWasmQuery = ({ buildQuery }: CosmWasmQueryProps) => {
           </button>
         </div>
         <div className="my-4">
-          <EvmNetworkSelector />
+          <CosmosNetworkSelector />
         </div>
       </div>
       {responsePreface !== undefined && (

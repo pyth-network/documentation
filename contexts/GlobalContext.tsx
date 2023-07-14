@@ -43,6 +43,11 @@ export interface GlobalContextData {
 
   // The ABI for the pyth contract
   pythAbi: any[];
+
+  // Cosmos chain configuration
+  cosmosChainId: string;
+  setCosmosChainId: React.Dispatch<React.SetStateAction<string>>;
+  cosmosChainConfig: PythCosmosConfig;
 }
 
 export type NetworkType = "mainnet" | "testnet";
@@ -74,6 +79,29 @@ export const PythAddresses: Record<string, PythAddressConfig> = {
     chainId: 42161,
     pythAddress: "0xff1a0f4744e8582DF1aE09D5611b887B6a12925C",
     networkType: "mainnet",
+  },
+};
+
+export interface PythCosmosConfig {
+  rpcUrl: string;
+  pythAddress: string;
+  // TODO: stable/beta :(
+  networkType: NetworkType;
+}
+
+export const PythCosmosAddresses: Record<string, PythCosmosConfig> = {
+  neutron: {
+    rpcUrl: "https://rpc-kralum.neutron-1.neutron.org",
+    pythAddress:
+      "neutron1m2emc93m9gpwgsrsf2vylv9xvgqh654630v7dfrhrkmr5slly53spg85wv",
+    networkType: "mainnet",
+  },
+  osmosis_testnet_5: {
+    rpcUrl: "https://rpc.osmotest5.osmosis.zone/",
+    pythAddress:
+      "osmo1lltupx02sj99suakmuk4sr4ppqf34ajedaxut3ukjwkv6469erwqtpg9t3",
+    // FIXME: is this right???
+    networkType: "testnet",
   },
 };
 
@@ -121,6 +149,12 @@ export const GlobalContextProvider = ({
     );
   }, [pythAddressConfig, provider]);
 
+  const [cosmosChainId, setCosmosChainId] = useState<string>("neutron");
+  const cosmosChainConfig = useMemo<PythCosmosConfig>(
+    () => PythCosmosAddresses[cosmosChainId],
+    [cosmosChainId]
+  );
+
   useEffect(() => {
     async function helper() {
       setPythAddressConfig(PythAddresses[networkName]);
@@ -166,6 +200,9 @@ export const GlobalContextProvider = ({
         setSigner,
         pythContract: pythContract,
         pythAbi: contractAbi,
+        cosmosChainId,
+        setCosmosChainId,
+        cosmosChainConfig,
       }}
     >
       {children}
