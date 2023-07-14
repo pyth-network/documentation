@@ -23,15 +23,15 @@ interface KnownFeedIds {
 const KnownFeedIds = {
   mainnet: {
     "Crypto.BTC/USD":
-      "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
+      "e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
     "Crypto.ETH/USD":
-      "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
+      "ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
   },
   testnet: {
     "Crypto.BTC/USD":
-      "0xf9c0172ba10dfa4d19088d94f5bf61d3b54d5bd7483a322a982e1373ee8ea31b",
+      "f9c0172ba10dfa4d19088d94f5bf61d3b54d5bd7483a322a982e1373ee8ea31b",
     "Crypto.ETH/USD":
-      "0xca80ba6dc32e08d06f1aa886011eed1d77c77be9eb761cc10d72b7d0a2fd57a6",
+      "ca80ba6dc32e08d06f1aa886011eed1d77c77be9eb761cc10d72b7d0a2fd57a6",
   },
 };
 
@@ -94,8 +94,12 @@ export class ExampleRenderingContext {
     );
   }
 
+  public getFeedId0x(symbolName: string): string {
+    return `0x${this.getFeedId(symbolName)}`;
+  }
+
   public async getLatestPriceFeed(symbolName: string): Promise<any> {
-    const feedId = this.getFeedId(symbolName);
+    const feedId = this.getFeedId0x(symbolName);
 
     const endpoint: string = `${
       PriceServiceUrls[this.networkType]

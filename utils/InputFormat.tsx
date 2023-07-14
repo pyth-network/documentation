@@ -24,6 +24,24 @@ function bigIntInputFormat(x: string): string | undefined {
   }
 }
 
+function byteArrayFormat(x: string): string | undefined {
+  try {
+    const o = JSON.parse(x);
+    if (o instanceof Array) {
+      for (let i = 0; i < o.length; i++) {
+        if (!(o[i] instanceof Number && o[i] >= 0 && o[i] <= 255)) {
+          return "Each entry must be a byte value in [0, 255]";
+        }
+      }
+    } else {
+      return "Please input an array of bytes";
+    }
+    return undefined;
+  } catch (error) {
+    return "Please input an array of bytes";
+  }
+}
+
 export const InputFormats: Record<string, InputFormat> = {
   // The 0| condition below means we don't show an error message when the user starts typing 0 as the first character.
   ZeroX: regexFormat(
@@ -35,4 +53,5 @@ export const InputFormats: Record<string, InputFormat> = {
     'Please enter a hexadecimal string prefixed with 0x, for example "a19f"'
   ),
   BigInt: bigIntInputFormat,
+  ByteArray: byteArrayFormat,
 };

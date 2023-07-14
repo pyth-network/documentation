@@ -36,7 +36,7 @@ contain an update for any of the given `priceIds` within the given time range.
     keyValues={{
       updateData: async (ctx) =>
         (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
-      priceId: (ctx) => ctx.getFeedId("Crypto.BTC/USD"),
+      priceId: (ctx) => ctx.getFeedId0x("Crypto.BTC/USD"),
       minPublishTime: async (ctx) =>
         (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).price.publish_time - 5,
       maxPublishTime: async (ctx) =>

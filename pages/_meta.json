@@ -15,6 +15,10 @@
       "evm": {
         "title": "EVM Contract",
         "href": "/evm"
+      },
+      "aptos": {
+        "title": "Aptos Contract",
+        "href": "/aptos"
       }
     }
   },
@@ -24,6 +28,11 @@
   },
   "evm": {
     "title": "EVM",
+    "type": "page",
+    "display": "hidden"
+  },
+  "aptos": {
+    "title": "Aptos",
     "type": "page",
     "display": "hidden"
   },
