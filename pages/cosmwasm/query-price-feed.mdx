@@ -7,7 +7,7 @@ import { InputFormats } from "../../utils/InputFormat";
 import CosmWasmQuery from "../../components/CosmwasmQuery";
 import { Tab, Tabs } from "nextra-theme-docs";
 
-# Get Price Unsafe
+# Price Feed
 
 Get the latest price and confidence interval for the requested price feed id.
 The price feed id is a 32-byte id written as a hexadecimal string; see the [price feed ids](https://pyth.network/developers/price-feed-ids) page to look up the id for a given symbol.
@@ -50,7 +50,7 @@ this problem.
 
 ## Example Code
 
-<Tabs items={['Solidity', 'ethers.js v6']}>
+<Tabs items={['Rust', 'Typescript', 'Query JSON']}>
     <Tab>
         <DynamicCode targets={{
             "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
@@ -93,6 +93,20 @@ this problem.
             ```
         </DynamicCode>
 
+    </Tab>
+
+    <Tab>
+        <DynamicCode targets={{
+            '"0x1111"': (ctx) => `"${ctx.get("id", "<id>")}"`,
+        }}>
+            ```json copy
+            {
+              "price_feed": {
+                "id": "0x1111"
+              }
+            }
+            ```
+        </DynamicCode>
     </Tab>
 
 </Tabs>

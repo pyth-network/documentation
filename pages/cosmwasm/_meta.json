@@ -6,20 +6,20 @@
   "index": "Introduction",
   "sdks": "SDKs",
   "configuration": "Contract Configuration",
-  "--- Methods": {
-    "title": "Methods",
+  "--- Query Messages": {
+    "title": "Query Messages",
     "type": "separator"
   },
 
-  "get-price": "getPrice",
-  "get-price-unsafe": "getPriceUnsafe",
-  "get-price-no-older-than": "getPriceNoOlderThan",
-  "get-ema-price": "getEmaPrice",
-  "get-ema-price-unsafe": "getEmaPriceUnsafe",
-  "get-ema-price-no-older-than": "getEmaPriceNoOlderThan",
-  "get-update-fee": "getUpdateFee",
-  "get-valid-time-period": "getValidTimePeriod",
-  "parse-price-feed-updates": "parsePriceFeedUpdates",
-  "update-price-feeds": "updatePriceFeeds",
-  "update-price-feeds-if-necessary": "updatePriceFeedsIfNecessary"
+  "query-price-feed": "PriceFeed",
+  "query-get-update-fee": "GetUpdateFee",
+  "query-get-update-fee-for-denom": "GetUpdateFeeForDenom",
+  "query-get-valid-time-period": "GetValidTimePeriod",
+
+  "--- Execute Messages": {
+    "title": "Execute Messages",
+    "type": "separator"
+  },
+
+  "execute-update-price-feeds": "UpdatePriceFeeds"
 }
