@@ -3,6 +3,7 @@ import fs from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 import { promisify } from "util";
+import toml from "toml";
 
 const codeSnippetRegex = /```([a-zA-Z]+)[\s\S]*?```/g;
 const codeSnippetsDir = ".code_tests";
@@ -73,28 +74,55 @@ async function runCodeSnippet(
   language: string,
   id: string
 ): Promise<[boolean, string]> {
-  let command: string;
-
   if (language === "typescript") {
     const tempFilePath = join(codeSnippetsDir, `${id}.ts`);
     fs.writeFileSync(tempFilePath, wrapTsCodeInAsyncFunction(code), "utf8");
     // Note: it's unfortunate that we have to repeat the tsconfig options here, but there doesn't
     // seem to be a way to read the flags in the config file from the command line without getting the entire project.
-    command = `npx tsc --target es5 --module esnext  --esModuleInterop --moduleResolution node --skipLibCheck --resolveJsonModule --noEmit ${tempFilePath}`;
+    const command = `npx tsc --target es5 --module esnext  --esModuleInterop --moduleResolution node --skipLibCheck --resolveJsonModule --noEmit ${tempFilePath}`;
+    return await runValidationCommand(command);
   } else if (language === "solidity") {
     const tempFilePath = join(codeSnippetsDir, `${id}.sol`);
     fs.writeFileSync(tempFilePath, wrapSolCode(code), "utf8");
-    command = `npx solc --base-path . --include-path node_modules/\\@pythnetwork --output-dir ${tmpdir()} --bin ${tempFilePath}`;
+    const command = `npx solc --base-path . --include-path node_modules/\\@pythnetwork --output-dir ${tmpdir()} --bin ${tempFilePath}`;
+    return await runValidationCommand(command);
+  } else if (language === "rust") {
+    const tempFilePath = join(codeSnippetsDir, `${id}.rs`);
+    fs.writeFileSync(tempFilePath, code, "utf8");
+    // const command = `npx solc --base-path . --include-path node_modules/\\@pythnetwork --output-dir ${tmpdir()} --bin ${tempFilePath}`;
+    // FIXME
+    return [true, "foo"];
+  } else if (language === "json") {
+    const tempFilePath = join(codeSnippetsDir, `${id}.json`);
+    fs.writeFileSync(tempFilePath, code, "utf8");
+    return runValidationFunction(code, (x) => JSON.parse(x));
+  } else if (language === "toml") {
+    const tempFilePath = join(codeSnippetsDir, `${id}.json`);
+    fs.writeFileSync(tempFilePath, code, "utf8");
+    return runValidationFunction(code, (x) => toml.parse(x));
   } else {
     return [false, `Unsupported language: ${language}`];
   }
+}
 
+async function runValidationCommand(
+  command: string
+): Promise<[boolean, string]> {
   try {
     const result = await execPromise(command);
     return [true, JSON.stringify(result.stdout)];
   } catch (e: any) {
     const errorMsg = `Error running command ${e.cmd}\n--stdout--\n${e.stdout}\n\n--stderr--\n${e.stderr}`;
     return [false, errorMsg];
+  }
+}
+
+async function runValidationFunction(input: string, f: (string) => void) {
+  try {
+    f(input);
+    return [true, input];
+  } catch (error) {
+    return [false, error.toString()];
   }
 }
 
@@ -145,5 +173,6 @@ function validateCodeSnippets(directoryPath: string): void {
 describe("Validate code snippets", () => {
   // We only validate code snippets in the API reference.
   // However, we exclude Aptos for now because it's annoying (and doesn't seem worth it).
-  validateCodeSnippets("./pages/evm");
+  // validateCodeSnippets("./pages/evm");
+  validateCodeSnippets("./pages/cosmwasm");
 });

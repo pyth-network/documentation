@@ -1,6 +1,10 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { Chain } from "wagmi";
-import { PythAddressConfig, useGlobalContext } from "../contexts/GlobalContext";
+import {
+  PythAddressConfig,
+  PythCosmosConfig,
+  useGlobalContext,
+} from "../contexts/GlobalContext";
 
 interface DynamicCodeProps {
   targets: Targets;
@@ -27,16 +31,29 @@ export type Targets = Record<
  *                 like ```javascript myJavascriptCode() ```
  */
 const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
-  const { keyValueStore, pythAddressConfig, currentChainConfig } =
-    useGlobalContext();
+  const {
+    keyValueStore,
+    pythAddressConfig,
+    currentChainConfig,
+    cosmosChainId,
+    cosmosChainConfig,
+  } = useGlobalContext();
   const state = useMemo(
     () =>
       new DynamicCodeRenderingContext(
         keyValueStore,
         pythAddressConfig,
-        currentChainConfig
+        currentChainConfig,
+        cosmosChainConfig,
+        cosmosChainId
       ),
-    [keyValueStore, pythAddressConfig, currentChainConfig]
+    [
+      keyValueStore,
+      pythAddressConfig,
+      currentChainConfig,
+      cosmosChainId,
+      cosmosChainConfig,
+    ]
   );
 
   // These types are pretty gnarly so leave them as any
@@ -84,14 +101,21 @@ export class DynamicCodeRenderingContext {
   public pythAddressConfig?: PythAddressConfig;
   public currentChainConfig?: Chain;
 
+  public cosmosChainConfig?: PythCosmosConfig;
+  public currentCosmosChain?: string;
+
   constructor(
     kv: Record<string, string>,
     pythAddressConfig?: PythAddressConfig,
-    currentChainConfig?: Chain
+    currentChainConfig?: Chain,
+    cosmosChainConfig?: PythCosmosConfig,
+    currentCosmosChain?: string
   ) {
     this.kv = kv;
     this.pythAddressConfig = pythAddressConfig;
     this.currentChainConfig = currentChainConfig;
+    this.cosmosChainConfig = cosmosChainConfig;
+    this.currentCosmosChain = currentCosmosChain;
   }
 
   /** Get the value of key from the global context, returning `orElse` if the key is not defined. */
