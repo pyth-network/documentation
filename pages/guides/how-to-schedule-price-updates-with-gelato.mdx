@@ -1,0 +1,59 @@
+# How to Schedule Price Updates with Gelato
+
+This guide explains how to ... .
+
+Why Gelato? Introduction to Gelato -- Gelato is a blah
+
+Describe what the Pyth gelato task does (Update specific feeds w/ time or price deviation thresholds)
+
+## Steps
+
+#### 1. Join gelato allowlist
+
+Web3 Functions are currently in private beta.
+For access please reach out to us on Discord or apply here .
+
+#### 2. Configure your task
+
+The Gelato task reads a yaml configuration file from a github gist.
+Start from [https://github.com/gelatodigital/w3f-pyth-poc-v2/pull/2/files#diff-a886cbcecb0ebcdb45c91fc4e87267fbb080fcc9513c9bed040d9216859f3c05]
+tell them how to configure it.
+
+Once the task is running, you can update this configuration to add more price feeds or change the update parameters.
+The task will automatically pick up configuration changes.
+
+#### 3. Create the task
+
+Use the link below to auto-populate the task parameters with the Pyth scheduler code:
+
+https://beta.app.gelato.network/new-task?cid=QmaKt4nxPr2eNWvzkCgAL3RTpsbsGiU14tXKFmzzzyXuh3
+
+The pyth scheduler code is deployed to IPFS so you can use it via the cid above.
+
+Choose network, set gist parameter
+
+#### 4. Fund the task
+
+There are two sets of fees that must be paid
+
+**1Balance**
+
+give instruction and screenshot
+
+**Pyth Fees**
+
+transfer native token to your dedicated sender
+
+#### 5. Check task execution
+
+send them to a link and put in a screenshot
+
+## Managing your Gelato Task
+
+balance monitoring -- how to do it
+
+Change configuration parameters -- go edit the gist, then check that changes got picked up.
+
+## Notes
+
+Customize the task -- point them to github readme, then they deploy to get a CID, then can pick up the instructions above
