@@ -9,18 +9,19 @@ import { Tab, Tabs } from "nextra-theme-docs";
 
 # Price Feed
 
-Get the latest price and confidence interval for the requested price feed id.
+Get the latest value for the requested price feed id, including the current price, confidence interval and EMA.
 The price feed id is a 32-byte id written as a hexadecimal string; see the [price feed ids](https://pyth.network/developers/price-feed-ids) page to look up the id for a given symbol.
-The returned price and confidence are decimal numbers written in the form `a * 10^e`, where `e` is an exponent included in the result.
+The returned prices and confidence intervals are decimal numbers written in the form `a * 10^e`, where `e` is an exponent included in the result.
 For example, a price of 1234 with an exponent of -2 represents the number 12.34.
-The result also includes a `publishTime` which is the unix timestamp for the price update.
+The result also includes a `publish_time` which is the unix timestamp for the price update.
 
-**This function may return a price from arbitrarily far in the past.**
-It is the caller's responsibility to check the returned `publishTime` to ensure that the update is recent enough for their use case.
+**This query may return a price from arbitrarily far in the past.**
+It is the caller's responsibility to check the returned `publish_time` to ensure that the update is recent enough for their use case.
+The `pyth_sdk_cw` crate includes some [convenience methods](https://github.com/pyth-network/pyth-sdk-rs/blob/main/pyth-sdk/src/lib.rs) for performing these checks.
 
 This function reverts with a `PriceFeedNotFound` error if the requested feed id has never received a price update.
 This error could either mean that the provided price feed id is incorrect, or (more typically) that this is the first
-attempted use of that feed on-chain. In the second case, calling [updatePriceFeeds](update-price-feeds) will solve
+attempted use of that feed on-chain. In the second case, executing [UpdatePriceFeeds](update-price-feeds) will solve
 this problem.
 
 <div className="mt-6 overflow-x-auto">
@@ -74,6 +75,8 @@ this problem.
                 PriceIdentifier::from_hex("0x11").unwrap()
               ).unwrap();
               let price_feed = price_feed_response.price_feed;
+
+              price_feed.get_price_no_older_than()
             }
             ```
         </DynamicCode>
