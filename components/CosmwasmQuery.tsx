@@ -94,29 +94,4 @@ const CosmWasmQuery = ({ buildQuery }: CosmWasmQueryProps) => {
   );
 };
 
-/**
- * Render the response from the EVM contract as a human-readable string.
- * This function is janky because ethers doesn't provide a nice way to iterate over
- * Results with named key/values.
- */
-function renderResult(result: any, indent: string) {
-  if (result instanceof Result) {
-    if (result.length == 0) {
-      return "";
-    } else {
-      const obj = result.toObject();
-      let responseString = "{\n";
-      const nextIndent = indent + "  ";
-      for (const key in obj) {
-        responseString +=
-          nextIndent + `${key}: ${renderResult(obj[key], nextIndent)},\n`;
-      }
-      responseString += indent + `}`;
-      return responseString;
-    }
-  } else {
-    return result.toString();
-  }
-}
-
 export default CosmWasmQuery;

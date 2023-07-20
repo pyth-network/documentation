@@ -90,6 +90,37 @@ export interface PythCosmosConfig {
 }
 
 export const PythCosmosAddresses: Record<string, PythCosmosConfig> = {
+  injective_mainnet: {
+    // TODO: can't seem to connect to this RPC right now
+    rpcUrl: "https://k8s.global.mainnet.tm.injective.network/",
+    pythAddress: `inj12j43nf2f0qumnt2zrrmpvnsqgzndxefujlvr08`,
+    networkType: "mainnet",
+  },
+  osmosis_mainnet: {
+    rpcUrl: "https://rpc.osmosis.zone:443",
+    pythAddress: `osmo13ge29x4e2s63a8ytz2px8gurtyznmue4a69n5275692v3qn3ks8q7cwck7`,
+    networkType: "mainnet",
+  },
+  injective_testnet: {
+    rpcUrl: "https://k8s.testnet.tm.injective.network:443",
+    pythAddress: `inj18hckkzqf47mdhd734g6papk6wj20y24rm43sk9`,
+    networkType: "mainnet",
+  },
+  sei_atlantic_2: {
+    rpcUrl: "https://rpc.atlantic-2.seinetwork.io/",
+    pythAddress: `sei1w2rxq6eckak47s25crxlhmq96fzjwdtjgdwavn56ggc0qvxvw7rqczxyfy`,
+    networkType: "mainnet",
+  },
+  neutron_pion_1: {
+    rpcUrl: "https://rpc-palvus.pion-1.ntrn.tech/",
+    pythAddress: `neutron1f86ct5az9qpz2hqfd5uxru02px2a3tz5zkw7hugd7acqq496dcms22ehpy`,
+    networkType: "mainnet",
+  },
+  juno: {
+    rpcUrl: "https://rpc.uni.junonetwork.io/",
+    pythAddress: `juno1eacsrua27njc35pxz37y97gmcjs899t59f8pf0rkejjyvtmhws5q6lxsdd`,
+    networkType: "mainnet",
+  },
   neutron: {
     rpcUrl: "https://rpc-kralum.neutron-1.neutron.org",
     pythAddress:
@@ -99,9 +130,8 @@ export const PythCosmosAddresses: Record<string, PythCosmosConfig> = {
   osmosis_testnet_5: {
     rpcUrl: "https://rpc.osmotest5.osmosis.zone/",
     pythAddress:
-      "osmo1lltupx02sj99suakmuk4sr4ppqf34ajedaxut3ukjwkv6469erwqtpg9t3",
-    // FIXME: is this right???
-    networkType: "testnet",
+      "osmo1hpdzqku55lmfmptpyj6wdlugqs5etr6teqf7r4yqjjrxjznjhtuqqu5kdh",
+    networkType: "mainnet",
   },
 };
 
