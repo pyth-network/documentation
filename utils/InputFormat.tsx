@@ -42,6 +42,15 @@ function byteArrayFormat(x: string): string | undefined {
   }
 }
 
+function base64InputFormat(x: string): string | undefined {
+  try {
+    Buffer.from(x, "base64");
+    return undefined;
+  } catch (error) {
+    return "Please enter a base64 string";
+  }
+}
+
 export const InputFormats: Record<string, InputFormat> = {
   // The 0| condition below means we don't show an error message when the user starts typing 0 as the first character.
   ZeroX: regexFormat(
@@ -54,4 +63,5 @@ export const InputFormats: Record<string, InputFormat> = {
   ),
   BigInt: bigIntInputFormat,
   ByteArray: byteArrayFormat,
+  Base64: base64InputFormat,
 };

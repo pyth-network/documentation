@@ -60,7 +60,6 @@ this problem.
             ```rust copy
             use pyth_sdk_cw::{
               query_price_feed,
-              PriceFeed,
               PriceFeedResponse,
               PriceIdentifier,
             };
@@ -75,8 +74,6 @@ this problem.
                 Addr::unchecked("0x00"),
                 PriceIdentifier::from_hex("0x11").unwrap()
               ).unwrap();
-              // PriceFeed has many convenience methods for working with Pyth Network prices
-              let price_feed: PriceFeed = price_feed_response.price_feed;
             }
             ```
         </DynamicCode>

@@ -13,7 +13,6 @@
 
   "query-price-feed": "PriceFeed",
   "query-get-update-fee": "GetUpdateFee",
-  "query-get-update-fee-for-denom": "GetUpdateFeeForDenom",
   "query-get-valid-time-period": "GetValidTimePeriod",
 
   "--- Execute Messages": {

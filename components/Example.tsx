@@ -98,14 +98,17 @@ export class ExampleRenderingContext {
     return `0x${this.getFeedId(symbolName)}`;
   }
 
-  public async getLatestPriceFeed(symbolName: string): Promise<any> {
+  public async getLatestPriceFeed(
+    symbolName: string,
+    targetChain: string
+  ): Promise<any> {
     const feedId = this.getFeedId0x(symbolName);
 
     const endpoint: string = `${
       PriceServiceUrls[this.networkType]
     }/api/latest_price_feeds`;
     const result = await (
-      await fetch(`${endpoint}?ids[]=${feedId}&target_chain=evm`)
+      await fetch(`${endpoint}?ids[]=${feedId}&target_chain=${targetChain}`)
     ).json();
     return result[0];
   }
