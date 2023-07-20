@@ -87,11 +87,16 @@ async function runCodeSnippet(
     const command = `npx solc --base-path . --include-path node_modules/\\@pythnetwork --output-dir ${tmpdir()} --bin ${tempFilePath}`;
     return await runValidationCommand(command);
   } else if (language === "rust") {
-    const tempFilePath = join(codeSnippetsDir, `${id}.rs`);
-    fs.writeFileSync(tempFilePath, code, "utf8");
-    // const command = `npx solc --base-path . --include-path node_modules/\\@pythnetwork --output-dir ${tmpdir()} --bin ${tempFilePath}`;
-    // FIXME
-    return [true, "foo"];
+    const tempFilePath = join(codeSnippetsDir, `${id}`);
+    fs.mkdirSync(tempFilePath);
+    fs.writeFileSync(join(tempFilePath, "lib.rs"), code, "utf8");
+    fs.writeFileSync(
+      join(tempFilePath, "Cargo.toml"),
+      generateCargoFile(),
+      "utf8"
+    );
+    const command = `cd ${tempFilePath} && cargo check`;
+    return await runValidationCommand(command);
   } else if (language === "json") {
     const tempFilePath = join(codeSnippetsDir, `${id}.json`);
     fs.writeFileSync(tempFilePath, code, "utf8");
@@ -103,6 +108,24 @@ async function runCodeSnippet(
   } else {
     return [false, `Unsupported language: ${language}`];
   }
+}
+
+function generateCargoFile() {
+  return `
+[package]
+name = "pyth-documentation-snippets"
+version = "0.0.1"
+authors = ["Pyth Network Contributors"]
+edition = "2018"
+
+[dependencies]
+pyth-sdk-cw = "1.0.0"
+cosmwasm-std = "1.0.0"
+
+[lib]
+name = "unused"
+path = "lib.rs"
+`;
 }
 
 async function runValidationCommand(

@@ -58,18 +58,21 @@ this problem.
         }}>
             ```rust copy
             use pyth_sdk_cw::{
-              get_update_fee,
-              get_valid_time_period,
               query_price_feed,
               PriceFeedResponse,
+              PriceIdentifier,
+            };
+            use cosmwasm_std::{
+              Addr,
+              Deps,
             };
 
-            fn sample(deps: Deps) -> () {
+            fn example_function(deps: &Deps) -> () {
               let price_feed_response: PriceFeedResponse = query_price_feed(
                 &deps.querier,
                 Addr::unchecked("0x00"),
-                PriceIdentifier::from_hex("0x11")
-              )?;
+                PriceIdentifier::from_hex("0x11").unwrap()
+              ).unwrap();
               let price_feed = price_feed_response.price_feed;
             }
             ```
@@ -84,7 +87,6 @@ this problem.
             "'RPC_URL'": (ctx) => ctx.cosmosChainConfig?.rpcUrl !== undefined ? `'${ctx.cosmosChainConfig.rpcUrl}'` : 'RPC_URL',
         }}>
             ```typescript copy
-            // or your favorite client
             import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 
             // NETWORK_NAME
