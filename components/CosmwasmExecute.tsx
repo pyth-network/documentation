@@ -2,14 +2,19 @@ import { useEffect, useState } from "react";
 import {
   GrazProvider,
   useAccount,
+  useActiveChain,
   useConnect,
   useDisconnect,
   useExecuteContract,
   useSigningClients,
+  useSuggestChainAndConnect,
 } from "graz";
 
 import { useGlobalContext } from "../contexts/GlobalContext";
 import { JsonObject } from "@cosmjs/cosmwasm-stargate";
+import { osmosis } from "graz/chains";
+import CosmosNetworkSelector from "./CosmosNetworkSelector";
+import { coin, Coin } from "@cosmjs/proto-signing";
 
 interface CosmWasmExecuteProps {
   buildQuery: (kvs: Record<string, string>) => JsonObject | undefined;
@@ -30,17 +35,16 @@ interface CosmWasmExecuteProps {
  * TODO: probably better to pass the contract address / ABI as arguments (?)
  */
 const CosmWasmExecute = ({ buildQuery, feeKey }: CosmWasmExecuteProps) => {
-  const { cosmosChainConfig } = useGlobalContext();
+  // const { cosmosChainConfig } = useGlobalContext();
 
+  return <CosmWasmExecuteHelper buildQuery={buildQuery} feeKey={feeKey} />;
+
+  /*
   return (
-    <GrazProvider
-      grazOptions={{
-        defaultChain: mainnetChains.juno,
-      }}
-    >
-      <CosmWasmExecute buildQuery={buildQuery} feeKey={feeKey} />
+      <CosmWasmExecuteHelper buildQuery={buildQuery} feeKey={feeKey} />
     </GrazProvider>
   );
+   */
 };
 
 const CosmWasmExecuteHelper = ({
@@ -48,16 +52,12 @@ const CosmWasmExecuteHelper = ({
   feeKey,
 }: CosmWasmExecuteProps) => {
   const { keyValueStore, cosmosChainConfig } = useGlobalContext();
-  const isLoading = false;
-  const isError = false;
-  const isSuccess = false;
 
-  const { isConnected, data: account } = useAccount();
-  const { connect } = useConnect();
-  const { disconnect } = useDisconnect();
-
-  const { data } = useSigningClients();
-  // const { executeContract } = useExecuteContract<ExecuteMessage>({ contractAddress });
+  const { isConnected } = useAccount();
+  const { error, isLoading, isSuccess, executeContractAsync, status } =
+    useExecuteContract<JsonObject>({
+      contractAddress: cosmosChainConfig.pythAddress,
+    });
 
   /*
   const { data, isLoading, isSuccess, isError, write, error } =
@@ -85,53 +85,37 @@ const CosmWasmExecuteHelper = ({
       setResponsePreface("Loading...");
     } else if (isSuccess) {
       // const responseString = JSON.stringify(data);
-      setResponsePreface("EVM call succeeded with result:");
+      setResponsePreface("Contract execution succeeded with result:");
       // setResponse(responseString);
-    } else if (isError) {
-      setResponsePreface("EVM call reverted with exception:");
-      // setResponse(JSON.stringify(error));
+    } else if (error) {
+      setResponsePreface("Contract execution reverted with exception:");
+      setResponse(JSON.stringify(error, null, 2));
     }
-  }, [isLoading, isSuccess, isError]);
+  }, [isLoading, isSuccess, error]);
 
   const executeQuery = async () => {
-    const { cosmWasm } = data;
     const msgJson: JsonObject | undefined = buildQuery(keyValueStore);
 
     if (msgJson === undefined) {
       setResponsePreface(
         `Please populate all of the arguments with valid values.`
       );
+      setResponse(undefined);
     } else {
       // TODO: funds
-      const result = await cosmWasm.execute(
-        account?.bech32Address,
-        cosmosChainConfig.pythAddress,
-        msgJson
-      );
-      setResponsePreface("did a thing");
-      setResponse(JSON.stringify(result));
-      // TODO
-      /*
-      write?.({
-        args: buildArguments(keyValueStore),
-        value:
-          feeKey !== undefined
-            ? ethers.toBigInt(keyValueStore[feeKey])
-            : undefined,
+      const result = await executeContractAsync({
+        msg: msgJson,
+        funds: [coin("1", "uosmo")],
       });
-       */
+
+      setResponse(JSON.stringify(result, null, 2));
     }
   };
 
   return (
     <>
       <div className="my-4">
-        <button
-          className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF]"
-          onClick={() => (isConnected ? disconnect() : connect())}
-        >
-          {isConnected ? `${account?.bech32Address}` : "Connect Wallet"}
-        </button>
+        <CosmWasmAccountButton /> <CosmosNetworkSelector />
       </div>
       <div className="flex">
         {isConnected && (
@@ -158,6 +142,44 @@ const CosmWasmExecuteHelper = ({
       </div>
     </>
   );
+};
+
+export const CosmWasmAccountButton = () => {
+  const { isConnected, data: account } = useAccount();
+  const activeChain = useActiveChain();
+  const { suggestAndConnect } = useSuggestChainAndConnect();
+  const { disconnect } = useDisconnect();
+
+  const { cosmosChainConfig } = useGlobalContext();
+
+  function handleSuggestAndConnect() {
+    // TODO: use cosmosChainConfig here
+    // probably also need an effect to handle when the chainConfig changes
+    suggestAndConnect({
+      chainInfo: osmosis,
+      gas: { price: "1", denom: "uosmo" },
+    });
+  }
+
+  if (isConnected) {
+    return (
+      <button
+        className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF]"
+        onClick={() => disconnect()}
+      >
+        {`${account?.bech32Address} (${activeChain?.chainId})`}
+      </button>
+    );
+  } else {
+    return (
+      <button
+        className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF]"
+        onClick={() => handleSuggestAndConnect()}
+      >
+        Connect Wallet
+      </button>
+    );
+  }
 };
 
 export default CosmWasmExecute;
