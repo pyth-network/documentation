@@ -8,6 +8,7 @@ interface CosmWasmQueryProps {
   buildQuery: (kvs: Record<string, string>) => JsonObject | undefined;
 }
 
+// FIXME: comment
 /**
  * Allow the user to call a read-only function on an EVM chain and visualize the response.
  * This component will invoke `functionName` on the pyth contract provided in the global context.

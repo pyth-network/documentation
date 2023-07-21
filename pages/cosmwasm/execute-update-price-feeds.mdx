@@ -4,38 +4,42 @@ import Example from "../../components/Example";
 import Examples from "../../components/Examples";
 import DynamicCode from "../../components/DynamicCode";
 import { InputFormats } from "../../utils/InputFormat";
-import CosmWasmQuery from "../../components/CosmwasmQuery";
+import CosmWasmExecute from "../../components/CosmwasmExecute";
 import { Tab, Tabs } from "nextra-theme-docs";
 
-# Get Update Fee
+# Update Price Feeds
 
-Get the fee required to update the on-chain price feeds with the provided `vaas`.
-Returns both a quantity of tokens and denomination.
-The returned number of the specified token should be sent as the transaction value when executing [UpdatePriceFeeds](execute-update-price-feeds).
+Update the on-chain price feeds using the provided `data`, which contains serialized and signed price update data from Pyth Network.
+You can retrieve the latest price `data` for a given set of price feeds from the price service API.
+Executing this message updates the on-chain price if the provided update is more recent than the current on-chain price.
+Otherwise, the provided update will be ignored.
+Execution will succeed even if the update is ignored.
 
-The `vaas` can be retrieved from the price service API.
-By default, the price service returns these as base64-encoded strings; these can be directly included in a CosmWasm query, as CosmWasm uses a base64 string encoding for the `Binary` type.
+This operation requires the caller to pay a fee to perform the update.
+The required fee for a given set of updates can be computed using the [GetUpdateFee](query-get-update-fee) query.
+
+Reverts if the required fee is not paid, or the `data` is incorrectly signed or formatted.
 
 <div className="mt-6 overflow-x-auto">
 
-| Argument                                           | Input                                           | Description                                                                                       |
-| -------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| <Arg required={true} type="vec<Binary>">vaas</Arg> | <Input id="vaas" format={InputFormats.Base64}/> | The price updates that you would like to submit to [UpdatePriceFeeds](execute-update-price-feeds) |
+| Argument                                           | Input                                           | Description                                       |
+| -------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------- |
+| <Arg required={true} type="vec<Binary>">data</Arg> | <Input id="data" format={InputFormats.Base64}/> | The price update data for the contract to verify. |
 
 </div>
 
 <Examples>
   <Example
     keyValues={{
-      vaas: async (ctx) =>
+      data: async (ctx) =>
         (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "default")).vaa,
     }}
     value="Latest BTC/USD update data"
   />
 </Examples>
 
-<CosmWasmQuery
-  buildQuery={(kvs) => ({ get_update_fee: { vaas: [kvs["vaas"]] } })}
+<CosmWasmExecute
+  buildQuery={(kvs) => ({ get_update_fee: { data: [kvs["data"]] } })}
 />
 
 ## Example Code
@@ -44,7 +48,7 @@ By default, the price service returns these as base64-encoded strings; these can
     <Tab>
         <DynamicCode targets={{
             '"0x00"': (ctx) => `"${ctx.cosmosChainConfig.pythAddress}"`,
-            '"0x11"': (ctx) => `"${ctx.get("vaas", "<vaa>")}"`,
+            '"0x11"': (ctx) => `"${ctx.get("data", "<vaa>")}"`,
         }}>
             ```rust copy
             use pyth_sdk_cw::{
@@ -71,7 +75,7 @@ By default, the price service returns these as base64-encoded strings; these can
     <Tab>
         <DynamicCode targets={{
             "'0x0000'": (ctx) => `'${ctx.cosmosChainConfig.pythAddress}'`,
-            "'0x1111'": (ctx) => `'${ctx.get("vaas", "<vaa>")}'`,
+            "'0x1111'": (ctx) => `'${ctx.get("data", "<vaa>")}'`,
             "// NETWORK_NAME": (ctx) => `// ${ctx.currentCosmosChain}`,
             "'RPC_URL'": (ctx) => ctx.cosmosChainConfig?.rpcUrl !== undefined ? `'${ctx.cosmosChainConfig.rpcUrl}'` : 'RPC_URL',
         }}>
@@ -86,7 +90,7 @@ By default, the price service returns these as base64-encoded strings; these can
               contractAddress,
               {
                 "get_update_fee": {
-                  "vaas": ['0x1111']
+                  "data": ['0x1111']
                 }
               }
             );
@@ -96,12 +100,12 @@ By default, the price service returns these as base64-encoded strings; these can
 
     <Tab>
         <DynamicCode targets={{
-            '"0x1111"': (ctx) => `"${ctx.get("vaas", "<vaa>")}"`,
+            '"0x1111"': (ctx) => `"${ctx.get("data", "<vaa>")}"`,
         }}>
             ```json copy
             {
               "get_update_fee": {
-                "vaas": ["0x1111"]
+                "data": ["0x1111"]
               }
             }
             ```

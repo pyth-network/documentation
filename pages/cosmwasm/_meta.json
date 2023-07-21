@@ -13,7 +13,6 @@
 
   "query-price-feed": "PriceFeed",
   "query-get-update-fee": "GetUpdateFee",
-  "query-get-valid-time-period": "GetValidTimePeriod",
 
   "--- Execute Messages": {
     "title": "Execute Messages",
