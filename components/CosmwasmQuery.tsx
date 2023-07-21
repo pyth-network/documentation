@@ -1,6 +1,6 @@
 import { Result, isError } from "ethers";
 import { useEffect, useState } from "react";
-import { useGlobalContext } from "../contexts/GlobalContext";
+import { CosmosChains, useGlobalContext } from "../contexts/GlobalContext";
 import CosmosNetworkSelector from "./CosmosNetworkSelector";
 import { CosmWasmClient, JsonObject } from "@cosmjs/cosmwasm-stargate";
 
@@ -34,7 +34,10 @@ const CosmWasmQuery = ({ buildQuery }: CosmWasmQueryProps) => {
   const sendTransaction = async () => {
     const queryJson: JsonObject | undefined = buildQuery(keyValueStore);
 
-    const client = await CosmWasmClient.connect(cosmosChainConfig.rpcUrl);
+    const chain = CosmosChains.find(
+      (chain) => chain.chainId == cosmosChainConfig.chainId
+    );
+    const client = await CosmWasmClient.connect(chain.rpc);
 
     // TODO: validate arguments
     if (queryJson === undefined) {

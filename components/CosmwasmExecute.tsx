@@ -35,22 +35,6 @@ interface CosmWasmExecuteProps {
  * TODO: probably better to pass the contract address / ABI as arguments (?)
  */
 const CosmWasmExecute = ({ buildQuery, feeKey }: CosmWasmExecuteProps) => {
-  // const { cosmosChainConfig } = useGlobalContext();
-
-  return <CosmWasmExecuteHelper buildQuery={buildQuery} feeKey={feeKey} />;
-
-  /*
-  return (
-      <CosmWasmExecuteHelper buildQuery={buildQuery} feeKey={feeKey} />
-    </GrazProvider>
-  );
-   */
-};
-
-const CosmWasmExecuteHelper = ({
-  buildQuery,
-  feeKey,
-}: CosmWasmExecuteProps) => {
   const { keyValueStore, cosmosChainConfig } = useGlobalContext();
 
   const [response, setResponse] = useState<string>();
@@ -76,13 +60,10 @@ const CosmWasmExecuteHelper = ({
       setResponsePreface("Loading...");
       setResponse("");
     } else if (isSuccess) {
-      // const responseString = JSON.stringify(data);
-      setResponsePreface("Contract execution succeeded with result:");
-      // setResponse(responseString);
+      // Ignore because we populate this field immediately after executing.
+      // (useExecuteContract doesn't return the result for whatever reason)
     } else if (error) {
       setResponsePreface("Contract execution reverted with exception:");
-
-      console.log("THIS ERROR TRIGGERED");
       setResponse(error.toString());
     }
   }, [isLoading, isSuccess, error]);
@@ -102,9 +83,11 @@ const CosmWasmExecuteHelper = ({
           msg: msgJson,
           funds: [coin("1", "uosmo")],
         });
+
+        setResponsePreface("Contract execution succeeded with result:");
         setResponse(JSON.stringify(result, null, 2));
       } catch (error) {
-        // This catch prevents nextra from reporting the error. No need to update
+        // This catch prevents nextra from reporting the error in a modal. No need to update
         // the component state though, because the error also gets returned by useExecuteContract.
       }
     }
@@ -112,7 +95,7 @@ const CosmWasmExecuteHelper = ({
 
   return (
     <>
-      <div className="my-4">
+      <div className="my-4 flex space-x-2 mb-4">
         <CosmWasmAccountButton /> <CosmosNetworkSelector />
       </div>
       <div className="flex">
@@ -144,21 +127,19 @@ const CosmWasmExecuteHelper = ({
 
 export const CosmWasmAccountButton = () => {
   const { isConnected, data: account } = useAccount();
-  const activeChain = useActiveChain();
   const { suggestAndConnect } = useSuggestChainAndConnect();
   const { disconnect } = useDisconnect();
 
   const { cosmosChainConfig } = useGlobalContext();
 
   function handleSuggestAndConnect() {
-    // TODO: use cosmosChainConfig here
-    // probably also need an effect to handle when the chainConfig changes
     const cosmosChain = CosmosChains.find(
       (chain) => chain.chainId == cosmosChainConfig.chainId
     );
     suggestAndConnect({
       chainInfo: cosmosChain,
-      // TODO: not clear this is going to work
+      // TODO: not clear that setting this to 1 is going to work
+      // but there doesn't seem to be a good way to dynamically set this price.
       gas: { price: "1", denom: cosmosChain.feeCurrencies[0].coinMinimalDenom },
     });
   }
@@ -169,10 +150,7 @@ export const CosmWasmAccountButton = () => {
 
   if (isConnected) {
     return (
-      <button
-        className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF]"
-        onClick={() => disconnect()}
-      >
+      <button className="font-normal text-base" onClick={() => disconnect()}>
         {`${account?.bech32Address}`}
       </button>
     );
