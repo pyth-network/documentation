@@ -10,7 +10,7 @@ import {
   useSuggestChainAndConnect,
 } from "graz";
 
-import { useGlobalContext } from "../contexts/GlobalContext";
+import { CosmosChains, useGlobalContext } from "../contexts/GlobalContext";
 import { JsonObject } from "@cosmjs/cosmwasm-stargate";
 import { osmosis } from "graz/chains";
 import CosmosNetworkSelector from "./CosmosNetworkSelector";
@@ -53,27 +53,18 @@ const CosmWasmExecuteHelper = ({
 }: CosmWasmExecuteProps) => {
   const { keyValueStore, cosmosChainConfig } = useGlobalContext();
 
+  const [response, setResponse] = useState<string>();
+  const [responsePreface, setResponsePreface] = useState<string>();
+
   const { isConnected } = useAccount();
   const { error, isLoading, isSuccess, executeContractAsync, status } =
     useExecuteContract<JsonObject>({
       contractAddress: cosmosChainConfig.pythAddress,
     });
 
-  /*
-  const { data, isLoading, isSuccess, isError, write, error } =
-    useContractWrite({
-      address: pythAddressConfig.pythAddress as `0x${string}`,
-      abi: pythAbi,
-      functionName: functionName,
-    });
-   */
-
-  const [response, setResponse] = useState<string>();
-  const [responsePreface, setResponsePreface] = useState<string>();
-
   useEffect(() => {
     clearResponse();
-  }, [keyValueStore]);
+  }, [keyValueStore, cosmosChainConfig]);
 
   const clearResponse = async () => {
     setResponsePreface(undefined);
@@ -83,13 +74,16 @@ const CosmWasmExecuteHelper = ({
   useEffect(() => {
     if (isLoading) {
       setResponsePreface("Loading...");
+      setResponse("");
     } else if (isSuccess) {
       // const responseString = JSON.stringify(data);
       setResponsePreface("Contract execution succeeded with result:");
       // setResponse(responseString);
     } else if (error) {
       setResponsePreface("Contract execution reverted with exception:");
-      setResponse(JSON.stringify(error, null, 2));
+
+      console.log("THIS ERROR TRIGGERED");
+      setResponse(error.toString());
     }
   }, [isLoading, isSuccess, error]);
 
@@ -102,13 +96,17 @@ const CosmWasmExecuteHelper = ({
       );
       setResponse(undefined);
     } else {
-      // TODO: funds
-      const result = await executeContractAsync({
-        msg: msgJson,
-        funds: [coin("1", "uosmo")],
-      });
-
-      setResponse(JSON.stringify(result, null, 2));
+      // FIXME: funds
+      try {
+        const result = await executeContractAsync({
+          msg: msgJson,
+          funds: [coin("1", "uosmo")],
+        });
+        setResponse(JSON.stringify(result, null, 2));
+      } catch (error) {
+        // This catch prevents nextra from reporting the error. No need to update
+        // the component state though, because the error also gets returned by useExecuteContract.
+      }
     }
   };
 
@@ -155,11 +153,19 @@ export const CosmWasmAccountButton = () => {
   function handleSuggestAndConnect() {
     // TODO: use cosmosChainConfig here
     // probably also need an effect to handle when the chainConfig changes
+    const cosmosChain = CosmosChains.find(
+      (chain) => chain.chainId == cosmosChainConfig.chainId
+    );
     suggestAndConnect({
-      chainInfo: osmosis,
-      gas: { price: "1", denom: "uosmo" },
+      chainInfo: cosmosChain,
+      // TODO: not clear this is going to work
+      gas: { price: "1", denom: cosmosChain.feeCurrencies[0].coinMinimalDenom },
     });
   }
+
+  useEffect(() => {
+    handleSuggestAndConnect();
+  }, [cosmosChainConfig]);
 
   if (isConnected) {
     return (
@@ -167,7 +173,7 @@ export const CosmWasmAccountButton = () => {
         className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF]"
         onClick={() => disconnect()}
       >
-        {`${account?.bech32Address} (${activeChain?.chainId})`}
+        {`${account?.bech32Address}`}
       </button>
     );
   } else {

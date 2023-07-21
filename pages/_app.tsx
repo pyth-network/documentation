@@ -38,11 +38,7 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
   return (
     // prevent react hydration error
     mounted && (
-      <GrazProvider
-        grazOptions={{
-          defaultChain: osmosis,
-        }}
-      >
+      <GrazProvider>
         <WagmiConfig config={config}>
           <ConnectKitProvider
             theme="midnight"

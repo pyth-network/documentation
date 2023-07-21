@@ -49,6 +49,7 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
   useEffect(() => {
     if (isLoading) {
       setResponsePreface("Loading...");
+      setResponse("");
     } else if (isSuccess) {
       const responseString = JSON.stringify(data);
       setResponsePreface("EVM call succeeded with result:");
