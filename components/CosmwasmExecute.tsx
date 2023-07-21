@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
 import {
-  GrazProvider,
   useAccount,
-  useActiveChain,
-  useConnect,
   useDisconnect,
   useExecuteContract,
-  useSigningClients,
   useSuggestChainAndConnect,
 } from "graz";
 
-import { CosmosChains, useGlobalContext } from "../contexts/GlobalContext";
+import {
+  CosmosChains,
+  getCosmosChainFromConfig,
+  useGlobalContext,
+} from "../contexts/GlobalContext";
 import { JsonObject } from "@cosmjs/cosmwasm-stargate";
-import { osmosis } from "graz/chains";
 import CosmosNetworkSelector from "./CosmosNetworkSelector";
-import { coin, Coin } from "@cosmjs/proto-signing";
+import { coin } from "@cosmjs/proto-signing";
 
 interface CosmWasmExecuteProps {
   buildQuery: (kvs: Record<string, string>) => JsonObject | undefined;
@@ -70,8 +69,10 @@ const CosmWasmExecute = ({ buildQuery, feeKey }: CosmWasmExecuteProps) => {
 
   const executeQuery = async () => {
     const msgJson: JsonObject | undefined = buildQuery(keyValueStore);
+    const fee = keyValueStore[feeKey];
+    const cosmosChain = getCosmosChainFromConfig(cosmosChainConfig.chainId);
 
-    if (msgJson === undefined) {
+    if (msgJson === undefined || fee === undefined) {
       setResponsePreface(
         `Please populate all of the arguments with valid values.`
       );
@@ -81,7 +82,7 @@ const CosmWasmExecute = ({ buildQuery, feeKey }: CosmWasmExecuteProps) => {
       try {
         const result = await executeContractAsync({
           msg: msgJson,
-          funds: [coin("1", "uosmo")],
+          funds: [coin(fee, cosmosChain.feeCurrencies[0].coinMinimalDenom)],
         });
 
         setResponsePreface("Contract execution succeeded with result:");
@@ -133,14 +134,15 @@ export const CosmWasmAccountButton = () => {
   const { cosmosChainConfig } = useGlobalContext();
 
   function handleSuggestAndConnect() {
-    const cosmosChain = CosmosChains.find(
-      (chain) => chain.chainId == cosmosChainConfig.chainId
-    );
+    const cosmosChain = getCosmosChainFromConfig(cosmosChainConfig.chainId);
     suggestAndConnect({
       chainInfo: cosmosChain,
-      // TODO: not clear that setting this to 1 is going to work
+      // TODO: not clear that setting this to 0.1 is going to work
       // but there doesn't seem to be a good way to dynamically set this price.
-      gas: { price: "1", denom: cosmosChain.feeCurrencies[0].coinMinimalDenom },
+      gas: {
+        price: "0.1",
+        denom: cosmosChain.feeCurrencies[0].coinMinimalDenom,
+      },
     });
   }
 

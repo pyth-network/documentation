@@ -2,7 +2,11 @@ import { Result, isError } from "ethers";
 import { useEffect, useState } from "react";
 import { CosmosChains, useGlobalContext } from "../contexts/GlobalContext";
 import CosmosNetworkSelector from "./CosmosNetworkSelector";
-import { CosmWasmClient, JsonObject } from "@cosmjs/cosmwasm-stargate";
+import {
+  CosmWasmClient,
+  JsonObject,
+  SigningCosmWasmClient,
+} from "@cosmjs/cosmwasm-stargate";
 
 interface CosmWasmQueryProps {
   buildQuery: (kvs: Record<string, string>) => JsonObject | undefined;

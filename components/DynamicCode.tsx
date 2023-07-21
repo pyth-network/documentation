@@ -1,10 +1,13 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { Chain } from "wagmi";
 import {
+  CosmosChains,
+  getCosmosChainFromConfig,
   PythAddressConfig,
   PythCosmosConfig,
   useGlobalContext,
 } from "../contexts/GlobalContext";
+import { ChainInfo } from "@keplr-wallet/types";
 
 interface DynamicCodeProps {
   targets: Targets;
@@ -38,23 +41,27 @@ const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
     cosmosChainId,
     cosmosChainConfig,
   } = useGlobalContext();
-  const state = useMemo(
-    () =>
-      new DynamicCodeRenderingContext(
-        keyValueStore,
-        pythAddressConfig,
-        currentChainConfig,
-        cosmosChainConfig,
-        cosmosChainId
-      ),
-    [
+
+  const state = useMemo(() => {
+    const cosmosNetworkDetails = getCosmosChainFromConfig(
+      cosmosChainConfig.chainId
+    );
+
+    return new DynamicCodeRenderingContext(
       keyValueStore,
       pythAddressConfig,
       currentChainConfig,
-      cosmosChainId,
       cosmosChainConfig,
-    ]
-  );
+      cosmosChainId,
+      cosmosNetworkDetails
+    );
+  }, [
+    keyValueStore,
+    pythAddressConfig,
+    currentChainConfig,
+    cosmosChainId,
+    cosmosChainConfig,
+  ]);
 
   // These types are pretty gnarly so leave them as any
   const divRef = useRef<any>();
@@ -104,18 +111,22 @@ export class DynamicCodeRenderingContext {
   public cosmosChainConfig?: PythCosmosConfig;
   public currentCosmosChain?: string;
 
+  public cosmosNetworkDetails?: ChainInfo;
+
   constructor(
     kv: Record<string, string>,
     pythAddressConfig?: PythAddressConfig,
     currentChainConfig?: Chain,
     cosmosChainConfig?: PythCosmosConfig,
-    currentCosmosChain?: string
+    currentCosmosChain?: string,
+    cosmosNetworkDetails?: ChainInfo
   ) {
     this.kv = kv;
     this.pythAddressConfig = pythAddressConfig;
     this.currentChainConfig = currentChainConfig;
     this.cosmosChainConfig = cosmosChainConfig;
     this.currentCosmosChain = currentCosmosChain;
+    this.cosmosNetworkDetails = cosmosNetworkDetails;
   }
 
   /** Get the value of key from the global context, returning `orElse` if the key is not defined. */

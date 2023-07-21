@@ -73,7 +73,7 @@ By default, the price service returns these as base64-encoded strings; these can
             "'0x0000'": (ctx) => `'${ctx.cosmosChainConfig.pythAddress}'`,
             "'0x1111'": (ctx) => `'${ctx.get("vaas", "<vaa>")}'`,
             "// NETWORK_NAME": (ctx) => `// ${ctx.currentCosmosChain}`,
-            "'RPC_URL'": (ctx) => ctx.cosmosChainConfig?.rpcUrl !== undefined ? `'${ctx.cosmosChainConfig.rpcUrl}'` : 'RPC_URL',
+            "'RPC_URL'": (ctx) => ctx.cosmosNetworkDetails?.rpc !== undefined ? `'${ctx.cosmosNetworkDetails.rpc}'` : 'RPC_URL',
         }}>
             ```typescript copy
             import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";

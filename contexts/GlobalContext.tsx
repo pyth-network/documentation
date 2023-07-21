@@ -21,6 +21,7 @@ import {
 } from "graz/chains";
 import PythAbi from "../abis/IPyth.json";
 import PythErrorsAbi from "../abis/PythErrors.json";
+import { ChainInfo } from "@keplr-wallet/types";
 
 /** Global information available to all components on any page. */
 export interface GlobalContextData {
@@ -159,6 +160,10 @@ export const CosmosChains = [
   neutrontestnet,
   juno,
 ];
+
+export function getCosmosChainFromConfig(chainId: string): ChainInfo {
+  return CosmosChains.find((chain) => chain.chainId == chainId);
+}
 
 export const GlobalContextProvider = ({
   children,

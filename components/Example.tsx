@@ -113,7 +113,7 @@ export class ExampleRenderingContext {
     return result[0];
   }
 
-  public async getUpdateFee(vaas: string[]): Promise<string> {
+  public async getEthUpdateFee(vaas: string[]): Promise<string> {
     const result = await this.pythContract["getUpdateFee"].staticCallResult(
       vaas
     );

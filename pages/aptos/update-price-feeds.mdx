@@ -47,7 +47,7 @@ Reverts if the required fee is not paid, or the `update_data` is incorrectly sig
         // This shouldn't affect the update fee as long as the fee is only dependent on the price feed ids
         // and not the specific content of the price update.
         let vaa = (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa;
-        return await ctx.getUpdateFee([vaa]);
+        return await ctx.getEthUpdateFee([vaa]);
       },
     }}
     value="Latest BTC/USD update data"

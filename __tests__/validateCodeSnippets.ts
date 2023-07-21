@@ -87,14 +87,16 @@ async function runCodeSnippet(
     const command = `npx solc --base-path . --include-path node_modules/\\@pythnetwork --output-dir ${tmpdir()} --bin ${tempFilePath}`;
     return await runValidationCommand(command);
   } else if (language === "rust") {
+    // Rust files get a separate directory with a full cargo project.
     const tempFilePath = join(codeSnippetsDir, `${id}`);
     fs.mkdirSync(tempFilePath);
     fs.writeFileSync(join(tempFilePath, "lib.rs"), code, "utf8");
     fs.writeFileSync(
       join(tempFilePath, "Cargo.toml"),
-      generateCargoFile(),
+      generateCargoText(),
       "utf8"
     );
+    // cargo check checks syntax without doing a full build. It's faster (but still pretty slow)
     const command = `cd ${tempFilePath} && cargo check`;
     return await runValidationCommand(command);
   } else if (language === "json") {
@@ -110,7 +112,8 @@ async function runCodeSnippet(
   }
 }
 
-function generateCargoFile() {
+// Cargo file for rust validation. Expects the source code to be in lib.rs
+function generateCargoText() {
   return `
 [package]
 name = "pyth-documentation-snippets"
