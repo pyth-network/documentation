@@ -1,7 +1,13 @@
-import { ConnectKitButton } from "connectkit";
 import { useEffect, useState } from "react";
+import {
+  GrazProvider,
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useExecuteContract,
+  useSigningClients,
+} from "graz";
 
-import { ethers } from "ethers";
 import { useGlobalContext } from "../contexts/GlobalContext";
 import { JsonObject } from "@cosmjs/cosmwasm-stargate";
 
@@ -24,22 +30,43 @@ interface CosmWasmExecuteProps {
  * TODO: probably better to pass the contract address / ABI as arguments (?)
  */
 const CosmWasmExecute = ({ buildQuery, feeKey }: CosmWasmExecuteProps) => {
+  const { cosmosChainConfig } = useGlobalContext();
+
+  return (
+    <GrazProvider
+      grazOptions={{
+        defaultChain: mainnetChains.juno,
+      }}
+    >
+      <CosmWasmExecute buildQuery={buildQuery} feeKey={feeKey} />
+    </GrazProvider>
+  );
+};
+
+const CosmWasmExecuteHelper = ({
+  buildQuery,
+  feeKey,
+}: CosmWasmExecuteProps) => {
   const { keyValueStore, cosmosChainConfig } = useGlobalContext();
-  const isConnected = false;
   const isLoading = false;
   const isError = false;
   const isSuccess = false;
 
-  /*
-  const { isConnected } = useAccount();
+  const { isConnected, data: account } = useAccount();
+  const { connect } = useConnect();
+  const { disconnect } = useDisconnect();
 
+  const { data } = useSigningClients();
+  // const { executeContract } = useExecuteContract<ExecuteMessage>({ contractAddress });
+
+  /*
   const { data, isLoading, isSuccess, isError, write, error } =
     useContractWrite({
       address: pythAddressConfig.pythAddress as `0x${string}`,
       abi: pythAbi,
       functionName: functionName,
     });
-  */
+   */
 
   const [response, setResponse] = useState<string>();
   const [responsePreface, setResponsePreface] = useState<string>();
@@ -67,13 +94,22 @@ const CosmWasmExecute = ({ buildQuery, feeKey }: CosmWasmExecuteProps) => {
   }, [isLoading, isSuccess, isError]);
 
   const executeQuery = async () => {
+    const { cosmWasm } = data;
     const msgJson: JsonObject | undefined = buildQuery(keyValueStore);
 
-    if (queryJson === undefined) {
+    if (msgJson === undefined) {
       setResponsePreface(
         `Please populate all of the arguments with valid values.`
       );
     } else {
+      // TODO: funds
+      const result = await cosmWasm.execute(
+        account?.bech32Address,
+        cosmosChainConfig.pythAddress,
+        msgJson
+      );
+      setResponsePreface("did a thing");
+      setResponse(JSON.stringify(result));
       // TODO
       /*
       write?.({
@@ -90,7 +126,12 @@ const CosmWasmExecute = ({ buildQuery, feeKey }: CosmWasmExecuteProps) => {
   return (
     <>
       <div className="my-4">
-        <ConnectKitButton theme="midnight" />
+        <button
+          className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF]"
+          onClick={() => (isConnected ? disconnect() : connect())}
+        >
+          {isConnected ? `${account?.bech32Address}` : "Connect Wallet"}
+        </button>
       </div>
       <div className="flex">
         {isConnected && (
