@@ -12,7 +12,7 @@ import {
 } from "../contexts/GlobalContext";
 import { JsonObject } from "@cosmjs/cosmwasm-stargate";
 import CosmosNetworkSelector from "./CosmosNetworkSelector";
-import { coin } from "@cosmjs/proto-signing";
+import { Coin, coin } from "@cosmjs/proto-signing";
 
 interface CosmWasmExecuteProps {
   buildMsg: (kvs: Record<string, string>) => JsonObject | undefined;
@@ -64,10 +64,22 @@ const CosmWasmExecute = ({ buildMsg, feeKey }: CosmWasmExecuteProps) => {
 
   const executeQuery = async () => {
     const msgJson: JsonObject | undefined = buildMsg(keyValueStore);
-    const fee = keyValueStore[feeKey];
-    const cosmosChain = getCosmosChainFromConfig(cosmosChainConfig.chainId);
 
-    if (msgJson === undefined || fee === undefined) {
+    let funds: Coin[] | undefined = [];
+    if (feeKey !== undefined) {
+      // Note that we assume that fees are paid in the 1st fee currency.
+      // This should work, though doesn't demonstrate the full range of functionality for chains
+      // like osmosis that support multiple fee currencies.
+      const cosmosChain = getCosmosChainFromConfig(cosmosChainConfig.chainId);
+      const fee = keyValueStore[feeKey];
+      if (fee !== undefined) {
+        funds = [coin(fee, cosmosChain.feeCurrencies[0].coinMinimalDenom)];
+      } else {
+        funds = undefined;
+      }
+    }
+
+    if (msgJson === undefined || funds === undefined) {
       setResponsePreface(
         `Please populate all of the arguments with valid values.`
       );
@@ -76,10 +88,7 @@ const CosmWasmExecute = ({ buildMsg, feeKey }: CosmWasmExecuteProps) => {
       try {
         const result = await executeContractAsync({
           msg: msgJson,
-          // Note that we assume that fees are paid in the 1st fee currency.
-          // This should work, though doesn't demonstrate the full range of functionality for chains
-          // like osmosis that support multiple fee currencies.
-          funds: [coin(fee, cosmosChain.feeCurrencies[0].coinMinimalDenom)],
+          funds,
         });
 
         setResponsePreface("Contract execution succeeded with result:");

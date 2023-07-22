@@ -162,7 +162,7 @@ export const CosmosChains = [
 ];
 
 export function getCosmosChainFromConfig(chainId: string): ChainInfo {
-  return CosmosChains.find((chain) => chain.chainId == chainId);
+  return CosmosChains.find((chain) => chain.chainId == chainId)!;
 }
 
 export const GlobalContextProvider = ({

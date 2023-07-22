@@ -5,7 +5,7 @@ import ArrowDownIcon from "./icons/ArrowDownIcon";
 interface SelectorProps {
   values: string[];
   currentValue: string;
-  onChange: (string) => void;
+  onChange: (value: string) => void;
 }
 
 /**
