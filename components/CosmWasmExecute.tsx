@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   useAccount,
   useDisconnect,
@@ -130,7 +130,7 @@ export const CosmWasmAccountButton = () => {
 
   const { cosmosChainConfig } = useGlobalContext();
 
-  function handleSuggestAndConnect() {
+  const handleSuggestAndConnect = useCallback(() => {
     const cosmosChain = getCosmosChainFromConfig(cosmosChainConfig.chainId);
     suggestAndConnect({
       chainInfo: cosmosChain,
@@ -141,11 +141,11 @@ export const CosmWasmAccountButton = () => {
         denom: cosmosChain.feeCurrencies[0].coinMinimalDenom,
       },
     });
-  }
+  }, [cosmosChainConfig, suggestAndConnect]);
 
   useEffect(() => {
     handleSuggestAndConnect();
-  }, [cosmosChainConfig]);
+  }, [cosmosChainConfig, handleSuggestAndConnect]);
 
   if (isConnected) {
     return (

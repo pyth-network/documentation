@@ -2,51 +2,28 @@ import { Tab, Tabs } from "nextra-theme-docs";
 
 # SDKs
 
-The [@pythnetwork/pyth-sdk-solidity](https://www.npmjs.com/package/@pythnetwork/pyth-sdk-solidity)
-([github](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/solidity))
-package provides solidity interfaces for the EVM contract as well as contract ABIs for off-chain applications.
+The [pyth-sdk-cw](https://crates.io/crates/pyth-sdk-cw) ([github](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/cosmwasm/sdk))
+crate provides Rust interfaces for the Pyth CosmWasm contract for use in on-chain applications.
+
+Off-chain users can use any cosmwasm SDK.
+The Typescript examples in the documentation use [@cosmjs/cosmwasm-stargate](https://www.npmjs.com/package/@cosmjs/cosmwasm-stargate).
 
 ## Installation Instructions
 
 <Tabs items={['Rust', 'Typescript']}>
     <Tab>
-        First, install the SDK in your project by running:
+        Add the SDK to your project by adding the following dependency to your `Cargo.toml` file:
 
         ```toml copy
         [dependencies]
         pyth-sdk-cw = "1.0.0"
         ```
-
-        ```sh copy
-        forge install pyth-network/pyth-sdk-solidity@v2.2.0
-        ```
-
-        Next, add the following line to `remappings.txt` in the root of your Foundry project.
-
-        ```sh copy
-        pyth-sdk-solidity/=lib/pyth-sdk-solidity/
-        ```
-
-        You can now import interfaces from the SDK in Solidity code as follows:
-
-        ```solidity copy
-        import "pyth-sdk-solidity/IPyth.sol";
-        ```
     </Tab>
     <Tab>
-        First, install the SDK in your project by running:
+        Simply install the SDK in your project by running:
         ```
-        npm install @pythnetwork/pyth-sdk-solidity
+        npm install @cosmjs/cosmwasm-stargate
         ```
-
-        Then you can import the contract ABI in your typescript code as follows:
-
-        ```typescript copy
-        import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
-        ```
-
-        The same directory also contains ABI files for errors (`PythErrors.json`) and events (`IPythEvents.json`),
-        which you may also find useful for decoding contract responses.
     </Tab>
 
 </Tabs>

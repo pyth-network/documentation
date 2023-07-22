@@ -22,10 +22,10 @@ Reverts if the required fee is not paid, or the `data` is incorrectly signed or 
 
 <div className="mt-6 overflow-x-auto">
 
-| Argument                                           | Input                                           | Description                                                |
-| -------------------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------- |
-| <Arg required={true} type="vec<Binary>">data</Arg> | <Input id="data" format={InputFormats.Base64}/> | The price update data for the contract to verify.          |
-| <Arg required={true} type="Coin">fee</Arg>         | <Input id="fee" format={InputFormats.BigInt}/>  | The update fee expressed in the minimal coin denomination. |
+| Argument                                           | Input                                           | Description                                                       |
+| -------------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------------------- |
+| <Arg required={true} type="vec<Binary>">data</Arg> | <Input id="data" format={InputFormats.Base64}/> | The price update data for the contract to verify.                 |
+| <Arg required={true} type="Coin">fee</Arg>         | <Input id="fee" format={InputFormats.BigInt}/>  | The update fee expressed in the minimal native coin denomination. |
 
 </div>
 

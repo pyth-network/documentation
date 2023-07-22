@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { Chain } from "wagmi";
 import {
-  CosmosChains,
   getCosmosChainFromConfig,
   PythAddressConfig,
   PythCosmosConfig,

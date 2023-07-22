@@ -1,14 +1,12 @@
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { AppProps } from "next/app";
 import "nextra-theme-docs/style.css";
-import { ReactNode, useEffect, useState, createContext, Context } from "react";
-import { WagmiConfig, createConfig } from "wagmi";
+import { ReactNode, useEffect, useState } from "react";
+import { createConfig, WagmiConfig } from "wagmi";
 import { GrazProvider } from "graz";
-import { osmosis } from "graz/chains";
 import { arbitrum, avalanche, mainnet } from "wagmi/chains";
 import { GlobalContextProvider } from "../contexts/GlobalContext";
 import "../styles/styles.css";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 const chains = [arbitrum, mainnet, avalanche];
 
@@ -33,7 +31,6 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
     })
   );
 
-  // FIXME: some sort of react error is happening due to the graz/wagmi interaction.
   // Make the global context available to every page.
   return (
     // prevent react hydration error

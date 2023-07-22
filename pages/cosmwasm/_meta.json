@@ -5,7 +5,6 @@
   },
   "index": "Introduction",
   "sdks": "SDKs",
-  "configuration": "Contract Configuration",
   "--- Query Messages": {
     "title": "Query Messages",
     "type": "separator"
