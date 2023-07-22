@@ -45,7 +45,7 @@ Reverts if the required fee is not paid, or the `data` is incorrectly signed or 
 </Examples>
 
 <CosmWasmExecute
-  buildQuery={(kvs) =>
+  buildMsg={(kvs) =>
     kvs["data"] !== undefined
       ? { update_price_feeds: { data: [kvs["data"]] } }
       : undefined

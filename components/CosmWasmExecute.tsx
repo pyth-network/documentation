@@ -7,7 +7,6 @@ import {
 } from "graz";
 
 import {
-  CosmosChains,
   getCosmosChainFromConfig,
   useGlobalContext,
 } from "../contexts/GlobalContext";
@@ -16,31 +15,27 @@ import CosmosNetworkSelector from "./CosmosNetworkSelector";
 import { coin } from "@cosmjs/proto-signing";
 
 interface CosmWasmExecuteProps {
-  buildQuery: (kvs: Record<string, string>) => JsonObject | undefined;
+  buildMsg: (kvs: Record<string, string>) => JsonObject | undefined;
   feeKey: string | undefined;
 }
 
-// FIXME: comment
 /**
- * Allow the user to send a transaction to an EVM chain and visualize the response.
- * This component will invoke `functionName` on the pyth contract provided in the global context.
- * The arguments to the function will be the result of evaluating `buildArguments` on the global key-value store, i.e.,
- * `pythContract.functionName(buildArguments(keyValueStore))`. If `feeKey` is provided,
- * the value of this key will be parsed as a number of wei and passed as the value of the transaction.
+ * Allow the user to send an execute message to a cosmos chain and visualize the response.
+ * This component will invoke `buildMsg` on the global context to create the message.
+ * `buildMsg` may return `undefined` to indicate that the key-value store does not contain all
+ * of the necessary arguments.
  *
- * `buildArguments` may return `undefined` to indicate that the key-value store does not contain all of the necessary
- *  arguments.
- *
- * TODO: probably better to pass the contract address / ABI as arguments (?)
+ * The component will also send a quantity of native tokens with the message. The quantity is
+ * determined by looking up the value of `feeKey`.
  */
-const CosmWasmExecute = ({ buildQuery, feeKey }: CosmWasmExecuteProps) => {
+const CosmWasmExecute = ({ buildMsg, feeKey }: CosmWasmExecuteProps) => {
   const { keyValueStore, cosmosChainConfig } = useGlobalContext();
 
   const [response, setResponse] = useState<string>();
   const [responsePreface, setResponsePreface] = useState<string>();
 
   const { isConnected } = useAccount();
-  const { error, isLoading, isSuccess, executeContractAsync, status } =
+  const { error, isLoading, isSuccess, executeContractAsync } =
     useExecuteContract<JsonObject>({
       contractAddress: cosmosChainConfig.pythAddress,
     });
@@ -68,7 +63,7 @@ const CosmWasmExecute = ({ buildQuery, feeKey }: CosmWasmExecuteProps) => {
   }, [isLoading, isSuccess, error]);
 
   const executeQuery = async () => {
-    const msgJson: JsonObject | undefined = buildQuery(keyValueStore);
+    const msgJson: JsonObject | undefined = buildMsg(keyValueStore);
     const fee = keyValueStore[feeKey];
     const cosmosChain = getCosmosChainFromConfig(cosmosChainConfig.chainId);
 
@@ -78,10 +73,12 @@ const CosmWasmExecute = ({ buildQuery, feeKey }: CosmWasmExecuteProps) => {
       );
       setResponse(undefined);
     } else {
-      // FIXME: funds
       try {
         const result = await executeContractAsync({
           msg: msgJson,
+          // Note that we assume that fees are paid in the 1st fee currency.
+          // This should work, though doesn't demonstrate the full range of functionality for chains
+          // like osmosis that support multiple fee currencies.
           funds: [coin(fee, cosmosChain.feeCurrencies[0].coinMinimalDenom)],
         });
 
@@ -137,7 +134,7 @@ export const CosmWasmAccountButton = () => {
     const cosmosChain = getCosmosChainFromConfig(cosmosChainConfig.chainId);
     suggestAndConnect({
       chainInfo: cosmosChain,
-      // TODO: not clear that setting this to 0.1 is going to work
+      // TODO: not clear that setting this to 0.1 is going to be enough to land on-chain,
       // but there doesn't seem to be a good way to dynamically set this price.
       gas: {
         price: "0.1",

@@ -12,17 +12,11 @@ interface CosmWasmQueryProps {
   buildQuery: (kvs: Record<string, string>) => JsonObject | undefined;
 }
 
-// FIXME: comment
 /**
- * Allow the user to call a read-only function on an EVM chain and visualize the response.
- * This component will invoke `functionName` on the pyth contract provided in the global context.
- * The arguments to the function will be the result of evaluating `buildArguments` on the global key-value store, i.e.,
- * `pythContract.functionName(buildArguments(keyValueStore))`.
- *
- * `buildArguments` may return `undefined` to indicate that the key-value store does not contain all of the necessary
- * arguments.
- *
- * TODO: probably better to pass the contract address / ABI as arguments (?)
+ * Allow the user to send a query message to a cosmos chain and visualize the response.
+ * This component will invoke `buildMsg` on the global context to create the message.
+ * `buildMsg` may return `undefined` to indicate that the key-value store does not contain all
+ * of the necessary arguments.
  */
 const CosmWasmQuery = ({ buildQuery }: CosmWasmQueryProps) => {
   const [response, setResponse] = useState<string>();
