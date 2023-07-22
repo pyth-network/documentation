@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  CosmosChains,
   getCosmosChainFromConfig,
   useGlobalContext,
 } from "../contexts/GlobalContext";
