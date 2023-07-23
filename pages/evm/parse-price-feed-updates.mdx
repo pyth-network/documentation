@@ -43,7 +43,7 @@ contain an update for any of the given `priceIds` within the given time range.
         (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).price.publish_time + 5,
       fee: async (ctx) => {
         let vaa = (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa;
-        return await ctx.getUpdateFee([vaa]);
+        return await ctx.getEthUpdateFee([vaa]);
       },
     }}
     value="Latest BTC/USD update data"

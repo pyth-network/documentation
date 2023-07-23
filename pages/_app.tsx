@@ -2,7 +2,8 @@ import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { AppProps } from "next/app";
 import "nextra-theme-docs/style.css";
 import { ReactNode, useEffect, useState } from "react";
-import { WagmiConfig, createConfig } from "wagmi";
+import { createConfig, WagmiConfig } from "wagmi";
+import { GrazProvider } from "graz";
 import { arbitrum, avalanche, mainnet } from "wagmi/chains";
 import { GlobalContextProvider } from "../contexts/GlobalContext";
 import "../styles/styles.css";
@@ -29,26 +30,29 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
       chains,
     })
   );
+
   // Make the global context available to every page.
   return (
     // prevent react hydration error
     mounted && (
-      <WagmiConfig config={config}>
-        <ConnectKitProvider
-          theme="midnight"
-          customTheme={{
-            "--ck-connectbutton-background": "#E6DAFE",
-            "--ck-connectbutton-hover-background": "#F2ECFF",
-            "--ck-connectbutton-color": "#141227",
-            "--ck-font-family": "Red Hat Text, sans-serif",
-            "--ck-connectbutton-font-size": "14px",
-          }}
-        >
-          <GlobalContextProvider>
-            <Component {...pageProps} />
-          </GlobalContextProvider>
-        </ConnectKitProvider>
-      </WagmiConfig>
+      <GrazProvider>
+        <WagmiConfig config={config}>
+          <ConnectKitProvider
+            theme="midnight"
+            customTheme={{
+              "--ck-connectbutton-background": "#E6DAFE",
+              "--ck-connectbutton-hover-background": "#F2ECFF",
+              "--ck-connectbutton-color": "#141227",
+              "--ck-font-family": "Red Hat Text, sans-serif",
+              "--ck-connectbutton-font-size": "14px",
+            }}
+          >
+            <GlobalContextProvider>
+              <Component {...pageProps} />
+            </GlobalContextProvider>
+          </ConnectKitProvider>
+        </WagmiConfig>
+      </GrazProvider>
     )
   );
 }

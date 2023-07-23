@@ -9,8 +9,19 @@ import React, {
 } from "react";
 import { Chain, useNetwork } from "wagmi";
 import { arbitrum, avalanche, mainnet } from "wagmi/chains";
+import {
+  injective,
+  injectivetestnet,
+  juno,
+  neutron,
+  neutrontestnet,
+  osmosis,
+  osmosistestnet5,
+  seitestnet2,
+} from "graz/chains";
 import PythAbi from "../abis/IPyth.json";
 import PythErrorsAbi from "../abis/PythErrors.json";
+import { ChainInfo } from "@keplr-wallet/types";
 
 /** Global information available to all components on any page. */
 export interface GlobalContextData {
@@ -31,18 +42,20 @@ export interface GlobalContextData {
   pythAddressConfig: PythAddressConfig;
   currentChainConfig?: Chain;
 
-  // Provider for reading from the chain and signer for sending transactions.
-  // If signer is null, the user's wallet is not connected.
+  // Provider for reading from the chain.
   provider: ethers.Provider;
   setProvider: React.Dispatch<React.SetStateAction<ethers.Provider>>;
-  signer: ethers.Signer | undefined;
-  setSigner: React.Dispatch<React.SetStateAction<ethers.Signer | undefined>>;
 
   // The pyth contract on the current chain
   pythContract: ethers.Contract;
 
   // The ABI for the pyth contract
   pythAbi: any[];
+
+  // Cosmos chain configuration
+  cosmosChainId: string;
+  setCosmosChainId: React.Dispatch<React.SetStateAction<string>>;
+  cosmosChainConfig: PythCosmosConfig;
 }
 
 export type NetworkType = "mainnet" | "testnet";
@@ -77,6 +90,59 @@ export const PythAddresses: Record<string, PythAddressConfig> = {
   },
 };
 
+export interface PythCosmosConfig {
+  chainId: string;
+  pythAddress: string;
+  // TODO: stable/beta :(
+  networkType: NetworkType;
+}
+
+export const PythCosmosAddresses: Record<string, PythCosmosConfig> = {
+  injective_mainnet: {
+    // TODO: can't seem to connect to this RPC right now
+    chainId: "injective-1",
+    pythAddress: `inj12j43nf2f0qumnt2zrrmpvnsqgzndxefujlvr08`,
+    networkType: "mainnet",
+  },
+  osmosis_mainnet: {
+    chainId: "osmosis-1",
+    pythAddress: `osmo13ge29x4e2s63a8ytz2px8gurtyznmue4a69n5275692v3qn3ks8q7cwck7`,
+    networkType: "mainnet",
+  },
+  injective_testnet: {
+    chainId: "injective-888",
+    pythAddress: `inj18hckkzqf47mdhd734g6papk6wj20y24rm43sk9`,
+    networkType: "mainnet",
+  },
+  sei_atlantic_2: {
+    chainId: "atlantic-2",
+    pythAddress: `sei1w2rxq6eckak47s25crxlhmq96fzjwdtjgdwavn56ggc0qvxvw7rqczxyfy`,
+    networkType: "mainnet",
+  },
+  neutron_pion_1: {
+    chainId: "pion-1",
+    pythAddress: `neutron1f86ct5az9qpz2hqfd5uxru02px2a3tz5zkw7hugd7acqq496dcms22ehpy`,
+    networkType: "mainnet",
+  },
+  juno: {
+    chainId: "juno-1",
+    pythAddress: `juno1eacsrua27njc35pxz37y97gmcjs899t59f8pf0rkejjyvtmhws5q6lxsdd`,
+    networkType: "mainnet",
+  },
+  neutron: {
+    chainId: "neutron-1",
+    pythAddress:
+      "neutron1m2emc93m9gpwgsrsf2vylv9xvgqh654630v7dfrhrkmr5slly53spg85wv",
+    networkType: "mainnet",
+  },
+  osmosis_testnet_5: {
+    chainId: "osmo-test-5",
+    pythAddress:
+      "osmo1hpdzqku55lmfmptpyj6wdlugqs5etr6teqf7r4yqjjrxjznjhtuqqu5kdh",
+    networkType: "mainnet",
+  },
+};
+
 const GlobalContext = createContext<GlobalContextData>({} as GlobalContextData);
 
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -84,6 +150,20 @@ export const useGlobalContext = () => useContext(GlobalContext);
 const contractAbi = [...PythAbi, ...PythErrorsAbi];
 
 const CHAINS = [mainnet, avalanche, arbitrum];
+export const CosmosChains = [
+  osmosis,
+  osmosistestnet5,
+  injective,
+  injectivetestnet,
+  seitestnet2,
+  neutron,
+  neutrontestnet,
+  juno,
+];
+
+export function getCosmosChainFromConfig(chainId: string): ChainInfo {
+  return CosmosChains.find((chain) => chain.chainId == chainId)!;
+}
 
 export const GlobalContextProvider = ({
   children,
@@ -103,7 +183,6 @@ export const GlobalContextProvider = ({
   const [provider, setProvider] = useState<ethers.Provider>(
     ethers.getDefaultProvider("https://arb1.arbitrum.io/rpc")
   );
-  const [signer, setSigner] = useState<ethers.Signer | undefined>(undefined);
 
   const { chain } = useNetwork();
   const defaultChain = CHAINS.find(
@@ -120,6 +199,12 @@ export const GlobalContextProvider = ({
       provider
     );
   }, [pythAddressConfig, provider]);
+
+  const [cosmosChainId, setCosmosChainId] = useState<string>("neutron");
+  const cosmosChainConfig = useMemo<PythCosmosConfig>(
+    () => PythCosmosAddresses[cosmosChainId],
+    [cosmosChainId]
+  );
 
   useEffect(() => {
     async function helper() {
@@ -162,10 +247,11 @@ export const GlobalContextProvider = ({
         currentChainConfig,
         provider,
         setProvider,
-        signer,
-        setSigner,
         pythContract: pythContract,
         pythAbi: contractAbi,
+        cosmosChainId,
+        setCosmosChainId,
+        cosmosChainConfig,
       }}
     >
       {children}

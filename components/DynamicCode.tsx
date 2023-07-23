@@ -1,6 +1,12 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { Chain } from "wagmi";
-import { PythAddressConfig, useGlobalContext } from "../contexts/GlobalContext";
+import {
+  getCosmosChainFromConfig,
+  PythAddressConfig,
+  PythCosmosConfig,
+  useGlobalContext,
+} from "../contexts/GlobalContext";
+import { ChainInfo } from "@keplr-wallet/types";
 
 interface DynamicCodeProps {
   targets: Targets;
@@ -27,17 +33,34 @@ export type Targets = Record<
  *                 like ```javascript myJavascriptCode() ```
  */
 const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
-  const { keyValueStore, pythAddressConfig, currentChainConfig } =
-    useGlobalContext();
-  const state = useMemo(
-    () =>
-      new DynamicCodeRenderingContext(
-        keyValueStore,
-        pythAddressConfig,
-        currentChainConfig
-      ),
-    [keyValueStore, pythAddressConfig, currentChainConfig]
-  );
+  const {
+    keyValueStore,
+    pythAddressConfig,
+    currentChainConfig,
+    cosmosChainId,
+    cosmosChainConfig,
+  } = useGlobalContext();
+
+  const state = useMemo(() => {
+    const cosmosNetworkDetails = getCosmosChainFromConfig(
+      cosmosChainConfig.chainId
+    );
+
+    return new DynamicCodeRenderingContext(
+      keyValueStore,
+      pythAddressConfig,
+      currentChainConfig,
+      cosmosChainConfig,
+      cosmosChainId,
+      cosmosNetworkDetails
+    );
+  }, [
+    keyValueStore,
+    pythAddressConfig,
+    currentChainConfig,
+    cosmosChainId,
+    cosmosChainConfig,
+  ]);
 
   // These types are pretty gnarly so leave them as any
   const divRef = useRef<any>();
@@ -84,14 +107,25 @@ export class DynamicCodeRenderingContext {
   public pythAddressConfig?: PythAddressConfig;
   public currentChainConfig?: Chain;
 
+  public cosmosChainConfig?: PythCosmosConfig;
+  public currentCosmosChain?: string;
+
+  public cosmosNetworkDetails?: ChainInfo;
+
   constructor(
     kv: Record<string, string>,
     pythAddressConfig?: PythAddressConfig,
-    currentChainConfig?: Chain
+    currentChainConfig?: Chain,
+    cosmosChainConfig?: PythCosmosConfig,
+    currentCosmosChain?: string,
+    cosmosNetworkDetails?: ChainInfo
   ) {
     this.kv = kv;
     this.pythAddressConfig = pythAddressConfig;
     this.currentChainConfig = currentChainConfig;
+    this.cosmosChainConfig = cosmosChainConfig;
+    this.currentCosmosChain = currentCosmosChain;
+    this.cosmosNetworkDetails = cosmosNetworkDetails;
   }
 
   /** Get the value of key from the global context, returning `orElse` if the key is not defined. */
