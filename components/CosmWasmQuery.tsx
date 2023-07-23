@@ -30,9 +30,6 @@ const CosmWasmQuery = ({ buildQuery }: CosmWasmQueryProps) => {
   const sendTransaction = async () => {
     const queryJson: JsonObject | undefined = buildQuery(keyValueStore);
 
-    const chain = getCosmosChainFromConfig(cosmosChainConfig.chainId);
-    const client = await CosmWasmClient.connect(chain.rpc);
-
     // TODO: validate arguments
     if (queryJson === undefined) {
       setResponsePreface(
@@ -42,6 +39,9 @@ const CosmWasmQuery = ({ buildQuery }: CosmWasmQueryProps) => {
       try {
         setResponsePreface("Loading...");
         setResponse(undefined);
+
+        const chain = getCosmosChainFromConfig(cosmosChainConfig.chainId);
+        const client = await CosmWasmClient.connect(chain.rpc);
 
         const result = await client.queryContractSmart(
           cosmosChainConfig.pythAddress,
