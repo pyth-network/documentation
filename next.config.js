@@ -1,4 +1,8 @@
-const withNextra = require("nextra")("nextra-theme-docs", "./theme.config.tsx");
+const withNextra = require("nextra")({
+  theme: "nextra-theme-docs",
+  themeConfig: "./theme.config.tsx",
+  latex: true,
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
