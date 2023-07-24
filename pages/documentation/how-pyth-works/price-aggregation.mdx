@@ -4,11 +4,11 @@ Price aggregation combines the prices and confidences submitted by individual da
 
 **Design Goals**
 
-The aggregation algorithm is designed to achieve 3 properties. First, it must be **robust to manipulation.** If most publishers are submitting a price of $100 and one publisher submits a price of $80, the aggregate price should remain near $100 and not be overly influenced by the single outlying price. In the figure below, the aggregate price and confidence interval (represented by the red star) is not influenced by the blue publisher whose price is far away from the other publishers:
+The aggregation algorithm is designed to achieve 3 properties. First, it must be **robust to manipulation.** If most publishers are submitting a price of \$100 and one publisher submits a price of \$80, the aggregate price should remain near \$100 and not be overly influenced by the single outlying price. In the figure below, the aggregate price and confidence interval (represented by the red star) is not influenced by the blue publisher whose price is far away from the other publishers:
 
 ![](<../../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_8c7da880-4157-4543-a293-37b5f5bfdac1_291x172 (1).jpeg>)
 
-Second, the **aggregate price should appropriately weight data sources with different levels of accuracy.** Pyth allows publishers to submit a confidence interval because they have varying levels of accuracy in observing the price of a product. This property can result in situations where one publisher reports a price of $101 +/- 1, and another reports $110 +/- 10. In these cases, we would like the aggregate price to be closer to $101 than $110, as in the figure below.
+Second, the **aggregate price should appropriately weight data sources with different levels of accuracy.** Pyth allows publishers to submit a confidence interval because they have varying levels of accuracy in observing the price of a product. This property can result in situations where one publisher reports a price of \$101 +/- 1, and another reports \$110 +/- 10. In these cases, we would like the aggregate price to be closer to \$101 than \$110, as in the figure below.
 
 ![](<../../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_c0ab7e74-adb8-4324-9ef1-607c41bde1d4_292x171 (1).jpeg>)
 
