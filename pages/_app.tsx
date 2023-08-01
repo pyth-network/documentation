@@ -1,9 +1,10 @@
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
+import { GrazProvider } from "graz";
 import { AppProps } from "next/app";
+import Script from "next/script";
 import "nextra-theme-docs/style.css";
 import { ReactNode, useEffect, useState } from "react";
-import { createConfig, WagmiConfig } from "wagmi";
-import { GrazProvider } from "graz";
+import { WagmiConfig, createConfig } from "wagmi";
 import { arbitrum, avalanche, mainnet } from "wagmi/chains";
 import { GlobalContextProvider } from "../contexts/GlobalContext";
 import "../styles/styles.css";
@@ -35,24 +36,39 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
   return (
     // prevent react hydration error
     mounted && (
-      <GrazProvider>
-        <WagmiConfig config={config}>
-          <ConnectKitProvider
-            theme="midnight"
-            customTheme={{
-              "--ck-connectbutton-background": "#E6DAFE",
-              "--ck-connectbutton-hover-background": "#F2ECFF",
-              "--ck-connectbutton-color": "#141227",
-              "--ck-font-family": "Red Hat Text, sans-serif",
-              "--ck-connectbutton-font-size": "14px",
-            }}
-          >
-            <GlobalContextProvider>
-              <Component {...pageProps} />
-            </GlobalContextProvider>
-          </ConnectKitProvider>
-        </WagmiConfig>
-      </GrazProvider>
+      <>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-7TVVW3MEK7"
+        />
+        <Script id="google-tag">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-7TVVW3MEK7');
+        `}
+        </Script>
+        <GrazProvider>
+          <WagmiConfig config={config}>
+            <ConnectKitProvider
+              theme="midnight"
+              customTheme={{
+                "--ck-connectbutton-background": "#E6DAFE",
+                "--ck-connectbutton-hover-background": "#F2ECFF",
+                "--ck-connectbutton-color": "#141227",
+                "--ck-font-family": "Red Hat Text, sans-serif",
+                "--ck-connectbutton-font-size": "14px",
+              }}
+            >
+              <GlobalContextProvider>
+                <Component {...pageProps} />
+              </GlobalContextProvider>
+            </ConnectKitProvider>
+          </WagmiConfig>
+        </GrazProvider>
+      </>
     )
   );
 }
