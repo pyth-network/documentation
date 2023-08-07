@@ -25,9 +25,11 @@ Reverts if the required fee is not paid, or the `update_data` is incorrectly sig
 
 | Argument                                                         | Input                                                      | Description                                                                                           |
 | ---------------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| <Arg required={true} type="vector<vector<u8>>">update_data</Arg> | <Input id="update_data" format={InputFormats.ByteArray} /> | The price update data for the contract to verify.                                                     |
-| <Arg required={true} type="Coin<AptosCoin>">fee</Arg>            | <Input id="fee" format={InputFormats.BigInt}/>             | The update fee in octa. This fee is transferred to the Pyth contract as an effect of the transaction. |
-
+| <Arg required={true} type="&PythState">pyth_state</Arg>          | <Input id="pyth_state" format={InputFormats.ByteArray} /> | The Pyth state object.                                                     |
+| <Arg required={true} type=" HotPotatoVector<PriceInfo>,">price_updates</Arg>            | <Input id="price_updates" format={InputFormats.BigInt}/> | vector of authenticated price updates |
+| <Arg required={true} type=" &mut PriceInfoObject">price_info_object</Arg>            | <Input id="price_info_object" format={InputFormats.BigInt}/> | PriceInfoObject is a shared Sui object containing the price feed to be updated. |
+| <Arg required={true} type=" Coin<SUI>">fee</Arg>            | <Input id="fee" format={InputFormats.BigInt}/> | Fee coins. |
+| <Arg required={true} type=" &Clock">clock</Arg> | <Input id="clock" format={InputFormats.BigInt}/> | clock is a Sui shared object used to tell time and record timestamps |
 </div>
 
 <Examples>
