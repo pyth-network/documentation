@@ -16,7 +16,7 @@ import {
   neutron,
   neutrontestnet,
   osmosis,
-  osmosistestnet5,
+  osmosistestnet,
   seitestnet2,
 } from "graz/chains";
 import PythAbi from "../abis/IPyth.json";
@@ -152,7 +152,7 @@ const contractAbi = [...PythAbi, ...PythErrorsAbi];
 const CHAINS = [mainnet, avalanche, arbitrum];
 export const CosmosChains = [
   osmosis,
-  osmosistestnet5,
+  osmosistestnet,
   injective,
   injectivetestnet,
   seitestnet2,
