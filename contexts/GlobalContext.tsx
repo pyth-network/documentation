@@ -16,7 +16,7 @@ import {
   neutron,
   neutrontestnet,
   osmosis,
-  osmosistestnet5,
+  osmosistestnet,
   seitestnet2,
 } from "graz/chains";
 import PythAbi from "../abis/IPyth.json";
