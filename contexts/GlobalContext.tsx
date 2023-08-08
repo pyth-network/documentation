@@ -152,7 +152,7 @@ const contractAbi = [...PythAbi, ...PythErrorsAbi];
 const CHAINS = [mainnet, avalanche, arbitrum];
 export const CosmosChains = [
   osmosis,
-  osmosistestnet5,
+  osmosistestnet,
   injective,
   injectivetestnet,
   seitestnet2,
