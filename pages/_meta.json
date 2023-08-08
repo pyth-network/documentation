@@ -23,6 +23,10 @@
       "CosmWasm": {
         "title": "Cosmwasm Contract",
         "href": "/cosmwasm"
+      },
+      "Sui": {
+        "title": "Sui Contract",
+        "href": "/sui"
       }
     }
   },
