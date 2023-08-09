@@ -4,7 +4,7 @@ import { Tab, Tabs } from "nextra-theme-docs";
 
 The TradingView integration is a web-based widget that allows users to view Pyth prices on their own website. All Pyth prices made available through the TradingView integration are originating from [Pythnet](pythnet-price-feeds.md).
 
-## Technical Integration
+## TradingView Widget
 
 1. Add the following script(s) from [TradingView](https://www.tradingview.com/widget/advanced-chart/) to your website depending on your framework:
 
@@ -111,9 +111,11 @@ The TradingView integration is a web-based widget that allows users to view Pyth
 
 6. There is a fully working open-source example of the TradingView integration by one of Pyth's contributors [here](https://github.com/cctdaniel/pyth-tv-example). The example application is deployed [here](https://pyth-tv-example.vercel.app/).
 
+Note: The TradingView plug-and-play widget does not allow for much customization. If you want to customize the widget, you can use the [TradingView Charting Library](https://www.tradingview.com/HTML5-stock-forex-bitcoin-charting-library/). Please see the next section for more details.
+
 ## Using Datafeed URL with Charting Library
 
-We also provide a datafeed URL that follows the [TradingView Data Integration spec](https://www.tradingview.com/rest-api-spec/#tag/Data-Integration). You can implement your own datafeed utilizing the API or use the built-in [UDF](https://www.tradingview.com/charting-library-docs/latest/connecting_data/UDF) adapter. If you need a step-by-step guide, refer to the [How to connect data via Datafeed API](https://www.tradingview.com/charting-library-docs/latest/tutorials/implement_datafeed_tutorial/) tutorial.
+We also provide a UDF-compatible URL that follows the [TradingView UDF spec](https://www.tradingview.com/charting-library-docs/latest/connecting_data/UDF). You can implement your own datafeed utilizing the API or use the built-in [UDF](https://www.tradingview.com/charting-library-docs/latest/connecting_data/UDF) adapter with the API. If you need a step-by-step guide, refer to the [How to connect data via Datafeed API](https://www.tradingview.com/charting-library-docs/latest/tutorials/implement_datafeed_tutorial/) tutorial, or you can reference the example [here](https://github.com/cctdaniel/pyth-tv-charting-lib)
 
 The datafeed URL is [here](https://benchmarks.pyth.network/v1/shims/tradingview) and documentation can be found [here](https://benchmarks.pyth.network/redoc)
 
@@ -122,3 +124,6 @@ The datafeed URL is [here](https://benchmarks.pyth.network/v1/shims/tradingview)
 - Symbol Info: https://benchmarks.pyth.network/v1/shims/tradingview/symbol_info
 - History: https://benchmarks.pyth.network/v1/shims/tradingview/history?symbol=Crypto.ETH/USD&resolution=1&from=1690338541&to=1690338741
 - Stream of prices: https://benchmarks.pyth.network/v1/shims/tradingview/streaming
+- Config: https://benchmarks.pyth.network/v1/shims/tradingview/config
+- Symbols: https://benchmarks.pyth.network/v1/shims/tradingview/symbols?symbol=crypto.btc/usd
+- Search: https://benchmarks.pyth.network/v1/shims/tradingview/search?query=bitcoin
