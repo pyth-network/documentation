@@ -2,7 +2,27 @@ import { Tab, Tabs } from "nextra-theme-docs";
 
 # TradingView Integration
 
-The TradingView integration is a web-based widget that allows users to view Pyth prices on their own website. All Pyth prices made available through the TradingView integration are originating from [Pythnet](pythnet-price-feeds.md).
+The TradingView integration allows users to view Pyth prices on their own website. All Pyth prices made available through the TradingView integration are originating from [Pythnet](pythnet-price-feeds.md).
+
+## Choosing an Implementation Method for TradingView Integration
+
+There are primarily two methods to integrate TradingView with your website to display Pyth prices:
+
+### 1. Using the TradingView Widget
+
+- **Advantages**:
+  - **Simplicity**: This is a plug-and-play solution which allows for quick integration. You won't need to engage in complex setup processes or handle any backend configurations.
+- **Disadvantages**:
+  - **Limited Customization**: The widget comes as-is, and while you can change basic parameters like the `symbol` or `theme`, more advanced customizations are restricted.
+
+### 2. Using the Datafeed URL with Charting Library
+
+- **Advantages**:
+  - **Deep Customization**: Suited for those who need a deeper level of integration and customization. By utilizing the UDF-compatible URL, you can tailor the look, feel, and functionality of the chart to better fit your application's needs.
+- **Disadvantages**:
+  - **Added Complexity**: Integrating the Charting Library requires more technical know-how and potentially more time compared to the simpler widget integration.
+
+When deciding between the two, consider the user experience you want to provide, the technical expertise at hand, and the time you can allocate to the integration. For a rapid deployment with minimal adjustments, the TradingView Widget is the way to go. If you need more control and are prepared for a deeper dive into the implementation, the Datafeed URL with the Charting Library would be your best choice.
 
 ## TradingView Widget
 
@@ -115,7 +135,7 @@ Note: The TradingView plug-and-play widget does not allow for much customization
 
 ## Using Datafeed URL with Charting Library
 
-We also provide a UDF-compatible URL that follows the [TradingView UDF spec](https://www.tradingview.com/charting-library-docs/latest/connecting_data/UDF). You can implement your own datafeed utilizing the API or use the built-in [UDF](https://www.tradingview.com/charting-library-docs/latest/connecting_data/UDF) adapter with the API. If you need a step-by-step guide, refer to the [How to connect data via Datafeed API](https://www.tradingview.com/charting-library-docs/latest/tutorials/implement_datafeed_tutorial/) tutorial, or you can reference the example [here](https://github.com/cctdaniel/pyth-tv-charting-lib)
+We also provide a UDF-compatible URL that follows the [TradingView UDF spec](https://www.tradingview.com/charting-library-docs/latest/connecting_data/UDF). You can implement your own datafeed utilizing the API or use the built-in UDF adapter with the API. If you need a step-by-step guide, refer to the [How to connect data via Datafeed API](https://www.tradingview.com/charting-library-docs/latest/tutorials/implement_datafeed_tutorial/) tutorial, or you can reference the example [here](https://github.com/cctdaniel/pyth-tv-charting-lib), the main files that may be of interest are: [datafeed.js](https://github.com/cctdaniel/pyth-tv-charting-lib/blob/main/src/utils/datafeed.js) and [streaming.js](https://github.com/cctdaniel/pyth-tv-charting-lib/blob/main/src/utils/streaming.js).
 
 The datafeed URL is [here](https://benchmarks.pyth.network/v1/shims/tradingview) and documentation can be found [here](https://benchmarks.pyth.network/redoc)
 
