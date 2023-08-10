@@ -20,9 +20,13 @@
         "title": "Aptos Contract",
         "href": "/aptos"
       },
-      "CosmWasm": {
+      "cosmwasm": {
         "title": "Cosmwasm Contract",
         "href": "/cosmwasm"
+      },
+      "hermes": {
+        "title": "Hermes",
+        "href": "https://hermes.pyth.network/docs"
       }
     }
   },
