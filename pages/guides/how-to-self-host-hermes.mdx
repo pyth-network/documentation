@@ -1,0 +1,223 @@
+# How to self host Hermes
+
+This guide explains how to self-host [Hermes](../documentation/pythnet-price-feeds/hermes.mdx). Hermes is Pyth Network's permissionless API server for Pyth price updates.
+It connects to both Pythnet and Wormhole to provide verified price update data for cross-chain usage. Please refer to the
+[Pyth cross-chain documentation](https://pyth-network.gitbook.io/pyth-network/pyth-cross-chain) for more information on how Pyth works.
+
+To run hermes you need to have access to a Pythnet RPC or run your own. This guide will explain how to run your own Pythnet RPC but it is recommended to use a node provider for more reliability and availability.
+You can use the following node providers to get access to a Pythnet RPC:
+
+- [Blockdaemon](https://blockdaemon.com/)
+- [Figment](https://figment.io/)
+- [QuickNode](https://www.quicknode.com/)
+
+## Self-hosting on Kubernetes
+
+This section explains how to self-host Hermes on Kubernetes. It assumes that you have a basic understanding of Kubernetes and Helm. If you are new to Kubernetes, you can use the
+following resources to get started:
+
+- [Kubernetes Basics](https://kubernetes.io/docs/tutorials/kubernetes-basics/)
+- [Helm Quickstart](https://helm.sh/docs/intro/quickstart/)
+
+### Requirements
+
+- A running Kubernetes cluster: You can use [microk8s](https://microk8s.io/) or [minikube](https://minikube.sigs.k8s.io/docs/) to run a single node cluster on production machine.
+  - The cluster nodes should have sufficient resources to run the Pythnet RPC and Hermes. Pythnet RPC requires at least 4 CPU cores and 4GB of RAM and Hermes requires at least 1
+    CPU core and 1GB of RAM.
+- [Helm](https://helm.sh/) installed on your machine.
+
+### Steps
+
+#### Add Pythnet Helm repository
+
+Run the following command to add the Pythnet Helm repository:
+
+```bash
+helm repo add pythnet https://pyth-network.github.io/charts
+```
+
+#### Pythnet RPC
+
+**Note:**It is recommended to use a node provider for more reliability and availability. If you are using a node provider, you can skip this step and go to the [Hermes](#hermes) section.
+
+Run the following command to install the Pythnet RPC with the release name of `pythnet-rpc`:
+
+```bash
+helm install pythnet-rpc pythnet/pythnet-rpc
+```
+
+You can customize the Pythnet RPC configuration by passing an extra values files to the helm install command like so:
+
+```bash
+helm install pythnet-rpc pythnet/pythnet-rpc -f pythnet-rpc-values.yaml
+```
+
+You can fine the default values in the [pythnet-rpc/values.yaml](https://github.com/pyth-network/charts/blob/main/charts/pythnet-rpc/values.yaml) file.
+
+Pythnet RPC helm chart creates a Service of type 'ClusterIP' to expose the RPC service that Hermes will use to connect to Pythnet RPC. You can find the services
+by running the following command:
+
+```bash
+kubectl get svc
+```
+
+When DNS is configured for your cluster, Kubernetes will create a DNS entry for the service. You can use the service name to connect to the Pythnet RPC from Hermes
+within the cluster. For example, if the service name is `pythnet-rpc` then you can use the following URLs to connect to the Pythnet RPC Http and WebSocket endpoints:
+
+```
+http://pythnet-rpc:8899
+ws://pythnet-rpc:89000
+```
+
+##### Testing the Pythnet RPC
+
+Run the following command to forward the Pythnet Http RPC port to your local machine:
+
+```bash
+kubectl port-forward service/pythnet-rpc 8899:8899
+```
+
+To make sure that the Pythnet RPC is running correctly, run the following command a couple of times:
+
+```bash
+curl 'http://localhost:8899' \
+  -X POST \
+  -H "Content-Type: application/json" \
+  --data '{"jsonrpc":"2.0","id":1, "method":"getSlot"}'
+```
+
+If the slot number is increasing then the Pythnet RPC is running correctly.
+
+#### Hermes
+
+Create a file named `hermes-values.yaml` and put the Pythnet RPC Http and WebSocket endpoints in it like so:
+
+```yaml
+hermes:
+  pythnetHttpEndpoint: "http(s)://fill-this-out/"
+  pythnetWsEndpoint: "ws(s)://fill-this-out/"
+```
+
+Then, run the following command to install Hermes with the release name of `hermes` in your cluster:
+
+```bash
+helm install hermes pythnet/hermes --values hermes-values.yaml
+```
+
+You can customize the Hermes configuration by adjusting the default values in the [hermes/values.yaml](https://github.com/pyth-network/charts/blob/main/charts/hermes/values.yaml).
+
+Hermes helm chart creates a Service of type 'ClusterIP' that exposes the Hermes service only internally within the cluster. To expose it publicly you can either change this to a
+`NodePort` or `LoadBalancer` service or use an Ingress controller.
+
+##### Expose Hermes using NodePort service type
+
+If you are running a single node cluster, you can use a NodePort to expose the Hermes service to the outside world. To do so, add the following values to the `hermes-values.yaml` file:
+
+```yaml
+service:
+  type: NodePort
+```
+
+Then, run the following command to upgrade the Hermes installation:
+
+```bash
+helm upgrade hermes pythnet/hermes --values hermes-values.yaml
+```
+
+You can find the NodePort by running the following command:
+
+```bash
+kubectl get svc
+```
+
+You can use the port number listed under the `PORT(S)` column to connect to Hermes from outside the cluster or configure a web server (like nginx) to proxy requests to Hermes.
+
+#### Expose Hermes using LoadBalancer service type
+
+To expose Hermes using a LoadBalancer you need to have a cluster that supports LoadBalancers. You can find more information about LoadBalancers in Kubernetes
+[here](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer). To expose Hermes using a LoadBalancer, add the following values to the `hermes-values.yaml` file:
+
+```yaml
+service:
+  type: LoadBalancer
+```
+
+Then, run the following command to upgrade the Hermes installation:
+
+```bash
+helm upgrade hermes pythnet/hermes --values hermes-values.yaml
+```
+
+Based on the available LoadBalancer in your cluster, Kubernetes will create a LoadBalancer and assign an external IP address to it. You can find the external IP address by running the following command:
+
+```bash
+kubectl get svc
+```
+
+##### Use Ingress controller
+
+You can use an Ingress controller to expose Hermes. You can find more information about Ingress controllers in Kubernetes [here](https://kubernetes.io/docs/concepts/services-networking/ingress/).
+
+To use an Ingress controller, you need to modify [the ingress template on Hermes chart](https://github.com/pyth-network/charts/blob/main/charts/hermes/values.yaml#L52-L66) to match your Ingress
+controller. For example, if you are using the [nginx ingress controller](https://kubernetes.github.io/ingress-nginx/) with [cert-manager](https://cert-manager.io/docs/getting-started/) to manage TLS certificates,
+you can add the following values to the `hermes-values.yaml` file:
+
+```yaml
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/issuer: letsencrypt
+  hosts:
+    - host: hermes.fancy-protocol.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hermes-beta
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - hermes.fancy-protocol.com
+      secretName: hermes-tls
+```
+
+Then, run the following command to upgrade the Hermes installation:
+
+```bash
+helm upgrade hermes pythnet/hermes --values hermes-values.yaml
+```
+
+Once the upgrade is complete, you can use the `host` value in the ingress template to connect to Hermes from outside the cluster.
+
+##### Testing Hermes
+
+Run the following command to forward the Hermes Http port to your local machine:
+
+```bash
+kubectl port-forward service/hermes 8080:80
+```
+
+To make sure that Hermes is running correctly, run the following command to query the price of the ETH/USD pair:
+
+```bash
+curl 'http://localhost:8080/api/latest_price_feeds?ids[]=0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace
+```
+
+#### Upgrading Helm charts to newer versions
+
+To upgrade Pythnet RPC or Hermes helm chart to a newer version, run the following command:
+
+```bash
+helm upgrade <release-name> pythnet/<chart-name> --values <values-file>
+```
+
+If you wish to upgrade to a specific version of the chart, you can use the `--version` flag.
+For example, to upgrade to version `0.1.1` of the Pythnet RPC chart, run the following command:
+
+```bash
+helm upgrade pythnet-rpc pythnet/pythnet-rpc --version 0.1.1 --values pythnet-rpc-values.yaml
+```
