@@ -60,9 +60,9 @@ There are two sets of fees that must be paid before the task can execute success
 
 Gelato's fees are paid through [1Balance](https://docs.gelato.network/developer-services/1balance). Once you are
 whitelisted, visit the [1Balance app](https://beta.app.gelato.network/balance) and deposit USDC on Polygon to top up
-your Gelato balance which will be used to pay the Gelato fees on all supported chains. Testnet executions are subsidized
-by Gelato and free. Make sure to create your 1Balance account using the same wallet address that you used to create the
-Gelato task.
+your Gelato balance which will be used to pay the Gelato fees on all supported chains. These include computational costs
+and transaction gas fees. Testnet executions are subsidized by Gelato and free. Make sure to create your 1Balance account
+using the same wallet address that you used to create the Gelato task.
 
 Switch network to Polygon
 ![](../../images/guides/gelato/switch-to-polygon.png)
@@ -80,10 +80,10 @@ The on-chain transaction executed via a web3 function gets routed through a prox
 which is solely owned by the web3 function task creator. This proxy smart contract is known as the `dedicatedMsgSender`
 and will be deployed the first time a task is created for a given wallet address.
 
-The `dedicatedMsgSender` is also responsible for paying the Pyth Fees. You will need to transfer over the native tokens
-to `dedicatedMsgSender` on every chain where you want to run the task using a standard transfer.
-The `dedicatedMsgSender` address can be found in the Gelato task details under `Target smart contract` as the
-`Your msg.sender` field
+Pyth fees are paid by the `dedicatedMsgSender` and transaction fees as well as computational costs by 1Balance.
+You will need to transfer over the native tokens to `dedicatedMsgSender` on every chain where you want to run
+the task using a standard transfer. The `dedicatedMsgSender` address can be found in the Gelato task details
+under `Target smart contract` as the `Your msg.sender` field
 
 ![](../../images/guides/gelato/dedicated-msg-sender.png)
 
