@@ -10,111 +10,200 @@ Pyth price feeds on Sui are uniquely represented in the global store as `PriceIn
 
 ## How to Update and Consume Price Feeds
 
-We demo how to update and then consume a price feed by building a Sui [programmable transaction](https://docs.sui.io/build/prog-trans-ts-sdk) off-chain, and then executing it to update a price feed and get an updated price.
+We provide a javascript sdk to use for constructing transaction blocks which updates price feeds.
 
-As with other chains, one first obtains a batch price attestation VAA (of type `vector<u8>`) from a Pyth price service endpoint, which encodes update price information for a feed.
+### Installation
 
-### 1. `wormhole::vaa::parse_and_verify`
-
-Call `parse_and_verify` on the batch attestation VAA bytes to obtain a `VAA` hot potato object.
-
-```rs copy
-public fun parse_and_verify(
-      wormhole_state: &State,
-      buf: vector<u8>, // price update VAA bytes
-      the_clock: &Clock
-  ): VAA
-```
-
-### 2. `create_price_infos_hot_potato`
-
-Use the verified VAA and create a hot potato vector containing the latest price updates.
-
-```rs copy
-public fun create_price_infos_hot_potato(
-        pyth_state: &PythState,
-        verified_vaas: vector<VAA>,
-        clock: &Clock
-): HotPotatoVector<PriceInfo>
-```
-
-### 3. `pyth::pyth::update_single_price_feed`
-
-Use the hot potato price updates vector to update a price feed.
-
-Note that conventional Pyth price IDs are found [here](https://pyth.network/developers/price-feed-ids#pyth-evm-mainnet).
-However, instead of passing in a Pyth price feed ID to update the price feed (which is what is done on other chains), one must pass in a `PriceInfoObject` ID instead.
-
-The `PriceInfoObject` IDs are distinct from Pyth price feed IDs, and are stored in a map on-chain (Pyth price feed ID => PriceInfoObject ID). We pulled this map into a local json file [here](./scripts/generated). The `PriceInfoObject` ID can also be queried on-chain by calling the `pyth::state::get_price_info_object_id` found in the Pyth package. See the common questions section below for more info.
-
-```rs copy
-public fun update_single_price_feed(
-    pyth_state: &PythState,
-    price_updates: HotPotatoVector<PriceInfo>,
-    price_info_object: &mut PriceInfoObject,
-    fee: Coin<SUI>,
-    clock: &Clock
-): HotPotatoVector<PriceInfo>
-```
-
-### 4. `pyth::hot_potato_vector::destroy`
-
-Drop the hot potato. (You must call this function to drop the potato).
-
-```rs copy
-public fun destroy<T: copy + drop>(
-    hot_potato_vector: HotPotatoVector<T>
-)
-```
-
-### 5. `pyth::pyth::get_price`
-
-Finally, get the price of the updated price feed in `PriceInfoObject` 🎉🎉🎉.
-
-```rs copy
-public fun get_price(
-      state: &PythState,
-      price_info_object: &PriceInfoObject,
-      clock: &Clock
-): Price
-```
-
-## Examples
-
-See the `./scripts` folder for examples of programmable transactions for creating price feeds and updating price feeds.
-
-- [Demo for updating a price feed](https://github.com/pyth-network/pyth-crosschain/blob/sui/hot_potato/target_chains/sui/scripts/pyth/update_price_feeds.ts)
-
-To build and test the contracts, run the following
+If you are using npm run:
 
 ```sh copy
-$ make test
-$ make build
+npm install --save @pythnetwork/pyth-sui-js
 ```
 
-## Contracts Registry
+If you are using yarn run:
 
-### Pyth on Testnet
+```sh copy
+yarn add @pythnetwork/pyth-sui-js
+```
 
-- PYTH_PACKAGE_ID: [0x975e063f398f720af4f33ec06a927f14ea76ca24f7f8dd544aa62ab9d5d15f44](https://explorer.sui.io/object/0x975e063f398f720af4f33ec06a927f14ea76ca24f7f8dd544aa62ab9d5d15f44?network=testnet)
-- PYTH_STATE_ID: [0xd8afde3a48b4ff7212bd6829a150f43f59043221200d63504d981f62bff2e27a](https://explorer.sui.io/object/0xd8afde3a48b4ff7212bd6829a150f43f59043221200d63504d981f62bff2e27a?network=testnet)
-- PYTH_PRICE_FEED_ID_TO_PRICE_INFO_OBJECT_ID: [0xf8929174008c662266a1adde78e1e8e33016eb7ad37d379481e860b911e40ed5](https://explorer.sui.io/object/0xf8929174008c662266a1adde78e1e8e33016eb7ad37d379481e860b911e40ed5?network=https%3A%2F%2Ffullnode.testnet.sui.io%3A443)
+## Quickstart
 
-### Wormhole on Testnet
+Pyth stores prices off-chain to minimize gas fees, which allows us to offer a wider selection of products and faster update times.
+See [On-Demand Updates](https://docs.pyth.network/documentation/pythnet-price-feeds/on-demand) for more information about this approach.
+Typically, to use Pyth prices on chain,
+they must be fetched from an off-chain price service. The `SuiPriceServiceConnection` class can be used to interact with these services,
+providing a way to fetch these prices directly in your code. The following example wraps an existing RPC provider and shows how to obtain
+Pyth prices and submit them to the network:
 
-- WORMHOLE_PACKAGE_ID: [0xcc029e2810f17f9f43f52262f40026a71fbdca40ed3803ad2884994361910b7e](https://explorer.sui.io/object/0xcc029e2810f17f9f43f52262f40026a71fbdca40ed3803ad2884994361910b7e?network=testnet)
-- WORMHOLE_STATE_ID: [0xebba4cc4d614f7a7cdbe883acc76d1cc767922bc96778e7b68be0d15fce27c02](https://explorer.sui.io/object/0xebba4cc4d614f7a7cdbe883acc76d1cc767922bc96778e7b68be0d15fce27c02?network=testnet)
+```typescript copy
+import { SuiPriceServiceConnection } from "@pythnetwork/pyth-sui-js";
 
-### Pyth on Mainnet
+const connection = new SuiPriceServiceConnection(
+  "https://hermes-beta.pyth.network"
+); // See Price Service endpoints section below for other endpoints
 
-- PYTH_PACKAGE_ID: [0x00b53b0f4174108627fbee72e2498b58d6a2714cded53fac537034c220d26302](https://explorer.sui.io/object/0x00b53b0f4174108627fbee72e2498b58d6a2714cded53fac537034c220d26302?network=https%3A%2F%2Ffullnode.mainnet.sui.io%3A443)
-- PYTH_STATE_ID: [0xf9ff3ef935ef6cdfb659a203bf2754cebeb63346e29114a535ea6f41315e5a3f](https://explorer.sui.io/object/0xf9ff3ef935ef6cdfb659a203bf2754cebeb63346e29114a535ea6f41315e5a3f?network=https%3A%2F%2Ffullnode.mainnet.sui.io%3A443)
-- PYTH_PRICE_FEED_ID_TO_PRICE_INFO_OBJECT_ID: [0x14b4697477d24c30c8eecc31dd1bd49a3115a9fe0db6bd4fd570cf14640b79a0](https://explorer.sui.io/object/0x14b4697477d24c30c8eecc31dd1bd49a3115a9fe0db6bd4fd570cf14640b79a0?network=https%3A%2F%2Ffullnode.mainnet.sui.io%3A443)
+const priceIds = [
+  // You can find the ids of prices at https://pyth.network/developers/price-feed-ids
+  "0xf9c0172ba10dfa4d19088d94f5bf61d3b54d5bd7483a322a982e1373ee8ea31b", // BTC/USD price id in testnet
+  "0xca80ba6dc32e08d06f1aa886011eed1d77c77be9eb761cc10d72b7d0a2fd57a6", // ETH/USD price id in testnet
+];
 
-### Wormhole on Mainnet
+// In order to use Pyth prices in your protocol you need to submit the price update data to Pyth contract in your target
+// chain. `getPriceUpdateData` creates the update data which can be submitted to your contract.
 
-- WORMHOLE_PACKAGE_ID: [0x5306f64e312b581766351c07af79c72fcb1cd25147157fdc2f8ad76de9a3fb6a](https://explorer.sui.io/object/0x5306f64e312b581766351c07af79c72fcb1cd25147157fdc2f8ad76de9a3fb6a)
-- WORMHOLE_STATE_ID: [0xaeab97f96cf9877fee2883315d459552b2b921edc16d7ceac6eab944dd88919c](https://explorer.sui.io/object/0xaeab97f96cf9877fee2883315d459552b2b921edc16d7ceac6eab944dd88919c)
+const priceUpdateData = await connection.getPriceFeedsUpdateData(priceIds);
+```
+
+## On-chain prices
+
+### ⚠️ **_Important Note for Integrators_**
+
+Your Sui Move module **should NOT** have a hard-coded call to `pyth::update_single_price_feed`. In other words, the Sui Pyth `pyth::update_single_price_feed` entry point should never be called by a contract, instead it should be called directly from client code (e.g. Typescript or Rust).
+
+This is because when a Sui contract is [upgraded](https://docs.sui.io/build/package-upgrades), the new address is different from the original. If your module has a hard-coded call to `pyth::update_single_price_feed` living at a fixed call-site, it may eventually get bricked due to the way Pyth upgrades are implemented. (We only allows users to interact with the most recent package version for security reasons).
+
+Therefore, you should build a [Sui programmable transaction](https://docs.sui.io/build/prog-trans-ts-sdk) that first updates the price by calling `pyth::update_single_price_feed` at the latest call-site from the client-side and then call a function in your contract that invokes `pyth::get_price` on the `PriceInfoObject` to get the recently updated price.
+You can use `SuiPythClient` to build such transactions and handles all the complexity of updating the price feeds.
+
+### Update Example
+
+```ts copy
+import { SuiPythClient } from "@pythnetwork/pyth-sui-js";
+import { TransactionBlock } from "@mysten/sui.js";
+
+const priceUpdateData = await connection.getPriceFeedsUpdateData(priceIds); // see quickstart section
+
+
+// It is either injected from browser or instantiated in backend via some private key
+const wallet: SignerWithProvider = getWallet();
+// Get the state ids of the Pyth and Wormhole contracts from
+// https://docs.pyth.network/documentation/pythnet-price-feeds/sui#contracts
+const wormholeStateId = " 0xFILL_ME";
+const pythStateId = "0xFILL_ME";
+
+const client = new SuiPythClient(wallet.provider, pythStateId, wormholeStateId);
+const tx = new TransactionBlock();
+const priceInfoObjectIds = await client.updatePriceFeeds(tx, priceFeedUpdateData, priceIds);
+
+tx.moveCall({
+    target: `YOUR_PACKAGE::YOUR_MODULE::use_pyth_for_defi`,
+    arguments: [
+        ..., // other arguments needed for your contract
+        tx.object(pythStateId),
+        tx.object(priceInfoObjectIds[0]),
+    ],
+});
+
+const txBlock = {
+    transactionBlock: tx,
+    options: {
+        showEffects: true,
+        showEvents: true,
+    },
+};
+
+const result = await wallet.signAndExecuteTransactionBlock(txBlock);
+```
+By calling the `updatePriceFeeds` function, the `SuiPythClient` adds the necessary transactions to the transaction block to update the price feeds.
+Now in your contract you can consume the price by calling `pyth::get_price` or other utility functions on the `PriceInfoObject`.
+
+### CLI Example
+
+[This example](./src/examples/SuiRelay.ts) shows how to update prices on an Sui network. It does the following:
+
+1. Fetches update data from the Price Service for the given price feeds.
+2. Calls the Pyth Sui contract with the update data.
+
+You can run this example with `npm run example-relay`. A full command that updates prices on Sui testnet looks like:
+
+```bash
+export SUI_KEY=YOUR_PRIV_KEY;
+npm run example-relay -- --feed-id "5a035d5440f5c163069af66062bac6c79377bf88396fa27e6067bfca8096d280" \
+--price-service "https://hermes-beta.pyth.network" \
+--full-node "https://fullnode.testnet.sui.io:443" \
+--pyth-state-id "0xd3e79c2c083b934e78b3bd58a490ec6b092561954da6e7322e1e2b3c8abfddc0" \
+--wormhole-state-id "0x31358d198147da50db32eda2562951d53973a0c0ad5ed738e9b17d88b213d790"
+```
+
+## Off-chain prices
+
+Many applications additionally need to display Pyth prices off-chain, for example, in their frontend application.
+The `SuiPriceServiceConnection` provides two different ways to fetch the current Pyth price.
+The code blocks below assume that the `connection` and `priceIds` objects have been initialized as shown above.
+The first method is a single-shot query:
+
+```typescript
+// `getLatestPriceFeeds` returns a `PriceFeed` for each price id. It contains all information about a price and has
+// utility functions to get the current and exponentially-weighted moving average price, and other functionality.
+const priceFeeds = await connection.getLatestPriceFeeds(priceIds);
+// Get the price if it is not older than 60 seconds from the current time.
+console.log(priceFeeds[0].getPriceNoOlderThan(60)); // Price { conf: '1234', expo: -8, price: '12345678' }
+// Get the exponentially-weighted moving average price if it is not older than 60 seconds from the current time.
+console.log(priceFeeds[1].getEmaPriceNoOlderThan(60));
+```
+
+The object also supports a streaming websocket connection that allows you to subscribe to every new price update for a given feed.
+This method is useful if you want to show continuously updating real-time prices in your frontend:
+
+```typescript
+// Subscribe to the price feeds given by `priceId`. The callback will be invoked every time the requested feed
+// gets a price update.
+connection.subscribePriceFeedUpdates(priceIds, (priceFeed) => {
+  console.log(
+    `Received update for ${priceFeed.id}: ${priceFeed.getPriceNoOlderThan(60)}`
+  );
+});
+
+// When using the subscription, make sure to close the websocket upon termination to finish the process gracefully.
+setTimeout(() => {
+  connection.closeWebSocket();
+}, 60000);
+```
+
+## [Price Service endpoints](price-service#public-endpoints)
+
+# Contracts
+
+### Mainnet
+
+| Name                  | Address                                                                                                                                                                   |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pyth State ID         | [`0x1f9310238ee9298fb703c3419030b35b22bb1cc37113e3bb5007c99aec79e5b8`](https://explorer.sui.io/object/0x1f9310238ee9298fb703c3419030b35b22bb1cc37113e3bb5007c99aec79e5b8) |
+| Pyth Package ID       | [`0x8d97f1cd6ac663735be08d1d2b6d02a159e711586461306ce60a2b7a6a565a9e`](https://explorer.sui.io/object/0x8d97f1cd6ac663735be08d1d2b6d02a159e711586461306ce60a2b7a6a565a9e) |
+| Wormhole State ID     | [`0xaeab97f96cf9877fee2883315d459552b2b921edc16d7ceac6eab944dd88919c`](https://explorer.sui.io/object/0xaeab97f96cf9877fee2883315d459552b2b921edc16d7ceac6eab944dd88919c) |
+| Wormhole Package ID   | [`0x5306f64e312b581766351c07af79c72fcb1cd25147157fdc2f8ad76de9a3fb6a`](https://explorer.sui.io/object/0x5306f64e312b581766351c07af79c72fcb1cd25147157fdc2f8ad76de9a3fb6a) |
+
+### Testnet
+
+| Name                  | Address                                                                                                                                                                                   |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pyth State ID         | [`0x2d82612a354f0b7e52809fc2845642911c7190404620cec8688f68808f8800d8`](https://explorer.sui.io/object/0x2d82612a354f0b7e52809fc2845642911c7190404620cec8688f68808f8800d8?network=testnet) |
+| Pyth Package ID       | [`0xe76d8a37d4132278a7a752183e90e04890b9e7d0f6657eadb68821609a2a56a3`](https://explorer.sui.io/object/0xe76d8a37d4132278a7a752183e90e04890b9e7d0f6657eadb68821609a2a56a3?network=testnet) |
+| Wormhole State ID     | [`0xebba4cc4d614f7a7cdbe883acc76d1cc767922bc96778e7b68be0d15fce27c02`](https://explorer.sui.io/object/0xebba4cc4d614f7a7cdbe883acc76d1cc767922bc96778e7b68be0d15fce27c02?network=testnet) |
+| Wormhole Package ID   | [`0xcc029e2810f17f9f43f52262f40026a71fbdca40ed3803ad2884994361910b7e`](https://explorer.sui.io/object/0xcc029e2810f17f9f43f52262f40026a71fbdca40ed3803ad2884994361910b7e?network=testnet) |
+
+
+## Legacy Addresses
+
+
+### Mainnet
+
+| Name                  | Address                                                                                                                                                                   |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pyth State ID         | [`0xf9ff3ef935ef6cdfb659a203bf2754cebeb63346e29114a535ea6f41315e5a3f`](https://explorer.sui.io/object/0xf9ff3ef935ef6cdfb659a203bf2754cebeb63346e29114a535ea6f41315e5a3f) |
+| Pyth Package ID       | [`0x00b53b0f4174108627fbee72e2498b58d6a2714cded53fac537034c220d26302`](https://explorer.sui.io/object/0x00b53b0f4174108627fbee72e2498b58d6a2714cded53fac537034c220d26302) |
+| Wormhole State ID     | [`0xaeab97f96cf9877fee2883315d459552b2b921edc16d7ceac6eab944dd88919c`](https://explorer.sui.io/object/0xaeab97f96cf9877fee2883315d459552b2b921edc16d7ceac6eab944dd88919c) |
+| Wormhole Package ID   | [`0x5306f64e312b581766351c07af79c72fcb1cd25147157fdc2f8ad76de9a3fb6a`](https://explorer.sui.io/object/0x5306f64e312b581766351c07af79c72fcb1cd25147157fdc2f8ad76de9a3fb6a) |
+
+### Testnet
+
+| Name                  | Address                                                                                                                                                                                   |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pyth State ID         | [`0xd8afde3a48b4ff7212bd6829a150f43f59043221200d63504d981f62bff2e27a`](https://explorer.sui.io/object/0xd8afde3a48b4ff7212bd6829a150f43f59043221200d63504d981f62bff2e27a?network=testnet) |
+| Pyth Package ID       | [`0x975e063f398f720af4f33ec06a927f14ea76ca24f7f8dd544aa62ab9d5d15f44`](https://explorer.sui.io/object/0x975e063f398f720af4f33ec06a927f14ea76ca24f7f8dd544aa62ab9d5d15f44?network=testnet) |
+| Wormhole State ID     | [`0xebba4cc4d614f7a7cdbe883acc76d1cc767922bc96778e7b68be0d15fce27c02`](https://explorer.sui.io/object/0xebba4cc4d614f7a7cdbe883acc76d1cc767922bc96778e7b68be0d15fce27c02?network=testnet) |
+| Wormhole Package ID   | [`0xcc029e2810f17f9f43f52262f40026a71fbdca40ed3803ad2884994361910b7e`](https://explorer.sui.io/object/0xcc029e2810f17f9f43f52262f40026a71fbdca40ed3803ad2884994361910b7e?network=testnet) |
+
 
 ## Common Questions on How to Integrate with Pyth on Sui
 
@@ -136,8 +225,7 @@ rev = "d050ad1d67a5b7da9fb65030aad12ef5d774ccad"
 
 ### How do I find the Sui Object ID of a PriceInfoObject for a Pyth Price Feed?
 
-The mapping of Pyth price feed IDs to `PriceInfoObject` object IDs can be found [here](https://github.com/pyth-network/pyth-crosschain/blob/sui/hot_potato/target_chains/sui/README.md). (Note: this may go out of date as more price feeds are introduced and created over time).
-
+You can use the `getPriceFeedObjectId` function in the js sdk to fetch the object ids.
 This mapping is also stored on-chain, and can be queried on-chain using the getter function `pyth::state::get_price_info_object_id` defined in the Pyth package.
 
-Also recall that the list of Pyth price feed IDs can be found [here](https://pyth.network/developers/price-feed-ids#pyth-evm-testnet).
+Also recall that the list of Pyth price feed IDs can be found [here](https://pyth.network/developers/price-feed-ids).
