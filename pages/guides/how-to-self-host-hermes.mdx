@@ -209,9 +209,10 @@ curl 'http://localhost:8080/api/latest_price_feeds?ids[]=0xff61491a931112ddf1bd8
 
 #### Upgrading Helm charts to newer versions
 
-To upgrade Pythnet RPC or Hermes helm chart to a newer version, run the following command:
+To upgrade Pythnet RPC or Hermes helm chart to a newer version, run the following commands:
 
 ```bash
+helm repo update
 helm upgrade <release-name> pyth-network/<chart-name> --values <values-file>
 ```
 
