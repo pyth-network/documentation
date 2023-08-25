@@ -33,7 +33,7 @@ following resources to get started:
 Run the following command to add the Pythnet Helm repository:
 
 ```bash
-helm repo add pythnet https://pyth-network.github.io/charts
+helm repo add pyth-network https://pyth-network.github.io/charts
 ```
 
 #### Pythnet RPC
@@ -43,13 +43,13 @@ helm repo add pythnet https://pyth-network.github.io/charts
 Run the following command to install the Pythnet RPC with the release name of `pythnet-rpc`:
 
 ```bash
-helm install pythnet-rpc pythnet/pythnet-rpc
+helm install pythnet-rpc pyth-network/pythnet-rpc
 ```
 
 You can customize the Pythnet RPC configuration by passing an extra values files to the helm install command like so:
 
 ```bash
-helm install pythnet-rpc pythnet/pythnet-rpc -f pythnet-rpc-values.yaml
+helm install pythnet-rpc pyth-network/pythnet-rpc -f pythnet-rpc-values.yaml
 ```
 
 You can fine the default values in the [pythnet-rpc/values.yaml](https://github.com/pyth-network/charts/blob/main/charts/pythnet-rpc/values.yaml) file.
@@ -101,7 +101,7 @@ hermes:
 Then, run the following command to install Hermes with the release name of `hermes` in your cluster:
 
 ```bash
-helm install hermes pythnet/hermes --values hermes-values.yaml
+helm install hermes pyth-network/hermes --values hermes-values.yaml
 ```
 
 You can customize the Hermes configuration by adjusting the default values in the [hermes/values.yaml](https://github.com/pyth-network/charts/blob/main/charts/hermes/values.yaml).
@@ -121,7 +121,7 @@ service:
 Then, run the following command to upgrade the Hermes installation:
 
 ```bash
-helm upgrade hermes pythnet/hermes --values hermes-values.yaml
+helm upgrade hermes pyth-network/hermes --values hermes-values.yaml
 ```
 
 You can find the NodePort by running the following command:
@@ -145,7 +145,7 @@ service:
 Then, run the following command to upgrade the Hermes installation:
 
 ```bash
-helm upgrade hermes pythnet/hermes --values hermes-values.yaml
+helm upgrade hermes pyth-network/hermes --values hermes-values.yaml
 ```
 
 Based on the available LoadBalancer in your cluster, Kubernetes will create a LoadBalancer and assign an external IP address to it. You can find the external IP address by running the following command:
@@ -188,7 +188,7 @@ ingress:
 Then, run the following command to upgrade the Hermes installation:
 
 ```bash
-helm upgrade hermes pythnet/hermes --values hermes-values.yaml
+helm upgrade hermes pyth-network/hermes --values hermes-values.yaml
 ```
 
 Once the upgrade is complete, you can use the `host` value in the ingress template to connect to Hermes from outside the cluster.
@@ -212,12 +212,12 @@ curl 'http://localhost:8080/api/latest_price_feeds?ids[]=0xff61491a931112ddf1bd8
 To upgrade Pythnet RPC or Hermes helm chart to a newer version, run the following command:
 
 ```bash
-helm upgrade <release-name> pythnet/<chart-name> --values <values-file>
+helm upgrade <release-name> pyth-network/<chart-name> --values <values-file>
 ```
 
 If you wish to upgrade to a specific version of the chart, you can use the `--version` flag.
 For example, to upgrade to version `0.1.1` of the Pythnet RPC chart, run the following command:
 
 ```bash
-helm upgrade pythnet-rpc pythnet/pythnet-rpc --version 0.1.1 --values pythnet-rpc-values.yaml
+helm upgrade pythnet-rpc pyth-network/pythnet-rpc --version 0.1.1 --values pythnet-rpc-values.yaml
 ```
