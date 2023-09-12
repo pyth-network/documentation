@@ -7,9 +7,9 @@ It connects to both Pythnet and Wormhole to provide verified price update data f
 To run hermes you need to have access to a Pythnet RPC or run your own. This guide will explain how to run your own Pythnet RPC but it is recommended to use a node provider for more reliability and availability.
 You can use the following node providers to get access to a Pythnet RPC:
 
+- [Triton](https://triton.one)
+- [P2P](https://p2p.org)
 - [Blockdaemon](https://blockdaemon.com/)
-- [Figment](https://figment.io/)
-- [QuickNode](https://www.quicknode.com/)
 
 ## Self-hosting on Kubernetes
 
@@ -35,58 +35,6 @@ Run the following command to add the Pythnet Helm repository:
 ```bash
 helm repo add pyth-network https://pyth-network.github.io/charts
 ```
-
-#### Pythnet RPC
-
-**Note:**It is recommended to use a node provider for more reliability and availability. If you are using a node provider, you can skip this step and go to the [Hermes](#hermes) section.
-
-Run the following command to install the Pythnet RPC with the release name of `pythnet-rpc`:
-
-```bash
-helm install pythnet-rpc pyth-network/pythnet-rpc
-```
-
-You can customize the Pythnet RPC configuration by passing an extra values files to the helm install command like so:
-
-```bash
-helm install pythnet-rpc pyth-network/pythnet-rpc -f pythnet-rpc-values.yaml
-```
-
-You can fine the default values in the [pythnet-rpc/values.yaml](https://github.com/pyth-network/charts/blob/main/charts/pythnet-rpc/values.yaml) file.
-
-Pythnet RPC helm chart creates a Service of type 'ClusterIP' to expose the RPC service that Hermes will use to connect to Pythnet RPC. You can find the services
-by running the following command:
-
-```bash
-kubectl get svc
-```
-
-When DNS is configured for your cluster, Kubernetes will create a DNS entry for the service. You can use the service name to connect to the Pythnet RPC from Hermes
-within the cluster. For example, if the service name is `pythnet-rpc` then you can use the following URLs to connect to the Pythnet RPC Http and WebSocket endpoints:
-
-```
-http://pythnet-rpc:8899
-ws://pythnet-rpc:8900
-```
-
-##### Testing the Pythnet RPC
-
-Run the following command to forward the Pythnet Http RPC port to your local machine:
-
-```bash
-kubectl port-forward service/pythnet-rpc 8899:8899
-```
-
-To make sure that the Pythnet RPC is running correctly, run the following command a couple of times:
-
-```bash
-curl 'http://localhost:8899' \
-  -X POST \
-  -H "Content-Type: application/json" \
-  --data '{"jsonrpc":"2.0","id":1, "method":"getSlot"}'
-```
-
-If the slot number is increasing then the Pythnet RPC is running correctly.
 
 #### Hermes
 
@@ -206,6 +154,58 @@ To make sure that Hermes is running correctly, run the following command to quer
 ```bash
 curl 'http://localhost:8080/api/latest_price_feeds?ids[]=0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace
 ```
+
+#### (Experimental) Pythnet RPC
+
+**Note:** It is discouraged to host Pythnet RPC in k8s and it is not battle-tested. Use it at your own risk.
+
+Run the following command to install the Pythnet RPC with the release name of `pythnet-rpc`:
+
+```bash
+helm install pythnet-rpc pyth-network/pythnet-rpc
+```
+
+You can customize the Pythnet RPC configuration by passing an extra values files to the helm install command like so:
+
+```bash
+helm install pythnet-rpc pyth-network/pythnet-rpc -f pythnet-rpc-values.yaml
+```
+
+You can fine the default values in the [pythnet-rpc/values.yaml](https://github.com/pyth-network/charts/blob/main/charts/pythnet-rpc/values.yaml) file.
+
+Pythnet RPC helm chart creates a Service of type 'ClusterIP' to expose the RPC service that Hermes will use to connect to Pythnet RPC. You can find the services
+by running the following command:
+
+```bash
+kubectl get svc
+```
+
+When DNS is configured for your cluster, Kubernetes will create a DNS entry for the service. You can use the service name to connect to the Pythnet RPC from Hermes
+within the cluster. For example, if the service name is `pythnet-rpc` then you can use the following URLs to connect to the Pythnet RPC Http and WebSocket endpoints:
+
+```
+http://pythnet-rpc:8899
+ws://pythnet-rpc:8900
+```
+
+##### Testing the Pythnet RPC
+
+Run the following command to forward the Pythnet Http RPC port to your local machine:
+
+```bash
+kubectl port-forward service/pythnet-rpc 8899:8899
+```
+
+To make sure that the Pythnet RPC is running correctly, run the following command a couple of times:
+
+```bash
+curl 'http://localhost:8899' \
+  -X POST \
+  -H "Content-Type: application/json" \
+  --data '{"jsonrpc":"2.0","id":1, "method":"getSlot"}'
+```
+
+If the slot number is increasing then the Pythnet RPC is running correctly.
 
 #### Upgrading Helm charts to newer versions
 
