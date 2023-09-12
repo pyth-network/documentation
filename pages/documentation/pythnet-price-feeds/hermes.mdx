@@ -17,6 +17,12 @@ These endpoints can be used to test integrations with Pyth Network:
 | stable  | https://hermes.pyth.network      |
 | beta    | https://hermes-beta.pyth.network |
 
+For production deployments, developers integrating with Pyth Network are **strongly encouraged** to host their own instance of Hermes
+or get a Hermes node from our rpc providers for maximum resilience and decentralization. The following node providers offer Hermes:
+
+- [Triton](https://triton.one)
+- [P2P](https://p2p.org)
+
 ## Usage
 
 [Hermes API Documentation](https://hermes.pyth.network/docs) contains a comprehensive explanation of Hermes API for users interaction. As Hermes is using the price service
@@ -32,9 +38,18 @@ $ curl https://hermes.pyth.network/api/latest_price_feeds?ids[]=0xff61491a931112
 [{"id":"ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace","price":{"price":"184136023127","conf":"177166324","expo":-8,"publish_time":1692110601},"ema_price":{"price":"184100641000","conf":"178704085","expo":-8,"publish_time":1692110601}}]
 ```
 
-For production deployments, developers integrating with Pyth Network are **strongly encouraged** to host their own instance of Hermes for maximum resilience and decentralization.
-By running an independent instance of this service, developers tap directly into Wormhole's peer-to-peer network to stream Pyth price updates.
-This peer-to-peer network has built-in redundancy and is therefore inherently more reliable than a centralized service operated by the Pyth Data Association.
-Please find more information about building and running the price service [here](../../guides/how-to-self-host-hermes.mdx).
+## Self-hosting Hermes
 
-[hermes-repo]: https://github.com/pyth-network/pyth-crosschain/tree/main/hermes/
+We provide a Helm chart for running Hermes at our [charts](https://github.com/pyth-network/charts/tree/main/charts/hermes)
+repository. Please refer the the chart readme for the configuration values. You need a Pythnet RPC to run Hermes.
+You can an RPC instance from any of the Pythnet RPC providers below:
+
+- [Triton](https://triton.one)
+- [P2P](https://p2p.org)
+- [Blockdaemon](https://blockdaemon.com/)
+- [Figment](https://figment.io)
+
+You can alternatively host Pythnet RPC yourself but it is discouraged as running it
+reliabily can be quite expensive and has a lot of maintenance over the network upgrades
+and is discouraged. However, if you wish to still run it, please contact Pyth team for
+more information.
