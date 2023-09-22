@@ -13,7 +13,7 @@ This function updates the on-chain price if the provided update is more recent t
 Otherwise, the provided update will be ignored.
 The function call will succeed even if the update is ignored.
 
-You can retrieve the latest price `update_data` for a given set of price feeds from the price service API.
+You can retrieve the latest price `update_data` for a given set of price feeds a Hermes instance.
 By default, the data is returned as a base64-encoded string that you must deserialize into a vector of bytes before calling this method.
 
 This function requires the caller to pay a fee to perform the update.

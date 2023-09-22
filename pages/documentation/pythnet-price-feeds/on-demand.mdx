@@ -47,7 +47,8 @@ Developers integrating with Pyth Network should build their application to submi
 For example, if you need the BTC/USD price on-chain, then your frontend should submit the BTC/USD Pyth price update in every transaction that needs it.
 The Pyth Network SDKs cover both parts of this integration -- frontend and contract -- and are designed to simplify this process.
 These SDKs are blockchain-specific and are described in more detail in the subsequent sections of this documentation.
-Developers should also host an instance of the [price service](price-service.md), which is a convenient wrapper around the Wormhole Network that the frontend SDKs use to pull updates.
+Developers should get an instance of the [Hermes](hermes) from Hermes node providers to pull the price updates from. Hermes is a
+permissionless service serveing price updates via a convenient web API.
 
 ## Fees
 
