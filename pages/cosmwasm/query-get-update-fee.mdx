@@ -13,7 +13,7 @@ Get the fee required to update the on-chain price feeds with the provided `vaas`
 Returns both a quantity of tokens and denomination.
 The returned number of the specified token should be sent as the transaction value when executing [UpdatePriceFeeds](execute-update-price-feeds).
 
-The `vaas` can be retrieved from a Hermes instance.
+The `vaas` can be retrieved from the [Hermes API](https://hermes.pyth.network/docs).
 By default, Hermes returns these as base64-encoded strings; these can be directly included in a CosmWasm query, as CosmWasm uses a base64 string encoding for the `Binary` type.
 
 <div className="mt-6 overflow-x-auto">

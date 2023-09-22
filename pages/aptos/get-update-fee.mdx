@@ -11,7 +11,7 @@ import { Tab, Tabs } from "nextra-theme-docs";
 Get the fee required to update the on-chain price feeds with the provided `update_data`.
 The returned number of Octa should be sent as the transaction value when calling [update_price_feeds](update-price-feeds).
 
-The `update_data` can be retrieved a Hermes instance.
+The `update_data` can be retrieved from the [Hermes API](https://hermes.pyth.network/docs).
 By default, the data is returned as a base64-encoded string that you must deserialize into a vector of bytes before calling this method.
 
 <div className="mt-6 overflow-x-auto">

@@ -1,6 +1,7 @@
 {
   "on-demand": "Pull Updates",
   "best-practices": "Using Price Feeds",
+  "hermes": "Hermes",
   "evm": "Pyth on EVM",
   "aptos": "Pyth on Aptos",
   "sui": "Pyth on Sui",
