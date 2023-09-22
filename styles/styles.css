@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-darkBlue font-body text-light !important;
+    @apply bg-[#0C0B1A] font-body text-light !important;
   }
 }
 
@@ -14,7 +14,7 @@
   }
 
   p {
-    @apply text-base16 tracking-[0.06em] text-light;
+    @apply text-base16 text-light;
   }
 
   button {
@@ -22,27 +22,27 @@
   }
 
   ul {
-    @apply text-base16 tracking-[0.06em] text-light;
+    @apply text-base16 text-light;
   }
 
   ol {
-    @apply text-base16 tracking-[0.06em] text-light;
+    @apply text-base16 text-light;
   }
 
   table {
-    @apply text-base16 tracking-[0.06em] text-light;
+    @apply text-base16 text-light;
   }
 
   tr {
-    @apply border-b border-light bg-[#44415E];
+    @apply bg-[#44415E] leading-[1.30em] text-base p-4;
   }
 
   th {
-    @apply bg-darkGray2 text-left py-2 px-4 !important;
+    @apply bg-[#312F47] text-left p-4 leading-[1.15em] font-normal text-base !important;
   }
 
   td {
-    @apply py-2 px-4 !important;
+    @apply py-2 px-4 text-base !important;
   }
 
   input {
@@ -63,7 +63,7 @@
 }
 
 .nx-text-primary-600 {
-  @apply text-light font-semibold;
+  @apply text-[#BB99FF] no-underline;
 }
 
 html[class~="dark"] .nextra-nav-container-blur {
@@ -113,6 +113,10 @@ html[class~="dark"] .dark\:nx-text-neutral-500 {
   @apply text-light font-header font-light;
 }
 
+html[class~="dark"] .dark\:nx-text-neutral-400 {
+  @apply text-light font-header font-light opacity-75 tracking-[0.01em] leading-[1.2em];
+}
+
 html[class~="dark"] .dark\:hover\:nx-text-gray-50:hover {
   @apply text-light;
 }
@@ -142,8 +146,12 @@ html[class~="dark"] .dark\:nx-text-gray-300 {
   @apply text-light;
 }
 
+html[class~="dark"] .dark\:nx-border-gray-600 {
+  @apply border-[#0C0B1A] border-2;
+}
+
 html[class~="dark"] .nextra-sidebar-container {
-  @apply bg-darkBlue;
+  @apply bg-[#0C0B1A];
 }
 
 .nx-text-gray-500 {

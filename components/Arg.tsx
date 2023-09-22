@@ -18,11 +18,11 @@ interface ArgProps {
 const Arg = ({ required, type, children }: ArgProps) => {
   return (
     <div>
-      <p className="font-semibold">
+      <p className="font-semibold text-base">
         {children}
         {required === true ? <span className="required">*</span> : ""}
       </p>
-      <p className="text-light opacity-80">{type}</p>
+      <p className="text-light opacity-80 text-base">{type}</p>
     </div>
   );
 };

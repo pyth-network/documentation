@@ -44,14 +44,14 @@ const ContractInfo = () => {
         <tbody>
           <tr
             key="Contract Address"
-            className="border-t border-darkGray5 bg-darkGray border-none"
+            className="border-b border-darkGray5 bg-darkGray"
           >
             <td className="py-3 pl-6 pr-1 lg:pl-14 w-48">Contract Address</td>
             <td className="py-3 pl-1 lg:pl-14">
               {configValue(pythAddressConfig.pythAddress)}
             </td>
           </tr>
-          <tr key="Chain ID" className="border-t border-darkGray5 bg-darkGray">
+          <tr key="Chain ID" className="border-b border-darkGray5 bg-darkGray">
             <td className="py-3 pl-6 pr-1 lg:pl-14">Chain ID</td>
             <td className="py-3 pl-1 lg:pl-14">
               {configValue(pythAddressConfig.chainId.toString())}
@@ -59,15 +59,12 @@ const ContractInfo = () => {
           </tr>
           <tr
             key="Update Fee"
-            className="border-t border-darkGray5 bg-darkGray"
+            className="border-b border-darkGray5 bg-darkGray"
           >
             <td className="py-3 pl-6 pr-1 lg:pl-14">Update Fee</td>
             <td className="py-3 pl-1 lg:pl-14">{configValue(fee)}</td>
           </tr>
-          <tr
-            key="Valid Time Period"
-            className="border-t border-darkGray5 bg-darkGray border-none"
-          >
+          <tr key="Valid Time Period" className="bg-darkGray">
             <td className="py-3 pl-6 pr-1 lg:pl-14">Valid Time Period</td>
             <td className="py-3 pl-1 lg:pl-14">
               {configValue(validTimePeriod)}
