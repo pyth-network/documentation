@@ -10,7 +10,7 @@ import { Tab, Tabs } from "nextra-theme-docs";
 # Update Price Feeds
 
 Update the on-chain price feeds using the provided `data`, which contains serialized and signed price update data from Pyth Network.
-You can retrieve the latest price `data` for a given set of price feeds from a Hermes instance.
+You can retrieve the latest price `data` for a given set of price feeds from the [Hermes API](https://hermes.pyth.network/docs).
 Executing this message updates the on-chain price if the provided update is more recent than the current on-chain price.
 Otherwise, the provided update will be ignored.
 Execution will succeed even if the update is ignored.

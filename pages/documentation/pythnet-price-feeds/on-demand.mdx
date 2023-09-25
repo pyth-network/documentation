@@ -6,7 +6,7 @@ In contrast, Pyth Network does not operate an off-chain process that pushes pric
 Instead, it delegates this work to Pyth Network users.
 Pyth price updates are created on [Pythnet](../how-pyth-works/pythnet.md) and streamed off-chain via the Wormhole Network, a cross-chain messaging protocol.
 These updates are signed such that the Pyth on-chain program can verify their authenticity.
-Updating the on-chain price is a _permissionless_ operation: anyone can submit a valid Wormhole message to the Pyth contract to update the price.
+Updating the on-chain price is a _permissionless_ operation: anyone can submit a verified update message to the Pyth contract to update the price.
 Typically, users of Pyth Network prices will submit a single transaction that simultaneously updates the price and uses it in a downstream application.
 
 On-chain prices can only move forward in time. If a user submits a Wormhole message with a less recent price the Pyth program will not fail but will
@@ -47,8 +47,8 @@ Developers integrating with Pyth Network should build their application to submi
 For example, if you need the BTC/USD price on-chain, then your frontend should submit the BTC/USD Pyth price update in every transaction that needs it.
 The Pyth Network SDKs cover both parts of this integration -- frontend and contract -- and are designed to simplify this process.
 These SDKs are blockchain-specific and are described in more detail in the subsequent sections of this documentation.
-Developers should get an instance of the [Hermes](hermes) from Hermes node providers to pull the price updates from. Hermes is a
-permissionless service serveing price updates via a convenient web API.
+Developers should get an instance of [Hermes](hermes) from [Hermes node providers](hermes#Hermes Node Providers) to pull
+the price updates from. Hermes is a permissionless service serving price updates via a convenient web API.
 
 ## Fees
 
