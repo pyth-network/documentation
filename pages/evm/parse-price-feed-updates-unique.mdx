@@ -7,14 +7,15 @@ import DynamicCode from "../../components/DynamicCode";
 import EvmSend from "../../components/EvmSend";
 import { Tab, Tabs } from "nextra-theme-docs";
 
-# Parse Price Feed Updates
+# Parse Price Feed Updates Unique
 
-Parse `updateData` and return the price feeds for the given `priceIds` within, if they are all published between `minPublishTime` and `maxPublishTime`.
+Parse `updateData` and return the price feeds for the given `priceIds` within, if they are all **the first updates** published between `minPublishTime` and `maxPublishTime`.
+These updates are unique per `priceId` and `minPublishTime`.
+This will guarantee no updates exist for the given `priceIds` earlier than the returned updates and still in the given time range.
+If you do not need the uniqueness guarantee, consider using [parsePriceFeedUpdates](parse-price-feed-updates) instead.
 Use this function if you want to use a Pyth price for a fixed time and not the most recent price;
 otherwise, consider using [updatePriceFeeds](update-price-feeds) followed by [getPrice](get-price) or one of its variants.
 Unlike `updatePriceFeeds`, calling this function will not update the on-chain price.
-
-If you need to make sure the price update is the earliest update after the `minPublishTime` consider using [parsePriceFeedUpdatesUnique](parse-price-feed-updates-unique).
 
 This method requires the caller to pay a fee in wei; the required fee can be computed by calling [getUpdateFee](get-update-fee) with `updateData`.
 
@@ -53,7 +54,7 @@ contain an update for any of the given `priceIds` within the given time range.
 </Examples>
 
 <EvmSend
-  functionName="parsePriceFeedUpdates"
+  functionName="parsePriceFeedUpdatesUnique"
   buildArguments={(kvs) => [
     [kvs["updateData"]],
     [kvs["priceId"]],
@@ -92,7 +93,7 @@ contain an update for any of the given `priceIds` within the given time range.
             uint64 maxPublishTime = 4;
 
             uint fee = 2;
-            pyth.parsePriceFeedUpdates{value: fee}(updateData, priceIds, minPublishTime, maxPublishTime);
+            pyth.parsePriceFeedUpdatesUnique{value: fee}(updateData, priceIds, minPublishTime, maxPublishTime);
             ```
         </DynamicCode>
     </Tab>
@@ -123,7 +124,7 @@ contain an update for any of the given `priceIds` within the given time range.
             const priceIds = ['0x2222'];
             const minPublishTime = ethers.toBigInt(3);
             const maxPublishTime = ethers.toBigInt(4);
-            const tx = await contract.parsePriceFeedUpdates(updateData, priceIds, minPublishTime, maxPublishTime, {value: fee});
+            const tx = await contract.parsePriceFeedUpdatesUnique(updateData, priceIds, minPublishTime, maxPublishTime, {value: fee});
             const receipt = await tx.wait();
             ```
         </DynamicCode>

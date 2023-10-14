@@ -20,6 +20,7 @@
   "get-update-fee": "getUpdateFee",
   "get-valid-time-period": "getValidTimePeriod",
   "parse-price-feed-updates": "parsePriceFeedUpdates",
+  "parse-price-feed-updates-unique": "parsePriceFeedUpdatesUnique",
   "update-price-feeds": "updatePriceFeeds",
   "update-price-feeds-if-necessary": "updatePriceFeedsIfNecessary"
 }
