@@ -7,7 +7,6 @@
   "sui": "Pyth on Sui",
   "cosmwasm": "Pyth on CosmWasm",
   "off-chain": "Pyth for Off-chain Apps",
-  "price-service": "Price Service",
   "scheduler": "Scheduler",
   "cross-chain-batches": "Price Feed Batches"
 }
