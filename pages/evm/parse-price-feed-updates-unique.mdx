@@ -38,14 +38,16 @@ contain an update for any of the given `priceIds` within the given time range.
   <Example
     keyValues={{
       updateData: async (ctx) =>
-        (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "evm")).vaa,
       priceId: (ctx) => ctx.getFeedId0x("Crypto.BTC/USD"),
       minPublishTime: async (ctx) =>
-        (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).price.publish_time - 5,
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "evm")).price
+          .publish_time - 5,
       maxPublishTime: async (ctx) =>
-        (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).price.publish_time + 5,
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "evm")).price
+          .publish_time + 5,
       fee: async (ctx) => {
-        let vaa = (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa;
+        let vaa = (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "evm")).vaa;
         return await ctx.getEthUpdateFee([vaa]);
       },
     }}
