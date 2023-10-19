@@ -29,7 +29,7 @@ By default, the data is returned as a base64-encoded string that you must deseri
         JSON.stringify(
           Array.from(
             Buffer.from(
-              (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
+              (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "aptos")).vaa,
               "base64"
             )
           )

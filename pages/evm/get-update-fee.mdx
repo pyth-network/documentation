@@ -25,7 +25,7 @@ The `updateData` can be retrieved from the [Hermes API](https://hermes.pyth.netw
   <Example
     keyValues={{
       updateData: async (ctx) =>
-        (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "evm")).vaa,
     }}
     value="Latest BTC/USD update data"
   />

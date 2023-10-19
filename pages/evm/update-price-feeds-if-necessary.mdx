@@ -37,12 +37,13 @@ Reverts if the required fee is not paid, or the `updateData` is incorrectly sign
   <Example
     keyValues={{
       updateData: async (ctx) =>
-        (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa,
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "evm")).vaa,
       priceId: (ctx) => ctx.getFeedId0x("Crypto.BTC/USD"),
       publishTime: async (ctx) =>
-        (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).price.publish_time,
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "evm")).price
+          .publish_time,
       fee: async (ctx) => {
-        let vaa = (await ctx.getLatestPriceFeed("Crypto.BTC/USD")).vaa;
+        let vaa = (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "evm")).vaa;
         return await ctx.getEthUpdateFee([vaa]);
       },
     }}
