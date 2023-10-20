@@ -6,10 +6,9 @@ description: >-
 
 # Network Participants
 
-3 different types of stakeholders will interact within the network:
+2 different types of stakeholders will interact within the network:
 
-- **Publishers** publish price feeds and earn a share of data fees in exchange. Publishers are typically market participants with access to accurate, timely price information. The protocol rewards publishers in proportion to the quantity of new pricing information that they share.
-- **Consumers** read price feeds, incorporate data into smart contracts or dApps, and optionally pay data fees. Consumers can either be on-chain protocols or off-chain applications.
-- **Delegators** stake tokens on a specific product and publisher to earn a share of the data fees in exchange for potentially losing their stake if the oracle is inaccurate.
+- **Publishers** publish price feeds and earn fees in exchange. Publishers are typically market participants with access to accurate and timely price information.
+- **Consumers** read price feeds and incorporate data into smart contracts or dApps. In the process, consumers pay fees to the protocol to access the data. Fees are charged at a fixed rate per Pyth price update on a target chain – e.g., 0.0001 ETH per update. Consumers are users of on-chain protocols that integrate Pyth for market data. These protocols may be running on various blockchains.
 
-Any actor may have multiple roles within the network. For instance, data publishers (or consumers) may additionally decide to delegate tokens to earn additional data fees.
+Any actor may have multiple roles within the network.
