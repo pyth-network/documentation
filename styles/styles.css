@@ -71,7 +71,7 @@ html[class~="dark"] .nextra-nav-container-blur {
 }
 
 html[class~="dark"] .dark\:nx-bg-dark {
-  @apply bg-darkBlue text-light;
+  @apply bg-darkBlue text-light px-4 rounded-lg;
 }
 
 html[class~="dark"] .dark\:nx-shadow-\[0_-12px_16px_\#111\] {
@@ -131,7 +131,7 @@ html[class~="dark"] .even\:dark\:nx-bg-gray-600\/20:nth-child(even) {
 
 /* Sidebar Subheader */
 html[class~="dark"] .dark\:nx-text-gray-100 {
-  @apply text-light text-base16;
+  @apply text-light;
 }
 
 html[class~="dark"] .dark\:nx-text-gray-200 {

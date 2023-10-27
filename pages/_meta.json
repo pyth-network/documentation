@@ -4,51 +4,9 @@
     "type": "page",
     "display": "hidden"
   },
-  "documentation": {
-    "title": "Overview",
-    "type": "page"
-  },
-  "api-explorer": {
-    "title": "API Reference",
-    "type": "menu",
-    "items": {
-      "evm": {
-        "title": "EVM Contract",
-        "href": "/evm"
-      },
-      "aptos": {
-        "title": "Aptos Contract",
-        "href": "/aptos"
-      },
-      "cosmwasm": {
-        "title": "Cosmwasm Contract",
-        "href": "/cosmwasm"
-      },
-      "hermes": {
-        "title": "Hermes",
-        "href": "https://hermes.pyth.network/docs"
-      }
-    }
-  },
-  "guides": {
-    "title": "How-To Guides",
-    "type": "page"
-  },
-  "evm": {
-    "title": "EVM",
-    "type": "page",
-    "display": "hidden"
-  },
-  "aptos": {
-    "title": "Aptos",
-    "type": "page",
-    "display": "hidden"
-  },
-  "cosmwasm": {
-    "title": "CosmWasm",
-    "type": "page",
-    "display": "hidden"
-  },
+  "documentation": "Documentation",
+  "api-explorer": "API Explorer",
+  "guides": "How-To Guides",
   "contact": {
     "title": "Contact ↗",
     "type": "page",

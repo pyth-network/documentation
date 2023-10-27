@@ -3,7 +3,6 @@
     "title": "CosmWasm Contract",
     "type": "separator"
   },
-  "index": "Introduction",
   "sdks": "SDKs",
   "--- Query Messages": {
     "title": "Query Messages",
