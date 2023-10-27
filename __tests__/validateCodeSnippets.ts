@@ -2,8 +2,8 @@ import { exec } from "child_process";
 import fs from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
-import { promisify } from "util";
 import toml from "toml";
+import { promisify } from "util";
 
 const codeSnippetRegex = /```([a-zA-Z]+)[\s\S]*?```/g;
 const codeSnippetsDir = ".code_tests";
@@ -199,6 +199,6 @@ function validateCodeSnippets(directoryPath: string): void {
 describe("Validate code snippets", () => {
   // We only validate code snippets in the API reference.
   // However, we exclude Aptos for now because it's annoying (and doesn't seem worth it).
-  validateCodeSnippets("./pages/evm");
-  validateCodeSnippets("./pages/cosmwasm");
+  validateCodeSnippets("./pages/api-explorer/evm");
+  validateCodeSnippets("./pages/api-explorer/cosmwasm");
 });
