@@ -76,6 +76,10 @@
   @apply w-[320px] !important;
 }
 
+.nx-transform-gpu.nx-overflow-hidden.nx-transition-all.nx-ease-in-out.motion-reduce\:nx-transition-none {
+  @apply w-[320px] !important;
+}
+
 .nx-transition-opacity.nx-duration-500.nx-ease-in-out.motion-reduce\:nx-transition-none.nx-opacity-100 {
   @apply w-[300px] !important;
 }
