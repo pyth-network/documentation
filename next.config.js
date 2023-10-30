@@ -21,6 +21,21 @@ const nextConfig = {
         destination: "/documentation",
         permanent: true,
       },
+      {
+        source: "/evm",
+        destination: "/api-explorer/evm",
+        permanent: true,
+      },
+      {
+        source: "/aptos",
+        destination: "/api-explorer/aptos",
+        permanent: true,
+      },
+      {
+        source: "/cosmwasm",
+        destination: "/api-explorer/cosmwasm",
+        permanent: true,
+      },
     ];
   },
 };
