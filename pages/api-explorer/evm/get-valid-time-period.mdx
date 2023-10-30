@@ -1,0 +1,55 @@
+import DynamicCode from "../../../components/DynamicCode";
+import EvmCall from "../../../components/EvmCall";
+import { Tab, Tabs } from "nextra-theme-docs";
+
+# Get Valid Time Period
+
+Get the default valid time period in seconds.
+This quantity is the maximum age of price updates returned by functions like [getPrice](get-price) and [getEmaPrice](get-ema-price);
+these functions revert if the current on-chain price is older than this period.
+The valid time period is configured to be a sane default for each blockchain.
+
+<EvmCall functionName="getValidTimePeriod" buildArguments={() => []} />
+
+## Example Code
+
+<Tabs items={['Solidity', 'ethers.js v6']}>
+    <Tab>
+        <DynamicCode targets={{
+            "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+        }}>
+            ```solidity copy
+            import "pyth-sdk-solidity/IPyth.sol";
+            import "pyth-sdk-solidity/PythStructs.sol";
+
+            // NETWORK_NAME
+            address contractAddress = 0x0000000000000000000000000000000000000000;
+            IPyth pyth = IPyth(contractAddress);
+
+            uint validTimePeriod = pyth.getValidTimePeriod();
+            ```
+        </DynamicCode>
+    </Tab>
+
+    <Tab>
+        <DynamicCode targets={{
+            "'0x0000'": (ctx) => `'${ctx.pythAddressConfig.pythAddress}'`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
+        }}>
+            ```typescript copy
+            import { ethers } from "ethers";
+            import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
+
+            // NETWORK_NAME
+            const contractAddress = '0x0000';
+            const provider = ethers.getDefaultProvider('RPC_URL');
+            const contract = new ethers.Contract(contractAddress, PythAbi, provider);
+
+            const [validTimePeriod] = await contract.getValidTimePeriod();
+            ```
+        </DynamicCode>
+    </Tab>
+
+</Tabs>

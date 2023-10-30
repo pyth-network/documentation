@@ -66,12 +66,18 @@
   @apply text-[#BB99FF] no-underline;
 }
 
+/* sidebar */
+
+.nextra-sidebar-container.nx-flex.nx-flex-col.md\:nx-top-16.md\:nx-shrink-0.motion-reduce\:nx-transform-none.nx-transform-gpu.nx-transition-all.nx-ease-in-out.print\:nx-hidden.md\:nx-w-64.md\:nx-sticky {
+  @apply md:w-[320px] !important;
+}
+
 html[class~="dark"] .nextra-nav-container-blur {
   @apply bg-dark text-light !important;
 }
 
 html[class~="dark"] .dark\:nx-bg-dark {
-  @apply bg-darkBlue text-light;
+  @apply bg-darkBlue text-light px-4 rounded-lg;
 }
 
 html[class~="dark"] .dark\:nx-shadow-\[0_-12px_16px_\#111\] {
@@ -131,7 +137,7 @@ html[class~="dark"] .even\:dark\:nx-bg-gray-600\/20:nth-child(even) {
 
 /* Sidebar Subheader */
 html[class~="dark"] .dark\:nx-text-gray-100 {
-  @apply text-light text-base16;
+  @apply text-light;
 }
 
 html[class~="dark"] .dark\:nx-text-gray-200 {

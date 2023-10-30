@@ -1,0 +1,109 @@
+import Input from "../../../components/Input";
+import Arg from "../../../components/Arg";
+import Example from "../../../components/Example";
+import DynamicCode from "../../../components/DynamicCode";
+import { InputFormats } from "../../../utils/InputFormat";
+import EvmCall from "../../../components/EvmCall";
+import { Tab, Tabs } from "nextra-theme-docs";
+import Examples from "../../../components/Examples";
+
+# Get EMA Price No Older Than
+
+Get the latest exponentially-weighted moving average (EMA) price and confidence interval for the requested price feed id.
+The price feed id is a 32-byte id written as a hexadecimal string; see the [price feed ids](https://pyth.network/developers/price-feed-ids) page to look up the id for a given symbol.
+The returned price and confidence are decimal numbers written in the form `a * 10^e`, where `e` is an exponent included in the result.
+For example, a price of 1234 with an exponent of -2 represents the number 12.34.
+The result also includes a `publishTime` which is the unix timestamp for the price update.
+The EMA methodology is described in more detail in this [blog post](https://pythnetwork.medium.com/whats-in-a-name-302a03e6c3e1).
+
+The caller provides an `age` argument that specifies how old the price can be.
+The call reverts with a `StalePriceError` if the on-chain price is from more than `age` seconds in the past (with respect to the current on-chain timestamp).
+Call [updatePriceFeeds](update-price-feeds) to pull a fresh price on-chain and solve this problem.
+
+This function reverts with a `PriceFeedNotFound` error if the requested feed id has never received a price update.
+This error could either mean that the provided price feed id is incorrect, or (more typically) that this is the first
+attempted use of that feed on-chain. In the second case, calling [updatePriceFeeds](update-price-feeds) will solve
+this problem.
+
+<div className="mt-6 overflow-x-auto">
+
+| Argument                                  | Input                                         | Description                                   |
+| ----------------------------------------- | --------------------------------------------- | --------------------------------------------- |
+| <Arg required={true} type="hex">id</Arg>  | <Input id="id" format={InputFormats.ZeroX} /> | The ID of the price feed you want to read     |
+| <Arg required={true} type="int">age</Arg> | <Input id="age" />                            | Maximum age of the on-chain price in seconds. |
+
+</div>
+
+<Examples>
+  <Example
+    keyValues={{
+      id: (ctx) => ctx.getFeedId0x("Crypto.BTC/USD"),
+      age: () => 60,
+    }}
+    value="BTC/USD"
+  />
+  <Example
+    keyValues={{
+      id: (ctx) => ctx.getFeedId0x("Crypto.ETH/USD"),
+      age: () => 60,
+    }}
+    value="ETH/USD"
+  />
+</Examples>
+
+<EvmCall
+  functionName="getEmaPriceNoOlderThan"
+  buildArguments={(kvs) => [kvs["id"], kvs["age"]]}
+/>
+
+## Example Code
+
+<Tabs items={['Solidity', 'ethers.js v6']}>
+    <Tab>
+        <DynamicCode targets={{
+            "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
+            "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("id", "<id>"),
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "0x2": (ctx) => ctx.get("age", "<age>"),
+        }}>
+            ```solidity copy
+            import "pyth-sdk-solidity/IPyth.sol";
+            import "pyth-sdk-solidity/PythStructs.sol";
+
+            // NETWORK_NAME
+            address contractAddress = 0x0000000000000000000000000000000000000000;
+            IPyth pyth = IPyth(contractAddress);
+
+            bytes32 priceId = 0x1111111111111111111111111111111111111111111111111111111111111111;
+            uint256 age = 0x2;
+            PythStructs.Price memory currentBasePrice = pyth.getEmaPriceNoOlderThan(priceId, age);
+            ```
+        </DynamicCode>
+
+    </Tab>
+
+    <Tab>
+        <DynamicCode targets={{
+            "'0x0000'": (ctx) => `'${ctx.pythAddressConfig.pythAddress}'`,
+            "'0x1111'": (ctx) => `'${ctx.get("id", "<id>")}'`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
+            "'0x2222'": (ctx) => `'${ctx.get("age", "<age>")}'`,
+        }}>
+            ```typescript copy
+            import { ethers } from "ethers";
+            import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
+
+            // NETWORK_NAME
+            const contractAddress = '0x0000';
+            const provider = ethers.getDefaultProvider('RPC_URL');
+            const contract = new ethers.Contract(contractAddress, PythAbi, provider);
+
+            const priceId = '0x1111';
+            const age = '0x2222'
+            const [price, conf, expo, timestamp] = await contract.getEmaPriceNoOlderThan(priceId, age);
+            ```
+        </DynamicCode>
+    </Tab>
+
+</Tabs>
