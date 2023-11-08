@@ -6,6 +6,7 @@
   "aptos": "Pyth on Aptos",
   "sui": "Pyth on Sui",
   "cosmwasm": "Pyth on CosmWasm",
+  "near": "Pyth on Near",
   "off-chain": "Pyth for Off-chain Apps",
   "scheduler": "Scheduler"
 }
