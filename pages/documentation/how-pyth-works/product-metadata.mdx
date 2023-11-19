@@ -1,8 +1,8 @@
 # Product Metadata
 
-Product accounts store metadata about a product. This metadata is represented as a set of reference attributes, stored as a list of text key/value pairs but not all products share the same account structure.
+Product accounts store metadata about a product. This metadata is represented as a set of reference attributes, stored as a list of text key/value pairs but not all products share the same account structure. Metadata is network dependent.
 
-Every product has `product_account`, `symbol`, `asset_type`, `quote_currency`, `base` and `price_account`. However, the remaining fields of a product account will depend on its `asset_type.`
+Every product has `product_account`, `symbol`, `asset_type`, `quote_currency`, `base` and `price_account`. However, the remaining fields of a product account will depend on its `asset_type`.
 
 **Equity**
 
@@ -28,10 +28,10 @@ product_account... Solana Account
 2. `cqs_symbol`: SIPSSymbol
 3. `nasdaq_symbol`: ComstockSymbol
 
-Here is a snapshot of the Apple product account:
+Here is a snapshot of the Apple product account on Pythnet:
 
 ```sh copy
-product_account .. G89jkM5wFLpmnbvRbeePUumxsJyzoXaRfgBVjyx2CPzQ
+product_account .. 3mkwqdkawySvAm1VjD4f2THN5mmXzb76fvft2hWpAANo
   symbol.......... Equity.US.AAPL/USD
   asset_type...... Equity
   quote_currency.. USD
@@ -41,7 +41,7 @@ product_account .. G89jkM5wFLpmnbvRbeePUumxsJyzoXaRfgBVjyx2CPzQ
   cms_symbol...... AAPL
   cqs_symbol...... AAPL
   nasdaq_symbol... AAPL
-  price_account... CqFJLrT4rSpA46RQkVYWn8tdBDuQ7p7RXcp6Um76oaph
+  price_account... 5yixRcKtcs5BZ1K2FsLFwmES1MyA92d6efvijjVevQCw
 ```
 
 **Crypto**
@@ -59,17 +59,17 @@ product_account .. Solana Account
   price_account .. Solana Account
 ```
 
-Here is a snapshot of the Luna product account:
+Here is a snapshot of the Ethereum product account on Pythnet:
 
 ```sh copy
-product_account .. 25tCF4ChvZyNP67xwLuYoAKuoAcSV13xrmP9YTwSPnZY
-  symbol.......... Crypto.LUNA/USD
+product_account .. EMkxjGC1CQ7JLiutDbfYb7UKb3zm9SJcUmr1YicBsdpZ
+  symbol.......... Crypto.ETH/USD
   asset_type...... Crypto
   quote_currency.. USD
-  description..... LUNA/USD
-  generic_symbol.. LUNAUSD
-  base............ LUNA
-  price_account .. 8PugCXTAHLM9kfLSQWe2njE5pzAgUdpPk3Nx5zSm7BD3
+  description..... ETH/USD
+  generic_symbol.. ETHUSD
+  base............ ETH
+  price_account .. JBu1AL4obBcCMqKBBxhpWCNUt136ijcuMZLFvTP7iWdB
 ```
 
 **Foreign Currency & Metal**
@@ -88,10 +88,10 @@ product_account .. Solana Account
   price_account .. Solana Account
 ```
 
-Here is a snapshot of the Japanese Yen product account:
+Here is a snapshot of the Japanese Yen product account on Pythnet:
 
 ```sh copy
-product_account .. CiTV5gD8G53M1EQdo32jy5riYRU8fMFSVWC5wJj3vjcr
+product_account .. eAnmHaCS2J1XPEb6zohWFrnXD3Mni3wTrfKGhkoQmcZ
   symbol.......... FX.USD/JPY
   asset_type...... FX
   quote_currency.. JPY
@@ -99,7 +99,7 @@ product_account .. CiTV5gD8G53M1EQdo32jy5riYRU8fMFSVWC5wJj3vjcr
   generic_symbol.. USDJPY
   base............ USD
   tenor........... Spot
-  price_account .. 3CVi3EEprs1zeKhv5kw9EpRDv1hNfvpunQ98gex27Prd
+  price_account .. H6dt83FavYgfJR8oV7HewKWZjzveFFiDhq41VbmDYnVF
 ```
 
 **Best Practices**
