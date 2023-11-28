@@ -52,6 +52,17 @@ contract, see [the interface][] exposed by the receiver contract.
    }
    ```
 
+   You can find an update to submit with this call from the Hermes API
+   which for example [can be found for testnet here.](https://hermes-beta.pyth.network/)
+   To try this out, use the `get_vaa` endpoint to request a price feed
+   update for a price feed. You must convert the returned base64 blob to
+   hex before using it in the `update_price_feeds` call due to NEAR passing
+   bytes around with hex encoding.
+
+   It's also possible to integrate this process into your contract itself
+   to reduce the number of transactions required. See the example contract
+   linked below.
+
    Note: gas and attachedDeposit are NEAR-specific parameters that you
    may need to set depending on the contract's requirements. Unused
    deposit will be refunded, but you can calculate an esimtate by calling
@@ -95,4 +106,4 @@ pull prices with the official NEAR cli.
 | Network      | Contract address      |
 | ------------ | --------------------- |
 | NEAR Mainnet | `pyth-oracle.near`    |
-| NEAR Testnet | `pythnetwork.testnet` |
+| NEAR Testnet | `pyth-oracle.testnet` |
