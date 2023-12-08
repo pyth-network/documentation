@@ -5,5 +5,6 @@
   "account-structure": "Account Structure",
   "product-metadata": "Product Metadata",
   "price-aggregation": "Price Aggregation",
-  "ema-price-aggregation": "EMA Price Aggregation"
+  "ema-price-aggregation": "EMA Price Aggregation",
+  "weekly-schedule-format": "Weekly Schedule Format"
 }
