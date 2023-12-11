@@ -74,7 +74,7 @@ contract, see [the interface][] exposed by the receiver contract.
    async function fetchPriceFeed() {
      const near = await connect(config);
      const account = await near.account();
-     const contractId = "pyth.testnet";
+     const contractId = "pyth-oracle.testnet";
      const identifier = "PriceIdentifier";
 
      const priceFeed = await account.viewFunction(
