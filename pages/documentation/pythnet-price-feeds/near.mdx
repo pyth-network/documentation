@@ -42,7 +42,7 @@ contract, see [the interface][] exposed by the receiver contract.
    async function updatePriceFeeds(data) {
      const near = await connect(config);
      const result = await account.functionCall({
-       "pyth.testnet",
+       "pyth-oracle.testnet",
        methodName: "update_price_feeds",
        args: { data },
        gas: new utils.BN("30000000000000"),
