@@ -1,0 +1,17 @@
+# Best Practices
+
+Developers integrating Entropy into their applications should consider using some of the following patterns and best practices.
+
+## Incomplete Requests
+
+Users of Entropy-powered protocols can choose not to complete the protocol.
+They can compute the random number after it is fully determined, but before revealing it to the contract.
+Hence, they can choose to stop the protocol at this point if they do not like the chosen random number.
+
+Integrators should ensure that the user is always incentivized to reveal their random number. Integrators can ensure incentive alignment by following two simple rules:
+
+- Only charge the user fees when the random number is requested.
+- Only return value to the user when the random number is revealed.
+
+For example, in an NFT mint, the user should pay for the NFT in the request step, and receive the NFT in the reveal step.
+If the mint contract instead charged the user in the reveal step, the user could see the random attributes of the NFT before deciding whether or not to pay for it.
