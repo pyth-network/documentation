@@ -10,15 +10,16 @@ As a rule, all products with `asset_type` = Equity will follow the below Product
 
 ```sh copy
 product_account... Solana Account
-  symbol.......... AssetType.Country.BaseCurrency/QuoteCurrency
   asset_type...... AssetType
-  quote_currency.. QuoteCurrency
-  description..... Description
   base............ BaseCurrency
-  country......... Country
   cms_symbol...... NYSESymbol
   cqs_symbol...... SIPSSymbol
+  country......... Country
+  description..... Description
   nasdaq_symbol... ComstockSymbol
+  quote_currency.. QuoteCurrency
+  symbol.......... AssetType.Country.BaseCurrency/QuoteCurrency
+  weekly_schedule. WeeklySchedule
   price_account... Solana Account
 ```
 
@@ -32,15 +33,16 @@ Here is a snapshot of the Apple product account on Pythnet:
 
 ```sh copy
 product_account .. 3mkwqdkawySvAm1VjD4f2THN5mmXzb76fvft2hWpAANo
-  symbol.......... Equity.US.AAPL/USD
   asset_type...... Equity
-  quote_currency.. USD
-  description..... APPLE INC
   base............ AAPL
-  country......... US
   cms_symbol...... AAPL
   cqs_symbol...... AAPL
+  country......... US
+  description..... APPLE INC / US DOLLAR
   nasdaq_symbol... AAPL
+  quote_currency.. USD
+  symbol.......... Equity.US.AAPL/USD
+  weekly_schedule. America/New_York,9:30-16:00,9:30-16:00,9:30-16:00,9:30-16:00,9:30-16:00,C,C
   price_account... 5yixRcKtcs5BZ1K2FsLFwmES1MyA92d6efvijjVevQCw
 ```
 
@@ -50,12 +52,13 @@ As a rule, all products with `asset_type` = Crypto will follow the below Product
 
 ```sh copy
 product_account .. Solana Account
-  symbol.......... AssetType.BaseCurrency/QuoteCurrency
   asset_type...... AssetType
-  quote_currency.. QuoteCurrency
+  base............ BaseCurrency
   description..... Description
   generic_symbol.. JLQDSymbol
-  base............ BaseCurrency
+  quote_currency.. QuoteCurrency
+  symbol.......... AssetType.BaseCurrency/QuoteCurrency
+  weekly_schedule. WeeklySchedule
   price_account .. Solana Account
 ```
 
@@ -63,12 +66,13 @@ Here is a snapshot of the Ethereum product account on Pythnet:
 
 ```sh copy
 product_account .. EMkxjGC1CQ7JLiutDbfYb7UKb3zm9SJcUmr1YicBsdpZ
-  symbol.......... Crypto.ETH/USD
   asset_type...... Crypto
-  quote_currency.. USD
-  description..... ETH/USD
-  generic_symbol.. ETHUSD
   base............ ETH
+  description..... ETHEREUM / US DOLLAR
+  generic_symbol.. ETHUSD
+  quote_currency.. USD
+  symbol.......... Crypto.ETH/USD
+  weekly_schedule. America/New_York,O,O,O,O,O,O,O
   price_account .. JBu1AL4obBcCMqKBBxhpWCNUt136ijcuMZLFvTP7iWdB
 ```
 
@@ -78,13 +82,14 @@ Lastly, are Foreign Currencies (FX) and Metal assets. Those 2 `asset_type` share
 
 ```sh copy
 product_account .. Solana Account
-  symbol.......... AssetType.BaseCurrency/QuoteCurrency
   asset_type...... AssetType
-  quote_currency.. QuoteCurrency
+  base............ BaseCurrency
   description..... Description
   generic_symbol.. JLQDSymbol
-  base............ BaseCurrency
+  quote_currency.. QuoteCurrency
+  symbol.......... AssetType.BaseCurrency/QuoteCurrency
   tenor........... Maturity
+  weekly_schedule. WeeklySchedule
   price_account .. Solana Account
 ```
 
@@ -92,13 +97,14 @@ Here is a snapshot of the Japanese Yen product account on Pythnet:
 
 ```sh copy
 product_account .. eAnmHaCS2J1XPEb6zohWFrnXD3Mni3wTrfKGhkoQmcZ
-  symbol.......... FX.USD/JPY
   asset_type...... FX
-  quote_currency.. JPY
-  description..... USD/JPY
-  generic_symbol.. USDJPY
   base............ USD
+  description..... US DOLLAR / JAPANESE YEN
+  generic_symbol.. USDJPY
+  quote_currency.. JPY
+  symbol.......... FX.USD/JPY
   tenor........... Spot
+  weekly_schedule. America/New_York,O,O,O,O,00:00-17:00,C,17:00-24:00
   price_account .. H6dt83FavYgfJR8oV7HewKWZjzveFFiDhq41VbmDYnVF
 ```
 
