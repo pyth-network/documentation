@@ -143,12 +143,6 @@ export const CosmWasmAccountButton = () => {
     const cosmosChain = getCosmosChainFromConfig(cosmosChainConfig.chainId);
     suggestAndConnect({
       chainInfo: cosmosChain,
-      // TODO: not clear that setting this to 0.1 is going to be enough to land on-chain,
-      // but there doesn't seem to be a good way to dynamically set this price.
-      gas: {
-        price: "0.1",
-        denom: cosmosChain.feeCurrencies[0].coinMinimalDenom,
-      },
     });
   }, [cosmosChainConfig, suggestAndConnect]);
 
