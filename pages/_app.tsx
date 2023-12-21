@@ -6,7 +6,7 @@ import "nextra-theme-docs/style.css";
 import { ReactNode, useEffect, useState } from "react";
 import { WagmiConfig, createConfig } from "wagmi";
 import { arbitrum, avalanche, mainnet } from "wagmi/chains";
-import { GlobalContextProvider } from "../contexts/GlobalContext";
+import { CosmosChains, GlobalContextProvider } from "../contexts/GlobalContext";
 import "../styles/styles.css";
 
 const chains = [arbitrum, mainnet, avalanche];
@@ -50,7 +50,7 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
           gtag('config', 'G-7TVVW3MEK7');
         `}
         </Script>
-        <GrazProvider>
+        <GrazProvider grazOptions={{ chains: CosmosChains }}>
           <WagmiConfig config={config}>
             <ConnectKitProvider
               theme="midnight"
