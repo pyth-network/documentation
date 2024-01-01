@@ -4,9 +4,18 @@
 
     PYTH Token holders can access Pyth governance through the convenient staking and governance [frontend](https://staking.pyth.network/).
 
-    Pyth Network’s governance system allows anyone with PYTH Tokens to participate. Token holders must stake their tokens in the Pyth staking program to vote on community governance proposals. Governance uses a 1:1 coin-voting system, where each staked token confers one vote.
+    Pyth Network’s governance system allows anyone with staked PYTH Tokens to participate. Token holders must stake their tokens in the Pyth staking program to vote on community governance proposals.
 
-    Proposals pass when a majority approves them, provided that a quorum of participants have voted. The current quorum for governance proposals is set at 0.25% of the PYTH tokens staked.
+    All staked tokens have equal voting power. However, the voting power of each token is inversely proportional to the total number of tokens staked.
+    This behavior is best illustrated by the following examples:
+    - if 100 PYTH tokens are staked, each one carries 1% of the voting power.
+    - if 1000 PYTH tokens are staked, each one carries 0.1% of the voting power.
+
+    Any PYTH Token holder can submit proposals to the Pyth DAO as long as they have 0.25% of the total PYTH tokens staked.
+
+    A proposal is considered passed if it meets the following conditions:
+    - More yesses have been cast than nos.
+    - The "Approval Quorum" has been met. This is a percentage of staked tokens that must have voted yes for the proposal to pass. The threshold can vary depending on the type of proposal.  The current thresholds can be found in the "Governances" sections of the [parameters of the DAO](https://app.realms.today/dao/PYTH/params).
 
     Proposals are binding on-chain: each proposal has one or more associated instructions that are executed when the proposal passes. Community governance proposals can relate to all of the following:
 
