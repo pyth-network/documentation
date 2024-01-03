@@ -17,39 +17,26 @@ type NextraAppProps = AppProps & {
   };
 };
 
+const config = createConfig(
+  getDefaultConfig({
+    alchemyId: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
+    appName: "Pyth Network",
+    chains,
+  })
+);
+
 export default function Nextra({ Component, pageProps }: NextraAppProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
-
-  const config = createConfig(
-    getDefaultConfig({
-      alchemyId: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
-      appName: "Pyth Network",
-      chains,
-    })
-  );
 
   // Make the global context available to every page.
   return (
     // prevent react hydration error
     mounted && (
       <>
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-7TVVW3MEK7"
-        />
-        <Script id="google-tag">
-          {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'G-7TVVW3MEK7');
-        `}
-        </Script>
         <GrazProvider grazOptions={{ chains: CosmosChains }}>
           <WagmiConfig config={config}>
             <ConnectKitProvider
