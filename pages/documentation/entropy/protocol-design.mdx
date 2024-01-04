@@ -4,9 +4,9 @@ The Entropy protocol is an extension of a classical commit/reveal protocol.
 The original version has the following steps:
 
 1. Two parties A and B each draw secret random numbers, `x_A` and `x_B`.
-2. A and B hash their random numbers and share the hashes, `h_{A} = hash(x_{A})` and `h_{B} = hash(x_{B})`
-3. A and B reveal `x_{A}` and `x_{B}`
-4. Both parties verify that `hash(x_{A}) == h_{A}` and `hash(x_{B}) == h_{B}`
+2. A and B hash their random numbers and share the hashes, `h_A = hash(x_A)` and `h_B = hash(x_B)`
+3. A and B reveal `x_A` and `x_B`
+4. Both parties verify that `hash(x_A) == h_A` and `hash(x_B) == h_B`
 5. The random number `r = hash(x_A, x_B)`
 
 This protocol has the property that the result is random as long as either A or B are honest.
