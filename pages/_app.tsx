@@ -37,6 +37,18 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
     // prevent react hydration error
     mounted && (
       <>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-7TVVW3MEK7"
+        />
+        <Script id="google-tag">
+          {`
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'G-7TVVW3MEK7');
+       `}
+        </Script>
         <GrazProvider grazOptions={{ chains: CosmosChains }}>
           <WagmiConfig config={config}>
             <ConnectKitProvider
