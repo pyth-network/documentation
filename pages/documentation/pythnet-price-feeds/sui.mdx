@@ -108,6 +108,17 @@ const result = await wallet.signAndExecuteTransactionBlock(txBlock);
 By calling the `updatePriceFeeds` function, the `SuiPythClient` adds the necessary transactions to the transaction block to update the price feeds.
 Now in your contract you can consume the price by calling `pyth::get_price` or other utility functions on the `PriceInfoObject`.
 
+### Pyth Dependency
+
+Use the following dependency in your `Move.toml` file to use the latest Pyth Sui package.
+
+```sh copy
+[dependencies.Pyth]
+git = "https://github.com/pyth-network/pyth-crosschain.git"
+subdir = "target_chains/sui/contracts"
+rev = "8b721c38dcf19b2acfa81ad0560a39ce144c3b97"
+```
+
 ### CLI Example
 
 [This example](./src/examples/SuiRelay.ts) shows how to update prices on an Sui network. It does the following:
