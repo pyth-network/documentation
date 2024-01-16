@@ -160,6 +160,10 @@ html[class~="dark"] .nextra-sidebar-container {
   @apply bg-[#0C0B1A];
 }
 
+.main {
+  overflow-x: scroll;
+}
+
 .nx-text-gray-500 {
   @apply text-light;
 }
