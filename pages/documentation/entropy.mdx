@@ -6,8 +6,9 @@ Integrations use a simple four-step process, with two off-chain steps and two-on
 
 1. **Commit** to a random number. Generate a random value off-chain and hash it to create a commitment.
 1. **Request** a random number. Send a transaction with the commitment to the Entropy contract and receive a sequence number.
-1. **Retrieve** part of the random number. Submit the sequence number from (1) to a webservice to receive a random payload.
-1. **Reveal** the random number. Send a transaction with the random value from (1) and the payload from (3) to the Entropy contract and receive the secure random number.
+1. **Retrieve** part of the random number. Submit the sequence number from (2) to a webservice to receive a random payload.
+1. **Reveal** the random number. Send a transaction with the sequence number from (2) , random value from (1) , and the
+payload from (3) to the Entropy contract and receive the secure random number.
 
 Pyth Entropy is currently available in testnet on several [EVM networks](entropy/evm.mdx).
 Please see the documentation there for SDKs and integration examples.
