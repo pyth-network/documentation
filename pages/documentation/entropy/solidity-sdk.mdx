@@ -56,8 +56,9 @@ This method returns a sequence number. Store this sequence number for use in lat
 If you are invoking this off-chain, the method also emits a `PythRandomEvents.Requested` event that contains the sequence number in it.
 
 ### 3. Fetch the provider's number
+
 Providers store their uri, with some other metadata, on chain when registering and that can be fetched by calling the method `getProviderInfo`.
-You need the provider's uri to fetch the provider's random number. 
+You need the provider's uri to fetch the provider's random number.
 
 For the provider `0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344` you can query the webservice at https://fortuna-staging.pyth.network :
 
