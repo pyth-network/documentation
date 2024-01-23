@@ -26,7 +26,6 @@
     "type": "separator"
   },
 
-  "whitepaper": "Whitepaper",
   "security": "Security",
   "pyth-token": "PYTH Token",
   "metrics": "Pyth Metrics"
