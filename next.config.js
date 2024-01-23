@@ -17,6 +17,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: "/",
+        destination: "/home",
+        permanent: true,
+      },
+      {
         source: "/evm",
         destination: "/api-explorer/evm",
         permanent: true,

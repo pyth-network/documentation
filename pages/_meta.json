@@ -1,39 +1,23 @@
 {
-  "index": "Introduction",
-  "-- Integrate": {
-    "title": "Get Started with Pyth",
-    "type": "separator"
-  },
-  "use-real-time-data": "Use Real-Time Price Data",
-  "use-historical-data": "Use Historical Data",
-  "generate-random-numbers": "Generate Random Numbers",
-  "publish-data": "Publish Data",
-  "third-party": "Third-Party Integrations",
-
-  "-- Reference Material": {
-    "title": "Reference Material",
-    "type": "separator"
+  "home": {
+    "title": "Home",
+    "type": "page"
   },
 
-  "api-explorer": "API Explorer",
-  "api-endpoints-and-providers": "API Endpoints and Providers",
-  "contract-addresses": "Contract Addresses",
-  "price-feed-ids": "Price Feed IDs",
-
-  "-- Understand Pyth": {
-    "title": "Understanding Pyth",
-    "type": "separator"
+  "price-feeds": {
+    "title": "Price Feeds",
+    "type": "page"
   },
 
-  "solana-price-feeds": "Solana Price Feeds",
-  "pythnet-price-feeds": "Pythnet Price Feeds",
-  "benchmarks": "Benchmarks",
-  "entropy": "Entropy",
-  "how-pyth-works": "How Pyth Works",
-  "whitepaper": "Whitepaper",
-  "security": "Security",
-  "pyth-token": "PYTH Token",
-  "metrics": "Pyth Metrics",
+  "benchmarks": {
+    "title": "Benchmarks",
+    "type": "page"
+  },
+
+  "entropy": {
+    "title": "Entropy",
+    "type": "page"
+  },
 
   "contact": {
     "title": "Contact ↗",

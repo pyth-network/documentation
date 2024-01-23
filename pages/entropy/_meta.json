@@ -1,4 +1,30 @@
 {
+  "index": "Introduction",
+
+  "-- How-To Guides": {
+    "title": "How-To Guides",
+    "type": "separator"
+  },
+
+  "generate-random-numbers": "Generate Random Numbers",
+
+  "-- Reference Material": {
+    "title": "Reference Material",
+    "type": "separator"
+  },
+
+  "fortuna-api-explorer": {
+    "title": "Fortuna API Explorer ↗",
+    "href": "https://fortuna-staging.pyth.network/docs/",
+    "newWindow": true
+  },
+  "contract-addresses": "Contract & Provider Addresses",
+
+  "-- Understanding Entropy": {
+    "title": "Understanding Entropy",
+    "type": "separator"
+  },
+
   "protocol-design": "Protocol Design",
   "best-practices": "Best Practices"
 }

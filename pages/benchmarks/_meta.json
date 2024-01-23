@@ -1,0 +1,24 @@
+{
+  "index": "Introduction",
+
+  "-- How-To Guides": {
+    "title": "How-To Guides",
+    "type": "separator"
+  },
+
+  "use-historical-data": "Use Historical Data",
+  "how-to-create-tradingview-charts": "Create Charts with TradingView",
+
+  "-- Reference Material": {
+    "title": "Reference Material",
+    "type": "separator"
+  },
+
+  "benchmarks-api-explorer": {
+    "title": "Benchmarks API Explorer ↗",
+    "href": "https://benchmarks.pyth.network/docs/",
+    "newWindow": true
+  },
+
+  "api-instances": "API Instances"
+}
