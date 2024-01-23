@@ -1,0 +1,9 @@
+{
+  "evm": "in EVM contracts",
+  "solana": "in Solana contracts",
+  "aptos": "in Aptos contracts",
+  "sui": "in Sui contracts",
+  "cosmwasm": "in CosmWasm contracts",
+  "near": "in Near contracts",
+  "off-chain": "in Off-chain applications"
+}

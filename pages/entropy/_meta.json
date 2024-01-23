@@ -1,6 +1,4 @@
 {
   "protocol-design": "Protocol Design",
-  "best-practices": "Best Practices",
-  "evm": "Entropy on EVM",
-  "solidity-sdk": "Pyth Entropy Solidity SDK"
+  "best-practices": "Best Practices"
 }
