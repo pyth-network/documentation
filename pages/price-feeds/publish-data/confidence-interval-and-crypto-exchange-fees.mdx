@@ -11,12 +11,12 @@ This is to reflect the "after fee" effective prices that could be gotten on that
 
 Example 1 - Exchange A has best aggressive fee of 10bps
 
-![](../../images/image.png)
+![](../../../images/image.png)
 
 Exchange A should publish a price of \$50,000.01 and a confidence of \$50.005 (half the bid-ask spread after fee adjustment). It would be wrong to publish a confidence of \$0.005 based on the "not fee-adjusted" raw exchange bid-ask spread.
 
 Example 2 - Exchange A has a best aggressive fee of 10bps. Exchange B has a best aggressive fee of 1bps, and a publisher is combining them into a single combined book. Exchange books are combined by taking the best ask across both exchanges and the best bid across both exchanges.
 
-![](<../../images/image (1).png>)
+![](<../../../images/image (1).png>)
 
 In this example, if a publisher were combining the books of Exchange A and Exchange B to get a combined price, they should publish a price of \$49,978.13 and confidence of \$28.125, which corresponds to the midprice and half the bid-ask spread of the combined fee-adjusted books. It would be wrong to publish a price of \$50,000.01 and confidence of \$0.01 based on the "not fee-adjusted" raw exchange prices. Note that in this example, not only is the confidence changed by including the exchange fees, but the price reported is also substantially different once fees are properly accounted for.

@@ -46,7 +46,7 @@ The pyth web3 function code is deployed to IPFS, so you can use it via the cid/l
 You can find a copy of the web3 function code [here](https://github.com/pyth-network/w3f-pyth-poc-v2/tree/master/web3-functions/pyth-oracle-w3f-priceIds)
 
 Choose network, and then in the "Task secrets" section, set `GIST_ID` to the gistId of the gist you created in step 2.
-![](../../images/guides/gelato/task-creation-gist-id.png)
+![](../../../images/guides/gelato/task-creation-gist-id.png)
 
 **Note that the beta currently only supports triggering the task every minute. Once other time intervals are available,
 you will need to ensure that your current subscription plan with Gelato supports the desired number of monthly runs.
@@ -65,10 +65,10 @@ and transaction gas fees. Testnet executions are subsidized by Gelato and free. 
 using the same wallet address that you used to create the Gelato task.
 
 Switch network to Polygon
-![](../../images/guides/gelato/switch-to-polygon.png)
+![](../../../images/guides/gelato/switch-to-polygon.png)
 
 Deposit USDC
-![](../../images/guides/gelato/deposit-usdc.png)
+![](../../../images/guides/gelato/deposit-usdc.png)
 
 **Pyth Fees**
 
@@ -85,7 +85,7 @@ You will need to transfer over the native tokens to `dedicatedMsgSender` on ever
 the task using a standard transfer. The `dedicatedMsgSender` address can be found in the Gelato task details
 under `Target smart contract` as the `Your msg.sender` field
 
-![](../../images/guides/gelato/dedicated-msg-sender.png)
+![](../../../images/guides/gelato/dedicated-msg-sender.png)
 
 You can simply open your wallet and send native tokens to `dedicatedMsgSender` on the chain(s) where you want to run the
 task.
@@ -94,7 +94,7 @@ task.
 
 Once your task has been successfully created, you can check the task execution details in the Gelato app.
 [Example Pyth Web3 Function on Mumbai](https://beta.app.gelato.network/task/0x2c64539daaeb86addd6f556b68251a2fdf0df5c09ec07b8a30a2fbf76f4fe907?chainId=80001)
-![](../../images/guides/gelato/task-execution.png)
+![](../../../images/guides/gelato/task-execution.png)
 
 ## Managing your Gelato Task
 
@@ -119,7 +119,7 @@ fetch the latest configuration from the gist vs reading a locally cached version
 rate-limited by GitHub. To verify that your most recent task execution used the latest configuration, you can check the
 "Storage" tab on the task details page and look at the configuration stored under the `pythConfig` key.
 
-![](../../images/guides/gelato/storage-pyth-config.png)
+![](../../../images/guides/gelato/storage-pyth-config.png)
 
 ## Notes
 

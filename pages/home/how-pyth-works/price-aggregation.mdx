@@ -6,11 +6,11 @@ Price aggregation combines the prices and confidences submitted by individual da
 
 The aggregation algorithm is designed to achieve 3 properties. First, it must be **robust to manipulation.** If most publishers are submitting a price of \$100 and one publisher submits a price of \$80, the aggregate price should remain near \$100 and not be overly influenced by the single outlying price. In the figure below, the aggregate price and confidence interval (represented by the red star) is not influenced by the blue publisher whose price is far away from the other publishers:
 
-![](<../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_8c7da880-4157-4543-a293-37b5f5bfdac1_291x172 (1).jpeg>)
+![](<../../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_8c7da880-4157-4543-a293-37b5f5bfdac1_291x172 (1).jpeg>)
 
 Second, the **aggregate price should appropriately weight data sources with different levels of accuracy.** Pyth allows publishers to submit a confidence interval because they have varying levels of accuracy in observing the price of a product. This property can result in situations where one publisher reports a price of \$101 +/- 1, and another reports \$110 +/- 10. In these cases, we would like the aggregate price to be closer to \$101 than \$110, as in the figure below.
 
-![](<../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_c0ab7e74-adb8-4324-9ef1-607c41bde1d4_292x171 (1).jpeg>)
+![](<../../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_c0ab7e74-adb8-4324-9ef1-607c41bde1d4_292x171 (1).jpeg>)
 
 Finally, the **aggregate confidence interval should reflect the variation between publishers’ prices.**
 Under normal market conditions, we expect the a product to trade at a similar price across exchanges.
@@ -18,7 +18,7 @@ In these cases, we would like the aggregate confidence interval to reflect the c
 However, in some rare situations, a product can trade at different prices on different exchanges.
 In these cases, the aggregate confidence interval should widen out to reflect the variation between these prices, as shown in the figure on the right.
 
-![](<../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_0b4c8b1e-26bb-4131-8e2b-f725839d1bad_577x181 (1).jpeg>)
+![](<../../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_0b4c8b1e-26bb-4131-8e2b-f725839d1bad_577x181 (1).jpeg>)
 
 **Algorithm**
 
@@ -41,21 +41,21 @@ Finally, the bold red star depicts the aggregate price and the bold red line dep
 In the first scenario, one publisher with a tight confidence interval is an outlier.
 Although this publisher does influence the objective function (the red line is lower on the left side than the right), it does not have enough influence to affect either the aggregate price or confidence interval.
 
-![](<../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_a48fd6dc-356f-49fc-975a-290042f368e6_252x292 (1).jpeg>)
+![](<../../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_a48fd6dc-356f-49fc-975a-290042f368e6_252x292 (1).jpeg>)
 
 The second scenario depicts how publishers with tighter confidence intervals can exert more influence over the location of the aggregate price, as long as their prices are consistent with the confidence intervals of other publishers.
 
-![](<../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_26665263-76ef-43e7-ad50-37b7b3f2775a_250x295 (1).jpeg>)
+![](<../../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_26665263-76ef-43e7-ad50-37b7b3f2775a_250x295 (1).jpeg>)
 
 The third scenario demonstrates the typical case where there are many publishers whose prices and confidence intervals roughly agree.
 In this case, the desired behavior is for the aggregate price and confidence to reflect those of the individual publishers.
 
-![](<../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_8a2812c7-73d9-4d3f-8058-d5489ec3407b_230x290 (1) (1).jpeg>)
+![](<../../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_8a2812c7-73d9-4d3f-8058-d5489ec3407b_230x290 (1) (1).jpeg>)
 
 Finally, the fourth scenario considers the case where the publishers publish distinct prices with non-overlapping confidence intervals.
 In this case, the confidence interval widens out because the dispersion between publishers creates a large gap between the aggregate price and the 25th/75th percentiles of the votes.
 
-![](<../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_812a2656-0c46-4b64-9538-fccb364cb343_260x283 (1).jpeg>)
+![](<../../../images/https___bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com_public_images_812a2656-0c46-4b64-9538-fccb364cb343_260x283 (1).jpeg>)
 
 **Further Reading**
 
