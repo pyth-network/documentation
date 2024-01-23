@@ -10,6 +10,16 @@
   "publish-data": "Publish Data",
   "third-party": "Third-Party Integrations",
 
+  "-- Reference Material": {
+    "title": "Reference Material",
+    "type": "separator"
+  },
+
+  "api-explorer": "API Explorer",
+  "api-endpoints-and-providers": "API Endpoints and Providers",
+  "contract-addresses": "Contract Addresses",
+  "price-feed-ids": "Price Feed IDs",
+
   "-- Understand Pyth": {
     "title": "Understanding Pyth",
     "type": "separator"
@@ -24,16 +34,6 @@
   "security": "Security",
   "pyth-token": "PYTH Token",
   "metrics": "Pyth Metrics",
-
-  "-- Reference Material": {
-    "title": "Reference Material",
-    "type": "separator"
-  },
-
-  "api-explorer": "API Explorer",
-  "api-endpoints-and-providers": "API Endpoints and Providers",
-  "contract-addresses": "Contract Addresses",
-  "price-feed-ids": "Price Feed IDs",
 
   "contact": {
     "title": "Contact ↗",
