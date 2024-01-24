@@ -15,7 +15,7 @@
     "type": "separator"
   },
 
-  "api-explorer": "API Explorer",
+  "api-reference": "API Reference",
   "api-instances-and-providers": "API Instances and Providers",
   "contract-addresses": "Contract Addresses",
   "price-feed-ids": "Price Feed IDs",

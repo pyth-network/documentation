@@ -21,12 +21,12 @@
     "href": "../entropy"
   },
 
-  "--- Protocol Documentation": {
-    "title": "Protocol Documentation",
+  "--- Additional Information": {
+    "title": "Additional Information",
     "type": "separator"
   },
 
-  "security": "Security",
   "pyth-token": "PYTH Token",
-  "metrics": "Pyth Metrics"
+  "metrics": "Pyth Metrics",
+  "security": "Security"
 }

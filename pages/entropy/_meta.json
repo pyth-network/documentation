@@ -19,6 +19,7 @@
     "newWindow": true
   },
   "contract-addresses": "Contract & Provider Addresses",
+  "examples": "Example Applications",
 
   "-- Understanding Entropy": {
     "title": "Understanding Entropy",
