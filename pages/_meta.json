@@ -1,15 +1,26 @@
 {
-  "index": {
-    "title": "Introduction",
-    "type": "page",
-    "display": "hidden"
+  "home": {
+    "title": "Home",
+    "type": "page"
   },
-  "documentation": "Documentation",
-  "api-explorer": "API Explorer",
-  "guides": "How-To Guides",
-  "pyth-token": "PYTH Token",
-  "contact": {
-    "title": "Contact ↗",
+
+  "price-feeds": {
+    "title": "Price Feeds",
+    "type": "page"
+  },
+
+  "benchmarks": {
+    "title": "Benchmarks",
+    "type": "page"
+  },
+
+  "entropy": {
+    "title": "Entropy",
+    "type": "page"
+  },
+
+  "get-in-touch": {
+    "title": "Get In Touch ↗",
     "type": "page",
     "href": "https://pyth.network/contact",
     "newWindow": true

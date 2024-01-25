@@ -1,0 +1,8 @@
+{
+  "evm": "EVM",
+  "solana": "Solana",
+  "aptos": "Aptos",
+  "sui": "Sui",
+  "cosmwasm": "CosmWasm",
+  "near": "NEAR"
+}
