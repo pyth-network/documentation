@@ -1,4 +1,8 @@
 {
+  "documentation-home": {
+    "title": "← Documentation Home",
+    "href": "/home"
+  },
   "index": "Introduction",
 
   "-- How-to Guides": {

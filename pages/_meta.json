@@ -19,8 +19,8 @@
     "type": "page"
   },
 
-  "contact": {
-    "title": "Contact ↗",
+  "get-in-touch": {
+    "title": "Get In Touch ↗",
     "type": "page",
     "href": "https://pyth.network/contact",
     "newWindow": true
