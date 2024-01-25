@@ -1,18 +1,13 @@
 # Benchmarks
 
-Pyth benchmarks allows users to query a historical archive of prices from [Pythnet Price Feeds](pythnet-price-feeds.md).
+Pyth benchmarks allows users to query a historical archive of prices from [Price Feeds](price-feeds).
 For example, applications can retrieve the price of BTC/USD as of last Friday at 8:00 AM UTC.
 This price can be used for contract settlement or any other application that requires historical price data.
-Benchmarks data is signed and verifiable on-chain with the same trust assumptions as Pythnet Price Feeds.
-
-In order to maximize the reliability of the Pyth Benchmarks API, a request rate limit is enforced.
-All endpoints limits are set at 30 requests every 10 seconds per IP address.
-One exception: the TradingView endpoint will allow 90 requests every 10 seconds. Clients issuing request above the limit will receive a 429 (Too Many Requests) response for the subsequent 60-second period.
-Users can access benchmark prices in several different ways, depending on the use case:
+Benchmarks data is signed and verifiable on-chain with the same trust assumptions as Price Feeds.
 
 ## TradingView Integration
 
-There is a how-to guide for [integrating Pyth Benchmarks with TradingView](../../guides/how-to-create-tradingview-charts.mdx).
+There is a how-to guide for [integrating Pyth Benchmarks with TradingView](benchmarks/how-to-create-tradingview-charts).
 
 ## Manual Browsing
 

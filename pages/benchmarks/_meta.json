@@ -6,7 +6,6 @@
     "type": "separator"
   },
 
-  "use-historical-data": "Use Historical Data",
   "how-to-create-tradingview-charts": "Create Charts with TradingView",
 
   "-- Reference Material": {
@@ -20,5 +19,6 @@
     "newWindow": true
   },
 
-  "api-instances": "API Instances"
+  "api-instances": "API Instances",
+  "rate-limits": "Rate Limits"
 }
