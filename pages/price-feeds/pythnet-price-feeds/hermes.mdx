@@ -25,17 +25,8 @@ $ curl https://hermes.pyth.network/api/latest_price_feeds?ids[]=0xff61491a931112
 [{"id":"ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace","price":{"price":"184136023127","conf":"177166324","expo":-8,"publish_time":1692110601},"ema_price":{"price":"184100641000","conf":"178704085","expo":-8,"publish_time":1692110601}}]
 ```
 
-## Self-hosting Hermes
+## Accessing Hermes
 
-We provide a Helm chart for running Hermes in our
-[charts](https://github.com/pyth-network/charts/tree/main/charts/hermes) repository. Please refer to the chart's readme
-for the configuration values. You'll need a Pythnet RPC to run Hermes, which you can obtain from any of the Pythnet RPC
-providers below:
-
-- [Triton](https://triton.one)
-- [P2P](https://p2p.org)
-- [Blockdaemon](https://blockdaemon.com/)
-- [Figment](https://figment.io)
-
-Alternatively, you can host Pythnet RPC yourself, but this is discouraged due to the potential high cost and maintenance
-involved in operating it. If you still wish to run it, please contact the Pyth team for more information.
+Hermes is a permissionless service that can either be self-hosted or accessed through a third-party provider (similar to a blockchain RPC).
+The Pyth Data Association also operates a public instance for development purposes.
+Please see [Hermes API Instances and Providers](../api-instances-and-providers/hermes) for more details.
