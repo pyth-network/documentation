@@ -8,11 +8,12 @@ const withNextra = require("nextra")({
 const permanentRedirectArray = [
   // Third version redirects
   ["/", "/home"],
+
+  // First version of docs site -> third version
+
   ["/evm", "/price-feeds/use-real-time-data/evm"],
   ["/aptos", "/price-feeds/use-real-time-data/aptos"],
   ["/cosmwasm", "/price-feeds/use-real-time-data/cosmwasm"],
-
-  // First version of docs site -> third version
 
   // Second version of docs site -> third version
   ["/documentation/metrics/:path*", "/home/metrics/:path*"],
