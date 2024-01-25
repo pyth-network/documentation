@@ -23,17 +23,17 @@ const nextConfig = {
       },
       {
         source: "/evm",
-        destination: "/api-explorer/evm",
+        destination: "/price-feeds/api-reference/evm",
         permanent: true,
       },
       {
         source: "/aptos",
-        destination: "/api-explorer/aptos",
+        destination: "/price-feeds/api-reference/aptos",
         permanent: true,
       },
       {
         source: "/cosmwasm",
-        destination: "/api-explorer/cosmwasm",
+        destination: "/price-feeds/api-reference/cosmwasm",
         permanent: true,
       },
     ];
