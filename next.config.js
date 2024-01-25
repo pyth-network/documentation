@@ -4,6 +4,8 @@ const withNextra = require("nextra")({
   latex: true,
 });
 
+const oldDocPaths = [[]];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
