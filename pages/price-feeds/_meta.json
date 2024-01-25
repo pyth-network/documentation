@@ -1,9 +1,9 @@
 {
+  "index": "Introduction",
   "documentation-home": {
     "title": "← Documentation Home",
     "href": "/home"
   },
-  "index": "Introduction",
 
   "-- How-to Guides": {
     "title": "How-To Guides",
