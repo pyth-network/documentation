@@ -17,6 +17,6 @@ Exchange A should publish a price of \$50,000.01 and a confidence of \$50.005 (h
 
 Example 2 - Exchange A has a best aggressive fee of 10bps. Exchange B has a best aggressive fee of 1bps, and a publisher is combining them into a single combined book. Exchange books are combined by taking the best ask across both exchanges and the best bid across both exchanges.
 
-![](<../../../images/Confidence_Interval_and_Crypto_Exchange_Fees_Table_2.png)
+![](../../../images/Confidence_Interval_and_Crypto_Exchange_Fees_Table_2.png)
 
 In this example, if a publisher were combining the books of Exchange A and Exchange B to get a combined price, they should publish a price of \$49,978.13 and confidence of \$28.125, which corresponds to the midprice and half the bid-ask spread of the combined fee-adjusted books. It would be wrong to publish a price of \$50,000.01 and confidence of \$0.01 based on the "not fee-adjusted" raw exchange prices. Note that in this example, not only is the confidence changed by including the exchange fees, but the price reported is also substantially different once fees are properly accounted for.
