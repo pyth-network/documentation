@@ -1,0 +1,29 @@
+---
+description: Consume Pyth Network prices in applications on Aptos
+---
+
+# Pyth on Aptos
+
+Aptos contracts can update and fetch the Pyth prices using the Pyth Aptos Contract, which has been deployed on Mainnet. The documented source code can be found [here](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/aptos/contracts/sources/pyth.move).
+
+## Updating Price Feeds
+
+The mechanism by which price feeds are updated on Aptos is explained [here](./pythnet-price-feeds.md). The [pyth-aptos-js](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/aptos/sdk/js) package can be used to fetch price feed update data which can be passed to the `pyth::update_price` on-chain function.
+
+## Example Applications
+
+- [Minimal on-chain contract](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/aptos/examples/fetch_btc_price/sources/example.move) which updates and returns the Pyth BTC/USD price.
+- [Full-stack React app and on-chain contract](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/aptos/examples/mint_nft) which uses the [pyth-aptos-js](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/aptos/sdk/js) package to update the price used by the contract.
+- [In-depth explanation](https://youtu.be/0b0RXi41pN0) of how Pyth works on Aptos and how to integrate Pyth data in your application from one of our contributor.
+
+## Contract Addresses
+
+Developers will need the address of the Pyth price feed contract on their blockchain in order to use Pyth.
+Please consult [Aptos Contract Addresses](../contract-addresses/aptos) to find the address for your blockchain.
+
+## Price Feed IDs
+
+| Network       | Available Price Feeds                                                                                                        |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Aptos Testnet | [https://pyth.network/developers/price-feed-ids#aptos-testnet](https://pyth.network/developers/price-feed-ids#aptos-testnet) |
+| Aptos Mainnet | [https://pyth.network/developers/price-feed-ids#aptos-mainnet](https://pyth.network/developers/price-feed-ids#aptos-mainnet) |

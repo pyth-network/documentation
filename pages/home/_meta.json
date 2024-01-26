@@ -1,0 +1,32 @@
+{
+  "index": "Introduction",
+
+  "--- Product Documentation": {
+    "title": "Product Documentation",
+    "type": "separator"
+  },
+
+  "Price Feeds": {
+    "title": "Price Feeds →",
+    "href": "../price-feeds"
+  },
+
+  "Benchmarks": {
+    "title": "Benchmarks →",
+    "href": "../benchmarks"
+  },
+
+  "Entropy": {
+    "title": "Entropy →",
+    "href": "../entropy"
+  },
+
+  "--- Additional Information": {
+    "title": "Additional Information",
+    "type": "separator"
+  },
+
+  "pyth-token": "PYTH Token",
+  "metrics": "Pyth Metrics",
+  "security": "Security"
+}

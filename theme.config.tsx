@@ -4,7 +4,7 @@ import Logo from "./components/Logo";
 // TODO: populate this properly
 const config: DocsThemeConfig = {
   logo: <Logo />,
-  logoLink: "/documentation",
+  logoLink: "/",
   project: {
     link: "https://github.com/pyth-network/",
   },

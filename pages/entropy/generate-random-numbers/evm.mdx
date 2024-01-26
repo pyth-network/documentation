@@ -1,0 +1,94 @@
+# How to Generate Random Numbers in EVM Contracts Using Pyth Entropy
+
+This guide explains how to integrate Pyth Entropy into an EVM Contract to generate on-chain random numbers.
+The intended audience for this guide is developers of any application that needs on-chain randomness, such as NFT mints or games.
+
+## Install the SDK
+
+Pyth Entropy has a Solidity SDK that lets your contract interact with the Entropy contract.
+Install the SDK using your package manager:
+
+```shell copy
+npm install @pythnetwork/entropy-sdk-solidity
+```
+
+## Setup
+
+To use the SDK, you need the address of an Entropy contract on your blockchain.
+Consult the current [Entropy contract addresses](../contract-addresses/entropy-evm.mdx) to find the address on your chain.
+Once you have a contract address, instantiate an `IEntropy` contract in your solidity contract:
+
+```solidity copy
+ IEntropy entropy = IEntropy(<address>);
+```
+
+Entropy also requires selecting a randomness provider.
+The randomness provider is a third-party who participates in the generation process.
+Each provider is identified by an address and hosts the Fortuna webservice at a URI.
+You will need both the provider address and the URL for the integration.
+
+The simplest way to choose a provider is to use the default provider.
+The default provider for each contract and their corresponding URI is also listed in the
+[Entropy contract addresses](../contract-addresses/entropy-evm.mdx).
+
+You can also get the default provider's address by calling the `getDefaultProvider` method, then
+get the provider's Fortuna URI by calling `getProviderInfo`:
+
+```solidity copy
+address provider = entropy.getDefaultProvider();
+bytes providerUri = entropy.getProviderInfo().uri;
+```
+
+## Usage
+
+To generate a random number, follow these steps.
+
+### 1. Commit to a random number
+
+Generate a 32-byte random number on the client side, then hash it with keccak256 to create a commitment.
+You can do this with typescript and web3.js as follows:
+
+```typescript copy
+const randomNumber = web3.utils.randomHex(32);
+const commitment = web3.utils.keccak256(randomNumber);
+```
+
+### 2. Request a number from Entropy
+
+Invoke the `request` method of the `IEntropy` contract.
+The `request` method requires paying a fee in native gas tokens which is configured per-provider.
+Use the `getFee` method to calculate the fee and send it as the value of the `request` call:
+
+```solidity copy
+uint fee = entropy.getFee(provider);
+uint64 sequenceNumber = entropy.request{value: fee}(provider, commitment, true);
+```
+
+This method returns a sequence number. Store this sequence number for use in later steps.
+If you are invoking this off-chain, the method also emits a `PythRandomEvents.Requested` event that contains the sequence number in it.
+
+### 3. Fetch the provider's number
+
+Submit a query to the `/revelations/` endpoint of the provider's Fortuna webservice.
+This endpoint takes a single path parameter, which is the sequence number of the request.
+
+```typescript copy
+await axios.get(`${providerUri}/revelations/${sequenceNumber}`);
+```
+
+This method returns a JSON object containing the provider's random number.
+
+### 4. Reveal the number
+
+Invoke the `reveal` method on the `IEntropy` contract:
+
+```solidity copy
+bytes32 randomNumber = entropy.reveal(
+    provider,
+    sequenceNumber,
+    randomNumber,
+    providerRandomNumber
+)
+```
+
+This method will combine the user and provider's random numbers, along with the blockhash, to construct the final secure random number.

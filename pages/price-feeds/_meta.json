@@ -1,0 +1,37 @@
+{
+  "index": "Introduction",
+  "documentation-home": {
+    "title": "← Documentation Home",
+    "href": "/home"
+  },
+
+  "-- How-to Guides": {
+    "title": "How-To Guides",
+    "type": "separator"
+  },
+
+  "use-real-time-data": "Use Real-Time Price Data",
+  "schedule-price-updates": "Schedule Price Updates",
+  "publish-data": "Publish Data",
+
+  "-- Reference Material": {
+    "title": "Reference Material",
+    "type": "separator"
+  },
+
+  "api-reference": "API Reference",
+  "api-instances-and-providers": "API Instances and Providers",
+  "contract-addresses": "Contract Addresses",
+  "price-feed-ids": "Price Feed IDs",
+  "examples": "Example Applications",
+
+  "-- Understand Pyth": {
+    "title": "Understanding Pyth",
+    "type": "separator"
+  },
+
+  "solana-price-feeds": "Solana Price Feeds",
+  "pythnet-price-feeds": "Pythnet Price Feeds",
+  "how-pyth-works": "How Pyth Works",
+  "whitepaper": "Whitepaper"
+}
