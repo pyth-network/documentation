@@ -8,25 +8,25 @@ Pyth Publishers Metrics is a feature that provides insights that will empower de
 
 The **price graph** shows how a publisher’s price compares to the aggregate price, illustrating how closely the two prices track each other, and whether there were any periods where the publisher deviated significantly from the rest of the market.
 
-![](../../../images/publisher-metrics/1_ybM6UzoRYw0OXUZ0FURlJw.jpeg)
+![](../../../images/publisher-metrics/Price_Series.jpg)
 
 **Uptime**
 
 The **uptime graph** shows when the publisher was actively contributing prices. The x-axis subdivides the time interval into bins, and the y-axis is the % of slots in that bin where the publisher’s price was recent enough to be included in the aggregate. This graph lets you determine the regularity and reliability of a publisher.
 
-![](../../../images/publisher-metrics/1_HnDeXZSuCMvA_jNwxdonUg.jpeg)
+![](../../../images/publisher-metrics/Uptime.jpg)
 
 **Quality**
 
 The quality graph shows the dataset used in the regression model for computing the quality score described in section 4.1.1 of the [whitepaper](https://pyth.network/whitepaper.pdf). The quality score measures how well a publisher’s price series predicts future changes in the aggregate price. A smooth color gradient (from blue on the bottom left to pink on the top right) indicates a high-quality score.
 
-![](../../../images/publisher-metrics/1_lWAHXKSWBCOImAwszfl2qA.jpeg)
+![](../../../images/publisher-metrics/Quality.jpg)
 
 **Calibration**
 
 The **calibration graph** shows how closely the publisher’s prices and confidences match the expected Laplace distribution. The closer the fit between the two distributions, the higher the calibration score (described in section 4.1.2 of the whitepaper). In other words, a perfect publisher should produce a uniform histogram. As a reminder, the calibration score does not reward publishers for producing tighter confidence intervals; rather, the score captures whether the reported confidence interval corresponds to the publisher’s “true” confidence.
 
-![](../../../images/publisher-metrics/1_V-AoQObS6SJLeIeUSwDUdg.jpeg)
+![](../../../images/publisher-metrics/Calibration.jpg)
 
 **Accessing the Metrics**
 
@@ -36,13 +36,13 @@ Each price feed page has a list of price components (representing each publisher
 
 Once you are on a price feed, you can click on a publisher key (highlighted in yellow) under “Price Components” to access the Publishers Metrics page.
 
-![](../../../images/publisher-metrics/1_7NkoWaF_c3EC61hCNt1w_Q.jpeg)
+![](../../../images/publisher-metrics/Publisher_metrics_image_1.jpg)
 
 On the Metrics Page for a specific publisher, you will find the metrics graphs and the option to download a Conformance Report (TSV file).
 
 To open the metrics for another publisher (of that same price feed), you can click on the “Back to the [SOL/USD] market”.
 
-![](../../../images/publisher-metrics/1_E52zxcRWkTtUAIAggbU-6Q.jpeg)
+![](../../../images/publisher-metrics/Publisher_metrics_image_2.jpg)
 
 If you want to review the Publisher Metrics of another price feed (e.g. ETH/USD), you will need to access the relevant asset. As mentioned, the [Pyth Price Feeds page](https://pyth.network/price-feeds/) has the full list of price feeds.
 
