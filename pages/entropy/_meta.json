@@ -1,9 +1,15 @@
 {
-  "index": "Introduction",
   "documentation-home": {
     "title": "← Documentation Home",
     "href": "/home"
   },
+
+  "-- Entropy": {
+    "title": "Entropy",
+    "type": "separator"
+  },
+
+  "index": "Introduction",
 
   "-- How-To Guides": {
     "title": "How-To Guides",

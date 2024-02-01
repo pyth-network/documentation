@@ -1,9 +1,14 @@
 {
-  "index": "Introduction",
   "documentation-home": {
     "title": "← Documentation Home",
     "href": "/home"
   },
+
+  "-- Benchmarks": {
+    "title": "Benchmarks",
+    "type": "separator"
+  },
+  "index": "Introduction",
 
   "-- How-To Guides": {
     "title": "How-To Guides",
