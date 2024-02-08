@@ -22,7 +22,7 @@ const permanentRedirectArray = [
     "/price-feeds/how-pyth-works/:slug*",
   ],
   ["/documentation/benchmarks", "/benchmarks"],
-  ["/pyth-token", "/home/pyth-token"],
+  ["/pyth-token/:path*", "/home/pyth-token/:path*"],
   ["/documentation/publish-data/:slug*", "/price-feeds/publish-data/:slug*"],
   [
     "/documentation/solana-price-feeds/:slug*",
