@@ -15,7 +15,7 @@ npm install @pythnetwork/entropy-sdk-solidity
 ## Setup
 
 To use the SDK, you need the address of an Entropy contract on your blockchain.
-Consult the current [Entropy contract addresses](../contract-addresses/entropy-evm.mdx) to find the address on your chain.
+Consult the current [Entropy contract addresses](../contract-addresses) to find the address on your chain.
 Once you have a contract address, instantiate an `IEntropy` contract in your solidity contract:
 
 ```solidity copy
@@ -29,7 +29,7 @@ You will need both the provider address and the URL for the integration.
 
 The simplest way to choose a provider is to use the default provider.
 The default provider for each contract and their corresponding URI is also listed in the
-[Entropy contract addresses](../contract-addresses/entropy-evm.mdx).
+[Entropy contract addresses](../contract-addresses).
 
 You can also get the default provider's address by calling the `getDefaultProvider` method, then
 get the provider's Fortuna URI by calling `getProviderInfo`:
