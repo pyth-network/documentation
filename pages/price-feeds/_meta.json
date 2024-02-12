@@ -10,6 +10,13 @@
   },
   "index": "Introduction",
 
+  "-- Tutorials": {
+    "title": "Tutorials",
+    "type": "separator"
+  },
+
+  "create-your-first-pyth-app": "Create Your First Pyth App",
+
   "-- How-to Guides": {
     "title": "How-To Guides",
     "type": "separator"
