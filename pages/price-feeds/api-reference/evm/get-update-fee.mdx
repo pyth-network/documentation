@@ -47,8 +47,8 @@ The `updateData` can be retrieved from the [Hermes API](https://hermes.pyth.netw
             "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
         }}>
             ```solidity copy
-            import "pyth-sdk-solidity/IPyth.sol";
-            import "pyth-sdk-solidity/PythStructs.sol";
+            import "@pythnetwork/pyth-sdk-solidity/IPyth.sol";
+            import "@pythnetwork/pyth-sdk-solidity/PythStructs.sol";
 
             // NETWORK_NAME
             address contractAddress = 0x0000000000000000000000000000000000000000;
