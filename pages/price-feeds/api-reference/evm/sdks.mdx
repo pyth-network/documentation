@@ -8,24 +8,39 @@ package provides solidity interfaces for the EVM contract as well as contract AB
 
 ## Installation Instructions
 
-<Tabs items={['Solidity (Foundry)', 'Typescript']}>
+<Tabs items={['Solidity (Foundry)', 'Solidity (Truffle/Hardhat)','Typescript']}>
     <Tab>
-        First, install the SDK in your project by running:
+        If you are using Foundry, you will need to create an NPM project if you don't already have one.
+        From the root directory of your project, run:
 
-        ```sh copy
-        forge install pyth-network/pyth-sdk-solidity@v2.2.0
+        ```bash copy
+        npm init -y
+        npm install @pythnetwork/pyth-sdk-solidity
         ```
 
-        Next, add the following line to `remappings.txt` in the root of your Foundry project.
+        Then add the following line to your `remappings.txt` file:
 
-        ```sh copy
-        pyth-sdk-solidity/=lib/pyth-sdk-solidity/
+        ```text copy
+        @pythnetwork/pyth-sdk-solidity/=node_modules/@pythnetwork/pyth-sdk-solidity
         ```
 
         You can now import interfaces from the SDK in Solidity code as follows:
 
         ```solidity copy
-        import "pyth-sdk-solidity/IPyth.sol";
+        import "@pythnetwork/pyth-sdk-solidity/IPyth.sol";
+        ```
+    </Tab>
+    <Tab>
+        First, install the NPM package:
+
+        ```bash
+        npm install @pythnetwork/pyth-sdk-solidity
+        ```
+
+        You can now import interfaces from the SDK in Solidity code as follows:
+
+        ```solidity copy
+        import "@pythnetwork/pyth-sdk-solidity/IPyth.sol";
         ```
     </Tab>
     <Tab>
