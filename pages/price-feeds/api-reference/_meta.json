@@ -1,0 +1,10 @@
+{
+  "evm": "EVM",
+  "aptos": "Aptos",
+  "cosmwasm": "CosmWasm",
+  "hermes": {
+    "title": "Hermes ↗",
+    "href": "https://hermes.pyth.network/docs/",
+    "newWindow": true
+  }
+}

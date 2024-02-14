@@ -1,0 +1,86 @@
+import Input from "../../../../components/Input";
+import Arg from "../../../../components/Arg";
+import { InputFormats } from "../../../../utils/InputFormat";
+import Example from "../../../../components/Example";
+import Examples from "../../../../components/Examples";
+import DynamicCode from "../../../../components/DynamicCode";
+import EvmCall from "../../../../components/EvmCall";
+import { Tab, Tabs } from "nextra-theme-docs";
+
+# Get Update Fee
+
+Get the fee required to update the on-chain price feeds with the provided `updateData`.
+The returned number of wei should be sent as the transaction value when calling [updatePriceFeeds](update-price-feeds).
+The `updateData` can be retrieved from the [Hermes API](https://hermes.pyth.network/docs).
+
+<div className="mt-6 overflow-x-auto">
+
+| Argument                                           | Input                                                | Description                                                                               |
+| -------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| <Arg required={true} type="hex[]">updateData</Arg> | <Input id="updateData" format={InputFormats.ZeroX}/> | The price updates that you would like to submit to [updatePriceFeeds](update-price-feeds) |
+
+</div>
+
+<Examples>
+  <Example
+    keyValues={{
+      updateData: async (ctx) =>
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "evm")).vaa,
+    }}
+    value="Latest BTC/USD update data"
+  />
+</Examples>
+
+<EvmCall
+  functionName="getUpdateFee"
+  buildArguments={(kvs) => [[kvs["updateData"]]]}
+/>
+
+## Example Code
+
+<Tabs items={['Solidity', 'ethers.js v6']}>
+    <Tab>
+        <DynamicCode targets={{
+            "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
+            "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("id", "<id>"),
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
+        }}>
+            ```solidity copy
+            import "@pythnetwork/pyth-sdk-solidity/IPyth.sol";
+            import "@pythnetwork/pyth-sdk-solidity/PythStructs.sol";
+
+            // NETWORK_NAME
+            address contractAddress = 0x0000000000000000000000000000000000000000;
+            IPyth pyth = IPyth(contractAddress);
+
+            bytes[] memory updateData = new bytes[](1);
+            updateData[0] = hex"11";
+            uint feeAmount = pyth.getUpdateFee(updateData);
+            ```
+        </DynamicCode>
+    </Tab>
+
+    <Tab>
+        <DynamicCode targets={{
+            "'0x0000'": (ctx) => `'${ctx.pythAddressConfig.pythAddress}'`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
+            "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
+        }}>
+            ```typescript copy
+            import { ethers } from "ethers";
+            import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
+
+            // NETWORK_NAME
+            const contractAddress = '0x0000';
+            const provider = ethers.getDefaultProvider('RPC_URL');
+            const contract = new ethers.Contract(contractAddress, PythAbi, provider);
+
+            const updateData = ['0x1111'];
+            const [feeAmount] = await contract.getUpdateFee(updateData);
+            ```
+        </DynamicCode>
+    </Tab>
+
+</Tabs>

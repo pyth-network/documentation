@@ -1,0 +1,127 @@
+import Input from "../../../../components/Input";
+import Arg from "../../../../components/Arg";
+import { InputFormats } from "../../../../utils/InputFormat";
+import Example from "../../../../components/Example";
+import Examples from "../../../../components/Examples";
+import DynamicCode from "../../../../components/DynamicCode";
+import EvmSend from "../../../../components/EvmSend";
+import { Tab, Tabs } from "nextra-theme-docs";
+
+# Update Price Feeds If Necessary
+
+Update the on-chain price feeds using the provided `updateData` if the on-chain data is not sufficiently fresh.
+The caller provides two matched arrays, `priceIds` and `publishTimes`.
+This function applies the update if there exists an index `i` such that `priceIds[i]`'s last `publishTime` is before than `publishTimes[i]`.
+Callers should typically pass `publishTimes[i]` to be equal to the publishTime of the corresponding price id in `updateData`.
+If this condition is not satisfied, the call will revert with a `NoFreshUpdate` error.
+
+This method is a variant of [updatePriceFeeds](update-price-feeds) that reduces gas usage when multiple callers are sending the same price updates.
+
+This function requires the caller to pay a fee to perform the update.
+The required fee for a given set of updates can be computed by passing them to [getUpdateFee](get-update-fee).
+
+Reverts if the required fee is not paid, or the `updateData` is incorrectly signed or formatted.
+
+<div className="mt-6 overflow-x-auto">
+
+| Argument                                                | Input                                                   | Description                                                                  |
+| ------------------------------------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| <Arg required={true} type="hex[]">updateData</Arg>      | <Input id="updateData" format={InputFormats.ZeroX} />   | The price update data for the contract to verify.                            |
+| <Arg required={true} type="bytes32[]">priceIds</Arg>    | <Input id="priceId" format={InputFormats.ZeroX} />      | The price ids to update                                                      |
+| <Arg required={true} type="uint64[]">publishTimes</Arg> | <Input id="publishTime" format={InputFormats.BigInt} /> | The timestamp for each price id that determines whether to apply the update. |
+| <Arg required={true} type="wei">fee</Arg>               | <Input id="fee" format={InputFormats.BigInt}/>          | The update fee in wei. This fee is sent as the value of the transaction.     |
+
+</div>
+
+<Examples>
+  <Example
+    keyValues={{
+      updateData: async (ctx) =>
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "evm")).vaa,
+      priceId: (ctx) => ctx.getFeedId0x("Crypto.BTC/USD"),
+      publishTime: async (ctx) =>
+        (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "evm")).price
+          .publish_time,
+      fee: async (ctx) => {
+        let vaa = (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "evm")).vaa;
+        return await ctx.getEthUpdateFee([vaa]);
+      },
+    }}
+    value="Latest BTC/USD update data"
+  />
+</Examples>
+
+<EvmSend
+  functionName="updatePriceFeedsIfNecessary"
+  buildArguments={(kvs) => [
+    [kvs["updateData"]],
+    [kvs["priceId"]],
+    [kvs["publishTime"]],
+  ]}
+  feeKey="fee"
+/>
+
+## Example Code
+
+<Tabs items={['Solidity', 'ethers.js v6']}>
+    <Tab>
+        <DynamicCode targets={{
+            "0x0000000000000000000000000000000000000000": (ctx) => ctx.pythAddressConfig.pythAddress,
+            "0x1111111111111111111111111111111111111111111111111111111111111111": (ctx) => ctx.get("priceId", "<priceId>"),
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "\"11\"": (ctx) => `"${ctx.get("updateData", "<updateData>").replace("0x", "")}"`,
+            "2": (ctx) => ctx.get("fee", "<fee>"),
+            "3": (ctx) => ctx.get("publishTime", "<publishTime>"),
+        }}>
+            ```solidity copy
+            import "@pythnetwork/pyth-sdk-solidity/IPyth.sol";
+            import "@pythnetwork/pyth-sdk-solidity/PythStructs.sol";
+
+            // NETWORK_NAME
+            address contractAddress = 0x0000000000000000000000000000000000000000;
+            IPyth pyth = IPyth(contractAddress);
+
+            bytes[] memory updateData = new bytes[](1);
+            updateData[0] = hex"11";
+
+            bytes32[] memory priceIds = new bytes32[](1);
+            priceIds[0] = 0x1111111111111111111111111111111111111111111111111111111111111111;
+            uint64[] memory publishTimes = new uint64[](1);
+            publishTimes[0] = 3;
+            uint fee = 2;
+            pyth.updatePriceFeedsIfNecessary{value: fee}(updateData, priceIds, publishTimes);
+            ```
+        </DynamicCode>
+    </Tab>
+
+    <Tab>
+        <DynamicCode targets={{
+            "'0x0000'": (ctx) => `'${ctx.pythAddressConfig.pythAddress}'`,
+            "// NETWORK_NAME": (ctx) => `// ${ctx.currentChainConfig.name}`,
+            "'RPC_URL'": (ctx) => ctx.currentChainConfig.rpcUrls.default.http.length > 0 ? `'${ctx.currentChainConfig.rpcUrls.default.http[0]}'` : 'RPC_URL',
+            "'0x1111'": (ctx) => `'${ctx.get("updateData", "<updateData>")}'`,
+            "'0x2222'": (ctx) => `'${ctx.get("priceId", "<priceId>")}'`,
+            "3": (ctx) => ctx.get("publishTime", "<publishTime>"),
+            "2": (ctx) => ctx.get("fee", "<fee>"),
+        }}>
+            ```typescript copy
+            import { ethers } from "ethers";
+            import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
+
+            // NETWORK_NAME
+            const contractAddress = '0x0000';
+            const provider = ethers.getDefaultProvider('RPC_URL');
+            const contract = new ethers.Contract(contractAddress, PythAbi, provider);
+
+            const fee = ethers.toBigInt(2)
+
+            const updateData = ['0x1111'];
+            const priceIds = ['0x2222'];
+            const publishTimes = [ethers.toBigInt(3)];
+            const tx = await contract.updatePriceFeedsIfNecessary(updateData, priceIds, publishTimes, {value: fee});
+            const receipt = await tx.wait();
+            ```
+        </DynamicCode>
+    </Tab>
+
+</Tabs>

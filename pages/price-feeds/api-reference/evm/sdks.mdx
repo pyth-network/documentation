@@ -1,0 +1,62 @@
+import { Tab, Tabs } from "nextra-theme-docs";
+
+# SDKs
+
+The [@pythnetwork/pyth-sdk-solidity](https://www.npmjs.com/package/@pythnetwork/pyth-sdk-solidity)
+([github](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/solidity))
+package provides solidity interfaces for the EVM contract as well as contract ABIs for off-chain applications.
+
+## Installation Instructions
+
+<Tabs items={['Solidity (Foundry)', 'Solidity (Truffle/Hardhat)','Typescript']}>
+    <Tab>
+        If you are using Foundry, you will need to create an NPM project if you don't already have one.
+        From the root directory of your project, run:
+
+        ```bash copy
+        npm init -y
+        npm install @pythnetwork/pyth-sdk-solidity
+        ```
+
+        Then add the following line to your `remappings.txt` file:
+
+        ```text copy
+        @pythnetwork/pyth-sdk-solidity/=node_modules/@pythnetwork/pyth-sdk-solidity
+        ```
+
+        You can now import interfaces from the SDK in Solidity code as follows:
+
+        ```solidity copy
+        import "@pythnetwork/pyth-sdk-solidity/IPyth.sol";
+        ```
+    </Tab>
+    <Tab>
+        First, install the NPM package:
+
+        ```bash
+        npm install @pythnetwork/pyth-sdk-solidity
+        ```
+
+        You can now import interfaces from the SDK in Solidity code as follows:
+
+        ```solidity copy
+        import "@pythnetwork/pyth-sdk-solidity/IPyth.sol";
+        ```
+    </Tab>
+    <Tab>
+        First, install the SDK in your project by running:
+        ```
+        npm install @pythnetwork/pyth-sdk-solidity
+        ```
+
+        Then you can import the contract ABI in your typescript code as follows:
+
+        ```typescript copy
+        import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json" assert { type: "json" };
+        ```
+
+        The same directory also contains ABI files for errors (`PythErrors.json`) and events (`IPythEvents.json`),
+        which you may also find useful for decoding contract responses.
+    </Tab>
+
+</Tabs>

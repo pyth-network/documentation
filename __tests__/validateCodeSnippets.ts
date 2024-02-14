@@ -8,7 +8,7 @@ import { promisify } from "util";
 const codeSnippetRegex = /```([a-zA-Z]+)[\s\S]*?```/g;
 const codeSnippetsDir = ".code_tests";
 
-const languageExcludeList = ["sh"];
+const languageExcludeList = ["sh", "bash", "text"];
 
 const execPromise = promisify(exec);
 
@@ -84,7 +84,7 @@ async function runCodeSnippet(
   } else if (language === "solidity") {
     const tempFilePath = join(codeSnippetsDir, `${id}.sol`);
     fs.writeFileSync(tempFilePath, wrapSolCode(code), "utf8");
-    const command = `npx solc --base-path . --include-path node_modules/\\@pythnetwork --output-dir ${tmpdir()} --bin ${tempFilePath}`;
+    const command = `npx solc --base-path . --include-path node_modules/ --output-dir ${tmpdir()} --bin ${tempFilePath}`;
     return await runValidationCommand(command);
   } else if (language === "rust") {
     // Rust files get a separate directory with a full cargo project.
@@ -108,7 +108,7 @@ async function runCodeSnippet(
     fs.writeFileSync(tempFilePath, code, "utf8");
     return runValidationFunction(code, (x) => toml.parse(x));
   } else {
-    return [false, `Unsupported language: ${language}`];
+    return [false, `There is no validation logic for language: ${language}`];
   }
 }
 
@@ -199,6 +199,6 @@ function validateCodeSnippets(directoryPath: string): void {
 describe("Validate code snippets", () => {
   // We only validate code snippets in the API reference.
   // However, we exclude Aptos for now because it's annoying (and doesn't seem worth it).
-  validateCodeSnippets("./pages/api-explorer/evm");
-  validateCodeSnippets("./pages/api-explorer/cosmwasm");
+  validateCodeSnippets("./pages/price-feeds/api-reference/evm");
+  validateCodeSnippets("./pages/price-feeds/api-reference/cosmwasm");
 });
