@@ -8,17 +8,17 @@
 
   "Price Feeds": {
     "title": "Price Feeds →",
-    "href": "../price-feeds"
+    "href": "/price-feeds"
   },
 
   "Benchmarks": {
     "title": "Benchmarks →",
-    "href": "../benchmarks"
+    "href": "/benchmarks"
   },
 
   "Entropy": {
     "title": "Entropy →",
-    "href": "../entropy"
+    "href": "/entropy"
   },
 
   "--- Additional Information": {
