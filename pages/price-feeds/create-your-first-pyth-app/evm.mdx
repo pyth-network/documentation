@@ -9,6 +9,9 @@ Along the way, you will encounter pull updates and testing contracts.
 This tutorial uses Foundry to perform the contract development tasks.
 Please follow the [Foundry installation instructions](https://book.getfoundry.sh/getting-started/installation) if you do not already have it installed.
 
+Part of this tutorial also uses the command line tools `curl` and `jq`.
+Please make sure these are installed on your system before continuing.
+
 ## Create a Foundry project
 
 Create a new directory to hold your app and a `contracts` directory within.
@@ -440,7 +443,7 @@ In order to do so, we will need to get a price update to pass to the `updateAndM
 We can fetch this update from Hermes:
 
 ```bash copy
-curl -s "https://hermes.pyth.network/api/latest_price_feeds?ids[]=$ETH_USD_ID&binary=true" | jq -r ".[] | .vaa" | base64 --decode | xxd -p | tr -d '\n' > price_update.txt
+curl -s "https://hermes.pyth.network/v2/updates/price/latest?&ids[]=$ETH_USD_ID" | jq -r ".binary.data[0]" > price_update.txt
 ```
 
 This command will fetch a fresh price update from Hermes and save it in the file `price_update.txt`.
