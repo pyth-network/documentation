@@ -25,7 +25,7 @@
 
   "fortuna-api-explorer": {
     "title": "Fortuna API Explorer ↗",
-    "href": "https://fortuna-staging.pyth.network/docs/",
+    "href": "https://fortuna.dourolabs.app/docs/",
     "newWindow": true
   },
   "contract-addresses": "Contract & Provider Addresses",
