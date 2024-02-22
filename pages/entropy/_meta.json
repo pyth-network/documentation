@@ -11,6 +11,13 @@
 
   "index": "Introduction",
 
+  "-- Tutorials": {
+    "title": "Tutorials",
+    "type": "separator"
+  },
+
+  "create-your-first-entropy-app": "Create your first Entropy app on EVM",
+
   "-- How-To Guides": {
     "title": "How-To Guides",
     "type": "separator"
