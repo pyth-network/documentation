@@ -63,19 +63,19 @@ The code implements some events, properties and a constructor to instantiate the
 
 ```solidity copy
 contract CoinFlip {
-	...
+  ...
 
-	function request(bytes32 userCommitment) external payable {
+  function request(bytes32 userCommitment) external payable {
     // checks
     uint128 requestFee = entropy.getFee(provider);
     if(msg.value < requestFee) revert("not enough fees");
 
-		// pay the fees and request a random number from entropy
+    // pay the fees and request a random number from entropy
     uint64 sequenceNumber = entropy.request{value: requestFee}(provider, userCommitment, true);
 
-		// emit event
-		emit FlipRequested(sequenceNumber);
-	}
+    // emit event
+    emit FlipRequested(sequenceNumber);
+  }
 }
 ```
 
@@ -85,14 +85,14 @@ Users will invoke the `request` method to initiate a coin flip with a request fe
 
 ```solidity copy
 contract CoinFlip {
-	...
+  ...
 
-	// fulfil a request
-	function fulfill(uint64 sequenceNumber, bytes32 userRandomness, bytes32 providerRevelation) external {
-	    bytes32 randomNumber = entropy.reveal(provider, sequenceNumber, userRandomness, providerRevelation);
+  // fulfil a request
+  function fulfill(uint64 sequenceNumber, bytes32 userRandomness, bytes32 providerRevelation) external {
+    bytes32 randomNumber = entropy.reveal(provider, sequenceNumber, userRandomness, providerRevelation);
 
-	    emit FlipResult(uint256(randomNumber) % 2 == 0);
-	}
+    emit FlipResult(uint256(randomNumber) % 2 == 0);
+  }
 }
 ```
 
@@ -185,22 +185,22 @@ const CoinFlipAbi = require("../contracts/out/CoinFlip.sol/CoinFlip.json");
 const EntropyAbi = require("@pythnetwork/entropy-sdk-solidity/abis/IEntropy.json");
 
 async function main() {
-	const web3 = new Web3(process.env["RPC_URL"]);
+  const web3 = new Web3(process.env["RPC_URL"]);
   const { address } = web3.eth.accounts.wallet.add(process.env["PRIVATE_KEY"])[0];
 
-	web3.eth.defaultBlock = "finalized"
+  web3.eth.defaultBlock = "finalized"
 
-	const coinFlipContract = new web3.eth.Contract(
+  const coinFlipContract = new web3.eth.Contract(
     CoinFlipAbi.abi,
     process.env["COINFLIP_ADDRESS"]
   );
 
-	const entropyContract = new web3.eth.Contract(
+  const entropyContract = new web3.eth.Contract(
     EntropyAbi,
     process.env["ENTROPY_ADDRESS"]
   );
 
-	...
+  ...
 }
 
 main();
@@ -212,14 +212,14 @@ Next, add the following code to the main method to request a flip from the CoinF
 
 ```javascript copy
 async main() {
-	...
-	// Request a random number
+  ...
+  // Request a random number
 
-	// Generate user random number and commitment
-	const userRandomNumber = web3.utils.randomHex(32);
+  // Generate user random number and commitment
+  const userRandomNumber = web3.utils.randomHex(32);
   const userCommitment = web3.utils.keccak256(userRandomNumber);
 
-	const fee = await entropyContract.methods.getFee(process.env["PROVIDER_ADDRESS"]).call()
+  const fee = await entropyContract.methods.getFee(process.env["PROVIDER_ADDRESS"]).call()
   console.log(`fee         : ${fee}`);
 
   const requestReceipt = await coinFlipContract.methods
@@ -230,9 +230,9 @@ async main() {
     });
 
   console.log(`request tx  : ${requestReceipt.transactionHash}`);
-	// Read the sequence number for the request from the transaction events.
+  // Read the sequence number for the request from the transaction events.
   const sequenceNumber =
-    requestReceipt.events.FlipRequested.returnValues.sequenceNumber;
+  requestReceipt.events.FlipRequested.returnValues.sequenceNumber;
   console.log(`sequence    : ${sequenceNumber}`);
 
 }
@@ -244,14 +244,14 @@ Next, add a snippet to get the provider’s random number.
 
 ```javascript copy
 async main() {
-	...
-	// Fetch the provider uri
+  ...
+  // Fetch the provider uri
   const info = await entropyContract.methods
     .getProviderInfo(process.env["PROVIDER_ADDRESS"])
     .call();
   const providerUri = web3.utils.hexToString(info.uri);
 
-	// Fetch provider commitment
+  // Fetch provider commitment
   const res = await fetch(`${providerUri}/revelations/${sequenceNumber}`);
   const fortunaRevelation = await res.json();
 }
@@ -263,9 +263,9 @@ Finally, add the following code snippet to get the flip result.
 
 ```javascript copy
 async main() {
-	...
-	// Fulfill the request
-	const fulfillReceipt = await coinFlipContract.methods
+  ...
+  // Fulfill the request
+  const fulfillReceipt = await coinFlipContract.methods
     .fulfill(sequenceNumber, randomNumber, "0x" + fortunaRevelation.value.data)
     .send({
       from: address,
@@ -282,11 +282,11 @@ The code above calls the `fulfill` method on the CoinFlip contract with the `seq
 That’s it, Let’s run the script with the command `node script.js` . You should get an output similar to:
 
 ```
-   fee          : 101
-   request tx   : 0x9faf2f439f99986b4a87befbad89301b3ec8976038a8b8332c7c53cbba43fd95
-   sequence     : 36
-   fulfill tx   : 0x806900dbbebc8488ac6b87c9c82c5fd9ad38231c2e66b1899e0a8a3afe805f01
-   flip result  : Tails
+fee          : 101
+request tx   : 0x9faf2f439f99986b4a87befbad89301b3ec8976038a8b8332c7c53cbba43fd95
+sequence     : 36
+fulfill tx   : 0x806900dbbebc8488ac6b87c9c82c5fd9ad38231c2e66b1899e0a8a3afe805f01
+flip result  : Tails
 ```
 
 Note that: the script can fail due to some rpc issues. You can run the script again to get the expected result.
