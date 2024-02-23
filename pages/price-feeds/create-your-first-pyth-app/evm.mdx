@@ -122,7 +122,9 @@ contract MyFirstPythContract {
 ```
 
 This function first reads a `Price` from the pyth contract.
-It then performs some arithmetic on the price in order to calculate how much the caller needs to pay.
+It then performs some arithmetic on the price in order to calculate how much the caller needs to pay. This conversion
+assumes that 10^18 wei is equal to the native token (ETH in this example); in some networks (like Hedera) the decimal
+places are different and you need to change the math.
 If the caller has not paid enough, the function reverts.
 
 Try out your changes by running `forge build`:
@@ -481,8 +483,8 @@ The command above should produce output along the following lines:
 ```
 
 You can see the transaction using the [Optimism Sepolia Explorer](https://sepolia-optimism.etherscan.io/) by pasting the `transactionHash` from your result into the search box.
-
-You may encounter one of two errors when running this command.
+If you get an error in this step, don't worry -- these are easily fixed.
+There are two possible errors when running this command.
 The first error looks like this:
 
 ```
