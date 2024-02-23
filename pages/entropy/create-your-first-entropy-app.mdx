@@ -2,7 +2,7 @@
 
 In this tutorial we will implement and deploy a coin flip contract which will use entropy to generate a random output. 
 
-## **Preliminaries**
+## Preliminaries
 
 Before we start, please make sure you the following tools installed:
 
@@ -268,9 +268,9 @@ async main() {
       from: address,
     });
 
-  console.log(`Fulfill tx  : ${fulfillReceipt.transactionHash}`);
+  console.log(`fulfill tx  : ${fulfillReceipt.transactionHash}`);
   const isHead = fulfillReceipt.events.FlipResult.returnValues.isHeads;
-  console.log(`Flip Result : ${isHead ? "Heads" : "Tails"}`);
+  console.log(`flip result : ${isHead ? "Heads" : "Tails"}`);
 }
 ```
 
@@ -278,15 +278,15 @@ The code above calls the `fulfill` method on the CoinFlip contract with the `seq
 
 That’s it, Let’s run the script with the command `node script.js` . You should get an output similar to:
 
-```bash copy
+```
    fee          : 101
-   tx           : 0x9faf2f439f99986b4a87befbad89301b3ec8976038a8b8332c7c53cbba43fd95
+   request tx   : 0x9faf2f439f99986b4a87befbad89301b3ec8976038a8b8332c7c53cbba43fd95
    sequence     : 36
-   tx           : 0x806900dbbebc8488ac6b87c9c82c5fd9ad38231c2e66b1899e0a8a3afe805f01
-   Flip Result  : Tails
+   fulfill tx   : 0x806900dbbebc8488ac6b87c9c82c5fd9ad38231c2e66b1899e0a8a3afe805f01
+   flip result  : Tails
 ```
 
-Note that: the script can fail due to some api errors. You can run the script again to get the expected result. 
+Note that: the script can fail due to some rpc issues. You can run the script again to get the expected result. 
 
 ## Next Steps
 
