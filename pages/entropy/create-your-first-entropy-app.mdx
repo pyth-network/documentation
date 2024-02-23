@@ -1,27 +1,29 @@
 # Create your first Entropy app on EVM
 
-In this tutorial we will implement and deploy a coin flip contract which will use entropy to generate a random output. 
+In this tutorial we will implement and deploy a coin flip contract which will use entropy to generate a random output.
 
 ## Preliminaries
 
 Before we start, please make sure you the following tools installed:
 
-Foundry - [https://book.getfoundry.sh/getting-started/installation](https://book.getfoundry.sh/getting-started/installation). 
+Foundry - [https://book.getfoundry.sh/getting-started/installation](https://book.getfoundry.sh/getting-started/installation).
+
 - Run `forge --version` to confirm it is installed. You should get an output similar to `forge 0.2.0 (23aa303 2023-11-28T00:35:15.730515000Z)`
 
 Node (version > 18) - [https://nodejs.org/en/download](https://nodejs.org/en/download)
+
 - Run `npm -v` to confirm. You should get an output similar to `10.2.3`
 
 ## Getting Started
 
-Create a directory named `coin-flip` in your filesystem. Open a terminal with `coin-flip` as the working directory and run `forge init contracts` to create a new Solidity project. You will see a new directory in `coin-flip` named `contracts`. `contracts/src` is where all your contract code will be. 
+Create a directory named `coin-flip` in your filesystem. Open a terminal with `coin-flip` as the working directory and run `forge init contracts` to create a new Solidity project. You will see a new directory in `coin-flip` named `contracts`. `contracts/src` is where all your contract code will be.
 
 Run `cd contracts` to make it your terminal’s working directory — the following commands will need to be run from here.
 
 Next, install the Pyth Entropy SDK by running the following commands.
 
 ```bash copy
-npm init -y 
+npm init -y
 npm install @pythnetwork/entropy-sdk-solidity
 ```
 
@@ -41,27 +43,28 @@ pragma solidity ^0.8.13;
 import "@pythnetwork/entropy-sdk-solidity/IEntropy.sol";
 
 contract CoinFlip {
-	event FlipRequested(uint64 sequenceNumber);
+  event FlipRequested(uint64 sequenceNumber);
   event FlipResult(bool isHeads);
 
-	IEntropy entropy;
-	address provider;
-	
-	constructor(address _entropy, address _provider) {
-	    entropy = IEntropy(_entropy);
-	    provider = _provider;
-	}
+  IEntropy entropy;
+  address provider;
+
+  constructor(address _entropy, address _provider) {
+    entropy = IEntropy(_entropy);
+    provider = _provider;
+  }
 }
+
 ```
 
-The code implements some events, properties and a constructor to instantiate the contract.  One of the properties is of type `IEntropy` which is an interface imported from the Entropy SDK. The constructor also takes a `provider` argument. We will see how to populate these later.
+The code implements some events, properties and a constructor to instantiate the contract. One of the properties is of type `IEntropy` which is an interface imported from the Entropy SDK. The constructor also takes a `provider` argument. We will see how to populate these later.
 
 ### Request a coin flip
 
 ```solidity copy
 contract CoinFlip {
 	...
-	
+
 	function request(bytes32 userCommitment) external payable {
     // checks
     uint128 requestFee = entropy.getFee(provider);
@@ -83,11 +86,11 @@ Users will invoke the `request` method to initiate a coin flip with a request fe
 ```solidity copy
 contract CoinFlip {
 	...
-	
-	// fulfil a request 
+
+	// fulfil a request
 	function fulfill(uint64 sequenceNumber, bytes32 userRandomness, bytes32 providerRevelation) external {
 	    bytes32 randomNumber = entropy.reveal(provider, sequenceNumber, userRandomness, providerRevelation);
-	
+
 	    emit FlipResult(uint256(randomNumber) % 2 == 0);
 	}
 }
@@ -95,7 +98,7 @@ contract CoinFlip {
 
 The fulfill method takes three arguments. The first is the `sequenceNumber`, which we saw was returned by the request method above. The next two are random numbers — we will see how to generate these values later. Finally, the method emits a `FlipResult` event with the result of the flip.
 
-Yay! you have successfully implemented a coin flip contract. 
+Yay! you have successfully implemented a coin flip contract.
 
 ## Deploy
 
@@ -121,7 +124,7 @@ export PRIVATE_KEY=<your private key from above>
 export RPC_URL="https://sepolia.optimism.io"
 ```
 
-Next, use the [Superchain Faucet](https://app.optimism.io/faucet?utm_source=docs) to claim some test Sepolia ETH. Paste the address from the command above into the faucet to get your ETH. You can verify that the ETH has arrived in your wallet by running the command 
+Next, use the [Superchain Faucet](https://app.optimism.io/faucet?utm_source=docs) to claim some test Sepolia ETH. Paste the address from the command above into the faucet to get your ETH. You can verify that the ETH has arrived in your wallet by running the command
 
 ```bash copy
 cast balance $ADDRESS -r $RPC_URL -e
@@ -161,7 +164,7 @@ Let’s export the coin flip contract address as environment variable for later 
 export COINFLIP_ADDRESS=<Deployed to address from above>
 ```
 
-Congratulations you have successfully implemented and deployed a  CoinFlip contract. 
+Congratulations you have successfully implemented and deployed a CoinFlip contract.
 
 ## Interact from Javascript
 
@@ -203,7 +206,7 @@ async function main() {
 main();
 ```
 
-The code above imports the required libraries and defines a `main` method. In `main` we initialize web3 contracts that help us interact with the coin flip and entropy contracts. At the end, the script calls the main method. 
+The code above imports the required libraries and defines a `main` method. In `main` we initialize web3 contracts that help us interact with the coin flip and entropy contracts. At the end, the script calls the main method.
 
 Next, add the following code to the main method to request a flip from the CoinFlip contract.
 
@@ -231,11 +234,11 @@ async main() {
   const sequenceNumber =
     requestReceipt.events.FlipRequested.returnValues.sequenceNumber;
   console.log(`sequence    : ${sequenceNumber}`);
-	
+
 }
 ```
 
-The code snippet above generates a random number and hashes it. The resulting hash is the user commitment. The code calls the Entropy contract to get the fee required for requesting a random number. Then it calls the request method of the CoinFlip contract with the `userCommitment` as an argument and the required fee. Finally, the code reads the sequenceNumber from the `FlipRequested`  event emitted by the CoinFlip contract. 
+The code snippet above generates a random number and hashes it. The resulting hash is the user commitment. The code calls the Entropy contract to get the fee required for requesting a random number. Then it calls the request method of the CoinFlip contract with the `userCommitment` as an argument and the required fee. Finally, the code reads the sequenceNumber from the `FlipRequested` event emitted by the CoinFlip contract.
 
 Next, add a snippet to get the provider’s random number.
 
@@ -286,11 +289,11 @@ That’s it, Let’s run the script with the command `node script.js` . You shou
    flip result  : Tails
 ```
 
-Note that: the script can fail due to some rpc issues. You can run the script again to get the expected result. 
+Note that: the script can fail due to some rpc issues. You can run the script again to get the expected result.
 
 ## Next Steps
 
-Congratulations! You've built your first app using Entropy. In this tutorial, we created a Solidity contract that generates a random flip using Entropy. We deployed the contract and interacted with it from Javascript. 
+Congratulations! You've built your first app using Entropy. In this tutorial, we created a Solidity contract that generates a random flip using Entropy. We deployed the contract and interacted with it from Javascript.
 
 You can learn more about Entropy from the following links:
 
