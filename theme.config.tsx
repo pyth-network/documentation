@@ -22,6 +22,7 @@ const config: DocsThemeConfig = {
   sidebar: {
     defaultMenuCollapseLevel: 1,
   },
+  navigation: false,
   useNextSeoProps() {
     return {
       titleTemplate: "%s – Pyth Network Documentation",
