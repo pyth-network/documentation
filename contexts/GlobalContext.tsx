@@ -65,6 +65,11 @@ export const PriceServiceUrls: Record<string, string> = {
   testnet: "https://xc-testnet.pyth.network",
 };
 
+export const PriceServiceHermesUrls: Record<string, string> = {
+  mainnet: "https://hermes.pyth.network",
+  testnet: "https://hermes.pyth.network", // Check for testnet url
+};
+
 export interface PythAddressConfig {
   chainId: number;
   pythAddress: string;

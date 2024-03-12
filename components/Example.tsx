@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { useMemo } from "react";
 import {
   NetworkType,
-  PriceServiceUrls,
+  PriceServiceHermesUrls,
   useGlobalContext,
 } from "../contexts/GlobalContext";
 
@@ -105,11 +105,12 @@ export class ExampleRenderingContext {
     const feedId = this.getFeedId0x(symbolName);
 
     const endpoint: string = `${
-      PriceServiceUrls[this.networkType]
+      PriceServiceHermesUrls[this.networkType]
     }/api/latest_price_feeds`;
     const result = await (
-      await fetch(`${endpoint}?ids[]=${feedId}&target_chain=${targetChain}`)
+      await fetch(`${endpoint}?ids[]=${feedId}&target_chain=${targetChain}&binary=true`)
     ).json();
+    result[0].vaa = "0x" + Buffer.from(result[0].vaa, "base64").toString("hex")
     return result[0];
   }
 
