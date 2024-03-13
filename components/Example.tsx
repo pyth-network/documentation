@@ -108,9 +108,11 @@ export class ExampleRenderingContext {
       PriceServiceHermesUrls[this.networkType]
     }/api/latest_price_feeds`;
     const result = await (
-      await fetch(`${endpoint}?ids[]=${feedId}&target_chain=${targetChain}&binary=true`)
+      await fetch(
+        `${endpoint}?ids[]=${feedId}&target_chain=${targetChain}&binary=true`
+      )
     ).json();
-    result[0].vaa = "0x" + Buffer.from(result[0].vaa, "base64").toString("hex")
+    result[0].vaa = "0x" + Buffer.from(result[0].vaa, "base64").toString("hex");
     return result[0];
   }
 
