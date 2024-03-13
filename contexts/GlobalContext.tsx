@@ -60,9 +60,9 @@ export interface GlobalContextData {
 
 export type NetworkType = "mainnet" | "testnet";
 
-export const PriceServiceUrls: Record<string, string> = {
-  mainnet: "https://xc-mainnet.pyth.network",
-  testnet: "https://xc-testnet.pyth.network",
+export const PriceServiceHermesUrls: Record<string, string> = {
+  mainnet: "https://hermes.pyth.network",
+  testnet: "https://hermes.pyth.network", // Check for testnet url
 };
 
 export interface PythAddressConfig {
