@@ -4,5 +4,6 @@
   "aptos": "Aptos",
   "sui": "Sui",
   "cosmwasm": "CosmWasm",
-  "near": "NEAR"
+  "near": "NEAR",
+  "pythnet": "Pythnet"
 }
