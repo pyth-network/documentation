@@ -70,7 +70,7 @@ Your contract should do the following four steps:
 
 1. Instantiate the `IPyth` interface from the Solidity SDK using the price feeds contract address.
 1. Call `IPyth.getUpdateFee` to calculate the fee charged by Pyth to update the price.
-1. Call `IPyth.updatePriceFeeds` to update the price.
+1. Call `IPyth.updatePriceFeeds` to update the price, paying the fee calculated in the previous step.
 1. Call `IPyth.getPrice` to read the current price, providing the price feed ID that you wish to read.
 
 Steps (2) and (3) both require a `bytes[] calldata priceUpdateData` argument that will be provided from off-chain.
