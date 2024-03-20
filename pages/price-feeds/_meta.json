@@ -31,10 +31,12 @@
     "type": "separator"
   },
 
+  "price-feed-ids": "Price Feed IDs",
+  "market-hours": "Market Hours",
+  "best-practices": "Best Practices",
   "api-reference": "API Reference",
   "api-instances-and-providers": "API Instances and Providers",
   "contract-addresses": "Contract Addresses",
-  "price-feed-ids": "Price Feed IDs",
   "examples": "Example Applications",
 
   "-- Understand Pyth": {

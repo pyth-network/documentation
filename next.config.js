@@ -49,7 +49,15 @@ const permanentRedirectArray = [
   ],
   [
     "/documentation/pythnet-price-feeds/best-practices",
+    "/price-feeds/best-practices",
+  ],
+  [
     "/price-feeds/pythnet-price-feeds/best-practices",
+    "/price-feeds/best-practices",
+  ],
+  [
+    "/price-feeds/solana-price-feeds/best-practices",
+    "/price-feeds/best-practices",
   ],
   [
     "/documentation/pythnet-price-feeds/hermes",
