@@ -3,5 +3,14 @@
 Every Pyth Price Feed has a unique ID, representing the specific pair of assets being priced (e.g., BTC/USD).
 Every price update is tagged with the corresponding price feed ID.
 Applications need to store the IDs of the feeds they wish to read.
+However, the ids may be represented in different formats (e.g., hex or base58) depending on the blockchain.
+Price feeds also have different ids in the Stable and Beta channels.
 
-Please see the list of [Price Feed IDs](https://pyth.network/developers/price-feed-ids) to find the feed IDs for your ecosystem.
+The full catalog of price feeds is listed on the [pyth.network website](https://pyth.network/price-feeds/).
+The [Price Feed ID reference](https://pyth.network/developers/price-feed-ids) also lets you identify a feed's ID in your chosen ecosystem.
+To use a price feed on-chain, look up its ID using these page, then store the feed id in your program to use for price feed queries.
+
+## Solana Price Feed Accounts
+
+For Solana price feeds, each price feed id is also the id of a Solana account containing the feed's data.
+Once you have the ID of your desired feed, you should pass the corresponding Solana account to any instruction that requires the current price and validate in your program that the account key matches the stored price feed id.
