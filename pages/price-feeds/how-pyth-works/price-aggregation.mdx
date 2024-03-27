@@ -4,7 +4,7 @@ Price aggregation combines the prices and confidences submitted by individual da
 
 **Design Goals**
 
-The aggregation algorithm is designed to achieve 3 properties. First, it must be **robust to manipulation.** If most publishers are submitting a price of \$100 and one publisher submits a price of \$80, the aggregate price should remain near \$100 and not be overly influenced by the single outlying price. In the figure below, the aggregate price and confidence interval (represented by the red star) is not influenced by the blue publisher whose price is far away from the other publishers:
+The aggregation algorithm is designed to achieve 3 properties. First, it must be **robust to manipulation.** If most publishers are submitting a price of \$100 and one publisher submits a price of \$80, the aggregate price should remain near \$100 and not be overly influenced by the single outlying price. In the figure below, the aggregate price and confidence interval (represented by the blue star) is not influenced by the magenta publisher whose price is far away from the other publishers:
 
 ![](../../../images/Price_Aggregation_1.png)
 
