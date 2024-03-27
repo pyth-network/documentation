@@ -1,7 +1,6 @@
 import copy from "copy-to-clipboard";
 import CopyIcon from "./icons/CopyIcon";
 
-/** Drop-down selection component for choosing the current cosmos network. */
 const CopyAddress = ({ address, url }: { address: string; url?: string }) => {
   return (
     <div
