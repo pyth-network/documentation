@@ -35,10 +35,10 @@
   "market-hours": "Market Hours",
   "best-practices": "Best Practices",
   "api-reference": "API Reference",
+  "error-codes": "Error Codes",
   "api-instances-and-providers": "API Instances and Providers",
   "contract-addresses": "Contract Addresses",
   "examples": "Example Applications",
-  "error-codes": "Error Codes",
 
   "-- Understand Pyth": {
     "title": "Understanding Pyth",
