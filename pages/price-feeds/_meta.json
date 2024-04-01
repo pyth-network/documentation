@@ -38,6 +38,7 @@
   "api-instances-and-providers": "API Instances and Providers",
   "contract-addresses": "Contract Addresses",
   "examples": "Example Applications",
+  "error-codes": "Error Codes",
 
   "-- Understand Pyth": {
     "title": "Understanding Pyth",
