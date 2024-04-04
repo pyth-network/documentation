@@ -106,7 +106,7 @@ contract CoinFlip {
 }
 ```
 
-Implement `entropyCallback` method which is required by the IEntropyConsumer Interface. Entropy calls it back to fulfill a request. Entropy will call back this 
+Implement `entropyCallback` method which is required by the IEntropyConsumer Interface. Entropy calls back this method to fulfill a request. Entropy will call back this 
 method with the `sequenceNumber` of the request, the `providerAddress` from which the random number was requested and the generated `randomNumber`.
 Finally, the method emits a `FlipResult` event with the result of the flip.
 
