@@ -107,7 +107,7 @@ contract CoinFlip {
 }
 ```
 
-Implement `entropyCallback` method for Entropy to call back once the request is fulfilled. Entropy will call back this 
+Implement `entropyCallback` method for Entropy to call back to fulfill a request. Entropy will call back this 
 method with the `sequenceNumber` of the request, the `providerAddress` from which the random number was requested and the generated `randomNumber`.
 Finally, the method emits a `FlipResult` event with the result of the flip.
 
