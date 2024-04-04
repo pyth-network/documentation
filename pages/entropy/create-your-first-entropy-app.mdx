@@ -41,10 +41,11 @@ Create a new file `CoinFlip.sol` in `contracts/src` directory and add the follow
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 import "@pythnetwork/entropy-sdk-solidity/IEntropy.sol";
+import "@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol";
 
-contract CoinFlip {
+contract CoinFlip is IEntropyConsumer {
   event FlipRequested(uint64 sequenceNumber);
-  event FlipResult(bool isHeads);
+  event FlipResult(uint64 sequenceNumber, bool isHeads);
 
   IEntropy entropy;
   address provider;
@@ -53,6 +54,12 @@ contract CoinFlip {
     entropy = IEntropy(_entropy);
     provider = _provider;
   }
+
+  // This method is required by the IEntropyConsumer interface
+  function getEntropy() internal view override returns (address) {
+    return address(entropy);
+  }
+
 }
 
 ```
@@ -65,20 +72,19 @@ The code implements some events, properties and a constructor to instantiate the
 contract CoinFlip {
   ...
 
-  function request(bytes32 userCommitment) external payable {
+  function request(bytes32 userRandomNumber) external payable {
     // checks
     uint128 requestFee = entropy.getFee(provider);
     if(msg.value < requestFee) revert("not enough fees");
 
     // pay the fees and request a random number from entropy
-    uint64 sequenceNumber = entropy.request{value: requestFee}(provider, userCommitment, true);
+    uint64 sequenceNumber = entropy.requestWithCallback{value: requestFee}(provider, userRandomNumber);
 
     // emit event
     emit FlipRequested(sequenceNumber);
   }
 }
 ```
-
 Users will invoke the `request` method to initiate a coin flip with a request fee and passes in a `userCommitment` argument — we’ll see how to generate this later. The method first retrieves the fee required to request a random number from Entropy. It then include the fee in the request method call to entropy. Finally, the method emits a `FlipRequested` event with a `sequenceNumber`. This event is also defined in the code snippet above.
 
 ### Fulfill a request
@@ -87,16 +93,23 @@ Users will invoke the `request` method to initiate a coin flip with a request fe
 contract CoinFlip {
   ...
 
-  // fulfil a request
-  function fulfill(uint64 sequenceNumber, bytes32 userRandomness, bytes32 providerRevelation) external {
-    bytes32 randomNumber = entropy.reveal(provider, sequenceNumber, userRandomness, providerRevelation);
+  // This method is required by the IEntropyConsumer interface. It is called by Entropy when a request is fulfilled.
+  function entropyCallback(
+    uint64 sequenceNumber,
+    // We are not using _providerAddress here.
+    address _providerAddress,
+    bytes32 randomNumber
+  ) internal override {
+    bool isHeads = uint256(randomNumber) % 2 == 0;
 
-    emit FlipResult(uint256(randomNumber) % 2 == 0);
+    emit FlipResult(sequenceNumber, isHeads);
   }
 }
 ```
 
-The fulfill method takes three arguments. The first is the `sequenceNumber`, which we saw was returned by the request method above. The next two are random numbers — we will see how to generate these values later. Finally, the method emits a `FlipResult` event with the result of the flip.
+Implement `entropyCallback` method for Entropy to call back once the request is fulfilled. Entropy will call back this 
+method with the `sequenceNumber` of the request, the `providerAddress` from which the random number was requested and the generated `randomNumber`.
+Finally, the method emits a `FlipResult` event with the result of the flip.
 
 Yay! you have successfully implemented a coin flip contract.
 
@@ -217,13 +230,12 @@ async main() {
 
   // Generate user random number and commitment
   const userRandomNumber = web3.utils.randomHex(32);
-  const userCommitment = web3.utils.keccak256(userRandomNumber);
 
   const fee = await entropyContract.methods.getFee(process.env["PROVIDER_ADDRESS"]).call()
   console.log(`fee         : ${fee}`);
 
   const requestReceipt = await coinFlipContract.methods
-    .request(userCommitment)
+    .request(userRandomNumber)
     .send({
       value: fee,
       from: address,
@@ -240,53 +252,48 @@ async main() {
 
 The code snippet above generates a random number and hashes it. The resulting hash is the user commitment. The code calls the Entropy contract to get the fee required for requesting a random number. Then it calls the request method of the CoinFlip contract with the `userCommitment` as an argument and the required fee. Finally, the code reads the sequenceNumber from the `FlipRequested` event emitted by the CoinFlip contract.
 
-Next, add a snippet to get the provider’s random number.
-
-```javascript copy
-async main() {
-  ...
-  // Fetch the provider uri
-  const info = await entropyContract.methods
-    .getProviderInfo(process.env["PROVIDER_ADDRESS"])
-    .call();
-  const providerUri = web3.utils.hexToString(info.uri);
-
-  // Fetch provider commitment
-  const res = await fetch(`${providerUri}/revelations/${sequenceNumber}`);
-  const fortunaRevelation = await res.json();
-}
-```
-
-The code first fetches the provider service URI from the Entropy contract and then fetches the provider’s random number from the service.
-
 Finally, add the following code snippet to get the flip result.
 
 ```javascript copy
 async main() {
   ...
-  // Fulfill the request
-  const fulfillReceipt = await coinFlipContract.methods
-    .fulfill(sequenceNumber, randomNumber, "0x" + fortunaRevelation.value.data)
-    .send({
-      from: address,
-    });
+  let fromBlock = requestReceipt.blockNumber;
+  const intervalId = setInterval(async () => {
+    const currentBlock = await web3.eth.getBlockNumber();
 
-  console.log(`fulfill tx  : ${fulfillReceipt.transactionHash}`);
-  const isHead = fulfillReceipt.events.FlipResult.returnValues.isHeads;
-  console.log(`flip result : ${isHead ? "Heads" : "Tails"}`);
+    if(fromBlock > currentBlock) {
+      return;
+    }
+    
+    // Get 'FlipResult' events emitted by the CoinFlip contract for given block range.
+    const events = await coinFlipContract.getPastEvents("FlipResult", {
+      fromBlock: fromBlock,
+      toBlock: currentBlock,
+    });
+    fromBlock = currentBlock + 1n;
+
+    // Find the event with the same sequence number as the request.
+    const event = events.find(event => event.returnValues.sequenceNumber === sequenceNumber);
+    
+    // If the event is found, log the result and stop polling.
+    if(event !== undefined) {
+      console.log(`result      : ${event.returnValues.isHeads ? 'Heads' : 'Tails'}`);
+      clearInterval(intervalId);
+    }
+
+  }, 1000);
 }
 ```
 
-The code above calls the `fulfill` method on the CoinFlip contract with the `sequenceNumber` returned from the `request` call above, along with the user's random number generated while requesting and the provider's random number fetched from Fortuna.
+The code above polls for new `FlipResult` events emitted by the CoinFlip contract. It checks if the event has the same `sequenceNumber` as the request. If it does, it logs the result and stops polling.
 
 That’s it, Let’s run the script with the command `node script.js` . You should get an output similar to:
 
 ```
-fee          : 101
-request tx   : 0x9faf2f439f99986b4a87befbad89301b3ec8976038a8b8332c7c53cbba43fd95
-sequence     : 36
-fulfill tx   : 0x806900dbbebc8488ac6b87c9c82c5fd9ad38231c2e66b1899e0a8a3afe805f01
-flip result  : Tails
+fee         : 101
+request tx  : 0xde0dce36a3c149b189aba8b29cad98375a62a811e65efdae28b28524da59cfb6
+sequence    : 42
+result      : Tails
 ```
 
 Note that: the script can fail due to some rpc issues. You can run the script again to get the expected result.
