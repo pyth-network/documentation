@@ -59,7 +59,6 @@ contract CoinFlip is IEntropyConsumer {
   function getEntropy() internal view override returns (address) {
     return address(entropy);
   }
-
 }
 
 ```
@@ -85,6 +84,7 @@ contract CoinFlip {
   }
 }
 ```
+
 Users will invoke the `request` method to initiate a coin flip with a request fee and passes in a `userCommitment` argument — we’ll see how to generate this later. The method first retrieves the fee required to request a random number from Entropy. It then include the fee in the request method call to entropy. Finally, the method emits a `FlipRequested` event with a `sequenceNumber`. This event is also defined in the code snippet above.
 
 ### Fulfill a request
@@ -106,7 +106,7 @@ contract CoinFlip {
 }
 ```
 
-Implement `entropyCallback` method which is required by the IEntropyConsumer Interface. Entropy calls back this method to fulfill a request. Entropy will call back this 
+Implement `entropyCallback` method which is required by the IEntropyConsumer Interface. Entropy calls back this method to fulfill a request. Entropy will call back this
 method with the `sequenceNumber` of the request, the `providerAddress` from which the random number was requested and the generated `randomNumber`.
 Finally, the method emits a `FlipResult` event with the result of the flip.
 
@@ -263,7 +263,7 @@ async main() {
     if(fromBlock > currentBlock) {
       return;
     }
-    
+
     // Get 'FlipResult' events emitted by the CoinFlip contract for given block range.
     const events = await coinFlipContract.getPastEvents("FlipResult", {
       fromBlock: fromBlock,
@@ -273,7 +273,7 @@ async main() {
 
     // Find the event with the same sequence number as the request.
     const event = events.find(event => event.returnValues.sequenceNumber === sequenceNumber);
-    
+
     // If the event is found, log the result and stop polling.
     if(event !== undefined) {
       console.log(`result      : ${event.returnValues.isHeads ? 'Heads' : 'Tails'}`);
