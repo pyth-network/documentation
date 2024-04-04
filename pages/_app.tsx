@@ -5,11 +5,11 @@ import Script from "next/script";
 import "nextra-theme-docs/style.css";
 import { ReactNode, useEffect, useState } from "react";
 import { WagmiConfig, createConfig } from "wagmi";
-import { arbitrum, avalanche, mainnet } from "wagmi/chains";
+import { arbitrum, avalanche, mainnet, sepolia } from "wagmi/chains";
 import { CosmosChains, GlobalContextProvider } from "../contexts/GlobalContext";
 import "../styles/styles.css";
 
-const chains = [arbitrum, mainnet, avalanche];
+const chains = [arbitrum, mainnet, avalanche, sepolia];
 
 type NextraAppProps = AppProps & {
   Component: AppProps["Component"] & {
