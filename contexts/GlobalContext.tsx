@@ -8,7 +8,7 @@ import React, {
   useState,
 } from "react";
 import { Chain, useNetwork } from "wagmi";
-import { arbitrum, avalanche, mainnet } from "wagmi/chains";
+import { arbitrum, avalanche, mainnet, sepolia } from "wagmi/chains";
 import {
   injective,
   injectivetestnet,
@@ -88,6 +88,11 @@ export const PythAddresses: Record<string, PythAddressConfig> = {
     pythAddress: "0xff1a0f4744e8582DF1aE09D5611b887B6a12925C",
     networkType: "mainnet",
   },
+  ethereum_sepolia: {
+    chainId: 11155111,
+    pythAddress: "0xDd24F84d36BF92C65F92307595335bdFab5Bbd21",
+    networkType: "testnet",
+  },
 };
 
 export interface PythCosmosConfig {
@@ -149,7 +154,7 @@ export const useGlobalContext = () => useContext(GlobalContext);
 
 const contractAbi = [...PythAbi, ...PythErrorsAbi];
 
-const CHAINS = [mainnet, avalanche, arbitrum];
+const CHAINS = [mainnet, avalanche, arbitrum, sepolia];
 export const CosmosChains = [
   osmosis,
   osmosistestnet,
