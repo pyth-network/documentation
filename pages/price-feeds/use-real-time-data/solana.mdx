@@ -4,7 +4,7 @@ description: Consume Pyth Network prices in Solana applications
 
 # How to Use Real-Time Data in Solana Programs
 
-This guide explains how to use real-time Pyth data in EVM programs.
+This guide explains how to use real-time Pyth data in Solana applications.
 
 ## Install Pyth SDKs
 
@@ -54,12 +54,16 @@ Next, update the instruction logic to read the price from the price update accou
 pub fn sample(ctx: Context<Sample>) -> Result<()> {
     let price_update = &mut ctx.accounts.price_update;
     // get_price_no_older_than will fail if the price update is more than 30 seconds old
-    const maximum_age: u64 = 30;
+    let maximum_age: u64 = 30;
     // get_price_no_older_than will fail if the price update is for a different price feed.
     // This string is the id of the BTC/USD feed. See https://pyth.network/developers/price-feed-ids for all available ids.
-    const feed_id: FeedId = get_feed_id_from_hex("0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43")?;
+    let feed_id: [u8; 32] = get_feed_id_from_hex("0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43")?;
     let price = price_update.get_price_no_older_than(&Clock::get()?, maximum_age, &feed_id)?;
-    // TODO log something about the price here
+    // Sample output:
+    // The price is (7160106530699 ± 5129162301) * 10^-8
+    msg!("The price is ({} ± {}) * 10^{}", price.price, price.conf, price.exponent);
+
+    Ok(())
 }
 ```
 
@@ -89,10 +93,15 @@ const priceServiceConnection = new PriceServiceConnection(
   { priceFeedRequestConfig: { binary: true } }
 );
 
-// TODO: illustrate expected contents of this string
+// Hermes provides other methods for retrieving price updates. See
+// https://hermes.pyth.network/docs for more information.
 const priceUpdateData: string[] = await priceServiceConnection.getLatestVaas([
   "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
 ]);
+
+// Price updates are strings of base64-encoded binary data. Example:
+// ["UE5BVQEAAAADuAEAAAADDQJoIZzihVp30/71MXDexqiJDjGpEUEcHj/D06pRiYTPPlRPZKKiVFaZdqiGZ7vvGBj1kK69fKRncCKHXlGyS0LcAQPREzVlm7AcY+X0/hCupv8M5KMhEgOCxq5LxCCKQjL/xwm4jTCJrwkHn/PBaoirnlbHMjxAlwJaFF4RGeE1KRDeAASQIFjfbbobiq2OcSRnK3Ny1NY2Zd012ahIhoWpqxbv4UqDZXLh+bPm4Q14SfO/llRTOmqG6O4v+nfjZa7WNjgxAAZFANqAEooKvijK+476YBITKono+vJ4bSQHUiXOaiGs/zcI6WYGRM0xc6ov2mfCaTuH7mx3ElaLyPGvRX4D9DyHAAf+dPg+NEepwMJI1qPLRcTy0xoz2Yq0k2MuL87gCBsYVlS31atGsQcrXfHr4xcTKKyEUh1tIaOfRbPdX1cvs4D6AAj2/vuKpAgYWhd2gtqHsQLV1vMgq8SKH8wiOmhaMZ06GAQSM1pYLpHZRhYaUQbrUJAeqEeX+qMMqQFMPSSUnEKNAAmCE98NUYbHuEoxJGMDybTGCyDEXCmaNM0q6GT0qrbSmT6NF50yz9CE30WWHNOZzFtK2rCyBYFH2aAp6lQ1JKfmAQpW/wUaOhSdwGiEPWvpY3FWL077i0c4auXQjSQNaDD0cBnmvJTS5R3KxK5aunuUvVAT1mHTnpKHIzNKyu7ICM2zAQvrIFfWRFjVE0zRCvoAcvMpmpS7atWu8VgvklpZh9Qt9xYSO2Yq/asgNsMSQaowXiU0MfjggS+UJ8yWaOpUg18vAAxAMuUlOjNzFj6oPES850YNu2k7PM7AGL8Gb/8+HshkfjG0GsNR8H8/vB8v/iEcaScxQFXwtLT0OSgjWMa0ByknAA7PScKUEP8N7iJKYv6lmEs26DZnxzdpGVZRGqbbC0mxyjY0HqsT0rv2wNvy3MbAtABDMsLumII00cRCKBsZXGlKARCC0NzsKnduLsgGfqxYL4yuf910DKrRp5j+fKLmF2QiB2yVT90ja0782/u6BZZUGRMoA/AWl1qvswBtnlSkHcWEABIp74UFLiiA+MBBvBzhLBxSTKXldiLJ75+U/eqK/ej6qT+I+6S1pzT/ntXdpD25jmQhjtsYEqs/rmgs5U2p4AVRAGYULPcAAAAAABrhAfrtrFhR4yubI7X5QRqMK6xKrj7U3XuBHdGnLqSqcQAAAAAC8IR2AUFVV1YAAAAAAAf6dUkAACcQMZv+5jfvAe6sflX1cL7xu9WWQ9UBAFUA5i32yLSoX+GmfbRNwS3l2zMPesZrctxliv7fD0pBW0MAAAaBiqrXwAAAAADYu55y////+AAAAABmFCz3AAAAAGYULPYAAAaFH6MbAAAAAADcBIdMCre0t06ngCnw+N4IkFpZVqOz9YuwKL+UFdt13ZBtay0YZnkw7QGoaTDCLlsNK1tk1F/qgMyOcYozjOTj41XriIpEPeG2HPYl+u0CKolGlCsz1IDu4w2lyh6LWVaMkEybGz7ih4H2RqCj6BVu182ZqsZgJx9ghzKImAo4cIlWzRTwpm4daAqHa4JEyimFDpFt6UeqvS5TNu2F8W+X+edeiph20EulTI7sx38jwhq5Yc0Mf2ElvFgToGQ806Vs2HynuLwh9OIuTTZh"]
+console.log(priceUpdateData);
 ```
 
 ### Post price updates
@@ -105,12 +114,14 @@ The `PythSolanaReceiver` class in `@pythnetwork/pyth-solana-receiver` provides a
 ```typescript copy
 import { PythSolanaReceiver } from "@pythnetwork/pyth-solana-receiver";
 
-// You will need a Connection from @solana/web3.js and an AnchorWallet to create the receiver
+// You will need a Connection from @solana/web3.js and an AnchorWallet to create
+// the receiver.
 const connection: Connection;
 const wallet: AnchorWallet;
 const pythSolanaReceiver = new PythSolanaReceiver({ connection, wallet });
 
-// Set closeUpdateAccounts: true if you want to delete the price update account at the end of the transaction to reclaim rent.
+// Set closeUpdateAccounts: true if you want to delete the price update account at
+// the end of the transaction to reclaim rent.
 const transactionBuilder = pythSolanaReceiver.newTransactionBuilder({
   closeUpdateAccounts: false,
 });
