@@ -1,23 +1,138 @@
-# Pyth on Solana
+---
+description: Consume Pyth Network prices in Solana applications
+---
 
-We provide one SDK for Solana on-chain programs to use Pyth prices:
+# How to Use Real-Time Data in Solana Programs
 
-The [pyth-sdk-solana crate](https://github.com/pyth-network/pyth-sdk-rs/tree/main/pyth-sdk-solana) can be used to consume Pyth prices inside Solana programs written in Rust.
+This guide explains how to use real-time Pyth data in EVM programs.
 
-## Example Program
+## Install Pyth SDKs
 
-The Pyth Solana SDK includes two example programs that demonstrate how to use Pyth price feeds in Solana programs:
-a [program using only the basic Solana SDK](https://github.com/pyth-network/pyth-sdk-rs/tree/main/examples/sol-contract) and an [Anchor program](https://github.com/pyth-network/pyth-sdk-rs/tree/main/examples/sol-anchor-contract).
+We provide two SDKs for Solana applications to cover the on- and off-chain portions of the integration:
 
-## Price Feed IDs
+### Rust SDK
 
-The price feeds available on each Solana network are listed on the following pages:
+The [pyth-solana-receiver-sdk crate](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/solana/pyth_solana_receiver_sdk) can be used to consume Pyth prices inside Solana programs written in Rust.
+Add this crate to the dependencies section of your `Cargo.toml` file:
 
-- [Devnet](https://pyth.network/developers/price-feed-ids#solana-devnet)
-- [Testnet](https://pyth.network/developers/price-feed-ids#solana-testnet)
-- [Mainnet-Beta](https://pyth.network/developers/price-feed-ids#solana-mainnet-beta)
+```toml copy
+[dependencies]
+pyth-solana-receiver-sdk ="0.1.0"
+```
 
-## Program Addresses
+### Typescript SDK
 
-Developers will need the address of the Pyth oracle πrogram on their blockchain in order to use Pyth.
-Please consult [Solana Contract Addresses](../contract-addresses/solana) to find the address for your blockchain.
+Pyth provides two Typescript packages, [@pythnetwork/price-service-client](https://github.com/pyth-network/pyth-crosschain/tree/main/price_service/client/js) and [@pythnetwork/pyth-solana-receiver](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/solana/sdk/js/pyth_solana_receiver), for fetching Pyth prices and submitting them to the blockchain respectively.
+Add these packages to your off-chain dependencies:
+
+```bash copy
+npm install --save @pythnetwork/price-service-client @pythnetwork/pyth-solana-receiver
+```
+
+## Write Contract Code
+
+Add code to your Solana program to read the Pyth price.
+Pyth prices are posted to price update accounts that can be passed to any instruction that needs price data.
+If you are using Anchor, you can simply add an `Account<'info, PriceUpdateV2>` field to your `Context` struct:
+
+TODO: does this Account thing perform the necessary account ownership checks?
+
+```rust copy
+#[derive(Accounts)]
+#[instruction()]
+pub struct Sample<'info> {
+    #[account(mut)]
+    pub payer: Signer<'info>,
+    // Add this account to any instruction Context that needs price data.
+    pub price_update: Account<'info, PriceUpdateV2>,
+}
+```
+
+Next, update the instruction logic to read the price from the price update account:
+
+```rust copy
+pub fn sample(ctx: Context<Sample>) -> Result<()> {
+    let price_update = &mut ctx.accounts.price_update;
+    // get_price_no_older_than will fail if the price update is more than 30 seconds old
+    const maximum_age: u64 = 30;
+    // get_price_no_older_than will fail if the price update is for a different price feed.
+    // This string is the id of the BTC/USD feed. See https://pyth.network/developers/price-feed-ids for all available ids.
+    const feed_id: FeedId = get_feed_id_from_hex("0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43")?;
+    let price = price_update.get_price_no_older_than(&Clock::get()?, maximum_age, &feed_id)?;
+    // TODO log something about the price here
+}
+```
+
+Note that it is your responsibility in this function to validate that the provided price update is for the appropriate price feed and timestamp.
+`PriceUpdateV2` guarantees that the account contains a verified price for _some_ price feed at _some_ point in time.
+There are various methods on this struct (such as `get_price_no_older_than`) that you can use to implement the necessary checks.
+
+## Write Frontend Code
+
+Your frontend code needs to perform two different tasks:
+
+1. Fetch price updates from Hermes
+2. Post the price updates to Solana and invoke your application logic
+
+### Fetch price updates
+
+Use `PriceServiceConnection` from `@pythnetwork/price-service-client` to fetch Pyth price updates from Hermes:
+
+```typescript copy
+import { PriceServiceConnection } from "@pythnetwork/price-service-client";
+
+// The URL below is a public Hermes instance operated by the Pyth Data Association.
+// Hermes is also available from several third party providers listed here:
+// https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes
+const priceServiceConnection = new PriceServiceConnection(
+  "https://hermes.pyth.network/",
+  { priceFeedRequestConfig: { binary: true } }
+);
+
+// TODO: illustrate expected contents of this string
+const priceUpdateData: string[] = await priceServiceConnection.getLatestVaas([
+  "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
+]);
+```
+
+### Post price updates
+
+Finally, post the price update to the Pyth program on Solana.
+This step will create the price update account that your application reads from.
+Applications typically combine posting the price update and invoking their application into a sequence of transactions.
+The `PythSolanaReceiver` class in `@pythnetwork/pyth-solana-receiver` provides a convenient transaction builder to help with this process:
+
+```typescript copy
+import { PythSolanaReceiver } from "@pythnetwork/pyth-solana-receiver";
+
+// You will need a Connection from @solana/web3.js and an AnchorWallet to create the receiver
+const connection: Connection;
+const wallet: AnchorWallet;
+const pythSolanaReceiver = new PythSolanaReceiver({ connection, wallet });
+
+// Set closeUpdateAccounts: true if you want to delete the price update account at the end of the transaction to reclaim rent.
+const transactionBuilder = pythSolanaReceiver.newTransactionBuilder({
+  closeUpdateAccounts: false,
+});
+await transactionBuilder.addPostPriceUpdates(priceUpdateData);
+
+// Use this function to add your application-specific instructions to the builder
+// await transactionBuilder.addPriceConsumerInstructions(...)
+
+await pythSolanaReceiver.provider.sendAll(
+  await transactionBuilder.buildVersionedTransactions({
+    computeUnitPriceMicroLamports: 50000,
+  }),
+  { skipPreflight: true }
+);
+```
+
+TODO: link to SDK documentation to show how to use this builder better.
+
+## Additional Resources
+
+You may find these additional resources helpful for developing your Solana application.
+
+### Example application
+
+The [Solana example application](https://github.com/guibescos/my_first_pyth_app) is an end-to-end application that uses Pyth Network prices on the Solana blockchain and in a frontend.
