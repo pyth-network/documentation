@@ -12,7 +12,7 @@ Foundry - [https://book.getfoundry.sh/getting-started/installation](https://book
 
 Node (version > 18) - [https://nodejs.org/en/download](https://nodejs.org/en/download)
 
-- Run `npm -v` to confirm. You should get an output similar to `10.2.3`
+- Run `node -v` to confirm. You should get an output with version >= `v18.0.0`.
 
 ## Getting Started
 
@@ -66,14 +66,16 @@ contract CoinFlip is IEntropyConsumer {
 The code implements some events, properties and a constructor to instantiate the contract. One of the properties is of type `IEntropy` which is an interface imported from the Entropy SDK. The constructor also takes a `provider` argument. We will see how to populate these later.
 
 ### Request a coin flip
+Copy the following code into `CoinFlip.sol`.
 
 ```solidity copy
 contract CoinFlip {
-  ...
+  // ... prior code omitted
 
   function request(bytes32 userRandomNumber) external payable {
-    // checks
+    // get the required fee
     uint128 requestFee = entropy.getFee(provider);
+    // check if the user has sent enough fees
     if(msg.value < requestFee) revert("not enough fees");
 
     // pay the fees and request a random number from entropy
@@ -85,17 +87,20 @@ contract CoinFlip {
 }
 ```
 
-Users will invoke the `request` method to initiate a coin flip with a request fee and passes in a `userCommitment` argument — we’ll see how to generate this later. The method first retrieves the fee required to request a random number from Entropy. It then include the fee in the request method call to entropy. Finally, the method emits a `FlipRequested` event with a `sequenceNumber`. This event is also defined in the code snippet above.
+Users will invoke the `request` method to initiate a coin flip with a request fee and passes in a `userRandomNumber` argument — we’ll see how to generate this later. The method first retrieves the fee required to request a random number from Entropy. It then include the fee in the request method call to entropy. Finally, the method emits a `FlipRequested` event with a `sequenceNumber`. This event is also defined in the code snippet above.
 
-### Fulfill a request
+### Handle the callback
+Copy the following code into `CoinFlip.sol`.
 
 ```solidity copy
 contract CoinFlip {
-  ...
+  // ... prior code omitted
 
   function entropyCallback(
     uint64 sequenceNumber,
-    // We are not using _providerAddress here.
+    // If your app uses multiple providers, you can use this argument 
+    // to distinguish which one is calling the app back. This app only 
+    // uses one provider so this argument is not used.
     address _providerAddress,
     bytes32 randomNumber
   ) internal override {
@@ -211,8 +216,6 @@ async function main() {
     EntropyAbi,
     process.env["ENTROPY_ADDRESS"]
   );
-
-  ...
 }
 
 main();
@@ -224,10 +227,11 @@ Next, add the following code to the main method to request a flip from the CoinF
 
 ```javascript copy
 async main() {
-  ...
+  // ... prior code omitted
+
   // Request a random number
 
-  // Generate user random number and commitment
+  // Generate user random number
   const userRandomNumber = web3.utils.randomHex(32);
 
   const fee = await entropyContract.methods.getFee(process.env["PROVIDER_ADDRESS"]).call()
@@ -249,13 +253,14 @@ async main() {
 }
 ```
 
-The code snippet above generates a random number and hashes it. The resulting hash is the user commitment. The code calls the Entropy contract to get the fee required for requesting a random number. Then it calls the request method of the CoinFlip contract with the `userCommitment` as an argument and the required fee. Finally, the code reads the sequenceNumber from the `FlipRequested` event emitted by the CoinFlip contract.
+The code snippet above generates a random number. The code calls the Entropy contract to get the fee required for requesting a random number. Then it calls the request method of the CoinFlip contract with the `userRandomNumber` as an argument and the required fee. Finally, the code reads the sequenceNumber from the `FlipRequested` event emitted by the CoinFlip contract.
 
 Finally, add the following code snippet to get the flip result.
 
 ```javascript copy
 async main() {
-  ...
+  // ... prior code omitted
+
   let fromBlock = requestReceipt.blockNumber;
   const intervalId = setInterval(async () => {
     const currentBlock = await web3.eth.getBlockNumber();
