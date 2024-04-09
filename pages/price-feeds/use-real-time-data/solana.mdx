@@ -35,9 +35,9 @@ Add code to your Solana program to read the Pyth price.
 Pyth prices are posted to price update accounts that can be passed to any instruction that needs price data.
 If you are using Anchor, you can simply add an `Account<'info, PriceUpdateV2>` field to your `Context` struct:
 
-TODO: does this Account thing perform the necessary account ownership checks?
-
 ```rust copy
+use pyth_solana_receiver_sdk::price_update::{PriceUpdateV2};
+
 #[derive(Accounts)]
 #[instruction()]
 pub struct Sample<'info> {
@@ -47,6 +47,10 @@ pub struct Sample<'info> {
     pub price_update: Account<'info, PriceUpdateV2>,
 }
 ```
+
+Warning: users must ensure that the account passed to their instruction is owned by the Pyth pull oracle program.
+Using Anchor with the `Account<'info, PriceUpdateV2>` type will automatically perform this check.
+However, if you are not using Anchor, it is your responsibility to perform this check.
 
 Next, update the instruction logic to read the price from the price update account:
 
@@ -67,7 +71,7 @@ pub fn sample(ctx: Context<Sample>) -> Result<()> {
 }
 ```
 
-Note that it is your responsibility in this function to validate that the provided price update is for the appropriate price feed and timestamp.
+Warning: it is your responsibility to validate that the provided price update is for the appropriate price feed and timestamp.
 `PriceUpdateV2` guarantees that the account contains a verified price for _some_ price feed at _some_ point in time.
 There are various methods on this struct (such as `get_price_no_older_than`) that you can use to implement the necessary checks.
 
@@ -128,8 +132,18 @@ const transactionBuilder = pythSolanaReceiver.newTransactionBuilder({
 await transactionBuilder.addPostPriceUpdates(priceUpdateData);
 
 // Use this function to add your application-specific instructions to the builder
-// await transactionBuilder.addPriceConsumerInstructions(...)
+await transactionBuilder.addPriceConsumerInstructions(
+  async (
+    getPriceUpdateAccount: (priceFeedId: string) => PublicKey
+  ): Promise<InstructionWithEphemeralSigners[]> => {
+    // Generate instructions here that use the price updates posted above.
+    // getPriceUpdateAccount(<price feed id>) will give you the account for each price update.
+    return [];
+  }
+);
 
+// Send the instructions in the builder in 1 or more transactions.
+// The builder will pack the instructions into transactions automatically.
 await pythSolanaReceiver.provider.sendAll(
   await transactionBuilder.buildVersionedTransactions({
     computeUnitPriceMicroLamports: 50000,
@@ -138,7 +152,7 @@ await pythSolanaReceiver.provider.sendAll(
 );
 ```
 
-TODO: link to SDK documentation to show how to use this builder better.
+The [SDK documentation](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/solana/sdk/js/pyth_solana_receiver) contains more information about interacting with the Pyth solana receiver contract, including working examples.
 
 ## Additional Resources
 
