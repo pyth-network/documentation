@@ -1,35 +1,39 @@
 # Create your first Pyth app on EVM
 
-In this tutorial we will develop a Solidity smart contract application that mints an NFT in exchange for $1 of ETH.
-We will use Pyth realtime price feeds to determine the current price of ETH/USD. This turotial is divided into two parts: \
-Part 1: Develop the contract using [pyth-sdk-solidity](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/solidity) and test it locally. \
-Part 2: Deploy the contract to a test network and integrating [pyth-evm-js](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/js) to get the price updates.
+In this tutorial we will use real-time Pyth price data to mint an NFT in exchange for $1 of ETH.
+Our solidity contract will read the price of ETH/USD from Pyth and use it to calculate the amount of ETH required to mint the NFT.
+
+This tutorial is intended to help you get familiar with the pull-based oracles and the Pyth SDK.
+
+In this two part tutorial, we will:
+- Create a contract integrating [pyth-sdk-solidity](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/solidity) and test it locally.
+- Deploy the contract to a test network and integrating [pyth-evm-js](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/js) to get the price updates.
 
 
-## Preliminaries (TODO:)
+## Preliminaries
 
-In this tutorial we will uses Foundry to perform the contract development tasks.
-Please follow the [Foundry installation instructions](https://book.getfoundry.sh/getting-started/installation) if you do not already have it installed.
 
-Part of this tutorial also uses the command line tools `curl` and `jq`.
-Please make sure these are installed on your system before continuing.
+- [Foundry](https://book.getfoundry.sh/getting-started/installation)
+- [Node.js](https://nodejs.org/en/download/)
+- [curl](https://curl.se/download.html)
+- [jq](https://stedolan.github.io/jq/download/)
+
 
 ## Create a Foundry project
 
 Create a new directort and initialize a foundry project.
 
 ```bash copy
-mkdir my_first_pyth_app
-cd my_first_pyth_app
+mkdir my_first_pyth_app && cd my_first_pyth_app
 forge init
 ```
 
-From the contracts directory, run `forge init`.
 The `src` directory will hold your contract code, and the `test` directory will hold unit tests.
 Both directories are initialized with some sample contract code and tests.
+
+(TODO: We can remove `forge test` here)
 Try it out by running `forge test`.
-This command should print out something like this: \
-(TODO: Check if I can change the format of output block.)
+This command should print out something like this:
 ```
 [⠢] Compiling...
 No files changed, compilation skipped
@@ -42,17 +46,21 @@ Test result: ok. 2 passed; 0 failed; 0 skipped; finished in 12.30ms
 Ran 1 test suites: 2 tests passed, 0 failed, 0 skipped (2 total tests)
 ```
 
-The Foundry project has been successfully initialized!
+
+The Foundry project has been successfully initialized! 
 At this point, delete the sample code from `src` and the test file from `test` -- we won't need them anymore.
 ```bash copy
 rm -r src/* test/*
 ```
 
+Now we are all set to start building our isConstructSignatureDeclaration..
+
+
 
 ## Install the Pyth SDK
 
-Pyth provides a Solidity SDK that we can use to interact with the on-chain contracts. 
-It exposes multiple [methods](../api-reference/evm) to read and interact with the price feeds contract. 
+Pyth provides a Solidity SDK that we can use to interact with the on-chain Pyth price-feed contracts. 
+It exposes multiple [methods](../api-reference/evm) to read and interact with the contracts. 
 You can use `npm` to install the Pyth SDK:
 
 ```bash copy
@@ -60,13 +68,14 @@ npm init -y
 npm install @pythnetwork/pyth-sdk-solidity
 ```
 
-Next we will map the Pyth SDK so that we can import it from our Solidity contracts.
+Now we will map the Pyth SDK so that we can import it from our Solidity contracts.
 ```bash copy
 echo '@pythnetwork/pyth-sdk-solidity/=node_modules/@pythnetwork/pyth-sdk-solidity' > remappings.txt
 ```
 
 ## Create a contract
 
+### Fetch the Price
 Next, create a file `src/MyFirstPythContract.sol` in your favorite editor and add the following code:
 
 ```solidity copy filename="MyFirstPythContract.sol"
@@ -87,14 +96,14 @@ contract MyFirstPythContract {
 }
 ```
 
-### Fetch the Price
+
 Here we import the `IPyth` interface from the Pyth SDK and define a contract called `MyFirstPythContract`.
 This interface is the primary way to interact with the Pyth price feeds contract. 
 
-We pass the [Pyth's implementation contract address](../contract-addresses/evm) of along with [price feed id](https://pyth.network/developers/price-feed-ids) for `ETH/USD`. 
+We pass the [Pyth's contract address](../contract-addresses/evm) along with [price feed id](https://pyth.network/developers/price-feed-ids) for `ETH/USD`. 
 
 
-Next we will add a `mint` method which will do the following things:
+Now we will add a `mint` method to our contract which will do the following things:
 1. Read the price of ETH/USD from Pyth.
 2. Calculate the amount of ETH required to mint an NFT.
 3. Check if the caller has paid enough ETH.
@@ -102,55 +111,28 @@ Next we will add a `mint` method which will do the following things:
 
 
 ```solidity copy filename="MyFirstPythContract.sol"
-
   function mint() public payable {
     PythStructs.Price memory price = pyth.getPrice(ethUsdPriceId);
 
     uint ethPrice18Decimals = (uint(uint64(price.price)) * (10 ** 18)) /
       (10 ** uint8(uint32(-1 * price.expo)));
-    uint oneDollarInEth = ((10 ** 18) * (10 ** 18)) / ethPrice18Decimals;
+    uint oneDollarInWei = ((10 ** 18) * (10 ** 18)) / ethPrice18Decimals;
 
     console2.log("required payment in wei");
-    console2.log(oneDollarInEth);
+    console2.log(oneDollarInWei);
 
-    if (msg.value >= oneDollarInEth) {
+    if (msg.value >= oneDollarInWei) {
       // TODO: mint the NFT here
     } else {
       revert ("Insufficient payment");
     }
   }
-
-
 ```
 
 This method is reading the `Price` from the pyth contract.
 We perfomed a conversion assuming that 10^18 wei is equal to the native token (ETH in this example); 
 in some networks (like Hedera) the decimal places are different and you need to change the math.
 If the caller has not paid enough, the function reverts.
-
-### Update the Price with real time data
-
-Now we will add the `update` function to the contract.
-This function will update the price of ETH/USD on the Pyth contract and then call the `mint` function.
-This method differentiate [pull oracles](https://docs.pyth.network/price-feeds/pythnet-price-feeds/pull-updates) from traditional push oracles. This allows users to fetch real-time data on demand.
-This `pythPriceUpdate` data can be fetched from [Hermes](https://docs.pyth.network/price-feeds/pythnet-price-feeds/hermes)
-TODO: Add reference to Part 2 here for consuming hermes data
-
-
-```solidity copy filename="MyFirstPythContract.sol"
-  function updateAndMint(bytes[] calldata pythPriceUpdate) external payable {
-    uint updateFee = pyth.getUpdateFee(pythPriceUpdate);
-    pyth.updatePriceFeeds{ value: updateFee }(pythPriceUpdate);
-
-    mint();
-  }
-```
-
-This method calls `updatePriceFeeds` on the Pyth contract.
-It take the payload `bytes[]` that we will fetch from `hermes` use it to update the latest prices on the contracts.
-The Pyth contract requires a fee to perform this update; the code snippet above calculates the needed fee using `getUpdateFee`.
-The caller of this function can pass in a recent Pyth price update as this payload, guaranteeing to fetch real-time data.
-
 
 
 Our final contract should look like this. 
@@ -182,17 +164,10 @@ contract MyFirstPythContract {
     console2.log(oneDollarInEth);
  
     if (msg.value >= oneDollarInEth) {
-      // TODO: mint the NFT here
+      // TODO: mint your favourite NFT here
     } else {
       revert ("Insufficient payment");
     }
-  }
-
-  function updateAndMint(bytes[] calldata pythPriceUpdate) external payable {
-    uint updateFee = pyth.getUpdateFee(pythPriceUpdate);
-    pyth.updatePriceFeeds{ value: updateFee }(pythPriceUpdate);
-
-    mint();
   }
  
 }
@@ -209,9 +184,11 @@ Let's try out our changes by running `forge build`:
 Compiler run successful!
 ```
 
-The contract compiles!
+The contract compiles! 
 
-## Create a Test
+You have successfully fetched real time price data from Pyth Oracle. 🥳
+
+## Test the contract
 
 [pyth-sdk-solidity](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/solidity) gives users [`Mock`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/solidity/MockPyth.sol) methods to write unit testnetChains.
 Create your test file in the `test` directory.
@@ -284,8 +261,8 @@ contract MyFirstPythContractTest is Test {
 
 ```
 
-Method `testMint` and `testMintRevert` set the price to a specific value using `mock` methods and then call `mint`.
-The tests use a mock implementation of Pyth defined in helper merhods `createEthUpdate` and `setEthPrice`.
+Here methods `testMint` and `testMintRevert` set the price to a specific value using `mock` methods and then call `mint`.
+The tests use a mock implementation of Pyth defined in helper methods `createEthUpdate` and `setEthPrice`.
 
 Try your tests by running `forge test -vvv`
 
@@ -322,9 +299,6 @@ While our code above seems to work properly, it has a problem.
 To see this problem, let's add another test to the test suite:
 
 ```solidity copy filename="MyFirstPythContract.t.sol"
-contract MyFirstPythContractTest is Test {
-  // ... prior tests omitted ...
-
   function testMintStalePrice() public {
     setEthPrice(100);
 
@@ -333,11 +307,10 @@ contract MyFirstPythContractTest is Test {
     vm.deal(address(this), ETH_TO_WEI);
     app.mint{ value: ETH_TO_WEI / 100 }();
   }
-}
-
 ```
 
 Notice that this test is the same as the first test, except it adds a call to `skip` in the middle.
+
 
 Now run `forge test -vvv`
 
@@ -345,54 +318,54 @@ Now run `forge test -vvv`
 [FAIL. Reason: StalePrice()] testMintStalePrice() (gas: 192722)
 ```
 
-Oh no, the test fails with a `StalePrice` error!
+Oh no 😲, the test fails with a `StalePrice` error!
 When our contract calls `getPrice`, it checks the timestamp on the blockchain and compares it to the timestamp for the Pyth price.
 If the Pyth price's timestamp is too far in the past, then a `StalePrice` error occurs.
-`skip` moves the timestamp on the blockchain forward, which triggers the error.
+[`skip`](https://book.getfoundry.sh/reference/forge-std/skip) moves the timestamp on the blockchain forward, which triggers the error.
 
 We can fix this problem, but first, let's fix the test case.
 Add a call to `vm.expectRevert()` as shown below:
 
 ```solidity copy filename="MyFirstPythContract.t.sol"
-contract MyFirstPythContractTest is Test {
-  // ... prior tests omitted ...
   function testMintStalePrice() public {
     setEthPrice(100);
 
     skip(120);
 
     vm.deal(address(this), ETH_TO_WEI);
-    // Add this line
+    // ** Add this line **
     vm.expectRevert();
     app.mint{ value: ETH_TO_WEI / 100 }();
   }
-}
-
 ```
 
-To fix the `StalePrice` error, add a new function to `MyFirstPythContract`:
+To fix the `StalePrice` error, we will call `updateAndMint` instead of `mint`:
+
+
+Now we will add the `updatePriceFeeds` function to out `MyFirstPythContract` contract.
 
 ```solidity copy filename="MyFirstPythContract.sol"
 contract MyFirstPythContract {
   // ... prior code omitted
-
+ 
   function updateAndMint(bytes[] calldata pythPriceUpdate) external payable {
     uint updateFee = pyth.getUpdateFee(pythPriceUpdate);
     pyth.updatePriceFeeds{ value: updateFee }(pythPriceUpdate);
-
+ 
     mint();
   }
 }
-
 ```
+This method will update the price of ETH/USD on the Pyth contract and call the `mint` function defined before.
+This differentiate [pull oracles](https://docs.pyth.network/price-feeds/pythnet-price-feeds/pull-updates) from traditional push oracles. This allows users to fetch real-time data on demand.
 
-The end of this function calls the `mint` function we defined before.
+
 Before that, however, the function calls `updatePriceFeeds` on the Pyth contract.
 This function takes a payload of `bytes[]` that is passed in to the function itself.
 The Pyth contract requires a fee to perform this update; the code snippet above calculates the needed fee using `getUpdateFee`.
 The caller of this function can pass in a recent Pyth price update as this payload, guaranteeing that the `StalePrice` error won't occur.
 
-We can test this function by adding the following snippet to the test file:
+We can test this function by adding the following snippet to the test file `MyFirstPythContract.t.sol` :
 
 ```solidity copy filename="MyFirstPythContract.t.sol"
 contract MyFirstPythContractTest is Test {
