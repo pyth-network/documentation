@@ -3,18 +3,23 @@
 In this tutorial we will use real-time Pyth price data to mint an NFT in exchange for $1 of ETH.
 Our solidity contract will read the price of ETH/USD from Pyth and use it to calculate the amount of ETH required to mint the NFT.
 
-This tutorial is divided in two parts will cover the following topics:
-- Part 1: Create a contract and fetch prices f
+This tutorial will cover the following topics:
+
 - Create a contract that reads the ETH/USD price from Pyth using [pyth-sdk-solidity](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/solidity)
 - Learn how to update Pyth prices to avoid Stale data.
 - Deploy the contract to OP-sepolia testnet.
 - Update and Fetch price using [pyth-evm-js](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/js).
 
 This tutorial is divided into two parts: \
-[Part 1: Create a contract and fetch prices from Pyth oracles.](./part-1) \
-Part 2: Deploy Your Pyth App
+[Part 1:](./part-1) Create a contract and fetch prices from Pyth oracles. \
+[Part 2:](./part-2) Deploy Your Pyth App
 
-## Preliminaries
+## Create a contract and fetch prices from Pyth oracles
+
+In this part of the tutorial, we will create a contract that reads price from Pyth and uses it to calculate the amount of ETH required to mint an NFT.
+After that, we will write tests to ensure that the contract works as expected.
+
+### Preliminaries
 
 This tutorial uses Foundry to perform the contract development tasks.
 Please follow the [Foundry installation instructions](https://book.getfoundry.sh/getting-started/installation) if you do not already have it installed.
@@ -22,7 +27,7 @@ Please follow the [Foundry installation instructions](https://book.getfoundry.sh
 Part of this tutorial also uses the command line tools `curl` and `jq`.
 Please make sure these are installed on your system before continuing.
 
-## Create a Foundry project
+### Create a Foundry project
 
 Create a new directory to hold your app and a `contracts` directory within.
 
@@ -54,7 +59,7 @@ Ran 1 test suites: 2 tests passed, 0 failed, 0 skipped (2 total tests)
 The Foundry project has been successfully initialized!
 At this point, delete the sample code `src/Counter.sol` and `test/Counter.t.sol` -- you won't need them anymore.
 
-## Install the Pyth SDK
+### Install the Pyth SDK
 
 Next, add the Pyth SDK to your project.
 You can use `npm` for this step:
@@ -72,7 +77,7 @@ Next, create a text file `contracts/remappings.txt` and add the following line:
 
 This line tells Foundry where to find the Pyth SDK so that you can import it from Solidity contracts.
 
-## Create a contract
+### Create a contract
 
 Next, open `src/MyFirstPythContract.sol` in your favorite editor and add the following code:
 
@@ -148,7 +153,7 @@ Compiler run successful!
 
 The contract compiles!
 
-## Create a test
+### Create a test
 
 Before deploying the contract, let's write a test to make sure it works.
 Open `test/MyFirstPythContract.t.sol` in your favorite editor and add the following code:
@@ -249,7 +254,7 @@ The tests also print out the required payment to successfully mint the NFT -- th
 Notice that the payment is higher in the second test: when the price of ETH is \$99 (instead of \$100), more ETH is required to reach \$1.
 This difference demonstrates that your contract is successfully reading the price of ETH/USD from Pyth.
 
-## Update Pyth prices
+### Update Pyth prices
 
 While our code above seems to work properly, it has a problem.
 To see this problem, let's add another test to the test suite:
@@ -376,3 +381,6 @@ Ran 1 test suites: 4 tests passed, 0 failed, 0 skipped (4 total tests)
 
 The test passes!
 
+Congratulations! We have successfully created a contract that reads the price of ETH/USD from Pyth and uses it to calculate the amount of ETH required to mint an NFT.
+
+Check out [Part 2](./part-2) to learn how to deploy our contract to OP-sepolia testnet and fetch prices using pyth-evm-js.
