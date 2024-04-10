@@ -74,15 +74,60 @@ pub fn sample(ctx: Context<Sample>) -> Result<()> {
 Warning: it is your responsibility to validate that the provided price update is for the appropriate price feed and timestamp.
 `PriceUpdateV2` guarantees that the account contains a verified price for _some_ price feed at _some_ point in time.
 There are various methods on this struct (such as `get_price_no_older_than`) that you can use to implement the necessary checks.
+Note: if you choose the price feed account integration (see below), you can use an account id check to validate the price feed id.
 
 ## Write Frontend Code
 
-Your frontend code needs to perform two different tasks:
+There are two different types of accounts that developers can use to access Pyth prices on Solana:
+
+- **Price feed accounts** hold a sequence of prices for a specific price feed id that always moves forward in time.
+  The Pyth Data Association maintains a set of price feed accounts that are continuously updated.
+  Such accounts are a good fit for applications that always want to consume the most recent price.
+- **Price update accounts** are ephemeral accounts that anyone can create, overwrite, and close.
+  These accounts are a good fit for applications that want to consume prices at a specific point in time.
+
+Both price feed accounts and price update accounts work identically from the perspective of the on-chain program.
+However, the frontend integration differs slightly between the two.
+Please choose the relevant option from the two sections below.
+
+### Price Feed Accounts
+
+If you are using price feed accounts, your frontend code simply needs to pass the relevant price feed account to the transaction.
+Price feed accounts are program-derived addresses and thus the account ID for any price feed can be derived automatically.
+The `PythSolanaReceiver` class provides a method for deriving this information:
+
+```typescript copy
+import { PythSolanaReceiver } from "@pythnetwork/pyth-solana-receiver";
+
+// You will need a Connection from @solana/web3.js and an AnchorWallet to create
+// the receiver.
+const connection: Connection;
+const wallet: AnchorWallet;
+const pythSolanaReceiver = new PythSolanaReceiver({ connection, wallet });
+
+// There are up to 255 different accounts for any given price feed id.
+// The 0 value below is the shard id that indicates which of these accounts you would like to use.
+// However, you may choose to use a different shard to prevent Solana congestion on another app from affecting your app.
+const solUsdPriceFeedAccount = pythSolanaReceiver
+  .getPriceFeedAccountAddress(0, SOL_PRICE_FEED_ID)
+  .toBase58();
+```
+
+The price feed account integration assumes that an off-chain process is continuously updating each price feed.
+The Pyth Data Association is running an off-chain process that continuously schedules price updates for a subset of commonly-used price feeds on shard 0.
+TODO: put in the list of account IDs and feeds somewhere.
+However, updating a price feed is a permissionless operation, and anyone can run this process.
+Please see [Using Scheduler](/price-feeds/schedule-price-updates/using-scheduler) for more information.
+Running the scheduler can help with reliability and to update feed/shard pairs that are not part of the default schedule.
+
+### Price Update Accounts
+
+If you are using price update accounts, your frontend code needs to perform two different tasks:
 
 1. Fetch price updates from Hermes
 2. Post the price updates to Solana and invoke your application logic
 
-### Fetch price updates
+#### Fetch price updates
 
 Use `PriceServiceConnection` from `@pythnetwork/price-service-client` to fetch Pyth price updates from Hermes:
 
@@ -108,7 +153,7 @@ const priceUpdateData: string[] = await priceServiceConnection.getLatestVaas([
 console.log(priceUpdateData);
 ```
 
-### Post price updates
+#### Post price updates
 
 Finally, post the price update to the Pyth program on Solana.
 This step will create the price update account that your application reads from.
