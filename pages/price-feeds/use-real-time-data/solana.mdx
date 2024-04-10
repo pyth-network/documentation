@@ -74,25 +74,27 @@ pub fn sample(ctx: Context<Sample>) -> Result<()> {
 Warning: it is your responsibility to validate that the provided price update is for the appropriate price feed and timestamp.
 `PriceUpdateV2` guarantees that the account contains a verified price for _some_ price feed at _some_ point in time.
 There are various methods on this struct (such as `get_price_no_older_than`) that you can use to implement the necessary checks.
-Note: if you choose the price feed account integration (see below), you can use an account id check to validate the price feed id.
+Note: if you choose the price feed account integration (see below), you can use an account address check to validate the price feed id.
 
 ## Write Frontend Code
 
-There are two different types of accounts that developers can use to access Pyth prices on Solana:
+There are two different paths to the frontend integration of Pyth prices on Solana.
+Developers can choose to use two different types of accounts:
 
 - **Price feed accounts** hold a sequence of prices for a specific price feed id that always moves forward in time.
+  These accounts have a fixed address that your program can depend on.
   The Pyth Data Association maintains a set of price feed accounts that are continuously updated.
   Such accounts are a good fit for applications that always want to consume the most recent price.
 - **Price update accounts** are ephemeral accounts that anyone can create, overwrite, and close.
-  These accounts are a good fit for applications that want to consume prices at a specific point in time.
+  These accounts are a good fit for applications that want to consume prices for a specific timestamp.
 
 Both price feed accounts and price update accounts work identically from the perspective of the on-chain program.
 However, the frontend integration differs slightly between the two.
-Please choose the relevant option from the two sections below.
+Both options are explained in the sections below, and developers should pick the one that is best suited for their use case.
 
 ### Price Feed Accounts
 
-If you are using price feed accounts, your frontend code simply needs to pass the relevant price feed account to the transaction.
+If you are using price feed accounts, your frontend code simply needs to pass the relevant price feed account address to the transaction.
 Price feed accounts are program-derived addresses and thus the account ID for any price feed can be derived automatically.
 The `PythSolanaReceiver` class provides a method for deriving this information:
 
@@ -115,7 +117,7 @@ const solUsdPriceFeedAccount = pythSolanaReceiver
 
 The price feed account integration assumes that an off-chain process is continuously updating each price feed.
 The Pyth Data Association is running an off-chain process that continuously schedules price updates for a subset of commonly-used price feeds on shard 0.
-TODO: put in the list of account IDs and feeds somewhere.
+TODO: put in the list of account addresses and feeds somewhere.
 However, updating a price feed is a permissionless operation, and anyone can run this process.
 Please see [Using Scheduler](/price-feeds/schedule-price-updates/using-scheduler) for more information.
 Running the scheduler can help with reliability and to update feed/shard pairs that are not part of the default schedule.
