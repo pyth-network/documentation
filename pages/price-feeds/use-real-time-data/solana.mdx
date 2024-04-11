@@ -107,7 +107,7 @@ const connection: Connection;
 const wallet: AnchorWallet;
 const pythSolanaReceiver = new PythSolanaReceiver({ connection, wallet });
 
-// There are up to 255 different accounts for any given price feed id.
+// There are up to 2^16 different accounts for any given price feed id.
 // The 0 value below is the shard id that indicates which of these accounts you would like to use.
 // However, you may choose to use a different shard to prevent Solana congestion on another app from affecting your app.
 const solUsdPriceFeedAccount = pythSolanaReceiver
