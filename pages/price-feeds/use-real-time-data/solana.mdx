@@ -116,8 +116,8 @@ const solUsdPriceFeedAccount = pythSolanaReceiver
 ```
 
 The price feed account integration assumes that an off-chain process is continuously updating each price feed.
-The Pyth Data Association is running an off-chain process that continuously schedules price updates for a subset of commonly-used price feeds on shard 0.
-TODO: put in the list of account addresses and feeds somewhere.
+The Pyth Data Association sponsors price updates for a subset of commonly-used price feeds on shard 0.
+Please see [Sponsored Feeds](/price-feeds/sponsored-feeds) for a list of sponsored feeds and their account addresses.
 However, updating a price feed is a permissionless operation, and anyone can run this process.
 Please see [Using Scheduler](/price-feeds/schedule-price-updates/using-scheduler) for more information.
 Running the scheduler can help with reliability and to update feed/shard pairs that are not part of the default schedule.

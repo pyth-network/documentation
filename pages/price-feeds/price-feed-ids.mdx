@@ -12,5 +12,6 @@ To use a price feed on-chain, look up its ID using these page, then store the fe
 
 ## Solana Price Feed Accounts
 
-For Solana price feeds, each price feed id is also the id of a Solana account containing the feed's data.
-Once you have the ID of your desired feed, you should pass the corresponding Solana account to any instruction that requires the current price and validate in your program that the account key matches the stored price feed id.
+On Solana, each feed additionally has a collection of **price feed accounts** containing the feed's data.
+The addresses of these accounts are programmatically derived from the feed id and a shard id, which is simply a number ranging from 0 to 255.
+See [How to Use Real-Time Data on Solana](price-feeds/use-real-time-data/solana#write-frontend-code) for more information on price feed accounts.
