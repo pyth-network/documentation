@@ -1,7 +1,8 @@
 {
   "pythnet": "Pythnet",
-  "cross-chain": "Cross-chain",
   "oracle-program": "Oracle Program",
+  "cross-chain": "Cross-chain",
+  "fees": "Fees",
   "account-structure": "Account Structure",
   "product-metadata": "Product Metadata",
   "price-aggregation": "Price Aggregation",
