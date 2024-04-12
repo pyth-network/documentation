@@ -33,14 +33,14 @@ Create a new directory to hold your app and a `contracts` directory within.
 
 ```bash copy
 mkdir my_first_pyth_app
-mkdir my_first_pyth_app/contracts
-cd my_first_pyth_app/contracts
+mkdir my_first_pyth_app/contracts && cd my_first_pyth_app/contracts
+forge init
 ```
 
-From the contracts directory, run `forge init`.
-This command will create several subdirectories within `contracts`.
+`forge init` command will create several subdirectories within `contracts`.
 The `src` directory will hold your contract code, and the `test` directory will hold unit tests.
 Both directories are initialized with some sample contract code and tests.
+
 Try it out by running `forge test`.
 This command should print out something like this:
 
@@ -57,12 +57,18 @@ Ran 1 test suites: 2 tests passed, 0 failed, 0 skipped (2 total tests)
 ```
 
 The Foundry project has been successfully initialized!
-At this point, delete the sample code `src/Counter.sol` and `test/Counter.t.sol` -- you won't need them anymore.
+At this point, delete the sample code from `src` and the test file from `test` -- we won't need them anymore.
+
+```bash copy
+rm -r src/* test/*
+```
 
 ### Install the Pyth SDK
 
-Next, add the Pyth SDK to your project.
-You can use `npm` for this step:
+Pyth provides a Solidity SDK that can be used to interact with one-chain Pyth Price Feed contracts.
+It exposes multiple [methods](../api-reference/evm) to read and interact with the contracts.
+
+Use `npm` to add the Pyth SDK:
 
 ```bash copy
 npm init -y
@@ -71,8 +77,8 @@ npm install @pythnetwork/pyth-sdk-solidity
 
 Next, create a text file `contracts/remappings.txt` and add the following line:
 
-```text copy
-@pythnetwork/pyth-sdk-solidity/=node_modules/@pythnetwork/pyth-sdk-solidity
+```bash copy
+echo '@pythnetwork/pyth-sdk-solidity/=node_modules/@pythnetwork/pyth-sdk-solidity' > remappings.txt
 ```
 
 This line tells Foundry where to find the Pyth SDK so that you can import it from Solidity contracts.
@@ -117,12 +123,12 @@ contract MyFirstPythContract {
 
     uint ethPrice18Decimals = (uint(uint64(price.price)) * (10 ** 18)) /
       (10 ** uint8(uint32(-1 * price.expo)));
-    uint oneDollarInEth = ((10 ** 18) * (10 ** 18)) / ethPrice18Decimals;
+    uint oneDollarInWei = ((10 ** 18) * (10 ** 18)) / ethPrice18Decimals;
 
     console2.log("required payment in wei");
-    console2.log(oneDollarInEth);
+    console2.log(oneDollarInWei);
 
-    if (msg.value >= oneDollarInEth) {
+    if (msg.value >= oneDollarInWei) {
       // User paid enough money.
       // TODO: mint the NFT here
     } else {
@@ -291,7 +297,7 @@ If the Pyth price's timestamp is too far in the past, then a `StalePrice` error 
 We can fix this problem, but first, let's fix the test case.
 Add a call to `vm.expectRevert()` as shown below:
 
-```solidity copy filename="MyFirstPythContract.t.sol"
+```solidity {10} copy filename="MyFirstPythContract.t.sol "
 contract MyFirstPythContractTest is Test {
   // ... prior tests omitted ...
   function testMintStalePrice() public {
