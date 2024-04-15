@@ -32,6 +32,7 @@ Please make sure these are installed on your system before continuing.
 ### Create a Foundry project
 
 Create a new directory to hold your app and a `contracts` directory within.
+Here `forge init` command will initialize an empty foundry project creating several subdirectories within `contracts`.
 
 ```bash copy
 mkdir my_first_pyth_app
@@ -39,7 +40,6 @@ mkdir my_first_pyth_app/contracts && cd my_first_pyth_app/contracts
 forge init
 ```
 
-`forge init` command will create several subdirectories within `contracts`.
 The `src` directory will hold your contract code, and the `test` directory will hold unit tests.
 Both directories are initialized with some sample contract code and tests.
 
@@ -77,7 +77,7 @@ npm init -y
 npm install @pythnetwork/pyth-sdk-solidity
 ```
 
-Next, create a text file `contracts/remappings.txt` and add the following line:
+Next, run the following command to create a text file `contracts/remappings.txt`:
 
 ```bash copy
 echo '@pythnetwork/pyth-sdk-solidity/=node_modules/@pythnetwork/pyth-sdk-solidity' > remappings.txt
