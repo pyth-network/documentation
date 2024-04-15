@@ -1,4 +1,11 @@
-# Weekly Schedule Format
+import { Callout } from "nextra/components";
+
+# Weekly Schedule Format (Deprecated)
+
+<Callout type="warning" emoji="⚠️">
+  This field is deprecated in favor of `schedule`. Please refer to [Schedule
+  Format](schedule-format).
+</Callout>
 
 This document outlines the rules for specifying contents of a new Pyth product metadata field - `weekly_schedule` . The field specifies the recurring weekly schedule of a product’s market hours. It serves as a reference for `pyth-agent` to stop publishing outside the hours specified in the schedule. Notable use cases include:
 

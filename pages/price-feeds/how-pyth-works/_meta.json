@@ -7,5 +7,6 @@
   "product-metadata": "Product Metadata",
   "price-aggregation": "Price Aggregation",
   "ema-price-aggregation": "EMA Price Aggregation",
-  "weekly-schedule-format": "Weekly Schedule Format"
+  "weekly-schedule-format": "Weekly Schedule Format (Depecated)",
+  "schedule-format": "Schedule Format"
 }
