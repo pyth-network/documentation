@@ -30,6 +30,19 @@ Querying the current price will fail if too much time has elapsed since the last
 The SDKs expose this failure condition in an idiomatic way: for example, the Rust SDK may return `None`, and our Solidity SDK may revert the transaction.
 The SDK provides a sane default for the staleness threshold, but users may configure it to suit their use case.
 
+## Adversarial selection
+
+Pull updates gives users of Pyth Network some ability to select which price to use in a transaction.
+This ability is highly circumscribed by various constraints: on-chain prices must move forward in time and cannot be from too far in the past.
+However, users can still chose any price update that satisfies these constraints.
+This ability is functionally equivalent to latency: it allows users to see the price in the future before using a price from the past.
+
+The simplest way to guard against this attack vector is to incorporate a staleness check to ensure that the price used in a transaction is sufficiently recent.
+The Pyth Network SDKs include this check by default, where queries for the price will fail if the on-chain time differs from the price's timestamp by more than a threshold amount.
+The default threshold is set per-chain, but is typically around 1 minute.
+Highly latency-sensitive protocols may wish to reduce this threshold to a few seconds to better suit their needs.
+Please also see the section below on [latency mitigations](best-practices.md#latency) for additional ideas on how latency-sensitive protocols can minimize the impact of oracle latency.
+
 ## Latency
 
 Developers integrating Pyth Network price feeds should account for the difference in latency between on-chain oracles and off-chain sources (e.g. centralized exchanges).
