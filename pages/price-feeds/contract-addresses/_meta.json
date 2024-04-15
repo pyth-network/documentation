@@ -1,6 +1,6 @@
 {
   "evm": "EVM",
-  "solana": "Solana",
+  "solana": "Solana / SVM",
   "aptos": "Aptos",
   "sui": "Sui",
   "cosmwasm": "CosmWasm",
