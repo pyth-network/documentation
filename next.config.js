@@ -56,6 +56,10 @@ const permanentRedirectArray = [
     "/price-feeds/best-practices",
   ],
   [
+    "/price-feeds/pythnet-price-feeds/pull-updates",
+    "/price-feeds/pull-updates",
+  ],
+  [
     "/price-feeds/solana-price-feeds/best-practices",
     "/price-feeds/best-practices",
   ],
