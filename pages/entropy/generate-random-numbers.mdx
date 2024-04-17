@@ -1,13 +1,9 @@
 # Generate Random Numbers
 
-Integrations use a simple four-step process, with two off-chain steps and two-on chain steps:
+Integrations use a simple one-step on-chain process:
 
-1. **Commit** to a random number. Generate a random value off-chain and hash it to create a commitment.
-1. **Request** a random number. Send a transaction with the commitment to the Entropy contract and receive a sequence number.
-1. **Retrieve** part of the random number. Submit the sequence number from (2) to a webservice to receive a random payload.
-1. **Reveal** the random number. Send a transaction with the sequence number from (2) , random value from (1), and the
-   payload from (3) to the Entropy contract and receive the secure random number.
+1. **Request** a random number. Send a transaction with a random number that you have generated off-chain and receive a sequence number.
+
+Entropy will callback your contract with the generated random number once the request is fullfilled by the provider.
 
 See [How to Generate Random numbers in EVM dApps](generate-random-numbers/evm.mdx) to integrate your application with Pyth Entropy.
-
-Developers building on Entropy should also consult the [Best Practices](best-practices.mdx) section to learn how to avoid common security mistakes.
