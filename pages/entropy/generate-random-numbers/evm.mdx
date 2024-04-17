@@ -77,7 +77,8 @@ This method returns a sequence number. You can store this sequence number to ide
 // It is called by the entropy contract when a random number is generated.
 function entropyCallback(
     uint64 sequenceNumber,
-    // If your app uses multiple providers, you can use this argument to distinguish which one is calling the app back.
+    // If your app uses multiple providers, you can use this argument to 
+    // distinguish which one is calling the app back.
     address provider,
     bytes32 randomNumber
 ) internal override {
