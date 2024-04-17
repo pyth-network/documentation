@@ -1,10 +1,10 @@
 # Migrate from Chainlink to Pyth
 
-This guide explains how to migrate an EVM application that uses Chainlink price feeds to use Pyth price feeds.
+This guide explains how to migrate an EVM application that uses Chainlink price feeds to Pyth price feeds.
 Pyth provides a Chainlink-compatible interface for its price feeds to make this process simple.
 There are two main steps to the migration:
 
-1. Deploy the `PythAggregatorV3` contract to provide a Chainlink-compatible feed interface.
+1. Deploy the [`PythAggregatorV3`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/solidity/PythAggregatorV3.sol) contract to provide a Chainlink-compatible feed interface.
 2. Schedule price updates for the feeds required by your app.
 
 ## Install Pyth SDKs
@@ -38,10 +38,10 @@ Then add the following line to your `remappings.txt` file:
 
 ## Deploy Adapter Contract
 
-Chainlink-compatible applications can deploy and use `PythAggregatorV3` in `@pythnetwork/pyth-sdk-solidity` as a replacement for their Chainlink price feeds.
+First, deploy the `PythAggregatorV3` contract from `@pythnetwork/pyth-sdk-solidity` as a replacement for your application's Chainlink price feeds.
 `PythAggregatorV3` is an adapter contract that wraps the Pyth contract and implements Chainlink's `AggregatorV3Interface`.
 
-One important difference between Pyth and Chainlink is that the Pyth contract holds data for all price feeds, whereas Chainlink has separate instances of `AggregatorV3Interface` for each feed.
+One important difference between Pyth and Chainlink is that the Pyth contract holds data for all price feeds; in contrast, Chainlink has separate instances of `AggregatorV3Interface` for each feed.
 The adapter contract resolves this discrepancy by wrapping a single Pyth price feed.
 Users should deploy an instance of this adapter for every required price feed, then point their existing app to the addresses of the deployed adapter contracts.
 
