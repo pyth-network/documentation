@@ -15,7 +15,7 @@ npm install @pythnetwork/entropy-sdk-solidity
 ## Setup
 
 The SDK exports a `IEntropyConsumer` interface that your contract should implement. The interface
-makes sure that your contract is compliant with the Entropy contract. 
+makes sure that your contract is compliant with the Entropy contract.
 
 The SDK also export `IEntropy` interface which you can use to interact with the Entropy contract.
 You will need the address of an Entropy contract on your blockchain.
@@ -93,4 +93,5 @@ function entropyCallback(
 }
 
 ```
+
 When the final random number is ready to use, the entropyCallback function will be called by the Entropy contract. This will happen in a separate transaction submitted by the requested provider. The entropyCallback function should be implemented in the same contract that is requesting the random number.
