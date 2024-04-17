@@ -47,7 +47,7 @@
     "type": "separator"
   },
 
-  "solana-price-feeds": "Solana Price Feeds",
+  "pull-updates": "What is a Pull Oracle?",
   "pythnet-price-feeds": "Pythnet Price Feeds",
   "how-pyth-works": "How Pyth Works",
   "whitepaper": "Whitepaper"
