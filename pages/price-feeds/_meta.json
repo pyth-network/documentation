@@ -25,6 +25,7 @@
 
   "use-real-time-data": "Use Real-Time Price Data",
   "schedule-price-updates": "Schedule Price Updates",
+  "migrate-an-app-to-pyth": "Migrate an App to Pyth",
   "publish-data": "Publish Data",
 
   "-- Reference Material": {
