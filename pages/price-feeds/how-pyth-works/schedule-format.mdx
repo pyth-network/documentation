@@ -4,7 +4,7 @@ import { Callout } from "nextra/components";
 
 This document describes the format for the `schedule` field in Pyth product metadata.
 The `schedule` field defines a product's market hours, including its timezone, weekly schedule, and any holiday exceptions.
-It instructs the `pyth-agent` when to stop publishing outside the specified hours.
+It controls the publishing schedule of `pyth-agent`, restricting it to follow a predetermined timetable.
 This field is particularly useful for:
 
 - FX
