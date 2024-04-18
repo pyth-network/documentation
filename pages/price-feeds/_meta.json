@@ -42,6 +42,7 @@
   "api-instances-and-providers": "API Instances and Providers",
   "contract-addresses": "Contract Addresses",
   "examples": "Example Applications",
+  "troubleshoot": "Troubleshoot",
 
   "-- Understand Pyth": {
     "title": "Understanding Pyth",

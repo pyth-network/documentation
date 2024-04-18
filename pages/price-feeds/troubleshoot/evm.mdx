@@ -1,0 +1,29 @@
+# Troubleshoot Price Feeds
+
+This guide is designed to help you troubleshoot common issues you may encounter when using Pyth Price Feeds.
+Follow the steps provided below to diagnose and resolve the issue.
+
+
+## Common Issues
+
+
+
+### On-chain Price Feed Issues
+
+#### Issue: getPrice() returns StalePrice() or `0x19abf40e` error
+
+This error occurs when the price data of the requested asset has not been updated in the last valid time period.
+The valid time period for the feed can queried using the [`getValidTime()`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/solidity/AbstractPyth.sol#L22) method.
+
+To resolve this issue: 
+
+1. Update the price data by calling [`updatePriceFeeds()`]("https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/solidity/AbstractPyth.sol#L88") 
+by passing the latest updateData from [Hermes](https://hermes.pyth.network/docs/#/rest/latest_vaas).
+2. If the latest price data is not necessary, use the [`getPriceUnsafe()`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/solidity/AbstractPyth.sol#L41)
+method to get the price data. If the price feed is available, the method will returnt the latest price data with timestamp of last update.
+
+
+#### Issue: getPrice() returns PriceFeedNotFound() or `0x14aebe68` error
+
+This error occurs when the requested price has not been published on the respective chain.
+Double check the entered [price feed ids](https://pyth.network/developers/price-feed-ids) and [pyth-contract addresses](https://docs.pyth.network/price-feeds/contract-addresses/evm) to make sure they are correct.
