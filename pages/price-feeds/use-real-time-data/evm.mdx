@@ -12,8 +12,7 @@ Pyth provides two SDKs for the on- and off-chain portions of the integration.
 
 ### Solidity SDK
 
-Add the [Pyth Price Feeds Solidity SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/solidity) to the dependencies of your EVM contract.
-This SDK provides the `IPyth` interface for working with the Pyth Price Feeds Contract.
+Pyth provides a [Solidity SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/solidity) which exposes `IPyth` interface to interact with Pyth price feeds.
 
 **Truffle/Hardhat**
 
@@ -47,33 +46,17 @@ Add [pyth-evm-js](https://github.com/pyth-network/pyth-crosschain/tree/main/targ
 npm install --save @pythnetwork/pyth-evm-js
 ```
 
-## Gather Resources
-
-To use the Pyth SDK, you need the address of a Pyth Price Feeds contract on your blockchain.
-Consult the current [Price Feeds Contract Addresses on EVM](../contract-addresses/evm) to find the address on your chain.
-Note that some testnet chains have two separate contract deployments for the two data channels: Stable and Beta.
-Most users should select the Stable channel, which provides the most reliable data.
-
-You will also need the IDs of the price feeds you wish to use.
-Consult the [Price Feed IDs](https://pyth.network/developers/price-feed-ids) reference to find these IDs.
-Note that the IDs differ between the Stable and Beta channels, so please choose the correct ID for your selected channel.
-
-Finally, you will also need the URL of a [Hermes](../api-instances-and-providers/hermes) instance.
-Consult the linked guide to find an instance.
-The Pyth Data Association operates two public Hermes endpoints for development purposes.
-Please select the same channel -- likely Stable -- for Hermes that you chose for the other resources.
-
 ## Write Contract Code
 
 Add code to your contract to update and read the Pyth price.
 Your contract should do the following four steps:
 
-1. Instantiate the `IPyth` interface from the Solidity SDK using the price feeds contract address.
-1. Call `IPyth.getUpdateFee` to calculate the fee charged by Pyth to update the price.
-1. Call `IPyth.updatePriceFeeds` to update the price, paying the fee calculated in the previous step.
-1. Call `IPyth.getPrice` to read the current price, providing the price feed ID that you wish to read.
+1. Instantiate the `IPyth` interface from the Solidity SDK using the price feeds [contract address](<(../contract-addresses/evm)>).
+2. Call `IPyth.getUpdateFee` to calculate the fee charged by Pyth to update the price.
+3. Call `IPyth.updatePriceFeeds` to update the price, paying the fee calculated in the previous step.
+4. Call `IPyth.getPrice` to read the current price, providing the price feed ID that you wish to read.
 
-Steps (2) and (3) both require a `bytes[] calldata priceUpdateData` argument that will be provided from off-chain.
+Steps (2) and (3) both require a `bytes[] calldata priceUpdateData` argument that will be provided from a off-chain service: [Hermes](../pythnet-price-feeds/hermes.mdx).
 Simply add this argument to the functions on your contract that need it.
 
 The code snippet below provides a general template for what your contract code should look like:
@@ -113,11 +96,11 @@ contract SomeContract {
 Add frontend code to query price update data from Hermes and pass it to your contract.
 Your frontend code should do the following things:
 
-1. Instantiate an `EvmPriceServiceConnection` pointing to your Hermes instance.
-1. Get price update data using this connection -- you can either perform one-off queries for this using `getPriceFeedsUpdateData` or subscribe for real-time updates via websocket.
-1. Optionally get the Pyth fee required to perform the price update.
+1. Instantiate an `[EvmPriceServiceConnection]`(https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/js/src/EvmPriceServiceConnection.ts) pointing to your Hermes instance.
+2. Get price update data using this connection -- you can either perform one-off queries for this using `getPriceFeedsUpdateData` or subscribe for real-time updates via websocket.
+3. Optionally get the Pyth fee required to perform the price update.
    You will need to do this step if your app is passing Pyth fees on to end users.
-1. Pass the price update data to your contract.
+4. Pass the price update data to your contract.
    If you are passing along pyth fees, you will additionally need to provide the `value` parameter with the fee from the previous step.
 
 ```typescript copy
@@ -157,6 +140,10 @@ You may find these additional resources helpful for developing your EVM applicat
 ### API Reference
 
 The [EVM API reference](../api-reference/evm/) lets you interactively explore the complete API of the Pyth contract.
+
+### Error Codes
+
+The [EVM error codes](../error-codes/evm/) page lists the error codes that the Pyth contract may return.
 
 ### Example Applications
 
