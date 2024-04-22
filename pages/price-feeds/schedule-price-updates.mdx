@@ -1,11 +1,14 @@
 # How To Schedule Price Updates
 
 The following guides explain how to schedule Pyth price updates to occur at regular intervals.
-On most chains (except Solana), application developers are responsible for updating the on-chain Pyth price before using it.
-Please see [_Pull Updates_](pythnet-price-feeds/pull-updates) to learn more about this topic and compare different approaches to integrating with pull updates.
-Scheduling price updates is one possible approach to solving this problem, but others are possible.
+As a pull oracle, Pyth's users are typically responsible for updating the state of on-chain feeds.
+Please see [What is a Pull Oracle?](/price-feeds/pull-updates) to learn more about pull updates.
 
-There are two different ways to schedule price updates:
+The Pyth Data Association sponsors regular on-chain updates for some price feeds.
+See [Sponsored Feeds](/price-feeds/sponsored-feeds) for the current list of feeds and their update parameters.
+If you would like to see additional feeds on this list, please [contact the association via this form](https://tally.so/r/nGz2jj).
+
+There are also two different tools to schedule price updates:
 
 - [Gelato](schedule-price-updates/using-gelato) provides a turnkey automation solution for scheduled updates.
 - [Scheduler](schedule-price-updates/using-scheduler) is a service that developers can run to trigger price updates when certain time or price change conditions are met.
