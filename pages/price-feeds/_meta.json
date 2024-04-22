@@ -27,6 +27,7 @@
   "schedule-price-updates": "Schedule Price Updates",
   "migrate-an-app-to-pyth": "Migrate an App to Pyth",
   "publish-data": "Publish Data",
+  "troubleshoot": "Troubleshoot Errors",
 
   "-- Reference Material": {
     "title": "Reference Material",
@@ -42,7 +43,6 @@
   "api-instances-and-providers": "API Instances and Providers",
   "contract-addresses": "Contract Addresses",
   "examples": "Example Applications",
-  "troubleshoot": "Troubleshoot",
 
   "-- Understand Pyth": {
     "title": "Understanding Pyth",
