@@ -52,11 +52,10 @@ Add code to your contract to update and read the Pyth price.
 Your contract should do the following four steps:
 
 1. Instantiate the `IPyth` interface from the Solidity SDK using the price feeds [contract address](<(../contract-addresses/evm)>).
-2. Call `IPyth.getUpdateFee` to calculate the fee charged by Pyth to update the price.
-3. Call `IPyth.updatePriceFeeds` to update the price, paying the fee calculated in the previous step.
-4. Call `IPyth.getPrice` to read the current price, providing the price feed ID that you wish to read.
+1. Call `IPyth.getUpdateFee` to calculate the fee charged by Pyth to update the price.
+1. Call `IPyth.updatePriceFeeds` to update the price, paying the fee calculated in the previous step.
+1. Call `IPyth.getPrice` to read the current price, providing the [price feed ID](https://pyth.network/developers/price-feed-ids) that you wish to read.
 
-Steps (2) and (3) both require a `bytes[] calldata priceUpdateData` argument that will be provided from a off-chain service: [Hermes](../pythnet-price-feeds/hermes.mdx).
 Simply add this argument to the functions on your contract that need it.
 
 The code snippet below provides a general template for what your contract code should look like:
@@ -96,11 +95,12 @@ contract SomeContract {
 Add frontend code to query price update data from Hermes and pass it to your contract.
 Your frontend code should do the following things:
 
+1. Get a Hermes instance from the list of providers [here](https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes#node-providers). You can use the [Pyth Hermes](https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes#node-providers) instance for development purposes.
 1. Instantiate an `[EvmPriceServiceConnection]`(https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/js/src/EvmPriceServiceConnection.ts) pointing to your Hermes instance.
-2. Get price update data using this connection -- you can either perform one-off queries for this using `getPriceFeedsUpdateData` or subscribe for real-time updates via websocket.
-3. Optionally get the Pyth fee required to perform the price update.
+1. Get price update data using this connection -- you can either perform one-off queries for this using `getPriceFeedsUpdateData` or subscribe for real-time updates via websocket.
+1. Optionally get the Pyth fee required to perform the price update.
    You will need to do this step if your app is passing Pyth fees on to end users.
-4. Pass the price update data to your contract.
+1. Pass the price update data to your contract.
    If you are passing along pyth fees, you will additionally need to provide the `value` parameter with the fee from the previous step.
 
 ```typescript copy
