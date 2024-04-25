@@ -90,6 +90,8 @@ contract PythAggregatorV3Deployment is Script {
 
 ```
 
+Check the [Chainlink Migration Example](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/evm/chainlink_migration) for a complete example of how to deploy the `PythAggregatorV3` contract.
+
 ## Schedule Updates
 
 Chainlink-compatible applications typically expect on-chain price feeds to update on a schedule.

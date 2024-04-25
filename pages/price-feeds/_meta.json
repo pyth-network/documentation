@@ -42,9 +42,12 @@
   "error-codes": "Error Codes",
   "api-instances-and-providers": "API Instances and Providers",
   "contract-addresses": "Contract Addresses",
-  "examples": "Example Applications",
   "pythnet-reference": "Pythnet Reference",
 
+  "examples": {
+    "title": "Examples ↗",
+    "href": "https://github.com/pyth-network/pyth-examples/tree/main/price_feeds"
+  },
   "-- Understand Pyth": {
     "title": "Understanding Pyth",
     "type": "separator"
