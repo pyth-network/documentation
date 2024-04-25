@@ -3,9 +3,7 @@
   "oracle-program": "Oracle Program",
   "cross-chain": "Cross-chain",
   "fees": "Fees",
-  "account-structure": "Account Structure",
-  "product-metadata": "Product Metadata",
+  "hermes": "Hermes",
   "price-aggregation": "Price Aggregation",
-  "ema-price-aggregation": "EMA Price Aggregation",
-  "schedule-format": "Schedule Format"
+  "ema-price-aggregation": "EMA Price Aggregation"
 }
