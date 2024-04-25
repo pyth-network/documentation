@@ -52,6 +52,7 @@ Add code to your contract to update and read the Pyth price.
 Your contract should do the following four steps:
 
 1. Instantiate the `IPyth` interface from the Solidity SDK using the price feeds [contract address](../contract-addresses/evm).
+1. Select the [Price Feed Ids](https://pyth.network/developers/price-feed-ids) for the assets you want to fetch prices for. Price feeds come in two varieties, Stable and Beta. You should select Stable feed ids
 1. Call `IPyth.getUpdateFee` to calculate the fee charged by Pyth to update the price.
 1. Call `IPyth.updatePriceFeeds` to update the price, paying the fee calculated in the previous step.
 1. Call `IPyth.getPrice` to read the current price, providing the [price feed ID](https://pyth.network/developers/price-feed-ids) that you wish to read.
@@ -92,11 +93,9 @@ contract SomeContract {
 
 ## Write Frontend Code
 
-Add frontend code to query price update data from Hermes and pass it to your contract.
+Add frontend code to query price update data and pass it to your contract.
 Your frontend code should do the following things:
 
-1. Consult the [Price Feed Contract Addresses](../contract-addresses/evm) and pick the address for your chain.
-1. Select the [Price Feed Ids](https://pyth.network/developers/price-feed-ids) for the assets you want to fetch prices for. Price feeds come in two varieties, Stable and Beta. You should select Stable feed ids
 1. Get a Hermes instance from the list of providers [here](https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes#node-providers). You can use the Stable [Hermes instance] hosted publically by Pyth Data Assosciation for development purposes.
 1. Instantiate an `[EvmPriceServiceConnection]`(https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/js/src/EvmPriceServiceConnection.ts) pointing to your Hermes instance.
 1. Get price update data using this connection -- you can either perform one-off queries for this using `getPriceFeedsUpdateData` or subscribe for real-time updates via websocket.
