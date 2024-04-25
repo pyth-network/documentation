@@ -46,11 +46,6 @@ Add [pyth-evm-js](https://github.com/pyth-network/pyth-crosschain/tree/main/targ
 npm install --save @pythnetwork/pyth-evm-js
 ```
 
-## Gather Resources
-
-1. Consult the [Price Feed Contract Addresses](../contract-addresses/evm) and pick the address for your chain.
-1. Pick stable [Price Feed Ids](https://pyth.network/developers/price-feed-ids) for the assets you want to fetch prices for.
-
 ## Write Contract Code
 
 Add code to your contract to update and read the Pyth price.
@@ -100,7 +95,9 @@ contract SomeContract {
 Add frontend code to query price update data from Hermes and pass it to your contract.
 Your frontend code should do the following things:
 
-1. Get a Hermes instance from the list of providers [here](https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes#node-providers). You can use the stable [Pyth Hermes](https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes#node-providers) instance for development purposes.
+1. Consult the [Price Feed Contract Addresses](../contract-addresses/evm) and pick the address for your chain.
+1. Select the [Price Feed Ids](https://pyth.network/developers/price-feed-ids) for the assets you want to fetch prices for. Price feeds come in two varieties, Stable and Beta. You should select Stable feed ids
+1. Get a Hermes instance from the list of providers [here](https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes#node-providers). You can use the Stable [Hermes instance] hosted publically by Pyth Data Assosciation for development purposes.
 1. Instantiate an `[EvmPriceServiceConnection]`(https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/js/src/EvmPriceServiceConnection.ts) pointing to your Hermes instance.
 1. Get price update data using this connection -- you can either perform one-off queries for this using `getPriceFeedsUpdateData` or subscribe for real-time updates via websocket.
 1. Optionally get the Pyth fee required to perform the price update.
