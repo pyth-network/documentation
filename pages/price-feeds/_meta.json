@@ -45,7 +45,7 @@
   "pythnet-reference": "Pythnet Reference",
 
   "examples": {
-    "title": "Examples ↗",
+    "title": "Examples Application ↗",
     "href": "https://github.com/pyth-network/pyth-examples/tree/main/price_feeds"
   },
   "-- Understand Pyth": {
