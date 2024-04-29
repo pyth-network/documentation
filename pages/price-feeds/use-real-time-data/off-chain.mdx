@@ -1,7 +1,7 @@
 # Off-chain Applications
 
 Pyth provides a [typescript SDK client](https://github.com/pyth-network/pyth-crosschain/tree/main/price_service/client/js) to read the values of Pyth Price feeds in off-chain applications.
-This guide explains how to use the Pyth SDK to fetch the latest prices, and how to subscribe to price updates.
+This guide explains how to use the Pyth SDK to fetch the latest prices, and how to subscribe to real-time price updates.
 
 ## Installation
 
@@ -21,7 +21,7 @@ yarn add @pythnetwork/price-service-client
 
 ## Usage
 
-Typical usage of the Pyth SDK involves creating a client instance, and using it to fetch prices.
+Typical usage of the Pyth SDK involves creating a `PriceServiceConnection` instance, and using it to fetch prices.
 
 ```typescript
 const connection = new PriceServiceConnection("https://hermes.pyth.network", {
