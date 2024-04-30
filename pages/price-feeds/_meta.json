@@ -25,7 +25,9 @@
 
   "use-real-time-data": "Use Real-Time Price Data",
   "schedule-price-updates": "Schedule Price Updates",
+  "migrate-an-app-to-pyth": "Migrate an App to Pyth",
   "publish-data": "Publish Data",
+  "troubleshoot": "Troubleshoot Errors",
 
   "-- Reference Material": {
     "title": "Reference Material",
@@ -40,15 +42,17 @@
   "error-codes": "Error Codes",
   "api-instances-and-providers": "API Instances and Providers",
   "contract-addresses": "Contract Addresses",
-  "examples": "Example Applications",
+  "pythnet-reference": "Pythnet Reference",
 
+  "examples": {
+    "title": "Examples Application ↗",
+    "href": "https://github.com/pyth-network/pyth-examples/tree/main/price_feeds"
+  },
   "-- Understand Pyth": {
     "title": "Understanding Pyth",
     "type": "separator"
   },
 
   "pull-updates": "What is a Pull Oracle?",
-  "pythnet-price-feeds": "Pythnet Price Feeds",
-  "how-pyth-works": "How Pyth Works",
-  "whitepaper": "Whitepaper"
+  "how-pyth-works": "How Pyth Works"
 }

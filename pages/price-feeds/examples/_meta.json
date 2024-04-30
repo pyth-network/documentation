@@ -1,6 +1,0 @@
-{
-  "oracle-swap": {
-    "title": "Oracle Swap (EVM) ↗",
-    "href": "https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/examples/oracle_swap"
-  }
-}
