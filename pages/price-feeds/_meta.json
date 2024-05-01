@@ -34,11 +34,11 @@
     "type": "separator"
   },
 
+  "api-reference": "API Reference",
   "price-feed-ids": "Price Feed IDs",
   "sponsored-feeds": "Sponsored Feeds",
   "market-hours": "Market Hours",
   "best-practices": "Best Practices",
-  "api-reference": "API Reference",
   "error-codes": "Error Codes",
   "api-instances-and-providers": "API Instances and Providers",
   "contract-addresses": "Contract Addresses",
