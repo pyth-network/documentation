@@ -6,7 +6,7 @@ description: Consume Pyth Network prices in EVM applications
 
 This guide explains how to use real-time Pyth data in EVM contracts. For an interactive playground to explore the methods supported by the Pyth contract, see the [EVM API reference](../api-reference/evm/).
 
-## Install Pyth SDKs
+## Install Pyth SDK
 
 Pyth provides a [Solidity SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/solidity) to fetch prices from Pyth contracts.
 The SDK exposes `IPyth` interface to interact with Pyth price feeds
@@ -78,7 +78,7 @@ contract SomeContract {
     pyth.updatePriceFeeds{ value: fee }(priceUpdateData);
 
     // Read the current price
-    // The priceId can be found at https://pyth.network/developers/price-feed-ids
+    // The priceIds can be found at https://pyth.network/developers/price-feed-ids
     bytes32 priceId = 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace; // ETH/USD
     PythStructs.Price price = pyth.getPrice(priceId);
   }
