@@ -183,15 +183,15 @@ export const GlobalContextProvider = ({
   // TODO: we may need to support "no network" as the default, because this may require a wallet.
   const [networkName, setNetworkName] = useState<string>(defaultChainName);
   const [pythAddressConfig, setPythAddressConfig] = useState<PythAddressConfig>(
-    PythAddresses[defaultChainName]
+    PythAddresses[defaultChainName],
   );
   const [provider, setProvider] = useState<ethers.Provider>(
-    ethers.getDefaultProvider("https://arb1.arbitrum.io/rpc")
+    ethers.getDefaultProvider("https://arb1.arbitrum.io/rpc"),
   );
 
   const { chain } = useNetwork();
   const defaultChain = CHAINS.find(
-    (chain) => chain.network === defaultChainName
+    (chain) => chain.network === defaultChainName,
   );
   const [currentChainConfig, setCurrentChainConfig] = useState<
     Chain | undefined
@@ -201,14 +201,14 @@ export const GlobalContextProvider = ({
     return new ethers.Contract(
       pythAddressConfig.pythAddress,
       contractAbi,
-      provider
+      provider,
     );
   }, [pythAddressConfig, provider]);
 
   const [cosmosChainId, setCosmosChainId] = useState<string>("neutron");
   const cosmosChainConfig = useMemo<PythCosmosConfig>(
     () => PythCosmosAddresses[cosmosChainId],
-    [cosmosChainId]
+    [cosmosChainId],
   );
 
   useEffect(() => {
@@ -230,7 +230,7 @@ export const GlobalContextProvider = ({
     if (chain) {
       const chainId = chain.id;
       const pythAddressConfig = Object.entries(PythAddresses).find(
-        ([, value]) => value.chainId === chainId
+        ([, value]) => value.chainId === chainId,
       );
       if (pythAddressConfig) {
         const [key] = pythAddressConfig;

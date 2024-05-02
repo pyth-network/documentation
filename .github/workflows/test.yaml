@@ -2,7 +2,7 @@ name: Test Code
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
 
   pull_request:
     types: [opened, synchronize]
@@ -18,7 +18,7 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ".nvmrc"
 
       - name: Install node packages
         run: npm ci
@@ -36,7 +36,7 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ".nvmrc"
 
       - name: Install node packages
         run: npm ci
@@ -54,7 +54,7 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ".nvmrc"
 
       - name: Install node packages
         run: npm ci

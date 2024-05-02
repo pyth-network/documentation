@@ -72,7 +72,7 @@ function wrapSolCode(code: string): string {
 async function runCodeSnippet(
   code: string,
   language: string,
-  id: string
+  id: string,
 ): Promise<[boolean, string]> {
   if (language === "typescript") {
     const tempFilePath = join(codeSnippetsDir, `${id}.ts`);
@@ -94,7 +94,7 @@ async function runCodeSnippet(
     fs.writeFileSync(
       join(tempFilePath, "Cargo.toml"),
       generateCargoText(),
-      "utf8"
+      "utf8",
     );
     // cargo check checks syntax without doing a full build. It's faster (but still pretty slow)
     const command = `cd ${tempFilePath} && cargo check`;
@@ -132,7 +132,7 @@ path = "lib.rs"
 }
 
 async function runValidationCommand(
-  command: string
+  command: string,
 ): Promise<[boolean, string]> {
   try {
     const result = await execPromise(command);
@@ -143,7 +143,10 @@ async function runValidationCommand(
   }
 }
 
-async function runValidationFunction(input: string, f: (arg: string) => void): Promise<[boolean, string]> {
+async function runValidationFunction(
+  input: string,
+  f: (arg: string) => void,
+): Promise<[boolean, string]> {
   try {
     f(input);
     return [true, input];

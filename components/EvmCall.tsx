@@ -36,7 +36,7 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
     // TODO: validate arguments
     if (args === undefined || args.flat().includes(undefined)) {
       setResponsePreface(
-        `Please populate all of the arguments with valid values.`
+        `Please populate all of the arguments with valid values.`,
       );
     } else {
       try {
@@ -56,7 +56,7 @@ const EvmCall = ({ functionName, buildArguments }: EvmCallProps) => {
             if (ethError !== null) {
               setResponsePreface("EVM call reverted with exception:");
               setResponse(
-                `${ethError.name}(${renderResult(ethError.args, "")})`
+                `${ethError.name}(${renderResult(ethError.args, "")})`,
               );
             } else {
               setResponsePreface("An unknown error occurred. Error details:");

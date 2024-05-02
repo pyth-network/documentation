@@ -55,11 +55,11 @@ export const InputFormats: Record<string, InputFormat> = {
   // The 0| condition below means we don't show an error message when the user starts typing 0 as the first character.
   ZeroX: regexFormat(
     "^(0|0x[0-9A-Fa-f]*)$",
-    'Please enter a hexadecimal string prefixed with 0x, for example "0xa19f"'
+    'Please enter a hexadecimal string prefixed with 0x, for example "0xa19f"',
   ),
   Hex: regexFormat(
     "^[0-9A-Fa-f]*$",
-    'Please enter a hexadecimal string prefixed with 0x, for example "a19f"'
+    'Please enter a hexadecimal string prefixed with 0x, for example "a19f"',
   ),
   BigInt: bigIntInputFormat,
   ByteArray: byteArrayFormat,

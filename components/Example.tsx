@@ -49,7 +49,7 @@ const Example = ({ keyValues, value }: ExampleProps) => {
   const renderingContext = useMemo(
     () =>
       new ExampleRenderingContext(pythAddressConfig.networkType, pythContract),
-    [pythAddressConfig, pythContract]
+    [pythAddressConfig, pythContract],
   );
 
   const handleClick = () => {
@@ -90,7 +90,7 @@ export class ExampleRenderingContext {
       return feedIds[symbolName];
     }
     throw new Error(
-      `Feed ID not found for symbol ${symbolName} and networkType ${this.networkType}`
+      `Feed ID not found for symbol ${symbolName} and networkType ${this.networkType}`,
     );
   }
 
@@ -100,7 +100,7 @@ export class ExampleRenderingContext {
 
   public async getLatestPriceFeed(
     symbolName: string,
-    targetChain: string
+    targetChain: string,
   ): Promise<any> {
     const feedId = this.getFeedId0x(symbolName);
 
@@ -109,7 +109,7 @@ export class ExampleRenderingContext {
     }/api/latest_price_feeds`;
     const result = await (
       await fetch(
-        `${endpoint}?ids[]=${feedId}&target_chain=${targetChain}&binary=true`
+        `${endpoint}?ids[]=${feedId}&target_chain=${targetChain}&binary=true`,
       )
     ).json();
     result[0].vaa = "0x" + Buffer.from(result[0].vaa, "base64").toString("hex");
@@ -117,9 +117,8 @@ export class ExampleRenderingContext {
   }
 
   public async getEthUpdateFee(vaas: string[]): Promise<string> {
-    const result = await this.pythContract["getUpdateFee"].staticCallResult(
-      vaas
-    );
+    const result =
+      await this.pythContract["getUpdateFee"].staticCallResult(vaas);
     return result[0].toString();
   }
 }
