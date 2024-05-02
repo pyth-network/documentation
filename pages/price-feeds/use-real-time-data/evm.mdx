@@ -37,6 +37,7 @@ Then add the following line to your `remappings.txt` file:
 
 ## Write Contract Code
 
+
 The code snippet below provides a general template for what your contract code should look like:
 
 ```solidity copy
@@ -49,24 +50,18 @@ contract SomeContract {
   IPyth pyth;
 
   /**
-   * THIS IS AN EXAMPLE CONTRACT. IT IS NOT INTENDED TO BE USED IN PRODUCTION.
-   * THIS CONTRACT IS FOR DEMONSTRATION PURPOSES ONLY.
-   */
-
-  /**
-      * Instantiate IPyth interface with the address of the Pyth contract.
-      * Pyth contract address can be found at https://docs.pyth.network/price-feeds/contract-addresses/evm.
-
-      * @param pythContract The address of the Pyth contract
-      */
+    * @param pythContract The address of the Pyth contract
+    */
   constructor(address pythContract) {
+    // The IPyth interface from pyth-sdk-solidity provides the methods to interact with the Pyth contract.
+    // Instantiate it with the Pyth contract address from https://docs.pyth.network/price-feeds/contract-addresses/evm
     pyth = IPyth(pythContract);
   }
 
   /**
      * This function is an example of how to interact with the Pyth contract.
 
-     * Fetch the updateData from an off-chain service and pass it to the Pyth contract to update the price feeds.
+     * Fetch the priceUpdate from an off-chain service and pass it to the Pyth contract to update the price feeds.
      * See https://docs.pyth.network/price-feeds/how-pyth-works/hermes for more information on how to fetch the updateData.
 
      * @param priceUpdateData The updateData to update the contract with the latest price
