@@ -1,4 +1,4 @@
-import { Callout } from 'nextra/components'
+import { Callout } from "nextra/components";
 
 # How To Fetch Price Updates
 
@@ -6,8 +6,7 @@ The following guides explain how to fetch price updates to update Pyth price fee
 As a pull oracle, Pyth's users are typically responsible for updating the state of on-chain feeds.
 Please see [What is a Pull Oracle?](/price-feeds/pull-updates) to learn more about pull updates.
 
-
-The price updates are requested from Pythnet and the Wormhole network. 
+The price updates are requested from Pythnet and the Wormhole network.
 Pyth Data Association provides a web service named [Hermes](/price-feeds/how-pyth-works/hermes) which listens to the abovementioned networks and provides price updates to the users.
 Hermes provides Pyth's latest price update data format that is more cost-effective to verify and use on-chain.
 
@@ -18,10 +17,11 @@ There are three different ways to fetch price updates:
 1. [Websocket](#websocket)
 
 <Callout emoji="ℹ️">
-    You need to pass the Pyth price feed's ID to request the price updates. These IDs are unique identifiers for price feeds (e.g., BTC/USD). \
-    The complete list of Pyth price feed IDs is available at https://pyth.network/developers/price-feed-ids
+  You need to pass the Pyth price feed's ID to request the price updates. These
+  IDs are unique identifiers for price feeds (e.g., BTC/USD). \ The complete
+  list of Pyth price feed IDs is available at
+  https://pyth.network/developers/price-feed-ids
 </Callout>
-
 
 ## REST API
 
@@ -38,7 +38,7 @@ curl -X 'GET' \
 
 The output will be similar to the following containing the requested price update:
 
-``` bash
+```bash
 {
   "binary": {
     "encoding": "hex",
@@ -49,12 +49,11 @@ The output will be similar to the following containing the requested price updat
 }
 ```
 
+## SDK
 
-## SDK 
+Pyth provides a typescript SDK to fetch price updates. This SDK allows you to read the real-time price updates to consume it on- and off-chain applications.
 
-Pyth provides a typescript SDK to fetch price updates. This SDK allows you to read the real-time price updates to consume it on- and off-chain applications. 
-
-``` typescript
+```typescript
 const connection = new PriceServiceConnection("https://hermes.pyth.network", {
   priceFeedRequestConfig: {
     // Provide this option to retrieve signed price updates for on-chain contracts.
@@ -74,8 +73,7 @@ const priceIds = [
 const priceUpdates = await connection.getLatestVaas(priceIds);
 ```
 
-
 ## Websocket
 
-Hermes also provides a WebSocket API to fetch the latest price updates. 
+Hermes also provides a WebSocket API to fetch the latest price updates.
 Consult the [Schedule Price Updates](/price-feeds/schedule-price-updates) guide to learn how to subscribe to Hermes websocket for streaming price updates.
