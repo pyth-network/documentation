@@ -37,10 +37,9 @@ Then add the following line to your `remappings.txt` file:
 
 ## Write Contract Code
 
-
 The code snippet below provides a general template for what your contract code should look like:
 
-```solidity copy
+```solidity {30-31} copy
 pragma solidity ^0.8.0;
 
 import "@pythnetwork/pyth-sdk-solidity/IPyth.sol";
@@ -50,8 +49,8 @@ contract SomeContract {
   IPyth pyth;
 
   /**
-    * @param pythContract The address of the Pyth contract
-    */
+   * @param pythContract The address of the Pyth contract
+   */
   constructor(address pythContract) {
     // The IPyth interface from pyth-sdk-solidity provides the methods to interact with the Pyth contract.
     // Instantiate it with the Pyth contract address from https://docs.pyth.network/price-feeds/contract-addresses/evm
@@ -59,69 +58,28 @@ contract SomeContract {
   }
 
   /**
-     * This function is an example of how to interact with the Pyth contract.
+     * This method is an example of how to interact with the Pyth contract.
+     * Fetch the priceUpdate from Hermes and pass it to the Pyth contract to update the prices.
+     * See https://docs.pyth.network/price-feeds/fetch-price-updates for more information on how to fetch the priceUpdate.
 
-     * Fetch the priceUpdate from an off-chain service and pass it to the Pyth contract to update the price feeds.
-     * See https://docs.pyth.network/price-feeds/how-pyth-works/hermes for more information on how to fetch the updateData.
-
-     * @param priceUpdateData The updateData to update the contract with the latest price
+     * @param priceUpdate The encoded data to update the contract with the latest price
      */
-  function fetchPrice(bytes[] calldata priceUpdateData) public payable {
-    // IMPORTANT: Here we fetch the fee required to update the price
-    // and update the contract with the latest price
-    uint fee = pyth.getUpdateFee(priceUpdateData);
-    pyth.updatePriceFeeds{ value: fee }(priceUpdateData);
+  function exampleMethod(bytes[] calldata priceUpdate) public payable {
+    // Submits a priceUpdate to the Pyth contract to update the on-chain price.
+    // Updating the price requires paying the fee returned by getUpdateFee.
+    // The priceUpdate will be retrieved from Hermes.
+    // WARNING: These lines are required to ensure the getPrice call below succeeds. If you remove them, transactions may fail with "0x19abf40e" error.
+    uint fee = pyth.getUpdateFee(priceUpdate);
+    pyth.updatePriceFeeds{ value: fee }(priceUpdate);
 
-    // Read the current price
-    // The priceIds can be found at https://pyth.network/developers/price-feed-ids
+    // Read the current price from a price feed.
+    // Each price feed (e.g., ETH/USD) is identified by a price feed ID.
+    // The complete list of feed Ids is available at https://pyth.network/developers/price-feed-ids
     bytes32 priceId = 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace; // ETH/USD
     PythStructs.Price price = pyth.getPrice(priceId);
   }
 }
 
-```
-
-## Write Frontend Code
-
-Add frontend code to query price update data and pass it to your contract.
-Your frontend code should do the following things:
-
-1. Get a Hermes instance from the list of providers [here](https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes#node-providers). You can use the Stable [Hermes instance] hosted publically by Pyth Data Assosciation for development purposes.
-1. Instantiate an [EvmPriceServiceConnection](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/js/src/EvmPriceServiceConnection.ts) pointing to your Hermes instance.
-1. Get price update data using this connection -- you can either perform one-off queries for this using `getPriceFeedsUpdateData` or subscribe for real-time updates via websocket.
-1. Optionally get the Pyth fee required to perform the price update.
-   You will need to do this step if your app is passing Pyth fees on to end users.
-1. Pass the price update data to your contract.
-   If you are passing along pyth fees, you will additionally need to provide the `value` parameter with the fee from the previous step.
-
-```typescript copy
-import { EvmPriceServiceConnection } from "@pythnetwork/pyth-evm-js";
-
-async function run() {
-  const connection = new EvmPriceServiceConnection("https://hermes.pyth.network");
-  const priceIds = ["fill this in with your ids"]
-  const priceFeedUpdateData = await connection.getPriceFeedsUpdateData(
-    priceIds
-  );
-
-  // If necessary, you can collect the price update fee from the pythContract.
-  //
-  // `pythContract` below is a web3.js contract; if you wish to use ethers, you need to change it accordingly.
-  // You can find the Pyth interface ABI in @pythnetwork/pyth-sdk-solidity npm package.
-  const pythContract = ...;
-  const updateFee = await pythContract.methods
-    .getUpdateFee(priceFeedUpdateData)
-    .call();
-
-  // Pass the update data to your contract.
-  // `someContract` below is a web3.js contract; if you wish to use ethers, you need to change it accordingly.
-  const someContract = ...;
-  await someContract.methods
-    .doSomething(someArg, otherArg, priceFeedUpdateData)
-    .send({ value: updateFee });
-}
-
-run();
 ```
 
 ## Additional Resources
