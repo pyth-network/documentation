@@ -143,12 +143,18 @@ async function runValidationCommand(
   }
 }
 
-async function runValidationFunction(input: string, f: (string) => void) {
+async function runValidationFunction(input: string, f: (arg: string) => void): Promise<[boolean, string]> {
   try {
     f(input);
     return [true, input];
   } catch (error) {
-    return [false, error.toString()];
+    if (typeof error === "string") {
+      return [false, error];
+    } else if (error instanceof Error) {
+      return [false, error.toString()];
+    } else {
+      return [false, "unknown error"];
+    }
   }
 }
 
