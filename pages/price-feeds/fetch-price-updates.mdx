@@ -3,12 +3,9 @@ import { Callout } from "nextra/components";
 # How To Fetch Price Updates
 
 The following guides explain how to fetch price updates to update Pyth price feeds on-chain.
-As a pull oracle, Pyth's users are typically responsible for updating the state of on-chain feeds.
-Please see [What is a Pull Oracle?](/price-feeds/pull-updates) to learn more about pull updates.
-
-The price updates are requested from Pythnet and the Wormhole network.
-Pyth Data Association provides a web service named [Hermes](/price-feeds/how-pyth-works/hermes) which listens to the abovementioned networks and provides price updates to the users.
-Hermes provides Pyth's latest price update data format that is more cost-effective to verify and use on-chain.
+Price updates can be submitted to the Pyth Price Feeds contract to update the on-chain price.
+These price updates are fetched from [Hermes](/price-feeds/how-pyth-works/hermes) which are verified on-chain.
+Please see [What is a Pull Oracle?](/price-feeds/pull-updates) to learn more.
 
 There are three different ways to fetch price updates:
 
