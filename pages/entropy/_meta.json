@@ -29,6 +29,7 @@
     "title": "Reference Material",
     "type": "separator"
   },
+  "best-practices": "Best Practices",
   "fortuna-api-explorer": {
     "title": "Fortuna API Explorer ↗",
     "href": "https://fortuna.dourolabs.app/docs/",
