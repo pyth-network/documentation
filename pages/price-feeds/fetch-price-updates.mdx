@@ -1,0 +1,81 @@
+import { Callout } from 'nextra/components'
+
+# How To Fetch Price Updates
+
+The following guides explain how to fetch price updates to update Pyth price feeds on-chain.
+As a pull oracle, Pyth's users are typically responsible for updating the state of on-chain feeds.
+Please see [What is a Pull Oracle?](/price-feeds/pull-updates) to learn more about pull updates.
+
+
+The price updates are requested from Pythnet and the Wormhole network. 
+Pyth Data Association provides a web service named [Hermes](/price-feeds/how-pyth-works/hermes) which listens to the abovementioned networks and provides price updates to the users.
+Hermes provides Pyth's latest price update data format that is more cost-effective to verify and use on-chain.
+
+There are three different ways to fetch price updates:
+
+1. [REST API](#rest-api)
+1. [SDK](#sdk)
+1. [Websocket](#websocket)
+
+<Callout emoji="ℹ️">
+    You need to pass the Pyth price feed's ID to request the price updates. These IDs are unique identifiers for price feeds (e.g., BTC/USD). \
+    The complete list of Pyth price feed IDs is available at https://pyth.network/developers/price-feed-ids
+</Callout>
+
+
+## REST API
+
+Hermes exposes APIs to fetch the latest price updates.
+Consult the [Hermes API documentation](https://hermes.pyth.network/docs/#/) for more information.
+
+Here is an example of retrieving the latest price update of the BTC/USD price feed:
+
+```bash
+curl -X 'GET' \
+  'https://hermes.pyth.network/v2/updates/price/latest?ids%5B%5D=0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43' \
+  -H 'accept: application/json'
+```
+
+The output will be similar to the following containing the requested price update:
+
+``` bash
+{
+  "binary": {
+    "encoding": "hex",
+    "data": [
+      "504e41550100000003b801000000040d002188e98ad3de530647c3aee42f8bb2cdb3b3b6fa9a9382aab2acf2528a4493c73360498d7ece59862d637e93d263f1a088c9a2ba5d32df7357f809878a02f3210002b8f66b286c196eacf577551fde3f05132931e4f5dd62a9d628dbe0eb850cd1e62cddf370f1a7367bc271702ca7b4a57c312cceae4d8324995820b5f37980c22e000359154db70a32fd77a29820bdb9aa41be7b913eca2ab0c9078e318647466426b766492e6dfa313ce02849a5808ffdf15b20923d98c36766e2c4e765e60d614d780006a00999c38d23c84e42837abc1215d29610939d3ccf8a4c9970ec1d5d41175d693482908685825898d5691504d24bfc5174ae329bd75eeda336559c057419107300071870315e009141af927ef98bea6a35f35f9da25b87569ce5354d4550de67417a3055c323ab98ea7e1ba114a4840de6e5810444d6c7033cfa3a0c25128f56d5c20108e5fffa3969de52f08444b662bd10a1a49e63af0a4a3eea5213a1ce252de090576877540a2b1276a0586dde42c3cecc600eb4197eb0efa04b483f8957de29024e010a66c8fad6fdb0cc85fa399c9640fdf5f60a0f0ca80bd788ddc1c20e19ace0c2171bc49876915d5ae54795e90aff7832a3a2db5b69ebd0849b7b2e3a03c7f3e13e010b7d0749e1afe455bf0f0997df8fa378cd451cfd02e3fdbadced1014a797a220e54eb429a4aa67b04888d9478a1e5e3e70c6c5bc2c5d7972af57e19c37fde9fb3b000c0e0061af49d17002356cc9e5c067d0b0871345dbcaa379e19c05ff1c229a27345f19a3683165443d814b0c652927a8f81ebfb22c4b35e309ea73472a50e4cf10000dde4b497454cb1b37edfc05e485d2544a0ac657f2b8b1c71fe0e07aad631430725328d176053f642a696fc738afe42b5914fa9f90421e8bfb54eedcf4d5ca0912000e2a117d0cf720a6277d38f1ce886993c3318b92b319b999a90ac7a2d58a9f11e40b91c1f5e74cc2a6bb3a0a69e8d445fe0647b2b8bcae7ef087850d3d1b243bda000fdba3db2e120d29b9a986bf0c2eebcb5bc481ab3fb4574f6c97685a3b096e7fb073c09fcb40fbce2e62a0c7059dbbdd6083d063b88c41f36efc610c258034a70c0012144cc9947356370db75b365ac7dd279fd1d94f9939099abbd75c273fe69527186982c1ff4eb96bf60f5866b7d63a9652e257442d5374bdcaa3242d22df89724e006633a8dd00000000001ae101faedac5851e32b9b23b5f9411a8c2bac4aae3ed4dd7b811dd1a72ea4aa7100000000033a30b10141555756000000000008442d8b00002710a3ead17e8fc983eb6a9089bc4772a2a5395949fb01005500e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b430000055dfa01811f000000011651312bfffffff8000000006633a8dc000000006633a8dc00000555bb770ae000000000eb8c19000a56d089dceea392760aadb468ea4545ac175b2c51f0285865a623489a35bbc8d74c627f8719e3a1ce2cc32be9e3fb046da02e358d581a780b9cbc37432b7dd3f6c83f64ef143c6147c5d3a28e7eff2347842ea15c23e7eabd9cab0cd34c8c45d88393c42fe94a49149db8ab4237bbd92637f4506ad11853586555d58ad6480887029e4acc65eb8f4a375c5c7b0ad11813b5a9b1202912c6adcfe92fffb703f04e99abb6de8a588446bd86c6d62e27356e38c479ca143259195a4d38355dee36b9f45a0825af1c2b2b"
+    ]
+  }
+}
+```
+
+
+## SDK 
+
+Pyth provides a typescript SDK to fetch price updates. This SDK allows you to read the real-time price updates to consume it on- and off-chain applications. 
+
+``` typescript
+const connection = new PriceServiceConnection("https://hermes.pyth.network", {
+  priceFeedRequestConfig: {
+    // Provide this option to retrieve signed price updates for on-chain contracts.
+    // Ignore this option for off-chain use.
+    binary: true,
+  },
+});
+
+const priceIds = [
+  // You can find the Ids of prices at https://pyth.network/developers/price-feed-ids
+  "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", // BTC/USD price id
+  "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", // ETH/USD price id
+];
+
+// Get the latest price updates for the given price Ids.
+// If you set `binary: true` above, then this method also returns signed price updates for the on-chain Pyth contract.
+const priceUpdates = await connection.getLatestVaas(priceIds);
+```
+
+
+## Websocket
+
+Hermes also provides a WebSocket API to fetch the latest price updates. 
+Consult the [Schedule Price Updates](/price-feeds/schedule-price-updates) guide to learn how to subscribe to Hermes websocket for streaming price updates.
