@@ -2,30 +2,30 @@ import { Callout } from "nextra/components";
 
 # How To Fetch Price Updates
 
-The following guides explain how to fetch price updates.
+The following guide explains how to fetch price updates.
 Price updates can be submitted to the Pyth Price Feeds contract to update the on-chain price.
-
-Price updates are fetched from [Hermes](/price-feeds/how-pyth-works/hermes) which are verified on-chain.
 Please see [What is a Pull Oracle?](/price-feeds/pull-updates) to learn more.
 
-There are three different ways to fetch price updates:
+Price updates are served from [Hermes](/price-feeds/how-pyth-works/hermes), which
+provides three different ways to fetch price updates:
 
 1. [REST API](#rest-api)
 1. [Streaming](#streaming)
 1. [SDK](#sdk)
 
 <Callout emoji="ℹ️">
-  Fetching a price from Hermes requires a price feed ID. These IDs are unique
-  identifiers for price feeds (e.g., BTC/USD). The complete list of Pyth price
-  feed IDs is available at https://pyth.network/developers/price-feed-ids
+  Fetching a price from Hermes requires a price feed ID. This ID serves as a
+  unique identifier for each price feed (e.g., BTC/USD). The complete list of
+  Pyth price feed IDs is available at
+  https://pyth.network/developers/price-feed-ids
 </Callout>
 
 ## REST API
 
-Hermes exposes APIs to fetch the latest price updates.
-Use the `/v2/updates/price/latest` endpoint of the Hermes REST API to fetch the latest price update for a feed.
-This API also allows you to fetch the latest price updates for multiple feeds in a single request.
-For example, to retrieve the latest BTC/USD & ETH/USD price updates, run
+Hermes exposes several endpoints to fetch the price updates.
+Use the `/v2/updates/price/latest` endpoint to fetch the latest price update for one or more feeds.
+This endpoint allows you to fetch the latest price updates for multiple feeds in a single request.
+For example, the following command retrieves the latest price updates for BTC/USD and ETH/USD:
 
 ```bash copy
 curl -X 'GET' \
@@ -91,17 +91,16 @@ Hermes offers several other endpoints for retrieving price updates. For more inf
 
 ## Streaming
 
-Hermes also exposes an API to stream price updates.
-Use the `/v2/updates/price/stream` endpoint of the Hermes REST API to stream price updates.
+Hermes also provides a Server-Sent Events (SSE) endpoint to stream price updates.
+The `/v2/updates/price/stream` endpoint continuously streams price updates for the requested feeds to the caller.
 
-For example, to stream price updates for the BTC/USD, run
+For example, to stream price updates for BTC/USD, run:
 
 ```bash copy
 curl -N 'https://hermes.pyth.network/v2/updates/price/stream?ids[]=0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43'
 ```
 
-The output should be streamed data containing the requested price updates.
-It will be similar to the following:
+The output is a stream of events containing the requested price updates, similar to the following:
 
 ```bash
 data:{"binary":{"encoding":"hex","data":["504e41550100000003b801000000040d00eabd2d495ed4f262eb6fafb24d8086ee608eb19da4e447c64a38e6b3eefcf2d27bfb21bdbf1bf803115a1fcda040931e851c48b52215cbcc291663ba53b6b24b01018f071b30658331897090011cbbe96ff202d5d066714006b3670440122089d1ad1e6ce7236b89d3ccacfeee49512065db54233aca946a8e8e28e83968e3bc517e0002f678f31f75bb9d0a1957119205859fd348f07b069b97e575b73bbc82d402b16f24b62b5366f3f05aab7d528532dfc1911646ed705b795f4492fe84d542b507f60103b03dc0569c018119aa3c7c98cb156c7423ed8913d95e08b44674e82523b8f1ab437cc4b3d284e1f4f80cda67ef123b892f15021951e0fbcd80216a2beda9ac5c0104337f1053c8a1c7550609436b9426530df1e22f0afaf26c9210887d8bbe563a8418cbb2bcea8a095fb9ad3b06f5e575ae168eb5f9ab93a0d2a6be2ffd631cc2ad0006c42a1ada427f7f8756d14d5a6764ac738474f17ed2a1866cf10d94544a92a9040c9ad6caef6aa1c4ef9d67f808c0d75f52a18e60fd3589d76bc21d5ed3512e8d01076ba49d01aefbfb54bbe8d37a003cfd91625dcbab52691121d99d490567a409e73fb5489180dc582c3110c6dc81b95cd1c380e7c76d53c1238aa035ea17251d950008b6f57f8221306f54f6405f34cf4dce795e8b9c7dd309c6069212e0dfa7a427234adcd296892087e7e109d85d27aaea267c83f98a9bf49b92a27f16b5974ed101000b0756503ae6178fcd2ce6286dc2210415ee229cdc7cb57892b3d13a45661e2c33077ec4afa45d03e8755bbcb129f64d21f302f6e759321fe05a1edd8eb782a04d010df60048fe6b5d3217c8a8fe03351a9bab77f0938c2d5913d24bf9a52da54bd0ce3227dbbb83cf67f9b10ab6adeea005f54011202beafed7814e5172c9ca0a06ad000f4e231dd10e55ae5149f982833093937237bf261e05fd903b953f3771b02ef49640ef0cd9c11ba80a7afb55fece73f548c4808b713b99438502df818c5150ecb00011fe3be80af9b0cdbee241689da36793a7d101fb4b9357f6a97f97a581b253d9dd4ee56dffe5d8c5b217e4b1070607a7f5114d9a63769f49ad7045cfc86f40a9890012bbfdd274135f9fecd68d7f88d05756e6666a3a28665852f8af380c48d6bc91a850770fa193fe3d80b0cec9a5451200bcac20a16a397267e9a0bb2f680f5d1dfa016634fb8d00000000001ae101faedac5851e32b9b23b5f9411a8c2bac4aae3ed4dd7b811dd1a72ea4aa7100000000033d3e2b0141555756000000000008473bf600002710d2760ed144ee74be4d41297509cdbff411fffa5801005500e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b430000059afeec470000000000c2d215effffffff8000000006634fb8c000000006634fb8c00000593465c858000000000d5cfbf900a6526b4409251e9d274f511a52a6cbabb1b9a6c348d4bc394abfdba2e30ac9f4b127502861670451c1ae10f8231549fdd446eea366199686b78cebe4a918671b73aa1e534b4c66c38d01100a593681cf47897a3cb14045dff7c2795033a295d9a01d08cef7033f64f7700464f4cfaec825fa3117f04b4be713cadf32dcbe8ce1c763d311ee040e1a1de13c56e4bfaba769449d8c7ebf8685a756b1ebe6efd41df5f59a2bd7042b74982afe362bf7df2951f2f47e758f98107849cdb94fa063cb3b5bc0560e67d4929"]},"parsed":[{"id":"e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43","price":{"price":"6163260000000","conf":"3268548079","expo":-8,"publish_time":1714748300},"ema_price":{"price":"6130098800000","conf":"3587162000","expo":-8,"publish_time":1714748300},"metadata":{"slot":138886134,"proof_available_time":1714748302,"prev_publish_time":1714748300}}]}
@@ -111,12 +110,13 @@ data:{"binary":{"encoding":"hex","data":["504e41550100000003b801000000040d00c225
 
 ## SDK
 
-Pyth provides a typescript SDK to fetch price updates. This SDK allows you to read the real-time price updates to consume it on- and off-chain applications.
+Pyth provides a typescript SDK to fetch price updates.
+The `PriceServiceConnection` class in this SDK connects to Hermes to fetch and stream price updates.
 
 ```typescript copy
 const connection = new PriceServiceConnection("https://hermes.pyth.network", {
   priceFeedRequestConfig: {
-    // Provide this option to retrieve signed price updates for on-chain contracts.
+    // Provide this option to retrieve binary price updates for on-chain contracts.
     // Ignore this option for off-chain use.
     binary: true,
   },
@@ -133,7 +133,7 @@ const priceIds = [
 const priceUpdates = await connection.getLatestVaas(priceIds);
 ```
 
-`PriceServiceConnection` client initialized in the above code snippet also allows subscribing to real-time price updates via WebSocket connection:
+`PriceServiceConnection` also allows subscribing to price updates via a WebSocket connection:
 
 ```typescript copy
 // priceIds here is the one declared in the above code snippet.
