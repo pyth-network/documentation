@@ -101,10 +101,11 @@ The `PythSolanaReceiver` class provides a method for deriving this information:
 ```typescript copy
 import { PythSolanaReceiver } from "@pythnetwork/pyth-solana-receiver";
 
-// You will need a Connection from @solana/web3.js and an AnchorWallet to create
+
+// You will need a Connection from @solana/web3.js and a Wallet from @coral-xyz/anchor to create
 // the receiver.
 const connection: Connection;
-const wallet: AnchorWallet;
+const wallet: Wallet;
 const pythSolanaReceiver = new PythSolanaReceiver({ connection, wallet });
 
 // There are up to 2^16 different accounts for any given price feed id.
@@ -165,10 +166,10 @@ The `PythSolanaReceiver` class in `@pythnetwork/pyth-solana-receiver` provides a
 ```typescript copy
 import { PythSolanaReceiver } from "@pythnetwork/pyth-solana-receiver";
 
-// You will need a Connection from @solana/web3.js and an AnchorWallet to create
+// You will need a Connection from @solana/web3.js and a Wallet from @coral-xyz/anchor to create
 // the receiver.
 const connection: Connection;
-const wallet: AnchorWallet;
+const wallet: Wallet;
 const pythSolanaReceiver = new PythSolanaReceiver({ connection, wallet });
 
 // Set closeUpdateAccounts: true if you want to delete the price update account at
