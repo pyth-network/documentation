@@ -43,7 +43,7 @@ const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
 
   const state = useMemo(() => {
     const cosmosNetworkDetails = getCosmosChainFromConfig(
-      cosmosChainConfig.chainId
+      cosmosChainConfig.chainId,
     );
 
     return new DynamicCodeRenderingContext(
@@ -52,7 +52,7 @@ const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
       currentChainConfig,
       cosmosChainConfig,
       cosmosChainId,
-      cosmosNetworkDetails
+      cosmosNetworkDetails,
     );
   }, [
     keyValueStore,
@@ -74,7 +74,7 @@ const DynamicCode = ({ targets, children }: DynamicCodeProps) => {
         // note: this explicitly filters out entire lines and only finds spans within lines
         // to preserve highlighting
         const token = [...divRef.current.querySelectorAll("code span")].find(
-          (el) => el.innerText === target && el.className != "line"
+          (el) => el.innerText === target && el.className != "line",
         );
         if (token !== undefined) {
           tokens.push({ token, target, replacement });
@@ -118,7 +118,7 @@ export class DynamicCodeRenderingContext {
     currentChainConfig?: Chain,
     cosmosChainConfig?: PythCosmosConfig,
     currentCosmosChain?: string,
-    cosmosNetworkDetails?: ChainInfo
+    cosmosNetworkDetails?: ChainInfo,
   ) {
     this.kv = kv;
     this.pythAddressConfig = pythAddressConfig;

@@ -237,18 +237,17 @@ async function run() {
   });
 
   const connection = new EvmPriceServiceConnection(
-    "https://hermes.pyth.network"
+    "https://hermes.pyth.network",
   );
   const priceIds = [process.env["ETH_USD_ID"] as string];
-  const priceFeedUpdateData = await connection.getPriceFeedsUpdateData(
-    priceIds
-  );
+  const priceFeedUpdateData =
+    await connection.getPriceFeedsUpdateData(priceIds);
   console.log("Retrieved Pyth price update:");
   console.log(priceFeedUpdateData);
 
   const hash = await contract.write.updateAndMint(
     [priceFeedUpdateData as any],
-    { value: parseEther("0.0005") }
+    { value: parseEther("0.0005") },
   );
   console.log("Transaction hash:");
   console.log(hash);
