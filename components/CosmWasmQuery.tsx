@@ -33,7 +33,7 @@ const CosmWasmQuery = ({ buildQuery }: CosmWasmQueryProps) => {
     // TODO: validate arguments
     if (queryJson === undefined) {
       setResponsePreface(
-        `Please populate all of the arguments with valid values.`
+        `Please populate all of the arguments with valid values.`,
       );
     } else {
       try {
@@ -45,7 +45,7 @@ const CosmWasmQuery = ({ buildQuery }: CosmWasmQueryProps) => {
 
         const result = await client.queryContractSmart(
           cosmosChainConfig.pythAddress,
-          queryJson
+          queryJson,
         );
 
         const resultString = JSON.stringify(result, null, 2);

@@ -16,7 +16,7 @@ interface InputProps {
 const Input = ({ id, format }: InputProps) => {
   const { keyValueStore, setKeyValueStore } = useGlobalContext();
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
-    undefined
+    undefined,
   );
 
   const handleQueryChange = (key: string, value: string) => {

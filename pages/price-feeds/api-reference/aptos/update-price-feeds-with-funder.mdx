@@ -38,9 +38,9 @@ Reverts if the `account` does not have a sufficient balance or `update_data` is 
           Array.from(
             Buffer.from(
               (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "aptos")).vaa,
-              "base64"
-            )
-          )
+              "base64",
+            ),
+          ),
         ),
     }}
     value="Latest BTC/USD update data"
