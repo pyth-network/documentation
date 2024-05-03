@@ -82,6 +82,15 @@ contract SomeContract {
 
 ```
 
+The above code snippet demonstrates how to interact with the Pyth contract in a Solidity contract.
+It includes the following steps:
+
+1. Instantiate the `IPyth` interface from the Solidity SDK using the price feeds [contract address](../contract-addresses/evm).
+1. Select the [Price Feed IDs](https://pyth.network/developers/price-feed-ids) for the assets you want to fetch prices for. Price feeds come in two varieties, Stable and Beta. You should select Stable feed ids
+1. Call `IPyth.getUpdateFee` to calculate the fee charged by Pyth to update the price.
+1. Call `IPyth.updatePriceFeeds` to update the price, paying the fee calculated in the previous step.
+1. Call `IPyth.getPrice` to read the current price, providing the [price feed ID](https://pyth.network/developers/price-feed-ids) that you wish to read.
+
 ## Additional Resources
 
 You may find these additional resources helpful for developing your EVM application.
