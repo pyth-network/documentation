@@ -38,9 +38,9 @@ Reverts if the required fee is not paid, or the `update_data` is incorrectly sig
           Array.from(
             Buffer.from(
               (await ctx.getLatestPriceFeed("Crypto.BTC/USD", "aptos")).vaa,
-              "base64"
-            )
-          )
+              "base64",
+            ),
+          ),
         ),
       fee: async (ctx) => {
         // NOTE: this technically could get the update fee for a different VAA than the one above.

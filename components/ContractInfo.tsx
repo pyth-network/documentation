@@ -20,7 +20,7 @@ const ContractInfo = () => {
         setIsLoading(true);
         setFee((await pythContract.getUpdateFee(["0x01"])).toString());
         setValidTimePeriod(
-          (await pythContract.getValidTimePeriod()).toString()
+          (await pythContract.getValidTimePeriod()).toString(),
         );
         setIsLoading(false);
       } catch (error: any) {
