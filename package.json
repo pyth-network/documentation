@@ -9,7 +9,7 @@
     "test:lint": "next lint",
     "test:unit": "jest",
     "test:types": "tsc --noEmit",
-    "test:format": "prettier --check .",
+    "test:format": "run(){ prettier --check ${*-.}; }; run",
     "fix:lint": "next lint --fix",
     "fix:format": "prettier --write .",
     "postinstall": "graz generate -g"
