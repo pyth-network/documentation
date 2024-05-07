@@ -211,19 +211,19 @@ const EntropyAbi = require("@pythnetwork/entropy-sdk-solidity/abis/IEntropy.json
 async function main() {
   const web3 = new Web3(process.env["RPC_URL"]);
   const { address } = web3.eth.accounts.wallet.add(
-    process.env["PRIVATE_KEY"],
+    process.env["PRIVATE_KEY"]
   )[0];
 
   web3.eth.defaultBlock = "finalized";
 
   const coinFlipContract = new web3.eth.Contract(
     CoinFlipAbi.abi,
-    process.env["COINFLIP_ADDRESS"],
+    process.env["COINFLIP_ADDRESS"]
   );
 
   const entropyContract = new web3.eth.Contract(
     EntropyAbi,
-    process.env["ENTROPY_ADDRESS"],
+    process.env["ENTROPY_ADDRESS"]
   );
 }
 

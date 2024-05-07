@@ -38,7 +38,7 @@ const RestGet = ({ endpoint, queryParams }: RestGetProps) => {
     for (const [key, value] of Object.entries(data)) {
       if (urlEncode) {
         ret.push(
-          encodeURIComponent(key) + "=" + encodeURIComponent(value as string),
+          encodeURIComponent(key) + "=" + encodeURIComponent(value as string)
         );
       } else {
         ret.push(key + "=" + encodeURIComponent(value as string));

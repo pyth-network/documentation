@@ -81,7 +81,7 @@ const CosmWasmExecute = ({ buildMsg, feeKey }: CosmWasmExecuteProps) => {
 
     if (msgJson === undefined || funds === undefined) {
       setResponsePreface(
-        `Please populate all of the arguments with valid values.`,
+        `Please populate all of the arguments with valid values.`
       );
       setResponse(undefined);
     } else {
