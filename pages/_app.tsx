@@ -24,7 +24,7 @@ const config = createConfig(
     walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
     appName: "Pyth Network",
     chains,
-  }),
+  })
 );
 
 export default function Nextra({ Component, pageProps }: NextraAppProps) {

@@ -65,7 +65,7 @@ const EvmSend = ({ functionName, buildArguments, feeKey }: EvmSendProps) => {
 
     if (args === undefined || args.flat().includes(undefined)) {
       setResponsePreface(
-        `Please populate all of the arguments with valid values.`,
+        `Please populate all of the arguments with valid values.`
       );
     } else {
       write?.({

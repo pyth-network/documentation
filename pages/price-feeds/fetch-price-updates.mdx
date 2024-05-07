@@ -143,8 +143,8 @@ connection.subscribePriceFeedUpdates(priceIds, (priceFeed) => {
   // It will include signed price updates if the binary option was provided to the connection constructor.
   console.log(
     `Received an update for ${priceFeed.id}: ${priceFeed.getPriceNoOlderThan(
-      60,
-    )}`,
+      60
+    )}`
   );
 });
 
