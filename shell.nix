@@ -69,7 +69,6 @@ in
       pkgs.git
       pkgs.niv
       pkgs.nodejs
-      pkgs.pre-commit
       (
         pkgs.rust-bin.stable.latest.default.override {
           extensions = ["rust-std"];

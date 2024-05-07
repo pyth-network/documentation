@@ -1,7 +1,0 @@
-repos:
-  - repo: local
-    hooks:
-      - id: check-prettier
-        name: Check Prettier
-        entry: npm run test:format --
-        language: system
