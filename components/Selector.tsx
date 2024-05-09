@@ -18,7 +18,7 @@ const Selector = ({ values, currentValue, onChange }: SelectorProps) => {
         onChange(event.target.value);
       }
     },
-    [onChange],
+    [onChange]
   );
 
   return (
