@@ -22,6 +22,12 @@ const config: DocsThemeConfig = {
   sidebar: {
     defaultMenuCollapseLevel: 1,
   },
+  editLink: {
+    component: null
+  }, 
+  feedback: {
+    content: null,
+  },
   navigation: false,
   useNextSeoProps() {
     return {
