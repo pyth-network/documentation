@@ -23,8 +23,8 @@ const config: DocsThemeConfig = {
     defaultMenuCollapseLevel: 1,
   },
   editLink: {
-    component: null
-  }, 
+    component: null,
+  },
   feedback: {
     content: null,
   },
