@@ -51,7 +51,7 @@ pub struct Sample<'info> {
 ```
 
 <Callout type="info" emoji="ℹ️">
-**NOTE**: Users must ensure that the account passed to their instruction is owned by the Pyth Oracle program.
+Users must ensure that the account passed to their instruction is owned by the Pyth Pull Oracle program.
 Using Anchor with the `Account<'info, PriceUpdateV2>` type will automatically perform this check.
 However, it is the developer's responsibility to perform this check if they are not using Anchor.
 </Callout>
@@ -76,16 +76,15 @@ pub fn sample(ctx: Context<Sample>) -> Result<()> {
 ```
 
 <Callout type="warning" emoji="⚠️">
-  **NOTE**: Users must validate the price update for the appropriate **price
+  Users must validate the price update for the appropriate **price
   feed** and **timestamp**. `PriceUpdateV2` guarantees that the account contains
   a verified price for _some_ price feed at _some_ point in time. There are
   various methods on this struct (such as `get_price_no_older_than`) that users
   can use to implement the necessary checks.
-</Callout>
 
-<Callout type="info" emoji="ℹ️">
-  **NOTE**: If you choose the price feed account integration (see below), you
-  can use an account address check to validate the price feed id.
+If you choose the price feed account integration (see below), you
+can use an account address check to validate the price feed ID.
+
 </Callout>
 
 ## Write Frontend Code
@@ -128,12 +127,12 @@ const solUsdPriceFeedAccount = pythSolanaReceiver
 ```
 
 <Callout type="info" emoji="ℹ️">
-  **NOTE:** The Price Feed Accounts integration assumes that an off-chain
-  process is continuously updating each price feed. The Pyth Data Association
-  sponsors price updates for a subset of commonly used price feeds on shard 0.
-  Please see [Sponsored Feeds](/price-feeds/sponsored-feeds) for a list of
-  sponsored feeds and their account addresses. However, updating a price feed is
-  a permissionless operation, and anyone can run this process. Please see [Using
+  The Price Feed Accounts integration assumes that an off-chain process is
+  continuously updating each price feed. The Pyth Data Association sponsors
+  price updates for a subset of commonly used price feeds on shard 0. Please see
+  [Sponsored Feeds](/price-feeds/sponsored-feeds) for a list of sponsored feeds
+  and their account addresses. \ Additionaly, updating a price feed is a
+  permissionless operation, and anyone can run this process. Please see [Using
   Scheduler](/price-feeds/schedule-price-updates/using-scheduler) for more
   information. Running the scheduler can help with reliability and update
   feed/shard pairs that are not part of the default schedule.
