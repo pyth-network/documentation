@@ -84,8 +84,8 @@ pub fn sample(ctx: Context<Sample>) -> Result<()> {
 </Callout>
 
 <Callout type="info" emoji="ℹ️">
-  **Note**: Use an account address check to validate the price feed ID, if a
-  user wants to integrate using the price feed accounts (see below).
+  **NOTE**: If you choose the price feed account integration (see below), you
+  can use an account address check to validate the price feed id.
 </Callout>
 
 ## Write Frontend Code
@@ -127,12 +127,17 @@ const solUsdPriceFeedAccount = pythSolanaReceiver
   .toBase58();
 ```
 
-**NOTE:** The Price Feed Accounts integration assumes that an off-chain process is continuously updating each price feed.
-The Pyth Data Association sponsors price updates for a subset of commonly used price feeds on shard 0.
-Please see [Sponsored Feeds](/price-feeds/sponsored-feeds) for a list of sponsored feeds and their account addresses.
-However, updating a price feed is a permissionless operation, and anyone can run this process.
-Please see [Using Scheduler](/price-feeds/schedule-price-updates/using-scheduler) for more information.
-Running the scheduler can help with reliability and update feed/shard pairs that are not part of the default schedule.
+<Callout type="info" emoji="ℹ️">
+  **NOTE:** The Price Feed Accounts integration assumes that an off-chain
+  process is continuously updating each price feed. The Pyth Data Association
+  sponsors price updates for a subset of commonly used price feeds on shard 0.
+  Please see [Sponsored Feeds](/price-feeds/sponsored-feeds) for a list of
+  sponsored feeds and their account addresses. However, updating a price feed is
+  a permissionless operation, and anyone can run this process. Please see [Using
+  Scheduler](/price-feeds/schedule-price-updates/using-scheduler) for more
+  information. Running the scheduler can help with reliability and update
+  feed/shard pairs that are not part of the default schedule.
+</Callout>
 
 ### Price Update Accounts
 
@@ -203,7 +208,7 @@ await transactionBuilder.addPriceConsumerInstructions(
   }
 );
 
-// Send the instructions to the builder in 1 or more transactions.
+// Send the instructions in the builder in 1 or more transactions.
 // The builder will pack the instructions into transactions automatically.
 await pythSolanaReceiver.provider.sendAll(
   await transactionBuilder.buildVersionedTransactions({
