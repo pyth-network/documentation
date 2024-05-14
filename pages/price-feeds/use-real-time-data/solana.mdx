@@ -2,13 +2,15 @@
 description: Consume Pyth Network prices in Solana applications
 ---
 
+import { Callout } from "nextra/components";
+
 # How to Use Real-Time Data in Solana Programs
 
 This guide explains how to use real-time Pyth data in Solana applications.
 
 ## Install Pyth SDKs
 
-We provide two SDKs for Solana applications to cover the on- and off-chain portions of the integration:
+Pyth provides two SDKs for Solana applications to cover the on- and off-chain portions of the integration:
 
 ### Rust SDK
 
@@ -31,11 +33,11 @@ npm install --save @pythnetwork/price-service-client @pythnetwork/pyth-solana-re
 
 ## Write Contract Code
 
-Add code to your Solana program to read the Pyth price.
+Add the following code to your Solana program to read Pyth prices.
 Pyth prices are posted to price update accounts that can be passed to any instruction that needs price data.
-If you are using Anchor, you can simply add an `Account<'info, PriceUpdateV2>` field to your `Context` struct:
+For developers using Anchor, simply add an `Account<'info, PriceUpdateV2>` field to the `Context` struct:
 
-```rust copy
+```rust {9} copy
 use pyth_solana_receiver_sdk::price_update::{PriceUpdateV2};
 
 #[derive(Accounts)]
@@ -48,9 +50,11 @@ pub struct Sample<'info> {
 }
 ```
 
-Warning: users must ensure that the account passed to their instruction is owned by the Pyth pull oracle program.
+<Callout type="info" emoji="ℹ️">
+Users must ensure that the account passed to their instruction is owned by the Pyth Pull Oracle program.
 Using Anchor with the `Account<'info, PriceUpdateV2>` type will automatically perform this check.
-However, if you are not using Anchor, it is your responsibility to perform this check.
+However, it is the developer's responsibility to perform this check if they are not using Anchor.
+</Callout>
 
 Next, update the instruction logic to read the price from the price update account:
 
@@ -60,7 +64,7 @@ pub fn sample(ctx: Context<Sample>) -> Result<()> {
     // get_price_no_older_than will fail if the price update is more than 30 seconds old
     let maximum_age: u64 = 30;
     // get_price_no_older_than will fail if the price update is for a different price feed.
-    // This string is the id of the BTC/USD feed. See https://pyth.network/developers/price-feed-ids for all available ids.
+    // This string is the id of the BTC/USD feed. See https://pyth.network/developers/price-feed-ids for all available IDs.
     let feed_id: [u8; 32] = get_feed_id_from_hex("0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43")?;
     let price = price_update.get_price_no_older_than(&Clock::get()?, maximum_age, &feed_id)?;
     // Sample output:
@@ -71,17 +75,24 @@ pub fn sample(ctx: Context<Sample>) -> Result<()> {
 }
 ```
 
-Warning: it is your responsibility to validate that the provided price update is for the appropriate price feed and timestamp.
-`PriceUpdateV2` guarantees that the account contains a verified price for _some_ price feed at _some_ point in time.
-There are various methods on this struct (such as `get_price_no_older_than`) that you can use to implement the necessary checks.
-Note: if you choose the price feed account integration (see below), you can use an account address check to validate the price feed id.
+<Callout type="warning" emoji="⚠️">
+  Users must validate the price update for the appropriate **price
+  feed** and **timestamp**. `PriceUpdateV2` guarantees that the account contains
+  a verified price for _some_ price feed at _some_ point in time. There are
+  various methods on this struct (such as `get_price_no_older_than`) that users
+  can use to implement the necessary checks.
+
+If you choose the price feed account integration (see below), you
+can use an account address check to validate the price feed ID.
+
+</Callout>
 
 ## Write Frontend Code
 
 There are two different paths to the frontend integration of Pyth prices on Solana.
 Developers can choose to use two different types of accounts:
 
-- **Price feed accounts** hold a sequence of prices for a specific price feed id that always moves forward in time.
+- **Price feed accounts** hold a sequence of prices for a specific price feed ID that always moves forward in time.
   These accounts have a fixed address that your program can depend on.
   The Pyth Data Association maintains a set of price feed accounts that are continuously updated.
   Such accounts are a good fit for applications that always want to consume the most recent price.
@@ -94,7 +105,7 @@ Both options are explained in the sections below, and developers should pick the
 
 ### Price Feed Accounts
 
-If you are using price feed accounts, your frontend code simply needs to pass the relevant price feed account address to the transaction.
+For developers using price feed accounts, the frontend code needs to pass the relevant price feed **account address** to the transaction.
 Price feed accounts are program-derived addresses and thus the account ID for any price feed can be derived automatically.
 The `PythSolanaReceiver` class provides a method for deriving this information:
 
@@ -115,16 +126,24 @@ const solUsdPriceFeedAccount = pythSolanaReceiver
   .toBase58();
 ```
 
-The price feed account integration assumes that an off-chain process is continuously updating each price feed.
-The Pyth Data Association sponsors price updates for a subset of commonly-used price feeds on shard 0.
-Please see [Sponsored Feeds](/price-feeds/sponsored-feeds) for a list of sponsored feeds and their account addresses.
-However, updating a price feed is a permissionless operation, and anyone can run this process.
-Please see [Using Scheduler](/price-feeds/schedule-price-updates/using-scheduler) for more information.
-Running the scheduler can help with reliability and to update feed/shard pairs that are not part of the default schedule.
+<Callout type="info" emoji="ℹ️">
+  The Price Feed Accounts integration assumes that an off-chain process is
+  continuously updating each price feed. The Pyth Data Association sponsors
+  price updates for a subset of commonly used price feeds on shard 0. Please see
+  [Sponsored Feeds](/price-feeds/sponsored-feeds) for a list of sponsored feeds
+  and their account addresses.
+
+Additionally, updating a price feed is a
+permissionless operation, and anyone can run this process. Please see [Using
+Scheduler](/price-feeds/schedule-price-updates/using-scheduler) for more
+information. Running the scheduler can help with reliability and update
+feed/shard pairs that are not part of the default schedule.
+
+</Callout>
 
 ### Price Update Accounts
 
-If you are using price update accounts, your frontend code needs to perform two different tasks:
+To use price update accounts, the frontend code needs to perform two different tasks:
 
 1. Fetch price updates from Hermes
 2. Post the price updates to Solana and invoke your application logic
@@ -137,7 +156,7 @@ Use `PriceServiceConnection` from `@pythnetwork/price-service-client` to fetch P
 import { PriceServiceConnection } from "@pythnetwork/price-service-client";
 
 // The URL below is a public Hermes instance operated by the Pyth Data Association.
-// Hermes is also available from several third party providers listed here:
+// Hermes is also available from several third-party providers listed here:
 // https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes
 const priceServiceConnection = new PriceServiceConnection(
   "https://hermes.pyth.network/",
@@ -154,6 +173,8 @@ const priceUpdateData: string[] = await priceServiceConnection.getLatestVaas([
 // ["UE5BVQEAAAADuAEAAAADDQJoIZzihVp30/71MXDexqiJDjGpEUEcHj/D06pRiYTPPlRPZKKiVFaZdqiGZ7vvGBj1kK69fKRncCKHXlGyS0LcAQPREzVlm7AcY+X0/hCupv8M5KMhEgOCxq5LxCCKQjL/xwm4jTCJrwkHn/PBaoirnlbHMjxAlwJaFF4RGeE1KRDeAASQIFjfbbobiq2OcSRnK3Ny1NY2Zd012ahIhoWpqxbv4UqDZXLh+bPm4Q14SfO/llRTOmqG6O4v+nfjZa7WNjgxAAZFANqAEooKvijK+476YBITKono+vJ4bSQHUiXOaiGs/zcI6WYGRM0xc6ov2mfCaTuH7mx3ElaLyPGvRX4D9DyHAAf+dPg+NEepwMJI1qPLRcTy0xoz2Yq0k2MuL87gCBsYVlS31atGsQcrXfHr4xcTKKyEUh1tIaOfRbPdX1cvs4D6AAj2/vuKpAgYWhd2gtqHsQLV1vMgq8SKH8wiOmhaMZ06GAQSM1pYLpHZRhYaUQbrUJAeqEeX+qMMqQFMPSSUnEKNAAmCE98NUYbHuEoxJGMDybTGCyDEXCmaNM0q6GT0qrbSmT6NF50yz9CE30WWHNOZzFtK2rCyBYFH2aAp6lQ1JKfmAQpW/wUaOhSdwGiEPWvpY3FWL077i0c4auXQjSQNaDD0cBnmvJTS5R3KxK5aunuUvVAT1mHTnpKHIzNKyu7ICM2zAQvrIFfWRFjVE0zRCvoAcvMpmpS7atWu8VgvklpZh9Qt9xYSO2Yq/asgNsMSQaowXiU0MfjggS+UJ8yWaOpUg18vAAxAMuUlOjNzFj6oPES850YNu2k7PM7AGL8Gb/8+HshkfjG0GsNR8H8/vB8v/iEcaScxQFXwtLT0OSgjWMa0ByknAA7PScKUEP8N7iJKYv6lmEs26DZnxzdpGVZRGqbbC0mxyjY0HqsT0rv2wNvy3MbAtABDMsLumII00cRCKBsZXGlKARCC0NzsKnduLsgGfqxYL4yuf910DKrRp5j+fKLmF2QiB2yVT90ja0782/u6BZZUGRMoA/AWl1qvswBtnlSkHcWEABIp74UFLiiA+MBBvBzhLBxSTKXldiLJ75+U/eqK/ej6qT+I+6S1pzT/ntXdpD25jmQhjtsYEqs/rmgs5U2p4AVRAGYULPcAAAAAABrhAfrtrFhR4yubI7X5QRqMK6xKrj7U3XuBHdGnLqSqcQAAAAAC8IR2AUFVV1YAAAAAAAf6dUkAACcQMZv+5jfvAe6sflX1cL7xu9WWQ9UBAFUA5i32yLSoX+GmfbRNwS3l2zMPesZrctxliv7fD0pBW0MAAAaBiqrXwAAAAADYu55y////+AAAAABmFCz3AAAAAGYULPYAAAaFH6MbAAAAAADcBIdMCre0t06ngCnw+N4IkFpZVqOz9YuwKL+UFdt13ZBtay0YZnkw7QGoaTDCLlsNK1tk1F/qgMyOcYozjOTj41XriIpEPeG2HPYl+u0CKolGlCsz1IDu4w2lyh6LWVaMkEybGz7ih4H2RqCj6BVu182ZqsZgJx9ghzKImAo4cIlWzRTwpm4daAqHa4JEyimFDpFt6UeqvS5TNu2F8W+X+edeiph20EulTI7sx38jwhq5Yc0Mf2ElvFgToGQ806Vs2HynuLwh9OIuTTZh"]
 console.log(priceUpdateData);
 ```
+
+Consult [Fetch Price Updates](/price-feeds/fetch-price-updates) for more information on fetching price updates from Hermes.
 
 #### Post price updates
 
