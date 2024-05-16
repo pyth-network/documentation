@@ -1,7 +1,5 @@
 # How to Use Real-Time Data in Off-Chain Applications
 
-import { Callout } from "nextra/components";
-
 This guide explains how to use the [typescript SDK client](https://github.com/pyth-network/pyth-crosschain/tree/main/price_service/client/js) to fetch the latest prices and subscribe to real-time price updates in off-chain applications.
 
 ## Installation
@@ -10,21 +8,23 @@ The Pyth SDK can be installed using npm or yarn.
 
 ### npm
 
-```
+```bash copy
 npm install --save @pythnetwork/price-service-client
 ```
 
 ### Yarn
 
-```
+```bash copy
 yarn add @pythnetwork/price-service-client
 ```
 
 ## Usage
 
-Typical usage of the Pyth SDK involves creating a `PriceServiceConnection` instance, and using it to fetch prices.
+Typical usage of the Pyth SDK involves creating a `PriceServiceConnection` instance, by passing the URL of the [Hermes](https://hermes.pyth.network/docs/#/) service to the constructor.
+You can then use the `getLatestPriceFeeds` method to fetch the latest prices of the specified price feeds.
 
-```typescript
+```typescript copy
+// Get the Stable Hermes service URL from https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes
 const connection = new PriceServiceConnection("https://hermes.pyth.network");
 
 const priceIds = [
@@ -34,11 +34,53 @@ const priceIds = [
 
 // Get the latest values of the price feeds as JSON objects.
 const currentPrices = await connection.getLatestPriceFeeds(priceIds);
+console.log(currentPrices);
+```
+
+The `getLatestPriceFeeds` method returns an array of `PriceFeed` objects. Each `PriceFeed` object contains the latest price, the Exponential Moving Average (EMA) price, and other metadata.
+
+```bash
+[
+  PriceFeed {
+    emaPrice: Price {
+      conf: '3450227100',
+      expo: -8,
+      price: '6610104500000',
+      publishTime: 1715870606
+    },
+    id: 'e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43',
+    metadata: undefined,
+    vaa: undefined,
+    price: Price {
+      conf: '3315255511',
+      expo: -8,
+      price: '6619626406527',
+      publishTime: 1715870606
+    }
+  },
+  PriceFeed {
+    emaPrice: Price {
+      conf: '266713535',
+      expo: -8,
+      price: '297876550000',
+      publishTime: 1715870606
+    },
+    id: 'ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace',
+    metadata: undefined,
+    vaa: undefined,
+    price: Price {
+      conf: '296893358',
+      expo: -8,
+      price: '296499502000',
+      publishTime: 1715870606
+    }
+  }
+]
 ```
 
 You can also subscribe to real-time price updates over a WebSocket connection using the `subscribePriceFeedUpdates` method.
 
-```typescript
+```typescript copy
 // priceIds here is the one declared in the above code snippet.
 const priceFeeds = await connection.getLatestPriceFeeds(priceIds);
 
@@ -56,12 +98,6 @@ setTimeout(() => {
   connection.closeWebSocket();
 }, 60000);
 ```
-
-<Callout type="info" emoji="ℹ️">
-  Pyth also provides a [Rust SDK](https://crates.io/crates/pyth-sdk-solana) and
-  a [Python SDK](https://github.com/pyth-network/pyth-client-py) for fetching
-  prices off-chain.
-</Callout>
 
 ## Additional Resources
 
