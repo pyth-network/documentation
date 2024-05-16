@@ -1,32 +1,116 @@
-import { Tab, Tabs } from "nextra-theme-docs";
+# How to Use Real-Time Data in Off-Chain Applications
 
-# Off-chain Applications
+This guide explains how to use the [typescript SDK client](https://github.com/pyth-network/pyth-crosschain/tree/main/price_service/client/js) to fetch the latest prices and subscribe to real-time price updates in off-chain applications.
 
-We provide SDKs in various programming languages that allow you to read the values of Pyth price feeds in off-chain applications, such as web frontends:
+## Installation
 
-<Tabs items={['JavaScript', 'Rust', 'Python', 'Go']}>
-  <Tab>
-There are different javascript SDKs for different purposes.
+The Pyth SDK can be installed using npm or yarn.
 
-If you are developing an application that runs on any blockchain except Solana, then the javascript SDK for that blockchain supports querying and streaming live Pyth prices.
-You can find the code for this SDK in the [pyth-crosschain](https://github.com/pyth-network/pyth-crosschain) repository, under `target_chains/<chain name>/sdk/js`.
-These SDKs also support [pulling price updates](../pythnet-price-feeds/pull-updates) on to your target blockchain.
-An example for querying and streaming prices using these SDKs is shown [here](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/js#off-chain-prices).
+### npm
 
-If you are developing an application for Solana, or without any blockchain whatsoever, then the [@pythnetwork/client](https://www.npmjs.com/package/@pythnetwork/client) npm package can be used to consume Pyth prices inside off-chain JavaScript programs.
-An example can be found [here](https://github.com/pyth-network/pyth-client-js#example-usage).
+```bash copy
+npm install --save @pythnetwork/price-service-client
+```
 
-</Tab>
-<Tab>
-The [pyth-sdk-solana crate](https://crates.io/crates/pyth-sdk-solana) can be used to consume Pyth prices inside your off-chain Rust programs. An example can be found [here](https://github.com/pyth-network/pyth-sdk-rs/blob/main/pyth-sdk-solana/examples/eth_price.rs).
-</Tab>
-<Tab>
-The [pyth-client-py](https://github.com/pyth-network/pyth-client-py) Python library can be used to consume Pyth prices inside your off-chain Python programs. An example can be found [here](https://github.com/pyth-network/pyth-client-py/blob/main/examples/read_one_price_feed.py).
-</Tab>
-<Tab>
-The [Blockdaemon pyth-go](https://github.com/Blockdaemon/pyth-go) client can be used to consume Pyth prices inside your off-chain Go programs.
-</Tab>
-</Tabs>
+### Yarn
 
-You can find an in-depth explanation from one of our contributors, Daniel:
-[How to Build with Pyth Data Off-chain: Pyth Tutorials](https://youtu.be/YgD4IWTKD2c)
+```bash copy
+yarn add @pythnetwork/price-service-client
+```
+
+## Usage
+
+Typical usage of the Pyth SDK involves creating a `PriceServiceConnection` instance, by passing the URL of the [Hermes](https://hermes.pyth.network/docs/#/) service to the constructor.
+You can then use the `getLatestPriceFeeds` method to fetch the latest prices of the specified price feeds.
+
+```typescript copy
+// Get the Stable Hermes service URL from https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes
+const connection = new PriceServiceConnection("https://hermes.pyth.network");
+
+const priceIds = [
+  "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", // BTC/USD price id
+  "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", // ETH/USD price id
+];
+
+// Get the latest values of the price feeds as JSON objects.
+const currentPrices = await connection.getLatestPriceFeeds(priceIds);
+console.log(currentPrices);
+```
+
+The `getLatestPriceFeeds` method returns an array of `PriceFeed` objects. Each `PriceFeed` object contains the latest price, the Exponential Moving Average (EMA) price, and other metadata.
+
+```bash
+[
+  PriceFeed {
+    emaPrice: Price {
+      conf: '3450227100',
+      expo: -8,
+      price: '6610104500000',
+      publishTime: 1715870606
+    },
+    id: 'e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43',
+    metadata: undefined,
+    vaa: undefined,
+    price: Price {
+      conf: '3315255511',
+      expo: -8,
+      price: '6619626406527',
+      publishTime: 1715870606
+    }
+  },
+  PriceFeed {
+    emaPrice: Price {
+      conf: '266713535',
+      expo: -8,
+      price: '297876550000',
+      publishTime: 1715870606
+    },
+    id: 'ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace',
+    metadata: undefined,
+    vaa: undefined,
+    price: Price {
+      conf: '296893358',
+      expo: -8,
+      price: '296499502000',
+      publishTime: 1715870606
+    }
+  }
+]
+```
+
+You can also subscribe to real-time price updates over a WebSocket connection using the `subscribePriceFeedUpdates` method.
+
+```typescript copy
+// priceIds here is the one declared in the above code snippet.
+const priceFeeds = await connection.getLatestPriceFeeds(priceIds);
+
+connection.subscribePriceFeedUpdates(priceIds, (priceFeed) => {
+  // priceFeed here is the same as returned by getLatestPriceFeeds above.
+  console.log(
+    `Received an update for ${priceFeed.id}: ${priceFeed.getPriceNoOlderThan(
+      60
+    )}`
+  );
+});
+
+// When using the subscription, make sure to close the WebSocket upon termination to finish the process gracefully.
+setTimeout(() => {
+  connection.closeWebSocket();
+}, 60000);
+```
+
+## Additional Resources
+
+You may find these additional resources helpful.
+
+### Examples
+
+This [example](https://github.com/pyth-network/pyth-crosschain/blob/main/price_service/client/js/src/examples/PriceServiceClient.ts) demonstrates how to use the Pyth SDK to fetch prices.
+
+### Hermes API Reference
+
+The [Hermes API](https://hermes.pyth.network/docs/#/) reference lets you interactively explore the complete API of the Pyth Hermes service.
+
+### Price Feed IDs
+
+The [Price Feed Ids](https://pyth.network/developers/price-feed-ids) lists the price feeds available on the Pyth network.
