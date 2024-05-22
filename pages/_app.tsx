@@ -8,6 +8,11 @@ import { WagmiConfig, createConfig } from "wagmi";
 import { arbitrum, avalanche, mainnet, sepolia } from "wagmi/chains";
 import { CosmosChains, GlobalContextProvider } from "../contexts/GlobalContext";
 import "../styles/styles.css";
+import TagManager from "react-gtm-module";
+
+const tagManagerArgs = {
+  gtmId: "GTM-MN3TWRGJ",
+};
 
 const chains = [arbitrum, mainnet, avalanche, sepolia];
 
@@ -31,6 +36,9 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    TagManager.initialize(tagManagerArgs);
+  }, []);
 
   // Make the global context available to every page.
   return (
