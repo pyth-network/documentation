@@ -38,15 +38,13 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
   useEffect(() => setMounted(true), []);
   useEffect(() => {
     TagManager.initialize(tagManagerArgs);
-  },[]);
-
+  }, []);
 
   // Make the global context available to every page.
   return (
     // prevent react hydration error
     mounted && (
       <>
-      
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-7TVVW3MEK7"
