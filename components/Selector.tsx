@@ -26,7 +26,7 @@ const Selector = ({ values, currentValue, onChange }: SelectorProps) => {
       {({ open }) => (
         <>
           <Menu.Button
-            className={`inline-flex w-full items-center justify-between py-3 px-6 text-sm outline-0 bg-darkGray2`}
+            className={`inline-flex w-full items-center justify-between py-3 px-6 text-sm outline-0 bg-neutral-200 hover:bg-neutral-300 dark:bg-darkGray3 dark:hover:bg-darkGray5`}
           >
             <span className="mr-3">{currentValue}</span>
             <ArrowDownIcon className={`${open && "rotate-180"}`} />
@@ -44,7 +44,7 @@ const Selector = ({ values, currentValue, onChange }: SelectorProps) => {
               {values.map((n) => (
                 <Menu.Item key={n}>
                   <button
-                    className={`block w-full py-3 px-6 text-left text-sm bg-darkGray hover:bg-darkGray2`}
+                    className={`block w-full py-3 px-6 text-left text-sm bg-neutral-200 dark:bg-darkGray3 hover:bg-neutral-300 dark:hover:bg-darkGray5`}
                     value={n}
                     onClick={handleChange}
                   >

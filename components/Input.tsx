@@ -45,7 +45,7 @@ const Input = ({ id, format }: InputProps) => {
         name={id}
         value={keyValueStore[id] ? keyValueStore[id] : ""}
         onChange={(e) => handleQueryChange(id, e.target.value)}
-        className="w-full text-base"
+        className="w-full text-base border-black/20 dark:border-white/40 border"
       />
       {errorMessage && (
         <p className="input-error pt-2 text-base">{errorMessage}</p>
