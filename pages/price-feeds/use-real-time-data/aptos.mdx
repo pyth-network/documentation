@@ -1,31 +1,87 @@
 ---
-description: Consume Pyth Network prices in applications on Aptos
+description: Consume Pyth Network prices in Aptos applications
 ---
 
-# Pyth on Aptos chains
+import { Callout } from "nextra/components";
 
-Pyth is available on Aptos Mainnet, Aptos Testnet, and Movement devnet.
+# How to Use Real-Time Data in Aptos Contracts
 
-Aptos contracts can update and fetch the Pyth prices using the Pyth Aptos Contract, which has been deployed on Mainnet. The documented source code can be found [here](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/aptos/contracts/sources/pyth.move).
+This guide explains how to use real-time Pyth data in Aptos applications.
 
-## Updating Price Feeds
+## Configuring the `Move.toml` file
 
-The mechanism by which price feeds are updated on Aptos is explained [here](./pythnet-price-feeds.md). The [pyth-aptos-js](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/aptos/sdk/js) package can be used to fetch price feed update data which can be passed to the `pyth::update_price` on-chain function.
+Add the Pyth Contract to your project dependencies in the `Move.toml` file:
 
-## Example Applications
+```toml copy
+[dependencies]
+Pyth = { git = "https://github.com/pyth-network/pyth-crosschain.git", subdir = "target_chains/aptos/contracts", rev = "main" }
+```
 
-- [Minimal on-chain contract](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/aptos/examples/fetch_btc_price/sources/example.move) which updates and returns the Pyth BTC/USD price.
-- [Full-stack React app and on-chain contract](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/aptos/examples/mint_nft) which uses the [pyth-aptos-js](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/aptos/sdk/js) package to update the price used by the contract.
-- [In-depth explanation](https://youtu.be/0b0RXi41pN0) of how Pyth works on Aptos and how to integrate Pyth data in your application from one of our contributor.
+The named addresses of `pyth`, `wormhole`, and `deployers` must be defined at compile time. These addresses are used to interact with the Pyth contract on Aptos.
 
-## Contract Addresses
+```toml copy
+[addresses]
+pyth = "0x7e783b349d3e89cf5931af376ebeadbfab855b3fa239b7ada8f5a92fbea6b387"
+deployer = "0xb31e712b26fd295357355f6845e77c888298636609e93bc9b05f0f604049f434"
+wormhole = "0x5bc11445584a763c1fa7ed39081f1b920954da14e04b32440cba863d03e19625"
+```
 
-Developers will need the address of the Pyth price feed contract on their blockchain in order to use Pyth.
-Please consult [Aptos Contract Addresses](../contract-addresses/aptos) to find the address for your blockchain.
+Consult [Aptos Contract Addresses](../contract-addresses/aptos) for the complete list of contract addresses on different Aptos networks.
 
-## Price Feed IDs
+## Write Contract Code
 
-| Network       | Available Price Feeds                                                                                                        |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Aptos Testnet | [https://pyth.network/developers/price-feed-ids#aptos-testnet](https://pyth.network/developers/price-feed-ids#aptos-testnet) |
-| Aptos Mainnet | [https://pyth.network/developers/price-feed-ids#aptos-mainnet](https://pyth.network/developers/price-feed-ids#aptos-mainnet) |
+The code snippet below provides an example module fetching the BTC/USD price from Pyth price feeds:
+
+```rust {21} copy
+module example::example {
+    use pyth::pyth;
+    use pyth::price::Price;
+    use pyth::price_identifier;
+    use aptos_framework::coin;
+
+    // Add the pyth_price_update argument to any method on your contract that needs to read the Pyth price.
+    // See https://docs.pyth.network/price-feeds/fetch-price-updates for more information on how to fetch the pyth_price_update.
+    public fun get_btc_usd_price(user: &signer, pyth_price_update: vector<vector<u8>>): Price {
+
+        // First update the Pyth price feeds
+        let coins = coin::withdraw(user, pyth::get_update_fee(&pyth_price_update));
+        pyth::update_price_feeds(pyth_price_update, coins);
+
+        // Read the current price from a price feed.
+        // Each price feed (e.g., BTC/USD) is identified by a price feed ID.
+        // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
+        // Note: Aptos uses the Pyth price feed ID without the `0x` prefix.
+        let btc_price_identifier = x"e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43";
+        let btc_usd_price_id = price_identifier::from_byte_vec(btc_price_identifier);
+        pyth::get_price(btc_usd_price_id)
+    }
+}
+
+```
+
+<Callout type="info" emoji="ℹ️">
+  The `pyth_price_update` argument contains verified prices from Pyth. Calling
+  `pyth::update_price_feeds` with this value updates the on-chain Pyth price and
+  ensures your application has recent price data. The pyth_price_update can be
+  fetched from Hermes; Consult [Fetch Price Updates](../fetch-price-updates) for
+  more information on how to fetch the `pyth_price_update`.
+</Callout>
+
+The code snippet above does the following things:
+
+1. Call `pyth::get_update_fee` to get the fee required to update the Pyth price feeds.
+1. Call `pyth::update_price_feeds` and pass `pyth_price_update` to update the Pyth price feeds.
+1. Call `pyth::get_price` to read the current price, providing the [price feed ID](https://pyth.network/developers/price-feed-ids) you wish to read.
+
+## Additional Resources
+
+You may find these additional resources helpful for developing your Aptos application.
+
+### API Reference
+
+The [Aptos API reference](../api-reference/aptos/) lets you interactively explore the complete API of the Pyth contract.
+
+### Example Applications
+
+- [Minimal on-chain contract](https://github.com/pyth-network/pyth-examples/blob/main/price_feeds/aptos/fetch_btc_price/sources/example.move), which updates and returns the BTC/USD price from Pyth price feeds.
+- [Mint NFT](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/aptos/mint_nft) that use Pyth price feeds to mint an NFT.
