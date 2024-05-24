@@ -9,7 +9,7 @@ const FeeTable = ({
 }: {
   deployments: Record<string, EntropyDeployment>;
 }) => {
-  const [fees, setFees] = useState<Record<string, number>>({});
+  const [fees, setFees] = useState<Record<string, string>>({});
 
   useEffect(() => {
     for (const [name, deployment] of Object.entries(deployments)) {
