@@ -4,7 +4,7 @@ This guide explains how to use the [typescript SDK client](https://github.com/py
 
 ## Installation
 
-The Pyth SDK can be installed using npm or yarn.
+The Pyth SDK can be installed using npm or yarn:
 
 ### npm
 
@@ -21,7 +21,7 @@ yarn add @pythnetwork/price-service-client
 ## Usage
 
 Typical usage of the Pyth SDK involves creating a `PriceServiceConnection` instance, by passing the URL of the [Hermes](https://hermes.pyth.network/docs/#/) service to the constructor.
-You can then use the `getLatestPriceFeeds` method to fetch the latest prices of the specified price feeds.
+You can then use the `getLatestPriceFeeds` method to fetch the latest prices of the specified price feeds:
 
 ```typescript copy
 // Get the Stable Hermes service URL from https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes
@@ -37,7 +37,7 @@ const currentPrices = await connection.getLatestPriceFeeds(priceIds);
 console.log(currentPrices);
 ```
 
-The `getLatestPriceFeeds` method returns an array of `PriceFeed` objects. Each `PriceFeed` object contains the latest price, the Exponential Moving Average (EMA) price, and other metadata.
+The `getLatestPriceFeeds` method returns an array of `PriceFeed` objects. Each `PriceFeed` object contains the latest price, the Exponential Moving Average (EMA) price, and other metadata:
 
 ```bash
 [
@@ -78,7 +78,7 @@ The `getLatestPriceFeeds` method returns an array of `PriceFeed` objects. Each `
 ]
 ```
 
-You can also subscribe to real-time price updates over a WebSocket connection using the `subscribePriceFeedUpdates` method.
+You can also subscribe to real-time price updates over a WebSocket connection using the `subscribePriceFeedUpdates` method:
 
 ```typescript copy
 // priceIds here is the one declared in the above code snippet.
@@ -113,4 +113,4 @@ The [Hermes API](https://hermes.pyth.network/docs/#/) reference lets you interac
 
 ### Price Feed IDs
 
-The [Price Feed Ids](https://pyth.network/developers/price-feed-ids) lists the price feeds available on the Pyth network.
+The [Price Feed IDs](https://pyth.network/developers/price-feed-ids) lists the price feeds available on the Pyth network.
