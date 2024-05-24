@@ -1,3 +1,6 @@
+import FeeTable from "../../components/FeeTable";
+import { EntropyDeployments } from "../../components/EntropyDeployments";
+
 # Fees
 
 The Entropy protocol has been designed to charge fees on a per-request basis. The total fee is
@@ -12,3 +15,25 @@ of the respective blockchain, ensuring a seamless and integrated operation.
 Note that protocols integrating with Entropy can pass these fees along to their users. Whenever a user
 submits a transaction that requests a random number, the user can directly pay the entropy fees required
 with the native blockchain token. There are no fees for revealing the random numbers.
+
+The following tables shows the total fees payable when using the default provider.
+
+## Mainnet
+
+<FeeTable
+  deployments={Object.fromEntries(
+    Object.entries(EntropyDeployments).filter(
+      ([k, v]) => v.network === "mainnet"
+    )
+  )}
+/>
+
+## Testnet
+
+<FeeTable
+  deployments={Object.fromEntries(
+    Object.entries(EntropyDeployments).filter(
+      ([k, v]) => v.network === "testnet"
+    )
+  )}
+/>
