@@ -65,7 +65,10 @@ const Example = ({ keyValues, value }: ExampleProps) => {
   };
 
   return (
-    <button className="bg-darkGray1 text-base text-light" onClick={handleClick}>
+    <button
+      className="px-2 py-1 bg-neutral-200 hover:bg-neutral-300 dark:bg-darkGray3 dark:hover:bg-darkGray5 text-base"
+      onClick={handleClick}
+    >
       {value}
     </button>
   );

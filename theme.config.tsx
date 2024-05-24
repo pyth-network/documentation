@@ -1,10 +1,18 @@
 import { DocsThemeConfig } from "nextra-theme-docs";
-import Logo from "./components/Logo";
+import { Logo } from "./components/Logo";
 
 // TODO: populate this properly
 const config: DocsThemeConfig = {
-  logo: <Logo />,
+  logo: <Logo className="w-[24px] h-[30px] fill-dark dark:fill-light" />,
   logoLink: "/",
+  primaryHue: {
+    dark: 267,
+    light: 265,
+  },
+  primarySaturation: {
+    dark: 95,
+    light: 100,
+  },
   project: {
     link: "https://github.com/pyth-network/",
   },
@@ -14,10 +22,6 @@ const config: DocsThemeConfig = {
   docsRepositoryBase: "https://github.com/pyth-network/documentation",
   footer: {
     text: "Pyth Network Documentation",
-  },
-  darkMode: false,
-  nextThemes: {
-    forcedTheme: "dark",
   },
   sidebar: {
     defaultMenuCollapseLevel: 1,

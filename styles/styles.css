@@ -4,41 +4,48 @@
 
 @layer base {
   body {
-    @apply bg-[#0C0B1A] font-body text-light !important;
+    @apply font-body bg-white text-lightForeground !important;
+  }
+
+  html[class~="dark"] body {
+    @apply bg-darkBackground text-white !important;
   }
 }
 
 @layer components {
-  h2 {
-    @apply text-light !important;
+  p,
+  ul,
+  ol,
+  table {
+    @apply text-base16 text-lightForeground !important;
   }
 
-  p {
-    @apply text-base16 text-light;
+  article a {
+    @apply text-lightLinks no-underline hover:underline !important;
   }
 
-  button {
-    @apply relative inline-block py-2 px-4 text-sm transition-all bg-[#282639] hover:bg-[#44415E];
+  [role="tablist"] button[data-headlessui-state="selected"] {
+    @apply text-lightLinks border-lightLinks !important;
   }
 
-  ul {
-    @apply text-base16 text-light;
+  .nextra-sidebar-container .active > a {
+    @apply text-lightLinks bg-black/10 !important;
   }
 
-  ol {
-    @apply text-base16 text-light;
+  .nextra-toc .nx-text-primary-600 {
+    @apply text-lightLinks !important;
   }
 
   table {
-    @apply text-base16 text-light;
+    @apply w-full table !important;
   }
 
   tr {
-    @apply bg-[#44415E] leading-[1.30em] text-base p-4;
+    @apply text-base p-4 !important;
   }
 
   th {
-    @apply bg-[#312F47] text-left p-4 leading-[1.15em] font-normal text-base !important;
+    @apply text-left p-4 leading-[1.15em] font-normal text-base !important;
   }
 
   td {
@@ -46,182 +53,65 @@
   }
 
   input {
-    @apply bg-[#282639] p-2 font-semibold;
+    @apply p-2 font-semibold;
   }
 
-  select {
-    @apply bg-[#282639];
+  .api-params table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 0;
+    margin: 0;
+    position: relative;
   }
 
-  table {
-    @apply w-full table !important;
+  .required,
+  .input-error {
+    color: red !important;
   }
-}
 
-.nx-bg-neutral-800 {
-  @apply bg-darkBlue;
-}
+  .response {
+    @apply py-4 text-light bg-darkGray rounded-xl !important;
+  }
 
-.nx-text-primary-600 {
-  @apply text-[#BB99FF] no-underline;
-}
+  .response p {
+    @apply text-light !important;
+  }
 
-/* sidebar */
+  html[class~="dark"] {
+    p,
+    ul,
+    ol,
+    table {
+      @apply text-white !important;
+    }
 
-.nextra-sidebar-container.nx-flex.nx-flex-col.md\:nx-top-16.md\:nx-shrink-0.motion-reduce\:nx-transform-none.nx-transform-gpu.nx-transition-all.nx-ease-in-out.print\:nx-hidden.md\:nx-w-64.md\:nx-sticky {
-  @apply md:w-[320px] !important;
-}
+    article a {
+      @apply text-darkLinks !important;
+    }
 
-html[class~="dark"] .nextra-nav-container-blur {
-  @apply bg-dark text-light !important;
-}
+    [role="tablist"] button[data-headlessui-state="selected"] {
+      @apply text-darkLinks border-darkLinks !important;
+    }
 
-html[class~="dark"] .dark\:nx-bg-dark {
-  @apply bg-darkBlue text-light px-4 rounded-lg;
-}
+    .nextra-sidebar-container .active > a {
+      @apply text-darkLinks bg-white/10 !important;
+    }
 
-html[class~="dark"] .dark\:nx-shadow-\[0_-12px_16px_\#111\] {
-  @apply shadow-none;
-}
+    .nextra-toc .nx-text-primary-600 {
+      @apply text-darkLinks !important;
+    }
 
-html[class~="dark"] .dark\:nx-border-neutral-800 {
-  @apply border-light;
-}
+    ul li[data-headlessui-state="active"] {
+      @apply bg-darkLinks/10 text-darkLinks !important;
+    }
 
-html[class~="dark"] .dark\:nx-text-gray-400 {
-  @apply text-light;
-}
+    .required,
+    .input-error {
+      color: red !important;
+    }
 
-/* Header menu */
-html[class~="dark"] .dark\:nx-bg-neutral-800 {
-  @apply bg-dark;
-}
-
-html[class~="dark"] .dark\:nx-ring-white\/20 {
-  @apply ring-light;
-}
-
-/* Footer */
-html[class~="dark"] .dark\:nx-bg-neutral-900 {
-  @apply bg-dark;
-}
-
-html[class~="dark"] .dark\:nx-border-neutral-800 {
-  @apply border-[#292739];
-}
-
-/* Sidebar */
-html[class~="dark"] .dark\:nx-text-primary-600 {
-  @apply text-light font-header font-semibold;
-}
-
-html[class~="dark"] .dark\:nx-text-neutral-500 {
-  @apply text-light font-header font-light;
-}
-
-html[class~="dark"] .dark\:nx-text-neutral-400 {
-  @apply text-light font-header font-light opacity-75 tracking-[0.01em] leading-[1.2em];
-}
-
-html[class~="dark"] .dark\:hover\:nx-text-gray-50:hover {
-  @apply text-light;
-}
-
-html[class~="dark"] .subheading-anchor:after {
-  @apply text-light;
-}
-
-html[class~="dark"] .even\:dark\:nx-bg-gray-600\/20:nth-child(even) {
-  @apply bg-[#44415E];
-}
-
-/* Sidebar Subheader */
-html[class~="dark"] .dark\:nx-text-gray-100 {
-  @apply text-light;
-}
-
-html[class~="dark"] .dark\:nx-text-gray-200 {
-  @apply text-light;
-}
-
-html[class~="dark"] .dark\:nx-text-slate-100 {
-  @apply text-light;
-}
-
-html[class~="dark"] .dark\:nx-text-gray-300 {
-  @apply text-light;
-}
-
-html[class~="dark"] .dark\:nx-border-gray-600 {
-  @apply border-[#0C0B1A] border-2;
-}
-
-html[class~="dark"] .nextra-sidebar-container {
-  @apply bg-[#0C0B1A];
-}
-
-.main {
-  overflow-x: scroll;
-}
-
-.nx-text-gray-500 {
-  @apply text-light;
-}
-
-.api-params table {
-  width: 100%;
-  border-collapse: collapse;
-  padding: 0;
-  margin: 0;
-  position: relative;
-}
-
-.required {
-  color: red;
-}
-
-.input-error {
-  color: red;
-}
-
-.response {
-  @apply py-4 text-light bg-darkGray rounded-xl;
-}
-
-.stale {
-  position: relative; /* Make the element's position relative */
-}
-
-.stale::before {
-  content: ""; /* Add content to the pseudo-element */
-  position: absolute; /* Make the pseudo-element's position absolute */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ); /* Set the background color with transparency */
-  z-index: 1; /* Set the pseudo-element's z-index lower than the element */
-}
-
-.dark {
-  --shiki-color-text: #e6dafe;
-  --shiki-token-constant: #79b8ff;
-  --shiki-token-string: #ffab70;
-  --shiki-token-comment: #6b737c;
-  --shiki-token-keyword: #f97583;
-  --shiki-token-parameter: #ff9800;
-  --shiki-token-function: #b392f0;
-  --shiki-token-string-expression: #4bb74a;
-  --shiki-token-punctuation: #bbbbbb;
-  --shiki-token-link: #ffab70;
-}
-
-pre {
-  overflow: auto;
-  padding: 0px;
+    .response p {
+      @apply text-light !important;
+    }
+  }
 }
