@@ -11,6 +11,7 @@
     "postinstall": "graz generate -g"
   },
   "dependencies": {
+    "@amplitude/analytics-browser": "^2.8.1",
     "@codesandbox/sandpack-react": "^2.6.1",
     "@cosmjs/cosmwasm-stargate": "^0.31.0",
     "@headlessui/react": "^1.7.14",
