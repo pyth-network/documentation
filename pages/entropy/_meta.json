@@ -37,6 +37,7 @@
   },
   "contract-addresses": "Contract & Provider Addresses",
   "examples": "Example Applications",
+  "current-fees": "Current Fees",
 
   "-- Understanding Entropy": {
     "title": "Understanding Entropy",
