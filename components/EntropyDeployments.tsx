@@ -109,7 +109,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "testnet",
     delay: "",
     address: "0x23f0e8FAeE7bbb405E7A7C3d60138FCfd43d7509",
-    explorer: "https://seitrace.com/address/$ADDRESS",
+    explorer: "https://seitrace.com/address/$ADDRESS?chain=arctic-1",
     gasLimit: "500K",
   },
   "arbitrum-sepolia": {
@@ -191,5 +191,13 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://subnets.avax.network/orangetest/testnet/rpc",
+  },
+  "sei-evm-mainnet": {
+    address: "0x98046Bd286715D3B0BC227Dd7a956b83D8978603",
+    explorer: "https://seitrace.com/address/$ADDRESS?chain=pacific-1",
+    delay: "1 block",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://evm-rpc.sei-apis.com",
   },
 };
