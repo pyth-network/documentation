@@ -23,8 +23,8 @@ Consult the current [Entropy contract addresses](../contract-addresses) to find 
 Once you have a contract address, instantiate an `IEntropy` contract in your solidity contract:
 
 ```solidity copy
-import { IEntropyConsumer } from "@pythnetwork/entropy-sdk-solidity/contracts/IEntropyConsumer.sol";
-import { IEntropy } from "@pythnetwork/entropy-sdk-solidity/contracts/IEntropy.sol";
+import { IEntropyConsumer } from "@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol";
+import { IEntropy } from "@pythnetwork/entropy-sdk-solidity/IEntropy.sol";
 
 contract YourContract is IEntropyConsumer {
   IEntropy entropy = IEntropy(<address>);
