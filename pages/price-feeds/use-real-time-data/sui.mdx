@@ -1,89 +1,168 @@
-# Pyth on Sui
+import { Callout, Tabs } from "nextra/components";
 
-Pyth price feeds on Sui are uniquely represented in the global store as `PriceInfoObjects`. These objects have the `key` ability and serve as wrappers around the `PriceInfo` object, which in turn contains the price info: namely the `PriceFeed`, the arrival time of the latest price update, and the attestation time of the latest update.
+# How to Use Real-Time Data in Sui Contracts
 
-`PriceInfoObject`s are central to Pyth on Sui, since they are in unique correspondence with each Pyth price feed and must be passed in to functions that update price feeds or which query info about price feeds, e.g.
+This guide explains how to use real-time Pyth data in Sui applications.
 
-- `update_single_price_feed`
-- `update_single_price_feeds_if_fresh`
-- `get_price`
+## Install Pyth SDK
 
-## How to Update and Consume Price Feeds
+Use the following dependency in your `Move.toml` file to use the latest Pyth Sui package and its dependencies:
 
-We provide a javascript sdk to use for constructing transaction blocks which updates price feeds.
-
-### Installation
-
-If you are using npm run:
-
+<Tabs items={['Sui Mainnet', 'Sui Testnet','Movement M2 devnet']}>
+<Tabs.Tab>
 ```sh copy
-npm install --save @pythnetwork/pyth-sui-js
-```
+[dependencies.Pyth]
+git = "https://github.com/pyth-network/pyth-crosschain.git"
+subdir = "target_chains/sui/contracts"
+rev = "sui-contract-mainnet"
 
-If you are using yarn run:
+[dependencies.Wormhole]
+git = "https://github.com/wormhole-foundation/wormhole.git"
+subdir = "sui/wormhole"
+rev = "sui-upgrade-mainnet"
 
+# Pyth is locked into this specific `rev` because the package depends on Wormhole and is pinned to this version.
+
+[dependencies.Sui]
+git = "https://github.com/MystenLabs/sui.git"
+subdir = "crates/sui-framework/packages/sui-framework"
+rev = "041c5f2bae2fe52079e44b70514333532d69f4e6"
+
+````
+</Tabs.Tab>
+  <Tabs.Tab>
 ```sh copy
-yarn add @pythnetwork/pyth-sui-js
+[dependencies.Pyth]
+git = "https://github.com/pyth-network/pyth-crosschain.git"
+subdir = "target_chains/sui/contracts"
+rev = "sui-contract-testnet"
+
+[dependencies.Wormhole]
+git = "https://github.com/wormhole-foundation/wormhole.git"
+subdir = "sui/wormhole"
+rev = "sui-upgrade-testnet"
+
+# Pyth is locked into this specific `rev` because the package depends on Wormhole and is pinned to this version.
+[dependencies.Sui]
+git = "https://github.com/MystenLabs/sui.git"
+subdir = "crates/sui-framework/packages/sui-framework"
+rev = "041c5f2bae2fe52079e44b70514333532d69f4e6"
+````
+
+</Tabs.Tab>
+
+  <Tabs.Tab>
+```sh copy
+[dependencies.Pyth]
+git = "https://github.com/pyth-network/pyth-crosschain.git"
+subdir = "target_chains/sui/contracts"
+rev = "sui-contract-movement-m2-devnet"
+
+[dependencies.Wormhole]
+git = "https://github.com/pyth-network/pyth-crosschain.git"
+subdir = "target_chains/sui/vendor/wormhole_movement_devnet/wormhole"
+rev = "sui-contract-movement-m2-devnet"
+
+# Pyth is locked into this specific `rev` because the package depends on Wormhole and is pinned to this version.
+
+[dependencies.Sui]
+git = "https://github.com/MystenLabs/sui.git"
+subdir = "crates/sui-framework/packages/sui-framework"
+rev = "041c5f2bae2fe52079e44b70514333532d69f4e6"
+
+````
+
+</Tabs.Tab>
+</Tabs>
+
+Pyth also provides a javascript SDK to construct transaction blocks that update price feeds:
+
+<Tabs items={["npm", "yarn"]}>
+  <Tabs.Tab>
+    ```sh copy
+    npm install --save @pythnetwork/pyth-sui-js
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+  ```sh copy
+  yarn add @pythnetwork/pyth-sui-js
+````
+
+  </Tabs.Tab>
+</Tabs>
+
+## Write Contract Code
+
+The code snippet below provides a general template for what your contract code should look like:
+
+```rust {20} copy
+module pyth_example::main {
+    use sui::clock::Clock;
+    use pyth::price_info;
+    use pyth::price_identifier;
+    use pyth::price;
+    use pyth::state::{State as PythState};
+    use pyth::pyth;
+    use pyth::price_info::PriceInfoObject;
+
+    const E_INVALID_ID: u64 = 1;
+
+    public fun use_pyth_price(
+        // Other arguments
+        clock: &Clock,
+        pyth_state: &PythState,
+        price_info_object: &PriceInfoObject,
+    ){
+        let max_age = 60;
+        // Make sure the price is not older than max_age seconds
+        let price_struct = pyth::get_price(pyth_state,price_info_object, clock);
+
+        // Check the price feed ID
+        let price_info = price_info::get_price_info_from_price_info_object(price_info_object);
+        let price_id = price_identifier::get_bytes(&price_info::get_price_identifier(&price_info));
+
+        // ETH/USD price feed ID
+        // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
+        // Note: Sui uses the Pyth price feed ID without the `0x` prefix.
+        assert!(price_id!=x"ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", E_INVALID_ID);
+
+        // Extract the price, decimal, and timestamp from the price struct and use them
+        let decimal_i64 = price::get_expo(&price_struct);
+        let price_i64 = price::get_price(&price_struct);
+        let timestamp_sec = price::get_timestamp(&price_struct);
+    }
+}
 ```
 
-## Quickstart
+One can consume the price by calling `pyth::get_price` abovementioned or other utility functions on the `PriceInfoObject` in the Move module
 
-Pyth stores prices off-chain to minimize gas fees, which allows us to offer a wider selection of products and faster update times.
-See [Pull Updates](../pythnet-price-feeds/pull-updates) for more information about this approach.
-Typically, to use Pyth prices on chain,
-they must be fetched from the [Hermes API](https://hermes.pyth.network/docs). The `SuiPriceServiceConnection` class can be used to interact with these services,
-providing a way to fetch these prices directly in your code. The following example wraps an existing RPC provider and shows how to obtain
-Pyth prices and submit them to the network:
-
-```typescript copy
-import { SuiPriceServiceConnection } from "@pythnetwork/pyth-sui-js";
-
-const connection = new SuiPriceServiceConnection(
-  "https://hermes-beta.pyth.network"
-); // See Hermes endpoints section below for other endpoints
-
-const priceIds = [
-  // You can find the ids of prices at https://pyth.network/developers/price-feed-ids
-  "0xf9c0172ba10dfa4d19088d94f5bf61d3b54d5bd7483a322a982e1373ee8ea31b", // BTC/USD price id in testnet
-  "0xca80ba6dc32e08d06f1aa886011eed1d77c77be9eb761cc10d72b7d0a2fd57a6", // ETH/USD price id in testnet
-];
-
-// In order to use Pyth prices in your protocol you need to submit the price update data to Pyth contract in your target
-// chain. `getPriceUpdateData` creates the update data which can be submitted to your contract.
-
-const priceUpdateData = await connection.getPriceFeedsUpdateData(priceIds);
-```
-
-## On-chain prices
-
-### ⚠️ **_Important Note for Integrators_**
-
-Your Sui Move module **should NOT** have a hard-coded call to `pyth::update_single_price_feed`. In other words, the Sui Pyth `pyth::update_single_price_feed` entry point should never be called by a contract, instead it should be called directly from client code (e.g. Typescript or Rust).
-
-This is because when a Sui contract is [upgraded](https://docs.sui.io/build/package-upgrades), the new address is different from the original. If your module has a hard-coded call to `pyth::update_single_price_feed` living at a fixed call-site, it may eventually get bricked due to the way Pyth upgrades are implemented. (We only allows users to interact with the most recent package version for security reasons).
-
-Therefore, you should build a [Sui programmable transaction](https://docs.sui.io/build/prog-trans-ts-sdk) that first updates the price by calling `pyth::update_single_price_feed` at the latest call-site from the client-side and then call a function in your contract that invokes `pyth::get_price` on the `PriceInfoObject` to get the recently updated price.
-You can use `SuiPythClient` to build such transactions and handles all the complexity of updating the price feeds.
-
-### Update Example
+The code snippet below provides an example of how to update the Pyth price feeds:
 
 ```ts copy
-import { SuiPythClient } from "@pythnetwork/pyth-sui-js";
+import { SuiPriceServiceConnection, SuiPythClient } from "@pythnetwork/pyth-sui-js";
 import { TransactionBlock } from "@mysten/sui.js";
 
-const priceUpdateData = await connection.getPriceFeedsUpdateData(priceIds); // see quickstart section
+// Get the Stable Hermes service URL from https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes
+const connection = new SuiPriceServiceConnection("https://hermes-beta.pyth.network");
 
+const priceIDs = [
+  // You can find the IDs of prices at https://pyth.network/developers/price-feed-ids
+  "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", // BTC/USD price ID
+  "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", // ETH/USD price ID
+];
 
-// It is either injected from browser or instantiated in backend via some private key
+const priceUpdateData = await connection.getPriceFeedsUpdateData(priceIDs);
+
+// It is either injected from the browser or instantiated in the backend via some private key
 const wallet: SignerWithProvider = getWallet();
-// Get the state ids of the Pyth and Wormhole contracts from
+// Get the state IDs of the Pyth and Wormhole contracts from
 // https://docs.pyth.network/price-feeds/contract-addresses/sui
-const wormholeStateId = " 0xFILL_ME";
-const pythStateId = "0xFILL_ME";
+const wormholeStateId = "0x5306f64e312b581766351c07af79c72fcb1cd25147157fdc2f8ad76de9a3fb6a";
+const pythStateId = "0x1f9310238ee9298fb703c3419030b35b22bb1cc37113e3bb5007c99aec79e5b8";
 
 const client = new SuiPythClient(wallet.provider, pythStateId, wormholeStateId);
 const tx = new TransactionBlock();
-const priceInfoObjectIds = await client.updatePriceFeeds(tx, priceFeedUpdateData, priceIds);
+const priceInfoObjectIds = await client.updatePriceFeeds(tx, priceFeedUpdateData, priceIDs);
 
 tx.moveCall({
     target: `pyth_example::main::use_pyth_price`,
@@ -106,113 +185,32 @@ const result = await wallet.signAndExecuteTransactionBlock(txBlock);
 ```
 
 By calling the `updatePriceFeeds` function, the `SuiPythClient` adds the necessary transactions to the transaction block to update the price feeds.
-Now in your contract you can consume the price by calling `pyth::get_price` or other utility functions on the `PriceInfoObject`:
 
-```rust copy
-module pyth_example::main {
-    use sui::clock::Clock;
-    use pyth::price_info;
-    use pyth::price_identifier;
-    use pyth::price;
-    use pyth::state::{State as PythState};
-    use pyth::pyth;
-    use pyth::price_info::PriceInfoObject;
+<Callout type="warning" emoji="⚠️">
 
-    const E_INVALID_ID: u64 = 1;
+Your Sui Move module **should NOT** have a hard-coded call to `pyth::update_single_price_feed.` In other words, a contract should **never call** the Sui Pyth `pyth::update_single_price_feed` entry point. Instead, it should be called directly from client code (e.g., Typescript or Rust).
 
-    public fun use_pyth_price(
-        // other arguments
-        clock: &Clock,
-        pyth_state: &PythState,
-        price_info_object: &PriceInfoObject,
-    ){
-        let max_age = 60;
-        // make sure the price is not older than max_age seconds
-        let price_struct = pyth::get_price(pyth_state,price_info_object, clock);
+When Sui contracts are [upgraded](<(https://docs.sui.io/build/package-upgrades)>), the address changes, which makes the old address no longer valid. If your module has a hard-coded call to `pyth::update_single_price_feed` living at a fixed call-site, it may eventually get bricked due to how Pyth upgrades are implemented. (Pyth only allow users to interact with the most recent package version for security reasons).
 
-        // check the price feed id
-        let price_info = price_info::get_price_info_from_price_info_object(price_info_object);
-        let price_id = price_identifier::get_bytes(&price_info::get_price_identifier(&price_info));
-        // ETH/USD price feed id
-        assert!(price_id!=x"ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", E_INVALID_ID);
+Therefore, you should build a [Sui programmable transaction](https://docs.sui.io/build/prog-trans-ts-sdk) that first updates the price by calling `pyth::update_single_price_feed` at the latest call-site from the client-side and then call a function in your contract that invokes `pyth::get_price` on the `PriceInfoObject` to get the recently updated price.
+You can use `SuiPythClient` to build such transactions and handle all the complexity of updating the price feeds.
 
-        // extract the price, decimal, and timestamp from the price struct and use them
-        let decimal_i64 = price::get_expo(&price_struct);
-        let price_i64 = price::get_price(&price_struct);
-        let timestamp_sec = price::get_timestamp(&price_struct);
-    }
-}
-```
+Consult [Fetch Price Updates](../fetch-price-updates) for more information on how to fetch the `pyth_price_update`.
 
-### Pyth Dependency
+</Callout>
 
-Use the following dependency in your `Move.toml` file to use the latest Pyth Sui package and its dependencies.
+## Additional Resources
 
-Sui Mainnet:
-
-```sh copy
-[dependencies.Pyth]
-git = "https://github.com/pyth-network/pyth-crosschain.git"
-subdir = "target_chains/sui/contracts"
-rev = "sui-contract-mainnet"
-
-[dependencies.Wormhole]
-git = "https://github.com/wormhole-foundation/wormhole.git"
-subdir = "sui/wormhole"
-rev = "sui-upgrade-mainnet"
-
-[dependencies.Sui]
-git = "https://github.com/MystenLabs/sui.git"
-subdir = "crates/sui-framework/packages/sui-framework"
-rev = "041c5f2bae2fe52079e44b70514333532d69f4e6"
-```
-
-Sui Testnet:
-
-```sh copy
-[dependencies.Pyth]
-git = "https://github.com/pyth-network/pyth-crosschain.git"
-subdir = "target_chains/sui/contracts"
-rev = "sui-contract-testnet"
-
-[dependencies.Wormhole]
-git = "https://github.com/wormhole-foundation/wormhole.git"
-subdir = "sui/wormhole"
-rev = "sui-upgrade-testnet"
-
-[dependencies.Sui]
-git = "https://github.com/MystenLabs/sui.git"
-subdir = "crates/sui-framework/packages/sui-framework"
-rev = "041c5f2bae2fe52079e44b70514333532d69f4e6"
-```
-
-Movement M2 devnet:
-
-```sh copy
-[dependencies.Pyth]
-git = "https://github.com/pyth-network/pyth-crosschain.git"
-subdir = "target_chains/sui/contracts"
-rev = "sui-contract-movement-m2-devnet"
-
-[dependencies.Wormhole]
-git = "https://github.com/pyth-network/pyth-crosschain.git"
-subdir = "target_chains/sui/vendor/wormhole_movement_devnet/wormhole"
-rev = "sui-contract-movement-m2-devnet"
-
-[dependencies.Sui]
-git = "https://github.com/MystenLabs/sui.git"
-subdir = "crates/sui-framework/packages/sui-framework"
-rev = "041c5f2bae2fe52079e44b70514333532d69f4e6"
-```
+You may find these additional resources helpful for developing your Sui application.
 
 ### CLI Example
 
-[This example](./src/examples/SuiRelay.ts) shows how to update prices on an Sui network. It does the following:
+[This example](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/sui/cli) shows how to update prices on a Sui network. It does the following:
 
 1. Fetches update data from Hermes for the given price feeds.
-2. Calls the Pyth Sui contract with the update data.
+1. Call the Pyth Sui contract with a price update.
 
-You can run this example with `npm run example-relay`. A full command that updates prices on Sui testnet looks like:
+You can run this example with `npm run example-relay`. A full command that updates prices on the Sui testnet looks like this:
 
 ```bash
 export SUI_KEY=YOUR_PRIV_KEY;
@@ -223,66 +221,10 @@ npm run example-relay -- --feed-id "5a035d5440f5c163069af66062bac6c79377bf88396f
 --wormhole-state-id "0x31358d198147da50db32eda2562951d53973a0c0ad5ed738e9b17d88b213d790"
 ```
 
-## Off-chain prices
+### Contract Addresses
 
-Many applications additionally need to display Pyth prices off-chain, for example, in their frontend application.
-The `SuiPriceServiceConnection` provides two different ways to fetch the current Pyth price.
-The code blocks below assume that the `connection` and `priceIds` objects have been initialized as shown above.
-The first method is a single-shot query:
+Consult [Sui Contract Addresses](../contract-addresses/sui) to find the package IDs.
 
-```typescript
-// `getLatestPriceFeeds` returns a `PriceFeed` for each price id. It contains all information about a price and has
-// utility functions to get the current and exponentially-weighted moving average price, and other functionality.
-const priceFeeds = await connection.getLatestPriceFeeds(priceIds);
-// Get the price if it is not older than 60 seconds from the current time.
-console.log(priceFeeds[0].getPriceNoOlderThan(60)); // Price { conf: '1234', expo: -8, price: '12345678' }
-// Get the exponentially-weighted moving average price if it is not older than 60 seconds from the current time.
-console.log(priceFeeds[1].getEmaPriceNoOlderThan(60));
-```
+### Pyth Price Feed IDs
 
-The object also supports a streaming websocket connection that allows you to subscribe to every new price update for a given feed.
-This method is useful if you want to show continuously updating real-time prices in your frontend:
-
-```typescript
-// Subscribe to the price feeds given by `priceId`. The callback will be invoked every time the requested feed
-// gets a price update.
-connection.subscribePriceFeedUpdates(priceIds, (priceFeed) => {
-  console.log(
-    `Received update for ${priceFeed.id}: ${priceFeed.getPriceNoOlderThan(60)}`
-  );
-});
-
-// When using the subscription, make sure to close the websocket upon termination to finish the process gracefully.
-setTimeout(() => {
-  connection.closeWebSocket();
-}, 60000);
-```
-
-## [Hermes endpoints](hermes#public-endpoints)
-
-## Contract Addresses
-
-Developers will need the Pyth package IDs in order to use Pyth.
-Please consult [Sui Contract Addresses](../contract-addresses/sui) to find the package IDs for your blockchain.
-
-## Common Questions on How to Integrate with Pyth on Sui
-
-### What is up with the "sui rev"? Why does it point to a specific commit hash instead of "main" or "devnet"?
-
-Our Pyth `Move.toml` depends on specific versions of the [Sui Framework](https://github.com/MystenLabs/sui) as well as [Wormhole](https://github.com/wormhole-foundation/wormhole).
-To make your Sui package compatible, you must also specify the following dependencies verbatim in your `Move.toml` file. We are locked in to this specific `rev` because our package depends on Wormhole and it is pinned to this
-version.
-
-```sh copy
-[dependencies.Sui]
-git = "https://github.com/MystenLabs/sui.git"
-subdir = "crates/sui-framework/packages/sui-framework"
-rev = "041c5f2bae2fe52079e44b70514333532d69f4e6"
-```
-
-### How do I find the Sui Object ID of a PriceInfoObject for a Pyth Price Feed?
-
-You can use the `getPriceFeedObjectId` function in the js sdk to fetch the object ids.
-This mapping is also stored on-chain, and can be queried on-chain using the getter function `pyth::state::get_price_info_object_id` defined in the Pyth package.
-
-Also recall that the list of Pyth price feed IDs can be found [here](https://pyth.network/developers/price-feed-ids).
+Consult [Pyth Price Feed IDs](https://pyth.network/developers/price-feed-ids) to find Pyth price feed IDs for various assets.
