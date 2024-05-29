@@ -118,7 +118,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     delay: "",
     address: "0x549Ebba8036Ab746611B4fFA1423eb0A4Df61440",
     explorer: "https://sepolia.arbiscan.io/address/$ADDRESS",
-    gasLimit: "500K",
+    gasLimit: "2.5M",
   },
   "fantom-sonic": {
     rpc: "https://rpc.sonic.fantom.network/",
