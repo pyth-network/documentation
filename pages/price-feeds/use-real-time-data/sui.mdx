@@ -148,13 +148,13 @@ module pyth_example::main {
 
 Use the following dependency in your `Move.toml` file to use the latest Pyth Sui package and its dependencies.
 
-Mainnet:
+Sui Mainnet:
 
 ```sh copy
 [dependencies.Pyth]
 git = "https://github.com/pyth-network/pyth-crosschain.git"
 subdir = "target_chains/sui/contracts"
-rev = "sui-contract-v0.0.2-mainnet-sui-1.19.1"
+rev = "sui-contract-mainnet"
 
 [dependencies.Wormhole]
 git = "https://github.com/wormhole-foundation/wormhole.git"
@@ -167,18 +167,37 @@ subdir = "crates/sui-framework/packages/sui-framework"
 rev = "041c5f2bae2fe52079e44b70514333532d69f4e6"
 ```
 
-Testnet:
+Sui Testnet:
 
 ```sh copy
 [dependencies.Pyth]
 git = "https://github.com/pyth-network/pyth-crosschain.git"
 subdir = "target_chains/sui/contracts"
-rev = "sui-contract-v0.0.2-testnet-sui-1.19.1"
+rev = "sui-contract-testnet"
 
 [dependencies.Wormhole]
 git = "https://github.com/wormhole-foundation/wormhole.git"
 subdir = "sui/wormhole"
 rev = "sui-upgrade-testnet"
+
+[dependencies.Sui]
+git = "https://github.com/MystenLabs/sui.git"
+subdir = "crates/sui-framework/packages/sui-framework"
+rev = "041c5f2bae2fe52079e44b70514333532d69f4e6"
+```
+
+Movement M2 devnet:
+
+```sh copy
+[dependencies.Pyth]
+git = "https://github.com/pyth-network/pyth-crosschain.git"
+subdir = "target_chains/sui/contracts"
+rev = "sui-contract-movement-m2-devnet"
+
+[dependencies.Wormhole]
+git = "https://github.com/pyth-network/pyth-crosschain.git"
+subdir = "target_chains/sui/vendor/wormhole_movement_devnet/wormhole"
+rev = "sui-contract-movement-m2-devnet"
 
 [dependencies.Sui]
 git = "https://github.com/MystenLabs/sui.git"
