@@ -22,5 +22,5 @@ proofs and, if it is valid, stores the new price in its on-chain storage.
 Finally, on-chain protocols integrate with the Pyth contract via a simple API that retrieves the current Pyth price from
 its on-chain storage. This API will return the current price as long as it has been updated sufficiently recently; this
 approach works because users will have updated the Pyth price earlier in the same transaction. Protocols can configure
-the recency threshold to suit their needs — e.g., latency sensitive applications can set a lower threshold than the
+the recency threshold to suit their needs — e.g., latency-sensitive applications can set a lower threshold than the
 default.
