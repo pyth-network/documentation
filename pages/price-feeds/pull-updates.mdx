@@ -26,13 +26,15 @@ For a more in-depth explanation on the differences between push and pull oracles
 
 ## Comparing Push and Pull
 
+![](../../images/Push-vs-Pull-Oracle.jpg)
+
 Push and pull oracles differ on a number of important dimensions:
 
 - **Update frequency** -- In a push oracle, every price feed updates at a fixed update frequency.
-  The frequency is determined by the oracle operator, but typically is in the range of every 10 minutes to 1 hour.
+  The oracle operator determines the frequency, but it typically ranges from every 10 minutes to 1 hour.
   In contrast, pull oracles can update at a much higher frequency.
   For example, every Pyth price feed updates every 400 milliseconds.
-- **Latency** -- The update frequency of an oracle also affects the latency of its prices.
+- **Latency** -- An oracle's update frequency also affects its prices' latency.
   The higher update frequencies of pull oracles allow applications to access lower-latency data.
 - **Blockchain support** -- Pull oracles support a wide variety of different blockchains.
   Push oracles typically support a smaller number of blockchains, as each additional chain requires ongoing gas expenditures.
@@ -47,6 +49,6 @@ These gas costs limit their scalability across all of the dimensions above.
 
 Push oracles and pull oracles require applications to integrate in different ways.
 With a push oracle, applications typically read the current price out of a smart contract.
-Since the push oracle is periodically updating the price, the application can assume the data in the smart contract is (reasonably) fresh.
+Since the push oracle periodically updates the price, the application can assume the data in the smart contract is (reasonably) fresh.
 With a pull oracle, applications need to update the on-chain price before reading it.
 Developers using Pyth can refer to [How to Use Real-Time Price Data](/price-feeds/use-real-time-data) to learn how to perform these steps.
