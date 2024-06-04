@@ -1,42 +1,37 @@
-import { Tabs } from 'nextra/components'
-
+import { Tabs } from "nextra/components";
 
 # Scheduler
 
-The [scheduler](https://github.com/pyth-network/pyth-crosschain/tree/main/apps/price_pusher) (previously known as "price pusher")
-is an off-chain application that regularly pulls price updates onto a blockchain.
-
-In short, the scheduler is a service that listens to Pyth price updates and pushes them to a blockchain.
+The [Scheduler](https://github.com/pyth-network/pyth-crosschain/tree/main/apps/price_pusher) (previously known as "price pusher") is an off-chain application that regularly pulls price updates onto a blockchain.
 
 This service is beneficial for protocols that:
-1. Doesn't want users to pay for price updates.
-1. Are dependent on regular push updates and want to migrate and leverage Pyth's low latency data.
 
-Running the scheduler is permissionless; anyone can run it to regularly update the on-chain Pyth price based on various conditions.
+1. Don't want users to pay for price updates.
+1. Are dependent on regular on-chain push updates.
 
-## How it works
+Running the Scheduler is permissionless; anyone can run it to regularly update the on-chain Pyth price based on various conditions.
 
-The scheduler monitors both the off-chain and on-chain Pyth prices for a configured set of price feeds. It then pushes a price update to an on-chain Pyth contract if any of the following conditions are met:
+## Installation
 
-- **Time difference**: The on-chain price is older than `time_difference` seconds from the latest Pyth price.
-- **Price deviation**: The latest Pyth price feed has changed more than `price_deviation` percent from the on-chain price feed price.
-- **Confidence ratio**: The latest Pyth price feed has more confidence to price ratio than `confidence_ratio`.
+The Scheduler can be installed and run via npm, docker, or by cloning the Pyth monorepo.
 
-
-## Running the scheduler
-
-Running the scheduler doesn't require any special permissions. You can run it on your local machine or a server.
-
-
-### Installation
-
-The scheduler can be installed using the following command:
+### npm
 
 ```bash copy
 npm install -g @pythnetwork/price-pusher
 ```
 
-Alternatively, you can clone the [`pyth-crosschain` monorepo](https://github.com/pyth-network/pyth-crosschain) and install the dependencies:
+### Docker
+
+```bash copy
+docker pull public.ecr.aws/pyth-network/xc-price-pusher:v6.8.0
+```
+
+Note: Find the latest docker image tag [here](https://gallery.ecr.aws/pyth-network/xc-price-pusher)
+
+### Cloning the Pyth monorepo
+
+You can clone the [`pyth-crosschain` monorepo](https://github.com/pyth-network/pyth-crosschain) and install the dependencies:
 
 ```bash copy
 git clone https://github.com/pyth-network/pyth-crosschain.git
@@ -49,12 +44,17 @@ npx lerna run build --scope @pythnetwork/price-pusher --include-dependencies
 cd apps/price_pusher
 ```
 
+### Configuration
 
-### Setting up parameters
+The Scheduler monitors both the off-chain and on-chain Pyth prices for a configured set of price feeds.
+It uses a configuration file to set the parameters for the price pusher. This configuration file consists of the price feeds and price update conditions that need to be updated.
 
-The scheduler uses a configuration file to set the parameters for the price pusher. This configuration file consists of the price feeds that need to be updated and the price update conditions mentioned above.
+- **Time difference**: The on-chain price is older than `time_difference` seconds from the latest Pyth price.
+- **Price deviation**: The latest Pyth price feed has changed more than `price_deviation` percent from the on-chain price feed price.
+- **Confidence ratio**: The latest Pyth price feed has more confidence to price ratio than `confidence_ratio`.
 
 The configuration file is a YAML file that looks like this:
+
 ```yaml copy
 - alias: A/USD # Arbitrary alias for the price feed. It is used to enhance logging.
   id: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef # id of a price feed, a 32-byte hex string.
@@ -79,24 +79,18 @@ The configuration file is a YAML file that looks like this:
 - ...
 ```
 
-Check out [Price feed IDs](https://pyth.network/developers/price-feed-ids) for the complete list of Price feeds supported by Pyth.
+Check out [Price Feed IDs](https://pyth.network/developers/price-feed-ids) for the complete list of Price feeds supported by Pyth.
 
-### Running the scheduler
+### Running the Scheduler
 
-The scheduler communicates with [Hermes](https://docs.pyth.network/price-feeds/how-pyth-works/hermes) to get the most recent price updates. 
-Hermes listens to the Pythnet and Wormhole network to get the latest price updates and provides REST and WebSocket APIs for consumers to fetch the updates. 
-Pyth hosts public endpoints for Hermes; however, getting a private endpoint from one of the Hermes RPC providers is recommended for more reliability. 
-Please refer to [this](https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes) document for more information.
+To run the Scheduler, you need to provide the following parameters:
 
-
-To run the scheduler, you need to provide the following parameters:
-- `--pyth-contract-address`: The Pyth contract address where the price updates will be pushed. Check out the [Pyth contract addresses](https://docs.pyth.network/price-feeds/contract-addresses) for the complete list of Pyth contracts.
+- `--pyth-contract-address`: The Pyth contract address where the price updates will be pushed. See [Pyth contract addresses](https://docs.pyth.network/price-feeds/contract-addresses) for the complete list of Pyth contracts.
 - `--price-config-file`: Path to the configuration file.
-- `--price-service-endpoint`: Hermes RPC endpoint.
+- `--price-service-endpoint`: Hermes RPC endpoint. For more information, refer to the [Hermes RPC providers](https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes).
 - `--mnemonic-file`: Path to the file containing the mnemonic for the account that will push the price updates.
 
-
-If you are using the global installation, you can run the scheduler using the following command:
+If you are using the global installation, you can run the Scheduler using the following command:
 
 ```bash /npx @pythnetwork/price-pusher/ copy
 npx @pythnetwork/price-pusher start -- evm --endpoint wss://example-rpc.com \
@@ -109,7 +103,7 @@ npx @pythnetwork/price-pusher start -- evm --endpoint wss://example-rpc.com \
     [--override-gas-price-multiplier 1.1]
 ```
 
-If you are using the cloned repository, you can run the scheduler using the following command:
+If you are using the cloned repository, you can run the Scheduler using the following command:
 
 ```bash /npm run/ copy
 npm run start -- evm --endpoint wss://example-rpc.com \
@@ -122,9 +116,15 @@ npm run start -- evm --endpoint wss://example-rpc.com \
     [--override-gas-price-multiplier 1.1]
 ```
 
-The scheduler will start monitoring the price feeds and push the updates to the blockchain based on the conditions mentioned in the configuration file.
+The Scheduler can be run via docker as well. The docker image can be built using the following command:
 
-The scheduler can be used for different chain types. The chain type can be specified as an argument.
+```bash copy
+docker run public.ecr.aws/pyth-network/xc-price-pusher:v<version> -- <above-arguments>
+```
+
+The Scheduler will start monitoring the price feeds and push the updates to the blockchain based on the conditions mentioned in the configuration file.
+
+The Scheduler can be used for different chain types. The chain type can be specified as an argument.
 
 <Tabs items={['EVM', 'Solana', 'Sui', 'Aptos', 'Near', 'Injective']}>
   <Tabs.Tab>
@@ -158,63 +158,60 @@ npm run start -- solana \
   [--polling-frequency 5]
 
 # For Solana, using Solana RPC
+
 npm run start -- solana \
-  --endpoint https://api.devnet.solana.com \
-  --keypair-file ./id.json \
-  --shard-id 1 \
-  --price-config-file ./price-config.yaml \
-  --price-service-endpoint https://hermes.pyth.network/ \
-  --pyth-contract-address pythWSnswVUd12oZpeFP8e9CVaEqJg25g1Vtc2biRsT \
-  --pushing-frequency 30 \
-  [--polling-frequency 5]
-  ```
+ --endpoint https://api.devnet.solana.com \
+ --keypair-file ./id.json \
+ --shard-id 1 \
+ --price-config-file ./price-config.yaml \
+ --price-service-endpoint https://hermes.pyth.network/ \
+ --pyth-contract-address pythWSnswVUd12oZpeFP8e9CVaEqJg25g1Vtc2biRsT \
+ --pushing-frequency 30 \
+ [--polling-frequency 5]
+
+````
+</Tabs.Tab>
+
+<Tabs.Tab>
+```bash copy
+npm run start -- sui \
+--endpoint https://sui-testnet-rpc.allthatnode.com \
+--pyth-package-id 0x975e063f398f720af4f33ec06a927f14ea76ca24f7f8dd544aa62ab9d5d15f44 \
+--pyth-state-id 0xd8afde3a48b4ff7212bd6829a150f43f59043221200d63504d981f62bff2e27a \
+--wormhole-package-id 0xcc029e2810f17f9f43f52262f40026a71fbdca40ed3803ad2884994361910b7e \
+--wormhole-state-id 0xebba4cc4d614f7a7cdbe883acc76d1cc767922bc96778e7b68be0d15fce27c02 \
+--price-feed-to-price-info-object-table-id 0xf8929174008c662266a1adde78e1e8e33016eb7ad37d379481e860b911e40ed5 \
+--price-service-endpoint https://example-hermes-rpc.com \
+--mnemonic-file ./mnemonic \
+--price-config-file ./price-config.beta.sample.yaml \
+[--pushing-frequency 10] \
+[--polling-frequency 5] \
+[--num-gas-objects 30]
+````
+
   </Tabs.Tab>
 
-  <Tabs.Tab>
-  ```bash copy
-  npm run start -- sui \
-  --endpoint https://sui-testnet-rpc.allthatnode.com \
-  --pyth-package-id 0x975e063f398f720af4f33ec06a927f14ea76ca24f7f8dd544aa62ab9d5d15f44 \
-  --pyth-state-id 0xd8afde3a48b4ff7212bd6829a150f43f59043221200d63504d981f62bff2e27a \
-  --wormhole-package-id 0xcc029e2810f17f9f43f52262f40026a71fbdca40ed3803ad2884994361910b7e \
-  --wormhole-state-id 0xebba4cc4d614f7a7cdbe883acc76d1cc767922bc96778e7b68be0d15fce27c02 \
-  --price-feed-to-price-info-object-table-id 0xf8929174008c662266a1adde78e1e8e33016eb7ad37d379481e860b911e40ed5 \
-  --price-service-endpoint https://example-hermes-rpc.com \
-  --mnemonic-file ./mnemonic \
-  --price-config-file ./price-config.beta.sample.yaml \
-  [--pushing-frequency 10] \
-  [--polling-frequency 5] \
-  [--num-gas-objects 30]
+{" "}
+<Tabs.Tab>
+  ```bash copy npm run start -- aptos --endpoint
+  https://fullnode.testnet.aptoslabs.com/v1 \ --pyth-contract-address
+  0x7e783b349d3e89cf5931af376ebeadbfab855b3fa239b7ada8f5a92fbea6b387 \
+  --price-service-endpoint "https://example-hermes-rpc.com" \
+  --price-config-file "path/to/price-config.beta.sample.yaml" \ --mnemonic-file
+  "path/to/mnemonic.txt" \ [--pushing-frequency 10] \ [--polling-frequency 5]
   ```
-  </Tabs.Tab>
+</Tabs.Tab>
 
-   <Tabs.Tab>
-   ```bash copy
-   npm run start -- aptos --endpoint https://fullnode.testnet.aptoslabs.com/v1 \
-    --pyth-contract-address 0x7e783b349d3e89cf5931af376ebeadbfab855b3fa239b7ada8f5a92fbea6b387 \
-    --price-service-endpoint "https://example-hermes-rpc.com" \
-    --price-config-file "path/to/price-config.beta.sample.yaml" \
-    --mnemonic-file "path/to/mnemonic.txt" \
-    [--pushing-frequency 10] \
-    [--polling-frequency 5]
-    ```
-  </Tabs.Tab>
+{" "}
+<Tabs.Tab>
+  ```bash copy npm run start -- near \ --node-url https://rpc.testnet.near.org \
+  --network testnet \ --account-id payer.testnet \ --pyth-contract-address
+  pyth-oracle.testnet \ --price-service-endpoint
+  "https://hermes-beta.pyth.network" \ --price-config-file
+  ./price-config.beta.sample.yaml \ [--private-key-path ./payer.testnet.json] \
+  [--pushing-frequency 10] \ [--polling-frequency 5] ```
+</Tabs.Tab>
 
-  <Tabs.Tab>
-  ```bash copy
-  npm run start -- near \
-  --node-url https://rpc.testnet.near.org \
-  --network testnet \
-  --account-id payer.testnet \
-  --pyth-contract-address pyth-oracle.testnet \
-  --price-service-endpoint "https://hermes-beta.pyth.network" \
-  --price-config-file ./price-config.beta.sample.yaml \
-  [--private-key-path ./payer.testnet.json] \
-  [--pushing-frequency 10] \
-  [--polling-frequency 5]
-  ```
-  </Tabs.Tab>
-  
   <Tabs.Tab>
   ```bash copy
   npm run start -- injective --grpc-endpoint https://grpc-endpoint.com \
@@ -229,12 +226,6 @@ npm run start -- solana \
   </Tabs.Tab>
 </Tabs>
 
+## Additional Resources
 
-The scheduler can be run via docker as well. The docker image can be built using the following command:
-
-```bash copy
-docker run public.ecr.aws/pyth-network/xc-price-pusher:v<version> -- <above-arguments>
-```
-
-
-For more information on the scheduler, checkout the source code and detailed README [here](https://github.com/pyth-network/pyth-crosschain/tree/main/apps/price_pusher).
+For more information on the Scheduler, check the source code and detailed README [here](https://github.com/pyth-network/pyth-crosschain/tree/main/apps/price_pusher).
