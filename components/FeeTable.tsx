@@ -27,6 +27,7 @@ const FeeTable = ({
     }
   }, [deployments]);
 
+  const sortedDeployments = Object.entries(deployments).sort();
   return (
     <table>
       <thead>
@@ -36,7 +37,7 @@ const FeeTable = ({
         </tr>
       </thead>
       <tbody>
-        {Object.entries(deployments).map(([name, deployment]) => (
+        {sortedDeployments.map(([name, deployment]) => (
           <tr key={name}>
             <StyledTd>
               <a
