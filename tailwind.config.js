@@ -24,6 +24,10 @@ module.exports = {
         xl: ["59px", "1.1"],
       },
       colors: {
+        lightForeground: "#0C0B1A",
+        darkBackground: "#121212",
+        darkLinks: "#BB86FC",
+        lightLinks: "#6200EE",
         dark: "#110F23",
         light: "#E6DAFE",
         darkBlue: "#181629",

@@ -6,8 +6,15 @@ import "nextra-theme-docs/style.css";
 import { ReactNode, useEffect, useState } from "react";
 import { WagmiConfig, createConfig } from "wagmi";
 import { arbitrum, avalanche, mainnet, sepolia } from "wagmi/chains";
+import * as amplitude from "@amplitude/analytics-browser";
 import { CosmosChains, GlobalContextProvider } from "../contexts/GlobalContext";
 import "../styles/styles.css";
+import TagManager from "react-gtm-module";
+
+const tagManagerArgs = {
+  gtmId: "GTM-MN3TWRGJ",
+};
+const AMPLITUDE_API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
 
 const chains = [arbitrum, mainnet, avalanche, sepolia];
 
@@ -31,6 +38,14 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    TagManager.initialize(tagManagerArgs);
+  }, []);
+  useEffect(() => {
+    if (AMPLITUDE_API_KEY) {
+      amplitude.init(AMPLITUDE_API_KEY);
+    }
+  });
 
   // Make the global context available to every page.
   return (

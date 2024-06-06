@@ -79,12 +79,15 @@ const RestGet = ({ endpoint, queryParams }: RestGetProps) => {
     <>
       <div className="flex space-x-2">
         <button
-          className="bg-[#E6DAFE] text-[#141227] font-normal text-base hover:bg-[#F2ECFF] my-4"
+          className="px-2 py-1 bg-light dark:bg-lightLinks hover:bg-darkLinks dark:hover:bg-darkLinks font-normal text-base"
           onClick={handleRunCode}
         >
           execute query
         </button>
-        <button className="font-normal text-base my-4" onClick={clearResponse}>
+        <button
+          className="px-2 py-1 bg-neutral-200 hover:bg-neutral-300 dark:bg-darkGray3 dark:hover:bg-darkGray5 font-normal text-base"
+          onClick={clearResponse}
+        >
           clear
         </button>
       </div>
