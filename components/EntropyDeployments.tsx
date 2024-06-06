@@ -200,4 +200,28 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "mainnet",
     rpc: "https://evm-rpc.sei-apis.com",
   },
+  merlin: {
+    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
+    explorer: "https://scan.merlinchain.io/address/$ADDRESS",
+    delay: "1 block",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://rpc.merlinchain.io",
+  },
+  "merlin-testnet": {
+    address: "0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb",
+    explorer: "https://testnet-scan.merlinchain.io/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://testnet-rpc.merlinchain.io/",
+  },
+  taiko: {
+    address: "0x26DD80569a8B23768A1d80869Ed7339e07595E85",
+    explorer: "https://taikoscan.io/address/$ADDRESS",
+    delay: "1 block",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://rpc.mainnet.taiko.xyz",
+  },
 };
