@@ -160,14 +160,6 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     explorer: "https://artio.beratrail.io/address/$ADDRESS",
     gasLimit: "500K",
   },
-  "berachain-testnet-v2": {
-    rpc: "https://evm-rpc-bera.rhino-apis.com/",
-    network: "testnet",
-    delay: "",
-    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
-    explorer: "",
-    gasLimit: "500K",
-  },
   "coredao-testnet": {
     rpc: "https://rpc.test.btcs.network",
     network: "testnet",
