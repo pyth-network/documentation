@@ -171,11 +171,11 @@ const priceFeedId =
   "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace"; // ETH/USD
 
 // Convert the price update to Starknet format.
-const pythUpdate = ByteBuffer.fromHex(currentPrices[0].vaa);
+const priceUpdate = ByteBuffer.fromHex(currentPrices[0].vaa);
 
 // Query the fee required by Pyth to update the price on-chain.
 const fee = await pythContract.get_update_fee(
-  pythUpdate,
+  priceUpdate,
   strkErc0Contract.address
 );
 
@@ -186,7 +186,7 @@ await provider.waitForTransaction(tx.transaction_hash);
 
 // Submit a transaction to your contract using the price update data.
 pythContract.connect(account0);
-tx = await pythContract.update_price_feeds(pythUpdate);
+tx = await pythContract.update_price_feeds(priceUpdate);
 await provider.waitForTransaction(tx.transaction_hash);
 console.log("transaction confirmed:", tx.transaction_hash);
 ```
