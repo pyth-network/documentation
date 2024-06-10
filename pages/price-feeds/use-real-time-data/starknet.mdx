@@ -1,0 +1,210 @@
+---
+description: Consume Pyth Network prices in Starknet applications
+---
+
+import { Callout, Tabs } from "nextra/components";
+
+# How to Use Real-Time Data in Starknet Contracts
+
+This guide explains how to use real-time Pyth data in Starknet contracts.
+
+## Install the Pyth SDK
+
+Use the following dependency in your `Scarb.toml` file to use the latest Pyth Starkenet package:
+
+```toml copy
+[dependencies]
+pyth = { git = "https://github.com/pyth-network/pyth-crosschain.git", tag = "pyth-starknet-contract-v0.1.0"}
+```
+
+Pyth also provides a javascript SDK to interact with the Pyth contract on Starknet. You can install it using the following command:
+
+<Tabs items={["npm", "yarn"]}>
+  <Tabs.Tab>
+    ```sh copy $ npm install --save @pythnetwork/pyth-starknet-js ```
+  </Tabs.Tab>
+  <Tabs.Tab>```sh copy $ yarn add @pythnetwork/pyth-starknet-js ```</Tabs.Tab>
+</Tabs>
+
+## Write Contract Code
+
+The code snippet below provides an example module fetching the ETH/USD price from Pyth price feeds:
+
+```rust {12,17,49,57,62-64} copy
+#[starknet::interface]
+pub trait IFetchPrice<T> {
+    fn example_method(
+        ref self: T, destination: ContractAddress, amount_in_usd: u256, price_update: ByteBuffer
+    );
+}
+
+#[starknet::contract]
+mod example_method {
+    use core::panic_with_felt252;
+    use starknet::{ContractAddress, get_caller_address, get_contract_address};
+    use pyth::{ByteBuffer, IPythDispatcher, IPythDispatcherTrait, UnwrapWithFelt252};
+    use openzeppelin::token::erc20::interface::{IERC20CamelDispatcherTrait, IERC20CamelDispatcher};
+
+    #[storage]
+    struct Storage {
+        pyth_address: ContractAddress,
+        eth_erc20_address: ContractAddress,
+        eth_usd_price_feed_id: u256,
+    }
+
+    #[constructor]
+    fn constructor(
+        ref self: ContractState,
+        pyth_address: ContractAddress,
+        eth_erc20_address: ContractAddress,
+        eth_usd_price_feed_id: u256,
+    ) {
+        self.pyth_address.write(pyth_address);
+        self.eth_erc20_address.write(eth_erc20_address);
+        self.eth_usd_price_feed_id.write(eth_usd_price_feed_id);
+    }
+
+    #[abi(embed_v0)]
+    impl FetchPrice of super::IFetchPrice<ContractState> {
+        fn example_method(
+            ref self: ContractState,
+            destination: ContractAddress,
+            amount_in_usd: u256,
+            pyth_price_update: ByteBuffer
+        ) {
+            let pyth = IPythDispatcher { contract_address: self.pyth_address.read() };
+            let eth_erc20 = IERC20CamelDispatcher {
+                contract_address: self.eth_erc20_address.read()
+            };
+            let caller = get_caller_address();
+            let contract = get_contract_address();
+
+            let pyth_fee = pyth.get_update_fee(pyth_price_update.clone(), eth_erc20.contract_address);
+            if !eth_erc20.transferFrom(caller, contract, pyth_fee) {
+                panic_with_felt252("insufficient allowance for fee");
+            }
+            if !eth_erc20.approve(pyth.contract_address, pyth_fee) {
+                panic_with_felt252("approve failed");
+            }
+
+            pyth.update_price_feeds(pyth_price_update);
+
+            // ETH/USD price feed ID
+            // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
+            let price = pyth
+                .get_price_no_older_than(self.eth_usd_price_feed_id.read(), MAX_PRICE_AGE)
+                .unwrap_with_felt252();
+            let price_u64: u64 = price.price.try_into().unwrap();
+        }
+    }
+}
+```
+
+<Callout type="info" emoji="ℹ️">
+  Unlike Ethereum, there is no native token on Starknet. You cannot pass tokens
+  implicitly when calling functions. Moreover, there is no concept of a
+  designated payer account, unlike Solana. In Starknet, all token transfers must
+  be performed explicitly by calling functions on the token's ERC20 contract. In
+  the case of the Pyth contract on Starknet, the caller must approve the fee
+  transfer before calling `update_price_feeds` or using similar methods. You can
+  use **STRK** or **ETH** to pay the fee, but STRK is preferred. The fee is
+  currently set to the minimum possible value (1e-18 STRK, 1 WEI).
+</Callout>
+
+The code snippet above does the following things:
+
+1. Call `pyth.get_update_fee` to get the fee required to update the Pyth price feeds.
+1. Call `pyth.update_price_feeds` and pass `pyth_price_update` to update the Pyth price feeds.
+1. Call `pyth.get_price_no_older_than` to read the price, providing the [price feed ID](https://pyth.network/developers/price-feed-ids) you wish to read.
+
+The code snippet below provides an example of how to update the Pyth price feeds on Starknet using the `pyth-starknet-js` in JavaScript:
+
+```ts {52} copy
+// `pyth-starknet-js` is intended to be combined with `price-service-client` and `starknet-js`.
+import { Account, Contract, RpcProvider, shortString } from "starknet";
+import { PriceServiceConnection } from "@pythnetwork/price-service-client";
+import {
+  ByteBuffer,
+  ERC20_ABI,
+  ETH_TOKEN_ADDRESS,
+  PYTH_ABI,
+  PYTH_CONTRACT_ADDRESS_SEPOLIA,
+} from "@pythnetwork/pyth-starknet-js";
+
+// Create a `RpcProvider` instance to interact with Starknet RPC.
+const provider = new RpcProvider({
+  nodeUrl: "https://starknet-sepolia.public.blastapi.io/rpc/v0_6",
+});
+
+// Create a `Contract` instance to interact with a fee token contract on Starknet
+// You can use STRK or ETH to pay fees, but using STRK is recommended.
+const strkErc0Contract = new Contract(ERC20_ABI, STRK_TOKEN_ADDRESS, provider);
+
+// Create a `Contract` instance to interact with the Pyth contract on Starknet.
+const pythContract = new Contract(
+  PYTH_ABI,
+  PYTH_CONTRACT_ADDRESS_SEPOLIA,
+  provider
+);
+
+// Import your account data from environment variables.
+// You'll need to set them before running the code.
+const privateKey0 = process.env.ACCOUNT_PRIVATE_KEY;
+if (privateKey0 === undefined) {
+  throw new Error("missing ACCOUNT_PRIVATE_KEY");
+}
+const account0Address = process.env.ACCOUNT_ADDRESS;
+if (account0Address === undefined) {
+  throw new Error("missing ACCOUNT_ADDRESS");
+}
+const account0 = new Account(provider, account0Address, privateKey0);
+
+// Note: Get the Stable Hermes service URL from https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes
+const connection = new PriceServiceConnection("https://hermes.pyth.network", {
+  priceFeedRequestConfig: {
+    binary: true,
+  },
+});
+
+// You can find the IDs of prices at https://pyth.network/developers/price-feed-ids
+const priceFeedId =
+  "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace"; // ETH/USD
+
+// Convert the price update to Starknet format.
+const pythUpdate = ByteBuffer.fromHex(currentPrices[0].vaa);
+
+// Query the fee required by Pyth to update the price on-chain.
+const fee = await pythContract.get_update_fee(
+  pythUpdate,
+  strkErc0Contract.address
+);
+
+// Approve fee withdrawal.
+strkErc0Contract.connect(account0);
+let tx = await strkErc0Contract.approve(pythContract.address, fee);
+await provider.waitForTransaction(tx.transaction_hash);
+
+// Submit a transaction to your contract using the price update data.
+pythContract.connect(account0);
+tx = await pythContract.update_price_feeds(pythUpdate);
+await provider.waitForTransaction(tx.transaction_hash);
+console.log("transaction confirmed:", tx.transaction_hash);
+```
+
+<Callout type="info" emoji="ℹ️">
+  Price updates must be converted to `ByteBuffer` before being passed on to the
+  Pyth contract on Starknet. Use the `ByteBuffer` type from
+  "@pythnetwork/pyth-starknet-js" package as shown above.
+</Callout>
+
+## Additional Resources
+
+You may find these additional resources helpful for developing your Starknet application.
+
+### Interface
+
+The [Starknet Interface](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/starknet/contracts/src/pyth/interface.cairo#L9) provides a list of functions that can be called on the Pyth contract deployed on Starknet.
+
+### Example Applications
+
+- [Send-USD](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/starknet), which updates and consumes ETH/USD price feeds on Starknet to send USD to a recipient.
