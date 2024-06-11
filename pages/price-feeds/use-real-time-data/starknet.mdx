@@ -21,22 +21,16 @@ Pyth also provides a javascript SDK to interact with the Pyth contract on Starkn
 
 <Tabs items={["npm", "yarn"]}>
   <Tabs.Tab>
-    ```sh copy 
-    npm install --save @pythnetwork/pyth-starknet-js 
-    ```
+    ```sh copy npm install --save @pythnetwork/pyth-starknet-js ```
   </Tabs.Tab>
-  <Tabs.Tab>
-  ```sh copy 
-  yarn add @pythnetwork/pyth-starknet-js 
-  ```
-  </Tabs.Tab>
+  <Tabs.Tab>```sh copy yarn add @pythnetwork/pyth-starknet-js ```</Tabs.Tab>
 </Tabs>
 
 ## Write Contract Code
 
 The code snippet below provides an example module fetching the ETH/USD price from Pyth price feeds:
 
-```rust {12,17,49,57,62-64} copy
+```rust {2,17,47,55,64,71-73} copy
 use starknet::ContractAddress;
 use pyth::ByteBuffer;
 
@@ -141,7 +135,7 @@ The code snippet above does the following things:
 
 The code snippet below provides an example of how to fetch price updates and convert to `ByteBuffer` for Starknet using the `pyth-starknet-js` in JavaScript:
 
-```ts copy
+```ts {16} copy
 import { PriceServiceConnection } from "@pythnetwork/price-service-client";
 import { ByteBuffer } from "@pythnetwork/pyth-starknet-js";
 // The URL below is a public Hermes instance operated by the Pyth Data Association.
