@@ -21,9 +21,15 @@ Pyth also provides a javascript SDK to interact with the Pyth contract on Starkn
 
 <Tabs items={["npm", "yarn"]}>
   <Tabs.Tab>
-    ```sh copy $ npm install --save @pythnetwork/pyth-starknet-js ```
+    ```sh copy 
+    npm install --save @pythnetwork/pyth-starknet-js 
+    ```
   </Tabs.Tab>
-  <Tabs.Tab>```sh copy $ yarn add @pythnetwork/pyth-starknet-js ```</Tabs.Tab>
+  <Tabs.Tab>
+  ```sh copy 
+  yarn add @pythnetwork/pyth-starknet-js 
+  ```
+  </Tabs.Tab>
 </Tabs>
 
 ## Write Contract Code
@@ -45,23 +51,28 @@ mod example_method {
     use pyth::{ByteBuffer, IPythDispatcher, IPythDispatcherTrait, UnwrapWithFelt252};
     use openzeppelin::token::erc20::interface::{IERC20CamelDispatcherTrait, IERC20CamelDispatcher};
 
+    /* 
+    * Storage to store the Pyth contract address, the ERC20 contract address representing ETH, and the ETH/USD price feed ID.
+    */
     #[storage]
     struct Storage {
         pyth_address: ContractAddress,
-        eth_erc20_address: ContractAddress,
-        eth_usd_price_feed_id: u256,
+        strk_erc20_address: ContractAddress,
     }
 
+    /* 
+    * Constructor to initialize the contract storage.
+    * @param pyth_address: The address of the Pyth contract on Starknet. 
+    * @param strk_erc20_address: The address of the ERC20 contract representing STRK on Starknet.
+    */
     #[constructor]
     fn constructor(
         ref self: ContractState,
         pyth_address: ContractAddress,
-        eth_erc20_address: ContractAddress,
-        eth_usd_price_feed_id: u256,
+        strk_erc20_address: ContractAddress,
     ) {
         self.pyth_address.write(pyth_address);
-        self.eth_erc20_address.write(eth_erc20_address);
-        self.eth_usd_price_feed_id.write(eth_usd_price_feed_id);
+        self.strk_erc20_address.write(strk_erc20_address);
     }
 
     #[abi(embed_v0)]
@@ -73,24 +84,22 @@ mod example_method {
             pyth_price_update: ByteBuffer
         ) {
             let pyth = IPythDispatcher { contract_address: self.pyth_address.read() };
-            let eth_erc20 = IERC20CamelDispatcher {
-                contract_address: self.eth_erc20_address.read()
+            let strk_erc20 = IERC20CamelDispatcher {
+                contract_address: self.strk_erc20_address.read()
             };
             let caller = get_caller_address();
             let contract = get_contract_address();
 
-            let pyth_fee = pyth.get_update_fee(pyth_price_update.clone(), eth_erc20.contract_address);
-            if !eth_erc20.transferFrom(caller, contract, pyth_fee) {
+            let pyth_fee = pyth.get_update_fee(pyth_price_update.clone(), strk_erc20.contract_address);
+            if !strk_erc20.transferFrom(caller, contract, pyth_fee) {
                 panic_with_felt252("insufficient allowance for fee");
             }
-            if !eth_erc20.approve(pyth.contract_address, pyth_fee) {
+            if !strk_erc20.approve(pyth.contract_address, pyth_fee) {
                 panic_with_felt252("approve failed");
             }
 
             pyth.update_price_feeds(pyth_price_update);
 
-            // ETH/USD price feed ID
-            // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
             let price = pyth
                 .get_price_no_older_than(self.eth_usd_price_feed_id.read(), MAX_PRICE_AGE)
                 .unwrap_with_felt252();
