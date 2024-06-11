@@ -19,6 +19,11 @@
     "type": "page"
   },
 
+  "express-relay": {
+    "title": "Express Relay",
+    "type": "page"
+  },
+
   "get-in-touch": {
     "title": "Get In Touch ↗",
     "type": "page",
