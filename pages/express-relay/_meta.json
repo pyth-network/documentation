@@ -15,7 +15,8 @@
     "type": "separator"
   },
 
-  "integrate-express-relay": "Integrate Express Relay",
+  "integrate-as-protocol": "Integrate as a Protocol",
+  "integrate-as-searcher": "Integrate as a Searcher",
 
   "-- Reference Material": {
     "title": "Reference Material",
