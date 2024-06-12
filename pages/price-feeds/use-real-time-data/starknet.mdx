@@ -28,14 +28,14 @@ Pyth also provides a javascript SDK to interact with the Pyth contract on Starkn
 
 ## Write Contract Code
 
-The code snippet below provides an example module fetching the ETH/USD price from Pyth price feeds:
+The code snippet below provides an example module fetching the STRK/USD price from Pyth price feeds:
 
 ```rust {2,17,47,55,64,71-73} copy
 use starknet::ContractAddress;
 use pyth::ByteBuffer;
 
 #[starknet::interface]
-pub trait IExampleMethod<T> {
+pub trait IExampleContract<T> {
     // pyth_price_update is the price update data from Pyth to update the price feeds.
     // It should be passed as a ByteBuffer.
     fn example_method(
@@ -44,7 +44,7 @@ pub trait IExampleMethod<T> {
 }
 
 #[starknet::contract]
-mod example_method {
+mod example_contract {
     use core::panic_with_felt252;
     use starknet::{ContractAddress, get_caller_address, get_contract_address};
     use pyth::{ByteBuffer, IPythDispatcher, IPythDispatcherTrait, UnwrapWithFelt252};
@@ -72,7 +72,7 @@ mod example_method {
     }
 
     #[abi(embed_v0)]
-    impl ExampleMethod of super::IExampleMethod<ContractState> {
+    impl ExampleContract of super::IExampleContract<ContractState> {
         fn example_method(
             ref self: ContractState,
             pyth_price_update: ByteBuffer
@@ -173,4 +173,4 @@ The [Starknet Interface](https://github.com/pyth-network/pyth-crosschain/blob/ma
 
 ### Example Applications
 
-- [Send-USD](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/starknet), which updates and consumes ETH/USD price feeds on Starknet to send USD to a recipient.
+- [Send-USD](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/starknet), which updates and consumes STRK/USD price feeds on Starknet to send USD to a recipient.
