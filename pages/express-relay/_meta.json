@@ -15,10 +15,16 @@
     "type": "separator"
   },
 
+  "integrate-express-relay": "Integrate Express Relay",
+
   "-- Reference Material": {
     "title": "Reference Material",
     "type": "separator"
   },
+
+  "api-reference": "API Reference",
+  "contract-addresses": "Contract Addresses",
+  "error-codes": "Error Codes",
 
   "examples": {
     "title": "Example Application ↗"
@@ -26,5 +32,7 @@
   "-- Understand Express Relay": {
     "title": "Understanding Express Relay",
     "type": "separator"
-  }
+  },
+
+  "how-express-relay-works": "How Express Relay Works"
 }
