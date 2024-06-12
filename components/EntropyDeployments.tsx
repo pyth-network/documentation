@@ -232,4 +232,12 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "mainnet",
     rpc: "https://rpc.mainnet.taiko.xyz",
   },
+  "etherlink-testnet": {
+    address: "0x23f0e8FAeE7bbb405E7A7C3d60138FCfd43d7509",
+    explorer: "https://testnet-explorer.etherlink.com/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://node.ghostnet.etherlink.com",
+  },
 };
