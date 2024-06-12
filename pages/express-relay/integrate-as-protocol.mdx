@@ -1,0 +1,124 @@
+# How to Integrate Express Relay as a Protocol
+
+This guide explains how to integrate Express Relay as a protocol.
+To integrate Express Relay as a protocol, you need to: 
+
+1. Update the protocol's contract to permission Express Relay transactions.
+2. Write a script to post liquidatable positions/vaults to Searchers for auction.
+
+## Update the Protocol's Contract
+
+Express Relay requires the protocol's contract to permit Express Relay to access liquidation. 
+
+### Install the Express Relay SDK
+
+Pyth provides a [Solidity SDK](https://www.npmjs.com/package/@pythnetwork/express-relay-sdk-solidity) to help you integrate Express Relay into your protocol. 
+The SDK exposes `IExpressRelay` and `IExpressRelayFeeReceiver` interfaces to interact with Express Relay.
+
+#### Truffle/Hardhat
+
+If you are using Truffle or Hardhat, you can install the SDK using npm:
+
+```bash copy
+npm install @pythnetwork/express-relay-sdk-solidity
+```
+#### Foundry
+
+If you are using Foundry, you must create an NPM project if you don't already have one. From the root directory of your project, run:
+
+```bash copy
+npm init -y
+npm install @pythnetwork/express-relay-sdk-solidity
+```
+
+Then add the following line to `remappings.txt` file:
+
+```bash copy
+@pythnetwork/express-relay-sdk-solidity/=node_modules/@pythnetwork/express-relay-sdk-solidity
+```
+
+### Modifying the Protocol's Contract
+
+
+`IExpressRelay` interface exposes the `isPermissioned` function to check if Express Relay can liquidate a position.
+
+The `isPermissioned` function takes two arguments:
+1. `protocolFeeReceiver`: The address of the protocol's contract. If the protocol's contract is the contract that receives fees from the Express Relay server, this should be the address of that contract. (IS IT WORTH MENTIONING HERE????)
+2. `permissionId`: A unique identifier for the liquidation opportunity.
+
+
+```solidity copy
+import "@pythnetwork/express-relay-sdk-solidity/IExpressRelay.sol";
+
+// Express Relay contract address on Optimism Sepolia
+// Check {INSERT CONTRACT ADDRESS PAGE LINK} for the address deployed on other networks
+address expressRelay = 0xD6e417287b875A3932c1Ff5dcB26D4D2C8b90B40;
+
+require(
+		IExpressRelay(expressRelay).isPermissioned(
+        protocolFeeReceiver,
+        permissionId
+    ),
+		"invalid liquidation"
+);
+```
+
+
+
+
+The following code snippet shows a sample liquidation how to update the protocol's contract to permit Express Relay transactions:
+
+```solidity showLineNumbers {1,2,12,14,39-43} copy
+import "@pythnetwork/express-relay-sdk-solidity/IExpressRelay.sol";
+import "@pythnetwork/express-relay-sdk-solidity/IExpressRelayFeeReceiver.sol";
+
+struct Vault {
+    address tokenCollateral;
+    address tokenDebt;
+    uint256 amountCollateral;
+    uint256 amountDebt;
+    uint256 minHealthRatio;
+}
+
+contract EasyLend is IExpressRelayFeeReceiver {
+
+    address public immutable expressRelay;
+
+    constructor(
+    address expressRelayAddress,
+    address oracleAddress,
+    bool allowUndercollateralized
+    ){
+    _nVaults = 0;
+    expressRelay = expressRelayAddress;
+    _oracle = oracleAddress;
+    _allowUndercollateralized = allowUndercollateralized;
+    }
+
+    /**
+    * @notice liquidate function - liquidates a vault
+    * @param vaultID: ID of the vault to be liquidated
+    */
+    function liquidate(uint256 vaultID) public {
+        Vault memory vault = _vaults[vaultID];
+        uint256 vaultHealth = _getVaultHealth(vault);
+        if (vaultHealth >= vault.minHealthRatio) {
+            revert InvalidLiquidation();
+        }
+
+        // Check if the liquidation is permissioned
+        bool permissioned = IExpressRelay(payable(expressRelay)).isPermissioned(
+            address(this),
+            abi.encode(vaultID) // vault id uniquely represents the opportunity and can be used as permission id
+            );
+        require(permissioned, "invalid liquidation");
+    
+        IERC20(vault.tokenDebt).transferFrom(msg.sender,address(this),vault.amountDebt);
+        IERC20(vault.tokenCollateral).transfer(msg.sender,vault.amountCollateral);
+    
+        _vaults[vaultID].amountCollateral = 0;
+        _vaults[vaultID].amountDebt = 0;
+    }
+
+}
+```
