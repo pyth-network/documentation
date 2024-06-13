@@ -2,10 +2,8 @@
 
 ## Limit gas usage on the callback
 
-Since the entropy providers limit the gas usage on the callbacks,
-it is important to keep the callback function as simple as possible
-so that the gas usage is predictable and below the limits.
-This will ensure consistent performance and avoid potential issues with the callback.
+Keeping the callback function simple is crucial because the entropy providers limit gas usage.
+This ensures gas usage is predictable and consistent, avoiding potential issues with the callback.
 
 For example, if you want to use entropy to generate a random number for each player in a round of game,
 you need to make sure that the callback function works for the maximum number of players that can be in each round.
@@ -15,7 +13,7 @@ Multiple solutions are possible to address this problem. You can store the rando
 either ask users to submit more transactions after the callback to continue the flow or run a background crank service
 to submit the necessary transactions.
 
-You can see the gas limits for each chain in [this](./contract-addresses) page.
+The gas limit for each chain is listed on the [contract addresses](./contract-addresses) page.
 
 ## Generating random values within a specific range
 
