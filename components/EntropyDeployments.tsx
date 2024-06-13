@@ -236,7 +236,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     address: "0x23f0e8FAeE7bbb405E7A7C3d60138FCfd43d7509",
     explorer: "https://testnet-explorer.etherlink.com/address/$ADDRESS",
     delay: "",
-    gasLimit: "500K",
+    gasLimit: "15M",
     network: "testnet",
     rpc: "https://node.ghostnet.etherlink.com",
   },
