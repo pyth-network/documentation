@@ -1,3 +1,5 @@
+import { Steps } from 'nextra/components'
+
 # How to Integrate Express Relay as a Protocol
 
 This guide explains how to integrate Express Relay as a protocol.
@@ -39,13 +41,16 @@ Then add the following line to `remappings.txt` file:
 
 ### Modifying the Protocol's Contract
 
+The protocol's contract needs to be updated to:
 
-`IExpressRelay` interface exposes the `isPermissioned` function to check if Express Relay can liquidate a position.
+1. Consume `isPermissioned` method from `IExpressRelay` interface to Permit Express Relay transactions.
+1. Implement the `IExpressRelayFeeReceiver` interface to receive funds from Express Relay.
+
+#### Permit Express Relay Transactions
 
 The `isPermissioned` function takes two arguments:
 1. `protocolFeeReceiver`: The address of the protocol's contract. If the protocol's contract is the contract that receives fees from the Express Relay server, this should be the address of that contract. (IS IT WORTH MENTIONING HERE????)
-2. `permissionId`: A unique identifier for the liquidation opportunity.
-
+1. `permissionId`: A unique identifier for the liquidation opportunity.
 
 ```solidity copy
 import "@pythnetwork/express-relay-sdk-solidity/IExpressRelay.sol";
@@ -64,9 +69,24 @@ require(
 ```
 
 
+#### Set up Fee Receiver
+
+The `IExpressRelayFeeReceiver` interface requires the protocol's contract to implement the `receiveAuctionProceedings` function. The Express Relay server calls this function to send funds to the protocol's contract.
+
+```solidity copy
+interface IExpressRelayFeeReceiver {
+ function receiveAuctionProceedings(
+        bytes calldata permissionKey
+    ) external payable;
+}
+```
 
 
-The following code snippet shows a sample liquidation how to update the protocol's contract to permit Express Relay transactions:
+
+
+
+
+The following code snippet shows a sample liquidation method and updates to the protocol's contract to permit Express Relay transactions:
 
 ```solidity showLineNumbers {1,2,12,14,39-43} copy
 import "@pythnetwork/express-relay-sdk-solidity/IExpressRelay.sol";
@@ -102,6 +122,7 @@ contract EasyLend is IExpressRelayFeeReceiver {
     function liquidate(uint256 vaultID) public {
         Vault memory vault = _vaults[vaultID];
         uint256 vaultHealth = _getVaultHealth(vault);
+        // Proceed only if the vault health is below the minimum health ratio
         if (vaultHealth >= vault.minHealthRatio) {
             revert InvalidLiquidation();
         }
@@ -120,5 +141,19 @@ contract EasyLend is IExpressRelayFeeReceiver {
         _vaults[vaultID].amountDebt = 0;
     }
 
+    /**
+     * @notice receiveAuctionProceedings function - receives native token from the express relay
+     * You can use permission key to distribute the received funds to users who got liquidated, LPs, etc...
+     *
+     * @param permissionKey: permission key that was used for the auction
+     */
+    function receiveAuctionProceedings(
+        bytes calldata permissionKey
+    ) external payable {
+        emit VaultReceivedETH(msg.sender, msg.value, permissionKey);
+    }
+
 }
 ```
+
+
