@@ -1,6 +1,7 @@
 {
   "evm": "EVM",
   "solana": "Solana / SVM",
+  "starknet": "Starknet",
   "aptos": "Aptos",
   "sui": "Sui",
   "cosmwasm": "CosmWasm",
