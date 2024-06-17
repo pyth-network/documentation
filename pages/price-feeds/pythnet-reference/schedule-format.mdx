@@ -35,12 +35,14 @@ If `weekly_schedule` is also undefined, pyth-agent will default to 24/7 publishi
   This list can be empty. `MonthDay` is a compact date format where the first two digits represent the month (01 for January, 12 for December),
   and the last two digits represent the day of the month (e.g., `0415` for April 15th). **Leading zeros are mandatory**.
 - `DaySchedule` - A single day’s schedule. `DaySchedule` can be one of the following:
+
   - `O` for all-day open
   - `C` for all-day closed
   - `HourMinute-HourMinute[&HourMinute-HourMinute[&...]]` for specific open and close times in the market-local timezone.
     The hour and minute are combined into a single 4-digit number, where the first two digits represent the hour (00 to 24),
     and the last two digits represent the minute (00 to 59).
     For example, `0415` represents 4:15 AM. The open time must precede the close time, and the range is inclusive.
+
     - `24` can only be used to specify `2400`, which represents the final moment of a given day.
       - Context: Without this special case, the next best thing would be `2359` which could cause a symbol to go down between `2359` and the next day’s `0000` for a full minute.
     - **Leading zeros are mandatory**.
