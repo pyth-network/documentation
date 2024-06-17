@@ -35,15 +35,20 @@ If `weekly_schedule` is also undefined, pyth-agent will default to 24/7 publishi
   This list can be empty. `MonthDay` is a compact date format where the first two digits represent the month (01 for January, 12 for December),
   and the last two digits represent the day of the month (e.g., `0415` for April 15th). **Leading zeros are mandatory**.
 - `DaySchedule` - A single day’s schedule. `DaySchedule` can be one of the following:
+
   - `O` for all-day open
   - `C` for all-day closed
-  - `HourMinute-HourMinute` for specific open and close times in the market-local timezone.
+  - `HourMinute-HourMinute[&HourMinute-HourMinute[&...]]` for specific open and close times in the market-local timezone.
     The hour and minute are combined into a single 4-digit number, where the first two digits represent the hour (00 to 24),
     and the last two digits represent the minute (00 to 59).
     For example, `0415` represents 4:15 AM. The open time must precede the close time, and the range is inclusive.
+
     - `24` can only be used to specify `2400`, which represents the final moment of a given day.
       - Context: Without this special case, the next best thing would be `2359` which could cause a symbol to go down between `2359` and the next day’s `0000` for a full minute.
     - **Leading zeros are mandatory**.
+
+    If there are multiple open and close times per day (e.g., maintenance window) you can specify them by using `&` in between. For instance `0000-1200&1300-2400` means that the
+    market is open all day except between 12:00 and 13:00.
 
 **Examples**
 
@@ -54,6 +59,7 @@ If `weekly_schedule` is also undefined, pyth-agent will default to 24/7 publishi
 - `Africa/Johannesburg;C,C,C,C,C,C,C;` - Trivial made-up example. The market is not trading on any day - exact opposite of 24/7 trading. Pyth-agent instances observing this value will not publish the product at any time. Note: The timezone has no effect in this case.
 - `Europe/London;O,O,O,O,O,O,O;` - Trivial example. The market is open at all times and the timezone has no effect. Equivalent to default 24/7 behavior when `schedule` and `weekly_schedule` is not specified on a symbol.
 - `America/New_York;O,O,O,O,O,C,C;1224/0930-1300,1225/C` - An example of specifying holidays. The market closes early on Christmas Eve and is fully closed on Christmas Day.
+- `America/New_York;C,C,C,C,0930-1530&1830-2200,C,C;` - Only open Friday between 9:30AM - 3:30PM and 6:30PM - 10:00PM ET (EDT or EST)
 
 ## Weekly Schedule Format (Deprecated)
 
