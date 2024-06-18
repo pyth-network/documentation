@@ -104,12 +104,12 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     explorer: "https://sepolia.explorer.mode.network/address/$ADDRESS",
     gasLimit: "500K",
   },
-  "sei-evm-devnet": {
-    rpc: "https://evm-rpc-arctic-1.sei-apis.com",
+  "sei-evm-testnet": {
+    rpc: "https://evm-rpc-testnet.sei-apis.com",
     network: "testnet",
     delay: "",
-    address: "0x23f0e8FAeE7bbb405E7A7C3d60138FCfd43d7509",
-    explorer: "https://seitrace.com/address/$ADDRESS?chain=arctic-1",
+    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
+    explorer: "https://seitrace.com/address/$ADDRESS?chain=atlantic-2",
     gasLimit: "500K",
   },
   "arbitrum-sepolia": {
