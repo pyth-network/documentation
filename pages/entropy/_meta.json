@@ -30,14 +30,14 @@
     "type": "separator"
   },
   "best-practices": "Best Practices",
+  "contract-addresses": "Contract & Provider Addresses",
+  "current-fees": "Current Fees",
   "fortuna-api-explorer": {
     "title": "Fortuna API Explorer ↗",
     "href": "https://fortuna.dourolabs.app/docs/",
     "newWindow": true
   },
-  "contract-addresses": "Contract & Provider Addresses",
   "examples": "Example Applications",
-  "current-fees": "Current Fees",
 
   "-- Understanding Entropy": {
     "title": "Understanding Entropy",
