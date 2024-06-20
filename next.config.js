@@ -1,6 +1,24 @@
+const { BUNDLED_LANGUAGES, getHighlighter } = require("shiki");
+
 const withNextra = require("nextra")({
   theme: "nextra-theme-docs",
   themeConfig: "./theme.config.tsx",
+  mdxOptions: {
+    rehypePrettyCodeOptions: {
+      getHighlighter: (options) =>
+        getHighlighter({
+          ...options,
+          langs: [
+            ...BUNDLED_LANGUAGES,
+            {
+              id: "cairo",
+              scopeName: "source.cairo",
+              path: "../../public/syntax/cairo.json",
+            },
+          ],
+        }),
+    },
+  },
 });
 
 // Use this array as a shorter way to specify redirect URLs so we can write down a lot of them.
