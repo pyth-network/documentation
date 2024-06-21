@@ -7,6 +7,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { WagmiConfig, createConfig } from "wagmi";
 import { arbitrum, avalanche, mainnet, sepolia } from "wagmi/chains";
 import * as amplitude from "@amplitude/analytics-browser";
+import { autocapturePlugin } from "@amplitude/plugin-autocapture-browser";
 import { CosmosChains, GlobalContextProvider } from "../contexts/GlobalContext";
 import "../styles/styles.css";
 import TagManager from "react-gtm-module";
@@ -44,6 +45,7 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
   useEffect(() => {
     if (AMPLITUDE_API_KEY) {
       amplitude.init(AMPLITUDE_API_KEY);
+      amplitude.add(autocapturePlugin());
     }
   });
 
