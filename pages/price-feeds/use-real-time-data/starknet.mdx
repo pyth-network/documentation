@@ -160,7 +160,7 @@ const priceId =
 const currentPrices = await connection.getLatestPriceFeeds([priceId]);
 
 // Convert the price update to Starknet format.
-const pythUpdate = ByteBuffer.fromHex(currentPrices[0].vaa);
+const pythUpdate = ByteBuffer.fromBase64(currentPrices[0].vaa);
 ```
 
 <Callout type="info" emoji="ℹ️">
