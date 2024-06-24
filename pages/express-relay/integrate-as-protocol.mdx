@@ -163,7 +163,7 @@ contract EasyLend is IExpressRelayFeeReceiver {
 
 Protocols must fetch liquidation opportunities like vaults and positions eligible for liquidation and expose them to Express Relay for auction.
 
-The Express Relay auction server provides a POST method, `/v1/opportunities`, which accepts a JSON payload containing the details of the liquidation opportunity.
+The Express Relay auction server provides a **POST** method, `/v1/opportunities`, which accepts a JSON payload containing the details of the liquidation opportunity.
 
 The JSON payload should contain liquidation opportunities in the following format:
 
@@ -190,5 +190,23 @@ The JSON payload should contain liquidation opportunities in the following forma
 }
 ```
 
-
 TODO: Include a callout to give more info about permission ID
+
+Protocols must evaluate each position's health using the latest Oracle prices before exposing them to Express Relay. 
+You can do this by indexing the chain, listening to protocol events, or querying open positions through an RPC provider.
+
+
+
+## Additional Resources
+
+You may find these additional resources helpful for integrating Express Relay as a protocol.
+
+### Example Application
+
+[Easy Lend](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend) is a simple lending protocol that allows users to borrow and lend assets. This lending protocol contract is updated to permit Express Relay transactions.
+
+### Contract Address
+
+### Error Codes
+
+### API Reference
