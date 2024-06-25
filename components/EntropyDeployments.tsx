@@ -248,4 +248,20 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "mainnet",
     rpc: "https://node.mainnet.etherlink.com/",
   },
+  klaytn: {
+    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
+    explorer: "https://klaytnfinder.io/account/$ADDRESS",
+    delay: "1 block",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://rpc.ankr.com/klaytn",
+  },
+  "klaytn-testnet": {
+    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
+    explorer: "https://baobab.klaytnscope.com/account/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://rpc.ankr.com/klaytn_testnet",
+  },
 };
