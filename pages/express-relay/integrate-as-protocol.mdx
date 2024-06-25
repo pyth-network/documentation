@@ -1,6 +1,4 @@
-import { Steps } from 'nextra/components'
-import { Tabs } from 'nextra/components'
-
+import { Callout, Tabs, Steps } from 'nextra/components'
 
 # How to Integrate Express Relay as a Protocol
 
@@ -47,16 +45,20 @@ Then add the following line to `remappings.txt` file:
 
 ### Modifying the Protocol's Contract
 
-The Protocol's contract should be updated to:
+Developers need to update the Protocol's contract to:
 
-1. Utilize `isPermissioned` method from `IExpressRelay` interface to **permit** Express Relay transactions.
-1. Implement the `IExpressRelayFeeReceiver` interface to receive funds from Express Relay.
+1. Utilize [`isPermissioned`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelay.sol#L10C14-L10C28) method from `IExpressRelay` interface to **permit** Express Relay transactions.
+1. Implement the [`IExpressRelayFeeReceiver`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelayFeeReceiver.sol#L4) interface to **receive** funds from Express Relay.
 
 #### 1. Permit Express Relay Transactions
 
 The `isPermissioned` function takes two arguments:
 1. `protocolFeeReceiver`: The address of the Protocol's contract.
-1. `permissionId`: A unique identifier for the liquidation opportunity. TODO: Add Permission ID Reference
+1. `permissionId`: A unique identifier for the liquidation opportunity. 
+
+<Callout type="info" emoji="ℹ️">
+  The `permissionId` allows you to permission an depermission a set of transaction. ........ To know more about permission ID, refer to the [Permission ID](#) page.
+</Callout>
 
 ```solidity copy
 import "@pythnetwork/express-relay-sdk-solidity/IExpressRelay.sol";
