@@ -54,11 +54,7 @@ Developers need to update the Protocol's contract to:
 
 The `isPermissioned` function takes two arguments:
 1. `protocolFeeReceiver`: The address of the Protocol's contract.
-1. `permissionId`: A unique identifier for the liquidation opportunity. 
-
-<Callout type="info" emoji="ℹ️">
-  The `permissionId` allows you to permission an depermission a set of transaction. ........ To know more about permission ID, refer to the [Permission ID](#) page.
-</Callout>
+1. `permissionId`: A unique identifier of a vault or position eligible for liquidation.
 
 ```solidity copy
 import "@pythnetwork/express-relay-sdk-solidity/IExpressRelay.sol";
@@ -75,11 +71,16 @@ require(
 		"invalid liquidation"
 );
 ```
-
+<Callout type="info" emoji="ℹ️">
+  The `permissionId` represents unique identifying information for the vault or position within a protocol. 
+  It can be the vault address or the vault ID, concatenated into `bytes` format. 
+  Consult [`Permission Id`](#) for more information on generating permission IDs. 
+</Callout>
 
 #### 2. Set up Fee Receiver
 
-The `IExpressRelayFeeReceiver` interface requires the Protocol's contract to implement the `receiveAuctionProceedings` function. The Express Relay server calls this function to send funds to the protocol's contract.
+After a successful auction, the Express Relay server sends funds to the Protocol's contract. 
+Express Relay server calls the `receiveAuctionProceedings` function present in `IExpressRelayFeeReceiver` to send funds to the Protocol's contract
 
 ```solidity copy
 interface IExpressRelayFeeReceiver {
@@ -90,13 +91,9 @@ interface IExpressRelayFeeReceiver {
 ```
 
 
+The following code snippet shows a sample liquidation method via Express Relay:
 
-
-
-
-The following code snippet shows a sample liquidation method and updates to the Protocol's contract to permit Express Relay transactions:
-
-```solidity showLineNumbers {1,2,12,14,39-43, 59-63} copy
+```solidity showLineNumbers {1,2,12,14,21,38-42, 57-61} copy
 import "@pythnetwork/express-relay-sdk-solidity/IExpressRelay.sol";
 import "@pythnetwork/express-relay-sdk-solidity/IExpressRelayFeeReceiver.sol";
 
@@ -114,12 +111,10 @@ contract EasyLend is IExpressRelayFeeReceiver {
 
     constructor(
     address expressRelayAddress,
-    address oracleAddress,
     bool allowUndercollateralized
     ){
     _nVaults = 0;
     expressRelay = expressRelayAddress;
-    _oracle = oracleAddress;
     _allowUndercollateralized = allowUndercollateralized;
     }
 
@@ -138,7 +133,7 @@ contract EasyLend is IExpressRelayFeeReceiver {
         // Check if the liquidation is permissioned
         bool permissioned = IExpressRelay(payable(expressRelay)).isPermissioned(
             address(this),
-            abi.encode(vaultID) // vault id uniquely represents the opportunity and can be used as permission id
+            abi.encode(vaultID) // permissionId generated from the unique vault ID
             );
         require(permissioned, "invalid liquidation");
     
@@ -168,7 +163,7 @@ contract EasyLend is IExpressRelayFeeReceiver {
 
 ## Expose Liquidation Opportunities to Searchers
 
-Protocols must fetch liquidation opportunities like vaults and positions eligible for liquidation and expose them to Express Relay for auction.
+Protocols must fetch vaults and positions eligible for liquidation and expose them to Express Relay for auction.
 
 The Express Relay auction server provides a **POST** method, `/v1/opportunities`, which accepts a JSON payload containing the details of the liquidation opportunity.
 
@@ -197,11 +192,11 @@ The JSON payload should contain liquidation opportunities in the following forma
 }
 ```
 
-TODO: Include a callout to give more info about permission ID
 
 Protocols must evaluate each position's health using the latest Oracle prices before exposing them to Express Relay. 
 You can do this by indexing the chain, listening to protocol events, or querying open positions through an RPC provider.
 
+Check the [`monitor.ts`]() script, which fetches liquidation opportunities for the below-mentioned [Easy Lend](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend) example and exposes them to Express Relay for auction.
 
 
 ## Additional Resources
@@ -214,6 +209,10 @@ You may find these additional resources helpful for integrating Express Relay as
 
 ### Contract Address
 
+The [Contract Address](./contract-addresses.mdx) page lists the addresses of Express Relay deployed on various networks.
+
 ### Error Codes
 
 ### API Reference
+
+The [API Reference](https://per-staging.dourolabs.app/docs/) provides detailed information on the Express Relay API.
