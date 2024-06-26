@@ -23,12 +23,16 @@
     "type": "separator"
   },
 
-  "api-reference": "API Reference",
+  "api-reference": {
+    "title": "API Reference ↗",
+    "href": "https://per-staging.dourolabs.app/docs/"
+  },
   "contract-addresses": "Contract Addresses",
   "error-codes": "Error Codes",
 
   "examples": {
-    "title": "Example Application ↗"
+    "title": "Example Application ↗",
+    "href": "https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend"
   },
   "-- Understand Express Relay": {
     "title": "Understanding Express Relay",
