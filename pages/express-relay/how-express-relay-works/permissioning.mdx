@@ -1,0 +1,17 @@
+`permissionId` is a `bytes` object that represents the unique identifying information of a position within the protocol. `permissionId` allows the system to distinguish between bids competing on different opportunities and thereby run more scoped and efficient auctions.
+
+For some protocols, each borrower has a unique position, so the borrower address uniquely identifies a position. For other protocols, each borrower might have multiple positions, distinguished by the address of the collateral asset or by a uint256 id number. In those cases, the set of information that uniquely identifies a position would include multiple fields.
+
+`permissionId` is the concatenation of all these fields in bytes format. To concatenate these fields together, you can call `abi.encode()`. For example, if a protocol featured a unique position per borrower, then it could form `permissionId` as
+
+```
+bytes memory permissionId = abi.encode(borrowerAddress);
+```
+
+On the other hand, if a protocol allowed a borrower to open as many new positions as they wanted, denoted by an identifier `uint256 positionId`, then it could form permissionId as
+
+```
+bytes memory permissionId = abi.encode(borrowerAddress, positionId);
+```
+
+The `permissionId` is used in the `ExpressRelay` contract to toggle permissions for interacting with the protocol. This toggling is checked within the protocol's code to ensure that the current transaction is within the context of Express Relay, so that recaptured value can be returned to the protocol.
