@@ -1,3 +1,5 @@
+# Permissionin ID
+
 `permissionId` is a `bytes` object that represents the unique identifying information of a position within the protocol. `permissionId` allows the system to distinguish between bids competing on different opportunities and thereby run more scoped and efficient auctions.
 
 For some protocols, each borrower has a unique position, so the borrower address uniquely identifies a position. For other protocols, each borrower might have multiple positions, distinguished by the address of the collateral asset or by a uint256 id number. In those cases, the set of information that uniquely identifies a position would include multiple fields.

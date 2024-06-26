@@ -1,9 +1,19 @@
-The auction in Express Relay is held off-chain at the auction server. Bids arrive at the auction server and compete against other bids vying for the same permission key. A relayer selected by governance serves as the auctioneer and is expected to determine the auction in line with the criterion of maximizing the revenue shared back to the protocol that generated this opportunity. That means the auctioneer is expected to forward the subset of bids that maximizes the revenue back to the protocol.
+# Auction
 
-Thus, the Express Relay auction is analogous to a sealed-bid auction, in that participants in the auction will not have the contents of their bid disclosed publicly unless they are forwarded on-chain. Generally, bids are forwarded on-chain if they are expected to execute successfully on-chain, though additional "fallback" bids may be forwarded as well in case of execution failures for the expected winners. The `ExpressRelay` contract extracts the payment of the specified bid amount only if the searcher's bid executes successfully on-chain. Hence, the Express Relay auction can be seen as a generalization of a [first-price sealed-bid auction](https://en.wikipedia.org/wiki/First-price_sealed-bid_auction), in that multiple bids can win and pay their first price.
+The auction in Express Relay is held off-chain at the auction server. 
+Liquidation bids arrive at the auction server and compete against other bids, vying for the same [permission key](./permissioning.mdx). 
+A [relayer](./relayer.mdx) selected by governance serves as the auctioneer and determines the auction in line with the criterion of maximizing the revenue shared back to the protocol that generated this opportunity. 
+That means the auctioneer is expected to forward the subset of bids that maximizes the revenue back to the protocol.
 
-The revenue from the auction is shared amongst relevant stakeholders in the Express Relay system. This includes:
-- the protocol, which generated the relevant opportunity
+Thus, the Express Relay auction is analogous to a sealed-bid auction, i.e., participants in the auction will not have the contents of their bid disclosed publicly unless they are forwarded on-chain. 
+
+Generally, the auction server expects bids to execute successfully on-chain. Falback bids are also forwarded in case of execution failures for the predicted winners.
+
+The `ExpressRelay` contract extracts the payment of the specified bid amount only if the searcher's bid is successfully executed on-chain. 
+Hence, the Express Relay auction can be seen as a generalization of a [first-price sealed-bid auction](https://en.wikipedia.org/wiki/First-price_sealed-bid_auction), in that multiple bids can win and pay their first price.
+
+The revenue from the auction is shared amongst relevant stakeholders in the Express Relay system. These stakeholders include:
+- the protocol that generated the relevant opportunity
 - the relayer, which handled running the off-chain components of the system
 
-The exact revenue splits can be found in the Express Relay read contract and are subject to ...
+The contract enforces the exact revenue splits in the Express Relay and is subject to change based on governance decisions.
