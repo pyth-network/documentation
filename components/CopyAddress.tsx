@@ -4,7 +4,7 @@ import CopyIcon from "./icons/CopyIcon";
 const CopyAddress = ({ address, url }: { address: string; url?: string }) => {
   return (
     <div
-      className="-ml-1 inline-flex cursor-pointer items-center px-1 font-mono hover-light dark:hover-dark"
+      className="-ml-1 inline-flex cursor-pointer items-center px-1 font-mono hover:bg-light hover:text-dark dark:hover:bg-dark dark:hover:text-light"
       onClick={() => {
         copy(address);
       }}

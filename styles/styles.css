@@ -77,14 +77,6 @@
     @apply text-light !important;
   }
 
-  .hover-light {
-    @apply hover:bg-light hover:text-dark !important;
-  }
-
-  .hover-dark {
-    @apply hover:bg-dark hover:text-light !important;
-  }
-
   html[class~="dark"] {
     p,
     ul,
