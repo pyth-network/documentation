@@ -1,15 +1,10 @@
 import copy from "copy-to-clipboard";
 import CopyIcon from "./icons/CopyIcon";
-import useTheme from "../hooks/useTheme";
 
 const CopyAddress = ({ address, url }: { address: string; url?: string }) => {
-  const isDarkMode = useTheme();
-
   return (
     <div
-      className={`-ml-1 inline-flex cursor-pointer items-center px-1 font-mono ${
-        isDarkMode ? "hover-dark" : "hover-light"
-      }`}
+      className="-ml-1 inline-flex cursor-pointer items-center px-1 font-mono hover-light dark:hover-dark"
       onClick={() => {
         copy(address);
       }}
