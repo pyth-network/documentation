@@ -2,6 +2,7 @@
   "evm": "EVM",
   "solana": "Solana / SVM",
   "starknet": "Starknet",
+  "fuel": "Fuel",
   "aptos": "Aptos",
   "sui": "Sui",
   "cosmwasm": "CosmWasm",
