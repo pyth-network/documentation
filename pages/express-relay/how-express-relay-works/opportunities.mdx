@@ -6,8 +6,22 @@ In the pre-Express Relay world, opportunities therefore correspond to MEV: a pro
 
 In the context of Express Relay, the value deriving from an opportunity no longer flows to the validator but instead is recaptured by the system and shared back with the protocol. In Express Relay, protocols expose opportunities to the network of integrated searchers, and the searchers then bid on priority to execute those opportunities. Critically, the auction has moved from being determined by validators to a lower level at the protocol level.
 
-Explain Opportunity Adapter contract
+## Opportunity Adapter
 
-Brief explanation of and Links to permit2/create2/factory
+The 
+
+### Permit2
+
+The `OpportunityAdapter` contract uses the [Permit2](https://github.com/Uniswap/permit2) token approval system, which handles the validation of a searcher's signature. Permit2 enables users to authorize token approvals for specific transaction data. In combination with Permit2, `OpportunityAdapter` allows a searcher to authorize use of their tokens only with a call to a particular contract with specified calldata and conditional on receipt of a set of specified `buyTokens`.
+
+## Opportunity Server
+
+Once on-chain opportunities arise, searchers can be notified of their existence via the opportunity server. Like the auction server, this is an off-chain piece of the Express Relay stack that is run by an infrastructure partner designated by the DAO. The opportunity server presents opportunities to searchers in a way that abstracts away bespoke integration work for the searcher: instead of worrying about crafting calldata specific to every new liquidation interface, searchers now view liquidation opportunities in terms of tokens they need to sell (debt they repay) in exchange for tokens they buy (collateral they liquidate). This simplified interface unifies different liquidation schemas and allows searchers to easily plug into more protocols, improving the access between protocols and searchers.
+
+In addition to learning about present opportunities, searchers can also query the opportunity server for data around historical opportunities
+
+-(TODO) Diagram of searchers before and after ExpressRelay
+-before: searcher connects to every new protocol bespokely.  similarly, protocols have to court and incentivize individual searchers. maybe a messy looking bipartite graph with O(NM) edges
+-after: searcher connects once to ExpressRelay, then gets access to opportunities of all integrated protocols. similarly, protocol connects once to ExpressRelay, then gets access to DeFi services of all integrated searchers. a cleaner looking graph with ER in the middle as a hub for both protocols and searchers.
 
 Explanation of how to write the monitor at a high level
