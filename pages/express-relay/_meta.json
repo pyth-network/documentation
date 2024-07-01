@@ -28,11 +28,7 @@
     "href": "https://per-staging.dourolabs.app/docs/"
   },
   "contract-addresses": "Contract Addresses",
-  "error codes": {
-    "title": "Error Codes ↗",
-    "href": "https://www.notion.so/pyth-network/Error-codes-explanation-c90c375eb9a4430494578a713a0d7e68?pvs=4"
-  },
-
+  "errors": "Error Codes",
   "examples": {
     "title": "Example Application ↗",
     "href": "https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend"
