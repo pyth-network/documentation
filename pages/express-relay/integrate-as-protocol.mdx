@@ -2,21 +2,21 @@ import { Callout, Tabs, Steps } from 'nextra/components'
 
 # How to Integrate Express Relay as a Protocol
 
-Protocol developers can **permissionlessly** integrate with Express Relay to recapture MEV and access a network of searchers. 
+Defi Protocols can **permissionlessly** integrate with Express Relay to recapture MEV and access a network of searchers. 
 
 Integrating with Express Relay involves two main steps:
 
-- Update the Protocol's contract to **permission** Express Relay transactions.
+- Update your defi Protocol's contract to **permission** Express Relay transactions.
 - Write a script to **expose** liquidation opportunities to Searchers for auction.
 
-## Update the Protocol's Contract
+## Update your defi Protocol's Contract
 
-The Protocol's contract must permit Express Relay to access liquidation opportunities.
+To integrate with Express Relay, your protocol's contract must permit Express Relay to access liquidation opportunities.
 
 <Steps>
 ### Install the Express Relay SDK
 
-Pyth provides a [Solidity SDK](https://www.npmjs.com/package/@pythnetwork/express-relay-sdk-solidity) to help developers integrate Express Relay into your Protocol. 
+Pyth provides a [Solidity SDK](https://www.npmjs.com/package/@pythnetwork/express-relay-sdk-solidity) to help developers integrate Express Relay into their defi protocol. 
 The SDK exposes [`IExpressRelay`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelay.sol) and [`IExpressRelayFeeReceiver`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelayFeeReceiver.sol) interfaces to interact with Express Relay.
 
 <Tabs items={['Hardhat', 'Foundry']}>
@@ -45,15 +45,15 @@ Then add the following line to `remappings.txt` file:
 
 ### Modifying the Protocol's Contract
 
-Developers need to update the Protocol's contract to:
+The following steps show how to modify your protocol's contract to permit Express Relay transactions and receive funds from Express Relay.
 
 1. Utilize [`isPermissioned`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelay.sol#L10C14-L10C28) method from `IExpressRelay` interface to **permit** Express Relay transactions.
 1. Implement the [`IExpressRelayFeeReceiver`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelayFeeReceiver.sol#L4) interface to **receive** funds from Express Relay.
 
-#### 1. Permit Express Relay Transactions
+#### 1. Permission Express Relay Transactions
 
 The `isPermissioned` function takes two arguments:
-1. `protocolFeeReceiver`: The address of the Protocol's contract.
+1. `protocolFeeReceiver`: The contract address that will receive the protocol fee from the winning searcher after a successful auction.
 1. `permissionId`: A unique identifier of a vault or position eligible for liquidation.
 
 ```solidity copy
@@ -74,13 +74,12 @@ require(
 <Callout type="info" emoji="ℹ️">
   The `permissionId` represents unique identifying information for the vault or position within a protocol. 
   It can be the vault address or the vault ID, concatenated into `bytes` format. 
-  Consult [`Permission Id`](#) for more information on generating permission IDs. 
+  Consult [`Permissioning`](./how-express-relay-works/permissioning.mdx) for more information on generating permission IDs. 
 </Callout>
 
 #### 2. Set up Fee Receiver
 
-After a successful auction, the Express Relay server sends funds to the Protocol's contract. 
-Express Relay server calls the `receiveAuctionProceedings` function present in `IExpressRelayFeeReceiver` to send funds to the Protocol's contract
+After a successful auction, the Express Relay calls the `receiveAuctionProceedings` function present in `IExpressRelayFeeReceiver` to send the portion of the fee paid by the winning searcher to the Protocol's contract
 
 ```solidity copy
 interface IExpressRelayFeeReceiver {
@@ -164,7 +163,7 @@ contract EasyLend is IExpressRelayFeeReceiver {
 
 ## Expose Liquidation Opportunities to Searchers
 
-Protocols should fetch vaults and positions eligible for liquidation and expose them to Express Relay for auction.
+Your defi Protocol should fetch vaults and positions eligible for liquidation and expose them to Express Relay for auction.
 
 The Express Relay auction server provides a **POST** method, `/v1/opportunities`, which accepts a JSON payload containing the details of the liquidation opportunity.
 
@@ -194,7 +193,7 @@ The JSON payload should contain liquidation opportunities in the following forma
 ```
 
 
-Protocols must evaluate each position's health using the latest Oracle prices before exposing them to Express Relay. 
+Each protocol integrated with Express Relay must evaluate every position's health using the latest Oracle prices before exposing them to Express Relay. 
 You can do this by indexing the chain, listening to protocol events, or querying open positions through an RPC provider.
 
 Check the [`monitor.ts`]() script, which fetches liquidation opportunities for the below-mentioned [Easy Lend](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend) example and exposes them to Express Relay for auction.
