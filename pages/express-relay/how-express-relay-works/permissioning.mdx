@@ -1,4 +1,4 @@
-# Permission ID
+# Permissioning
 
 `permissionId` is a `bytes` object that represents the unique identifying information of a position within the protocol. `PermissionId` allows the system to distinguish between bids competing on different opportunities and thereby run more scoped and efficient auctions.
 
@@ -22,4 +22,8 @@ bytes memory permissionId = abi.encode(borrowerAddress, positionId);
 ```
 
 The Express Relay contract uses the `permissionId` to toggle permissions for interacting with the protocol. 
-This toggling is checked within the protocol's code to ensure that the current transaction is within the context of Express Relay so that the recaptured value can be returned to the protocol.
+This toggling is checked within the protocol's code to ensure that the current transaction is within the context of Express Relay so that the recaptured value can be returned to the protocol. In particular, the Express Relay contract checks the toggling of the `permissionKey`, which is the concatenation of the protocol address and the `permissionId`:
+
+```solidity
+bytes memory permissionKey = abi.encode(protocolAddress, permissionId);
+```
