@@ -21,6 +21,11 @@
     "href": "/entropy"
   },
 
+  "Express Relay": {
+    "title": "Express Relay →",
+    "href": "/express-relay"
+  },
+
   "--- Additional Information": {
     "title": "Additional Information",
     "type": "separator"
