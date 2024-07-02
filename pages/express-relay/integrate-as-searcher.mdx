@@ -1,4 +1,10 @@
 # How to Integrate Express Relay as a Searcher
 
-This guide explains how to integrate Express Relay as a searcher for liquidation opportunities.
-To integrate Express Relay as a searcher, you need to: 
+By integrating with Express Relay, searchers are able to access opportunities from various DeFi protocols via a simple and unified interface.
+Opportunities and searcher bids are communicated via the Express Relay server.
+The server exposes different endpoints for interaction which can be used directly via HTTP and WebSocket or via one of the SDKS for convenience.
+
+The integration consists of 2 main steps:
+
+- Integrate your searcher service with auction server
+- \[Optional\] Use [OpportunityAdapter](./integrate-as-searcher/opportunity-adapter) and setup a wallet with the necessary tokens and approvals
