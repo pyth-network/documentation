@@ -146,20 +146,26 @@ If you prefer to use your own custom contracts rather than the `OpportunityAdpat
 ```solidity
 ...
 function callLiquidation(Opportunity memory opp){
+    for (uint i=0; i<opp.sell_tokens.length; i++) {
+        let token = opp.sell_tokens[i];
+        IERC20(token.contract).approve(opp.contract, token.amount);
+    }
 
-    // this is a simplified version since sell and buy tokens are
-    // an array and multiple assets may be necessary for the liquidation
-    assert(opp.buy_tokens.length == 1);
-    assert(opp.sell_tokens.length == 1);
-
-    IERC20(opp.sell_tokens[0].contract).approve(opp.contract, opp.sell_tokens[0].amount);
-
-    before = IERC20(opp.buy_tokens[0].contract).balanceOf(address(this));
+    uint256[] before = new uint256[](opp.buy_tokens.length);
+    for (uint j=0; j<opp.buy_tokens.length; j++) {
+        let token = opp.buy_tokens[j];
+        before = IERC20(token.contract).balanceOf(address(this));
+    }
+        
     opp.target_contract.call{value: opp.target_call_value}(opp.target_calldata);
 
-    after = IERC20(opp.buy_tokens[0].target_contract).balanceOf(address(this));
+    uint256[] after = new uint256[](opp.buy_tokens.length);
+    for (uint j=0; j<opp.buy_tokens.length; j++) {
+        let token = opp.buy_tokens[j];
+        after = IERC20(token.target_contract).balanceOf(address(this));
 
-    assert(after == before + opportunity.buy_tokens[0].amount)
+        assert(after[j] == before[j] + token.amount);
+    }
 }
 ...
 ```

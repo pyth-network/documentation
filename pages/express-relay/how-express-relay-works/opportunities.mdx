@@ -27,6 +27,8 @@ The Opportunity Adapter contract enables searchers to engage with opportunities 
 
 Thus, the Opportunity Adapter unifies the disparate interfaces of different protocols with respect to their different opportunities. This unification in a single interface is what makes Express Relay an opportunity hub connecting protocols and searchers.
 
+To use the Opportunity Adapter workflow, a searcher submits a bid with the target contract set to the `OpportunityAdapterFactory` contract. Each searcher has their own `OpportunityAdapter` contract per chain that is created when they first interact with `OpportunityAdapterFactory`. The factory contract then routes the transaction of a searcher to its corresponding `OpportunityAdapter` contract.
+
 ### Permit2
 
 The `OpportunityAdapter` contract uses the [Permit2](https://github.com/Uniswap/permit2) token approval system, which handles the validation of a searcher's signature. Permit2 enables users to authorize token approvals for specific transaction data. In combination with Permit2, `OpportunityAdapter` allows a searcher to authorize use of their tokens only with a call to a particular contract with specified calldata and conditional on receipt of a set of specified `buyTokens`.
