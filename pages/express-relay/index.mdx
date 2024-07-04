@@ -1,15 +1,30 @@
+import Link from "next/link";
+
+import { Cards, Card } from "nextra/components";
+import SearchIcon from "../../components/icons/SearchIcon";
+import ContractIcon from "../../components/icons/ContractIcon";
+
 # Introduction
 
 Express Relay is a priority auction that enables protocols to eliminate maximal extractable value (MEV).
 
 **For Protocol Developers:** Express Relay’s auction primitive allows your protocol to prioritize access to permissionless operations, eliminating the extractive role of miners in ordering transactions.
 A network of established searchers compete in the auctions, allowing you to avoid spending time and energy bootstrapping your own protocol-specific searcher network.
-Learn how to [Integrate with Express Relay as a protocol](/express-relay/integrate-as-protocol).
-
-FIXME: This link above and the ones below should be big buttons
 
 **For Searchers:** Express Relay aggregates liquidation and other MEV opportunities across integrated DeFi protocols, providing easy and unified access.
-Learn how to [Integrate with Express Relay as a searcher](/express-relay/integrate-as-searcher).
+
+<Cards>
+  <Card
+    icon={<ContractIcon />}
+    title="Integrate with Express Relay as a protocol"
+    href="./express-relay/integrate-as-protocol"
+  />
+  <Card
+    icon={<SearchIcon />}
+    title="Integrate with Express Relay as a searcher"
+    href="./express-relay/integrate-as-searcher"
+  />
+</Cards>
 
 To learn more about Express Relay's design and how it eliminates MEV, please see [How Express Relay Works](/express-relay/how-express-relay-works).
 
