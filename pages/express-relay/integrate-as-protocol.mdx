@@ -2,11 +2,11 @@ import { Callout, Tabs, Steps } from 'nextra/components'
 
 # How to Integrate Express Relay as a Protocol
 
-Defi Protocols can **permissionlessly** integrate with Express Relay to recapture MEV and access a network of searchers. 
+Defi protocols can **permissionlessly** integrate with Express Relay to recapture MEV and access a network of searchers. 
 
 Integrating with Express Relay involves two main steps:
 
-- Update your defi Protocol's contract to **permission** Express Relay transactions.
+- Update your defi protocol's contract to **permission** Express Relay transactions.
 - Write a script to **expose** liquidation opportunities to Searchers for auction.
 
 ## Update your defi Protocol's Contract
@@ -163,7 +163,7 @@ contract EasyLend is IExpressRelayFeeReceiver {
 
 ## Expose Liquidation Opportunities to Searchers
 
-Your defi Protocol should fetch vaults and positions eligible for liquidation and expose them to Express Relay for auction.
+Your defi protocol should fetch vaults and positions eligible for liquidation and expose them to Express Relay for auction.
 
 The Express Relay auction server provides a **POST** method, `/v1/opportunities`, which accepts a JSON payload containing the details of the liquidation opportunity.
 
