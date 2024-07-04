@@ -4,7 +4,7 @@
 
 Searchers submit their bids on transactions they wish to execute to the off-chain auction server of the Express Relay. The auction server lives at (TODO: INSERT ENDPOINT), and its API documentation can be found here (TODO: INSERT SWAGGER DOCS). You can use the express relay [JavaScript SDK](https://www.npmjs.com/package/@pythnetwork/express-relay-evm-js) or [Python SDK](https://pypi.org/project/express-relay/) for a more native integration.
 
-To submit a bid to the auction server, a searcher can use either websocket (if they wish to subscribe to updates on the status of their bid) or the HTTP `/v1/bids` POST method. 
+To submit a bid to the auction server, a searcher can use either websocket (if they wish to subscribe to updates on the status of their bid) or the HTTP `/v1/bids` POST method.
 
 ### HTTP
 
@@ -21,11 +21,12 @@ The HTTP POST request should be submitted with a JSON request body representing 
 ```
 
 The fields of this object are described in more detail below:
+
 - `chain_id`: The `string` identifying the chain on which the searcher wishes to submit the transaction.
 - `permission_key`: The `bytes` (in the form of a 0x-prefixed hex string) that serve as the unique identifying information for a position within a protocol
 - `target_contract`: The `address` of the contract the searcher wishes to call from the `ExpressRelay` contract. This could be the searcher's own contract or the [`OpportunityAdapterFactory` contract](./integrate-as-searcher/opportunity-adapter).
 - `target_calldata`: The `bytes` (in the form of a 0x-prefixed hex string) of the calldata the searcher wishes to call the `targetContract` with.
-- `amount`: The amount of ETH (in wei) the searcher is bidding for their transaction's priority. 
+- `amount`: The amount of ETH (in wei) the searcher is bidding for their transaction's priority.
 
 ### WebSocket
 
@@ -62,10 +63,6 @@ A successful response to bid submission has the following schema:
 
 From this point on, you will receive notifications about the bid status updates in JSON format. There are four types of bid status updates ("pending", "submitted", "lost", "won"), and you can find more details and examples in the `BidStatus` schema in the Schemas section of the API documentation (TODO: INSERT SWAGGER DOCS).
 
-#### WebSocket connection persistence
-
-The WebSocket server responds to ping messages according to WebSocket standards. Additionally, the server periodically sends a ping message to the client to ensure the connection is still active and expects a pong in return.
-
 ## Discovering transactions to bid on
 
 In addition, the server has a set of opportunity endpoints that expose [opportunities](./how-express-relay-works/opportunities) as they become available. An `Opportunity` has the following structure:
@@ -94,6 +91,7 @@ In addition, the server has a set of opportunity endpoints that expose [opportun
 ```
 
 The fields of the `Opportunity` are described below:
+
 - `chain_id`: The chain id where the opportunity is available
 - `permission_key`: The permission key corresponding to the opportunity
 - `target_contract`: The protocol contract address where the opportunity is available
@@ -156,7 +154,7 @@ function callLiquidation(Opportunity memory opp){
         let token = opp.buy_tokens[j];
         before = IERC20(token.contract).balanceOf(address(this));
     }
-        
+
     opp.target_contract.call{value: opp.target_call_value}(opp.target_calldata);
 
     uint256[] after = new uint256[](opp.buy_tokens.length);

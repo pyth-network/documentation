@@ -1,0 +1,179 @@
+# Websocket API Reference
+
+You can connect to the server via websocket in order to reduce latency and subscribe to various events. The websocket endpoint relies at `/v1/ws`(e.g `wss://pyth-express-relay-mainnet.asymmetric.re/v1/ws`)
+
+## General format
+
+Each request sent to the server via websocket should be in the following json format:
+
+```json
+{
+	"id": "...", // used for uniquely identifying the responses to requests
+	"method": "...", // name of the server method to invoke
+	"params": {...} // parameters necessary for the method
+}
+```
+
+The server responds using the same `id` specified in the request:
+
+```json
+{
+  "id": "...",
+  "status": "success",
+  "result": {}
+}
+```
+
+In case of error, `status` field will be `error` and the error message will be available in the `result` field as a string:
+
+```json
+{
+  "id": "...",
+  "status": "error",
+  "result": "..."
+}
+```
+
+## Subscribing to opportunities
+
+To subscribe to opportunities you can send a request with the `chain_ids` parameter which specifies the chains as an array.
+
+```json
+{
+  "id": "1",
+  "method": "subscribe",
+  "params": {
+    "chain_ids": ["op_sepolia"]
+  }
+}
+```
+
+After a successful subscription you will receive the new opportunities for the selected chains via the websocket in the following format:
+
+```json
+{
+	"type": "new_opportunity",
+	"opportunity": {...}
+}
+```
+
+The schema for the opportunity is similar to what’s returned in the [http requests](https://pyth-express-relay-mainnet.asymmetric.re/docs/#/liquidation/get_opportunities)
+
+In order to unsubscribe from a list of chains you can send the following message:
+
+```json
+{
+  "id": "1",
+  "method": "unsubscribe",
+  "params": {
+    "chain_ids": ["op_sepolia"]
+  }
+}
+```
+
+## Submitting bids
+
+In addition to the http methods, you can submit your bids via websocket in order to avoid additional network round-trips and get notified about changes to your bid status. Here is an example json payload for submitting a new bid
+
+```json
+{
+  "id": "1",
+  "method": "post_bid",
+  "params": {
+    "bid": {
+      "amount": "10",
+      "calldata": "0xdeadbeef",
+      "chain_id": "sepolia",
+      "contract": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "permission_key": "0xdeadbeefcafe"
+    }
+  }
+}
+```
+
+A successful response to bid submission has the following schema:
+
+```json
+{
+  "id": "1", // websocket request id
+  "status": "success",
+  "result": {
+    "id": "beedbeed-b346-4fa1-8fab-2541a9e1872d", //bid id
+    "status": "OK"
+  }
+}
+```
+
+From this point you will receive notifications about the bid status updates in JSON format. We share four examples below, one for each of the status options (”pending”, “submitted”, “lost”, “won”):
+
+```json
+// pending
+// The temporary state which means the auction for this bid is pending
+{
+	"type": "bid_status_update",
+	"status": {
+		"id": "1eaee2a4-01bf-4f6c-8a76-21fadb2c43b1",
+		"bid_status": {
+			"type": "pending"
+		}
+	}
+}
+
+// submitted
+// The bid is submitted to the chain, which is placed at the given index of the transaction with the given hash
+// This state is temporary and will be updated to either lost or won after conclusion of the auction
+{
+	"type": "bid_status_update",
+	"status": {
+		"id": "beedbeed-0e42-400f-a8ef-d78aa5422252",
+		"bid_status": {
+			// the enum for the bid_status
+			"type": "submitted",
+			// the hash of the transaction that the bid's calldata was included in
+			"result": "0xabc393b634fdf3eb45be8350fd16cd1b4add47b96059beacc1d8c20e51d75ec3",
+			// the index of the bid calldata within the multicall bundle for the above transaction
+			"index": 0
+		}
+	}
+}
+
+// lost
+// The bid lost the auction, which is concluded with the transaction with the given hash and index
+// The result will be None if the auction was concluded off-chain and no auction was submitted to the chain
+// The index will be None if the bid was not submitted to the chain and lost the auction by off-chain calculation
+// There are cases where the result is not none and the index is none.
+// It is because other bids were selected for submission to the chain, but not this one.
+{
+	"type": "bid_status_update",
+	"status": {
+		"id": "1eaee2a4-01bf-4f6c-8a76-21fadb2c43b1",
+		"bid_status": {
+			"type": "lost",
+			"result": "0x99c2bf411330ae997632f88abe8f86c0d1f4c448f7d5061319d23814a0fb1135"
+		}
+	}
+}
+
+// won
+// The bid won the auction, which is concluded with the transaction with the given hash and index
+{
+	"type": "bid_status_update",
+	"status": {
+		"id": "beedbeed-0e42-400f-a8ef-d78aa5422252",
+		"bid_status": {
+			// the enum for the bid_status
+			"type": "won",
+			// the hash of the transaction that the bid's calldata was included in
+			"result": "0xabc393b634fdf3eb45be8350fd16cd1b4add47b96059beacc1d8c20e51d75ec3",
+			// the index of the bid calldata within the multicall bundle for the above transaction
+			"index": 0
+		}
+	}
+}
+```
+
+## Connection Persistence
+
+The websocket server responds to ping messages according to websocket standards.
+
+Additionally, the server periodically sends a ping message to the client to ensure the connection is still active and expects a pong in return.

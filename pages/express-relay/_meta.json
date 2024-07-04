@@ -24,9 +24,10 @@
   },
 
   "api-reference": {
-    "title": "API Reference ↗",
-    "href": "https://per-staging.dourolabs.app/docs/"
+    "title": "HTTP API Reference ↗",
+    "href": "https://pyth-express-relay-mainnet.asymmetric.re/docs/"
   },
+  "websocket-api-reference": "Websocket API Reference",
   "contract-addresses": "Contract Addresses",
   "errors": "Error Codes",
   "examples": {
