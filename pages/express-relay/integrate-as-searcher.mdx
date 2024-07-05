@@ -80,7 +80,47 @@ The server responds with opportunities in the following format:
   "version": "v1"                                                       // Opportunity format version
 }
 ```
-</Steps>
+
 
 
 ### Submit bids on opportunities to the auction server.
+
+Searchers can submit bids on opportunities to the auction server via an HTTP POST or through a WebSocket connection.
+
+<Tabs items={['HTTP', 'Websocket']}>
+
+<Tabs.Tab>
+Searchers can submit bids through an HTTP POST call to the `/v1/bids` endpoint. This endpoint accepts a JSON payload containing the details of the bid.
+
+```bash copy
+{
+    "chain_id": "op_sepolia",
+    "permission_key": "0x00000000000000000000000087ee27c5ae396b28a825968b277fece0720f5907000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000",
+    "target_contract": "0x87ee27c5ae396b28a825968b277fece0720f5907"
+    "target_calldata": "0xeadb38050000000000000000000000000000000000000000000000000000000000000064",
+    "amount": "10",
+}
+```
+</Tabs.Tab>
+<Tabs.Tab>
+
+Searchers can submit bids via Websocket to avoid additional network round-trips and get notified about changes to the bid status.
+
+```bash copy
+```
+
+A successful response to a bid submission has the following schema:
+
+```bash copy
+{
+  "id": "1",                                            // websocket request id
+  "status": "success",
+  "result": {
+    "id": "beedbeed-b346-4fa1-8fab-2541a9e1872d",       //bid id
+    "status": "OK"
+  }
+}
+```
+</Tabs.Tab>
+</Tabs>
+</Steps>
