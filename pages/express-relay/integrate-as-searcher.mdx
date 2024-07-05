@@ -10,14 +10,15 @@ The server exposes different endpoints for interaction, which can be used direct
 Searchers can integrate with the Express Relay server in three steps:
 
 1. Subscribe to new opportunities
-2. Evaluating the opportunity and constructing the bid
-3. Submitting the bid to the auction server
+2. Evaluate the opportunity and construct the bid
+3. Submit the bid to the auction server
 
 <Steps>
 
-### Subscribe to new opportunities
+### Subscribing to new opportunities
 
-Searchers can fetch available opportunities via HTTP or subscribe to them via WebSocket.
+Express Relay provides searchers with `Typescript` and `Python` SDKs to interact with the server. 
+Searchers can also fetch available opportunities via HTTP or subscribe to them via WebSocket.
 
 <Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
 
@@ -43,7 +44,7 @@ await client.subscribeChains(["op_sepolia"]);
 <Tabs.Tab>
     Our Python SDK provides a convenient way to subscribe to opportunities:
 
-```python
+```python copy
 from express_relay.client import (
     ExpressRelayClient,
 )
@@ -73,16 +74,16 @@ curl -X 'GET' \
   'https://pyth-express-relay-mainnet.asymmetric.re/v1/opportunities?chain_id=op_sepolia&mode=live'
 ```
 
-Opportunities are short-lived and will be executed in a matter of seconds. So it is possible for this endpoint to return an empty response.
+Opportunities are short-lived and will be executed in a matter of seconds. So, the above endpoint can return an empty response.
 
 You can fetch historical opportunities by setting the `mode` parameter to `historical`.
 
 </Tabs.Tab>
 <Tabs.Tab>
 Searchers can connect to the server via WebSocket to reduce latency and subscribe to various events. The WebSocket endpoint relies at `/v1/ws`(e.g `wss://pyth-express-relay-mainnet.asymmetric.re/v1/ws`)
-Here is a sample json payload to subscribe to opportunities:
+Here is a sample JSON payload to subscribe to opportunities:
 
-```json copy
+```bash copy
 {
   "id": "1",
   "method": "subscribe",
@@ -99,13 +100,13 @@ Consult [`Websocket API reference`](./websocket-api-reference.mdx) for a complet
 
 The server responds with opportunities in the following format:
 
-```json copy
+```bash copy
 {
-  "target_calldata": "0xdeadbeef", // Calldata to execute the opportunity
+  "target_calldata": "0xdeadbeef",                                  // Calldata to execute the opportunity
   "chain_id": "op_sepolia",
-  "target_contract": "0xcA11bde05977b3631167028862bE2a173976CA11", // Protocol contract address to call for execution
-  "permission_key": "0xcafebabe", // Permission key required for the liquidation opportunity
-  "target_call_value": "1", // Value(in Wei) to send with to the Protocol contract.
+  "target_contract": "0xcA11bde05977b3631167028862bE2a173976CA11",  // Protocol contract address to call for execution
+  "permission_key": "0xcafebabe",                                   // Permission key required for the liquidation opportunity
+  "target_call_value": "1",                                         // Value(in Wei) to send with to the Protocol contract.
   "buy_tokens": [
     // Tokens to buy
     {
@@ -120,14 +121,15 @@ The server responds with opportunities in the following format:
       "token": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
     }
   ],
-  "version": "v1" // Opportunity format version
+  "version": "v1"                                                   // Opportunity format version
 }
 ```
 
-### Evaluating the opportunity and constructing the bid
+### Evaluate the opportunity and construct the bid
 
-Based on the opportunity details, mainly the sell tokens and buy tokens, searchers can evaluate the opportunity and construct a bid.
-The SDKs provide an easy way to construct a bid using the `OpportunityAdapter` contract. The `OpportunityAdapter` contract handles asset transfers and ensures the opportunity is executed correctly.
+Searchers should construct a bit based on the fetched opportunity details like `buy_tokens` and `sell_tokens`.
+The SDKs provide an easy way to construct a bid using the `OpportunityAdapter` contract. 
+The `OpportunityAdapter` contract handles asset transfers and ensures the opportunity is executed correctly.
 
 You can learn more about the `OpportunityAdapter` contract and how to prepare your assets in the [Opportunity Adapter](./integrate-as-searcher/opportunity-adapter.mdx) section.
 If you have already developed an in-house searcher contract there is no need to integrate using the Opportunity Adapter contract.
@@ -166,11 +168,11 @@ signed_bid = sign_bid(opportunity,
 OpportunityBidParams(amount=amount, deadline=int(deadline), nonce=nonce),
 private_key)
 
-````
+```
 </Tabs.Tab>
 </Tabs>
 
-### Submit bids on opportunities to the auction server.
+### Submit bids on opportunities to the auction server
 
 Searchers can submit the constructed bids to the auction server via the SDKs, an HTTP POST request, or through a WebSocket connection.
 
@@ -183,7 +185,7 @@ const handleOpporunity = async (opportunity: Opportunity) => {
     const bid = await client.signBid(opportunity, {amount, nonce, deadline},privateKey)
     await client.submitBid(bid)
 }
-````
+```
 
 </Tabs.Tab>
 <Tabs.Tab>
