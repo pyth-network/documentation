@@ -139,7 +139,8 @@ In order to unsubscribe from a list of chains, you can send the following messag
 
 For most searchers, it is recommended to source opportunities via the opportunity endpoints and construct transactions intended for the [`OpportunityAdapter`](./integrate-as-searcher/opportunity-adapter). The SDKs expose methods to craft the calldata for the `OpportunityAdapter` contract and construct and submit the `Bid`.
 
-If you prefer to use your own custom contracts rather than the `OpportunityAdpater` contract for executing opportunities, you can still use the server's opportunity endpoints to learn about opportunities on specific protocols and then craft a `Bid` based on an `Opportunity`. Here is a simplified example of a custom contract method that uses the `Opportunity` information to call a liquidation.
+If you prefer to use your own custom contracts rather than the `OpportunityAdpater` contract for executing opportunities, you can still use the server's opportunity endpoints to learn about opportunities on specific protocols and then craft a `Bid` based on an `Opportunity`. 
+Here is a simplified example of a custom contract method that uses the `Opportunity` information to call a liquidation.
 
 ```solidity
 ...
