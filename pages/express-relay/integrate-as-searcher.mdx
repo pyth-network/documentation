@@ -46,12 +46,14 @@ Searchers can connect to the server via WebSocket to reduce latency and subscrib
 ```bash copy
 {
     "id": "1",
-    "method": "subscribe",
+    "method": "subscribe",                  // Name of the server method to invoke
     "params": {
         "chain_ids": ["op_sepolia"]
     }
 }
 ```
+
+Consult [`Websocket API reference`](./websocket-api-reference.mdx) for a complete list of methods and parameters.
 </Tabs.Tab>
 </Tabs>
 
@@ -100,6 +102,8 @@ Searchers can submit bids through an HTTP POST call to the `/v1/bids` endpoint. 
     "amount": "10",
 }
 ```
+
+TODO: Explain the fields here.
 </Tabs.Tab>
 <Tabs.Tab>
 
@@ -125,14 +129,54 @@ A successful response to a bid submission has the following schema:
 
 ```bash copy
 {
-  "id": "1",                                            // websocket request id
+  "id": "1",                                            // Websocket request id
   "status": "success",
   "result": {
-    "id": "beedbeed-b346-4fa1-8fab-2541a9e1872d",       //bid id
+    "id": "beedbeed-b346-4fa1-8fab-2541a9e1872d",       // Bid id
     "status": "OK"
   }
 }
 ```
+
+Consult [`Websocket API reference`](./websocket-api-reference.mdx) for more details.
 </Tabs.Tab>
 </Tabs>
 </Steps>
+
+
+Searchers are **recommended** to source opportunities via the opportunity endpoints and construct transactions intended for the `OpportunityAdapter`.
+However, searchers can use custom contracts to execute transactions if they prefer.
+If searchers use custom contracts, they can still use the Express Relay server to source opportunities and craft bids based on the opportunity details.
+
+Check the following example of a custom contract that executes liquidation transactions:
+
+```solidity copy
+...
+function callLiquidation(Opportunity memory opp){
+    for (uint i=0; i<opp.sell_tokens.length; i++) {
+        let token = opp.sell_tokens[i];
+        IERC20(token.contract).approve(opp.contract, token.amount);
+    }
+
+    uint256[] before = new uint256[](opp.buy_tokens.length);
+    for (uint j=0; j<opp.buy_tokens.length; j++) {
+        let token = opp.buy_tokens[j];
+        before = IERC20(token.contract).balanceOf(address(this));
+    }
+
+    opp.target_contract.call{value: opp.target_call_value}(opp.target_calldata);
+
+    uint256[] after = new uint256[](opp.buy_tokens.length);
+    for (uint j=0; j<opp.buy_tokens.length; j++) {
+        let token = opp.buy_tokens[j];
+        after = IERC20(token.target_contract).balanceOf(address(this));
+
+        assert(after[j] == before[j] + token.amount);
+    }
+}
+...
+```
+
+<Callout type="info" emoji="ℹ️"> 
+Make sure to approve the `opp.contract` for the necessary amount of `sell_tokens`. 
+</Callout>
