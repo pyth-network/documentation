@@ -1,59 +1,99 @@
-import { Callout, Tabs, Steps } from 'nextra/components'
+import { Callout, Tabs, Steps } from "nextra/components";
 
 # How to Integrate Express Relay as a Searcher
 
-Express Relay gives one place stop for on-chain opportunities. Searchers can access opportunities from various DeFi protocols via a simple and unified interface. 
+Express Relay gives one place stop for on-chain opportunities. Searchers can access opportunities from various DeFi protocols via a simple and unified interface.
 
 Searchers **bid** on opportunities exposed by the Express Relay server.
-The server exposes different endpoints for interaction, which can be used directly via HTTP, WebSocket, or one of the SDKS for convenience.
+The server exposes different endpoints for interaction, which can be used directly via HTTP, WebSocket, or one of the SDKs for convenience.
 
+Searchers can integrate with the Express Relay server in three steps:
 
-Searchers can integrate with the Express Relay server in two steps:
-- Integrate with the auction server
-- Integrate with the opportunity adapter _(OPTIONAL)_
-
-
-
-
-## Integrate with the auction server
-
-Defi protocols integrated with Express Relay expose liquidation opportunities via the auction server. 
-Searchers can access these opportunities by querying the server directly or subscribing to WebSocket updates.
-
-To integrate with the auction server, follow these steps:
-1. Fetch opportunities from the auction server.
-1. Submit bids on opportunities to the auction server.
+1. Subscribe to new opportunities
+2. Evaluating the opportunity and constructing the bid
+3. Submitting the bid to the auction server
 
 <Steps>
 
-### Fetch opportunities from the auction server
+### Subscribe to new opportunities
 
-Searchers can request via HTTP or subscribe to WebSocket updates to fetch opportunities from the auction server.
+Searchers can fetch available opportunities via HTTP or subscribe to them via WebSocket.
 
-<Tabs items={['HTTP', 'Websocket']}>
+<Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
 
 <Tabs.Tab>
-Searchers can request opportunities through an HTTP GET call to the `/v1/opportunities` endpoint. 
+Our JavaScript SDK provides a convenient way to subscribe to opportunities:
+
+```typescript
+import { Client, Opportunity } from "@pythnetwork/express-relay-evm-js";
+
+const handleOpporunity = async (opportunity: Opportunity) => {
+  // TODO: Implement your opportunity handler here
+};
+
+const client = new Client(
+  { baseUrl: "https://pyth-express-relay-mainnet.asymmetric.re" },
+  undefined,
+  handleOpporunity
+);
+await client.subscribeChains(["op_sepolia"]);
+```
+
+</Tabs.Tab>
+<Tabs.Tab>
+    Our Python SDK provides a convenient way to subscribe to opportunities:
+
+```python
+from express_relay.client import (
+    ExpressRelayClient,
+)
+from express_relay.express_relay_types import Opportunity
+
+
+def opportunity_callback(opportunity: Opportunity):
+    # TODO: Implement your opportunity handler here
+    pass
+
+
+client = ExpressRelayClient(
+    'server_url',
+    None,
+    opportunity_callback,
+    None,
+)
+await client.subscribe_chains(['op_sepolia'])
+```
+
+</Tabs.Tab>
+<Tabs.Tab>
+Searchers can request opportunities through an HTTP GET call to the `/v1/opportunities` endpoint.
 
 ```bash copy
 curl -X 'GET' \
-  'https://per-staging.dourolabs.app/v1/opportunities?chain_id=op_sepolia&mode=live&permission_key=0xdeadbeef&from_time=2024-05-23T21%3A26%3A57.329954Z'
+  'https://pyth-express-relay-mainnet.asymmetric.re/v1/opportunities?chain_id=op_sepolia&mode=live'
 ```
+
+Opportunities are short-lived and will be executed in a matter of seconds. So it is possible for this endpoint to return an empty response.
+
+You can fetch historical opportunities by setting the `mode` parameter to `historical`.
+
 </Tabs.Tab>
 <Tabs.Tab>
 Searchers can connect to the server via WebSocket to reduce latency and subscribe to various events. The WebSocket endpoint relies at `/v1/ws`(e.g `wss://pyth-express-relay-mainnet.asymmetric.re/v1/ws`)
+Here is a sample json payload to subscribe to opportunities:
 
-```bash copy
+```json copy
 {
-    "id": "1",
-    "method": "subscribe",                  // Name of the server method to invoke
-    "params": {
-        "chain_ids": ["op_sepolia"]
-    }
+  "id": "1",
+  "method": "subscribe",
+  "params": {
+    "chain_ids": ["op_sepolia"]
+  }
 }
 ```
 
 Consult [`Websocket API reference`](./websocket-api-reference.mdx) for a complete list of methods and parameters.
+
 </Tabs.Tab>
 </Tabs>
 
@@ -61,65 +101,133 @@ The server responds with opportunities in the following format:
 
 ```json copy
 {
-  "target_calldata": "0xdeadbeef",                                      // Calldata to perform liquidation
-  "chain_id": "op_sepolia",                                             
-  "target_contract": "0xcA11bde05977b3631167028862bE2a173976CA11",      // Protocol contract address to call for liquidation
-  "permission_key": "0xcafebabe",                                       // Unique identifier for the liquidation opportunity
-  "target_call_value": "1",                                             // Value(in Wei) to send with to the Protocol contract.
-  "buy_tokens": [                                                       // Tokens to buy (Collateral)
+  "target_calldata": "0xdeadbeef", // Calldata to execute the opportunity
+  "chain_id": "op_sepolia",
+  "target_contract": "0xcA11bde05977b3631167028862bE2a173976CA11", // Protocol contract address to call for execution
+  "permission_key": "0xcafebabe", // Permission key required for the liquidation opportunity
+  "target_call_value": "1", // Value(in Wei) to send with to the Protocol contract.
+  "buy_tokens": [
+    // Tokens to buy
     {
       "amount": "1000",
       "token": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
     }
   ],
-  "sell_tokens": [                                                      // Tokens to sell (Oustadaing Debt)
+  "sell_tokens": [
+    // Tokens to sell
     {
       "amount": "900",
       "token": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
     }
   ],
-  "version": "v1"                                                       // Opportunity format version
+  "version": "v1" // Opportunity format version
 }
 ```
 
+### Evaluating the opportunity and constructing the bid
 
+Based on the opportunity details, mainly the sell tokens and buy tokens, searchers can evaluate the opportunity and construct a bid.
+The SDKs provide an easy way to construct a bid using the `OpportunityAdapter` contract. The `OpportunityAdapter` contract handles asset transfers and ensures the opportunity is executed correctly.
+
+You can learn more about the `OpportunityAdapter` contract and how to prepare your assets in the [Opportunity Adapter](./integrate-as-searcher/opportunity-adapter.mdx) section.
+If you have already developed an in-house searcher contract there is no need to integrate using the Opportunity Adapter contract.
+You can use our lower level APIs which allows higher flexibility for advanced users.
+Please refer to the [custom contracts](./custom-contract) section for more details.
+
+<Tabs items={['Typescript', 'Python']}>
+<Tabs.Tab>
+```typescript copy
+const handleOpportunity = async (opportunity: Opportunity) => {
+    const nonce = BigInt(Math.floor(Math.random() * 2 ** 50));
+    const privateKey = `0x0000`; // This should be the private key of the searcher
+    const amount = BigInt(1000); // This should be determined based on opportunity
+    const deadline = BigInt(Math.round(Date.now() / 1000 + 60)) // bid is valid for a minute
+    const bid = await client.signBid(opportunity, {amount, nonce, deadline},privateKey)
+}
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```python copy
+from datetime import datetime
+
+from express_relay.client import (
+ExpressRelayClient,
+sign_bid
+)
+from secrets import randbits
+from express_relay.express_relay_types import Opportunity, OpportunityBidParams
+
+def opportunity_callback(opportunity: Opportunity):
+nonce = randbits(64)
+deadline = datetime.utcnow().timestamp() + 60 # bid is valid for a minute
+amount = 1000 # This should be determined based on opportunity
+private_key = '0x00000'
+signed_bid = sign_bid(opportunity,
+OpportunityBidParams(amount=amount, deadline=int(deadline), nonce=nonce),
+private_key)
+
+````
+</Tabs.Tab>
+</Tabs>
 
 ### Submit bids on opportunities to the auction server.
 
-Searchers can submit bids on opportunities to the auction server via an HTTP POST or through a WebSocket connection.
+Searchers can submit the constructed bids to the auction server via the SDKs, an HTTP POST request, or through a WebSocket connection.
 
-<Tabs items={['HTTP', 'Websocket']}>
+<Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
 
+<Tabs.Tab>
+```typescript {4} copy
+const handleOpporunity = async (opportunity: Opportunity) => {
+    ...
+    const bid = await client.signBid(opportunity, {amount, nonce, deadline},privateKey)
+    await client.submitBid(bid)
+}
+````
+
+</Tabs.Tab>
+<Tabs.Tab>
+```python {5} copy
+def opportunity_callback(opportunity: Opportunity):
+    signed_bid = sign_bid(opportunity,
+                          OpportunityBidParams(amount=amount, deadline=int(deadline), nonce=nonce),
+                          private_key)
+    await client.submit_bid(signed_bid, subscribe_to_updates=True)
+```
+</Tabs.Tab>
 <Tabs.Tab>
 Searchers can submit bids through an HTTP POST call to the `/v1/bids` endpoint. This endpoint accepts a JSON payload containing the details of the bid.
 
 ```bash copy
-{
+curl -X POST https://pyth-express-relay-mainnet.asymmetric.re/v1/bids \
+    -H "Content-Type: application/json" \
+    -d '{
     "chain_id": "op_sepolia",
-    "permission_key": "0x00000000000000000000000087ee27c5ae396b28a825968b277fece0720f5907000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000",
-    "target_contract": "0x87ee27c5ae396b28a825968b277fece0720f5907"
+    "permission_key": "0x000000000000000000000000",
+    "target_contract": "0x87ee27c5ae396b28a825968b277fece0720f5907",
     "target_calldata": "0xeadb38050000000000000000000000000000000000000000000000000000000000000064",
-    "amount": "10",
-}
+    "amount": "10"
+}'
 ```
 
 TODO: Explain the fields here.
+
 </Tabs.Tab>
 <Tabs.Tab>
 
 Searchers can submit bids via Websocket to avoid additional network round-trips and get notified about changes to the bid status.
 
-```bash copy
+```json copy
 {
   "id": "1",
   "method": "post_bid",
   "params": {
     "bid": {
-      "amount": "10",
-      "calldata": "0xdeadbeef",
-      "chain_id": "sepolia",
-      "contract": "0xcA11bde05977b3631167028862bE2a173976CA11",
-      "permission_key": "0xdeadbeefcafe"
+      "chain_id": "op_sepolia",
+      "permission_key": "0x000000000000000000000000",
+      "target_contract": "0x87ee27c5ae396b28a825968b277fece0720f5907",
+      "target_calldata": "0xeadb38050000000000000000000000000000000000000000000000000000000000000064",
+      "amount": "10"
     }
   }
 }
@@ -139,44 +247,7 @@ A successful response to a bid submission has the following schema:
 ```
 
 Consult [`Websocket API reference`](./websocket-api-reference.mdx) for more details.
+
 </Tabs.Tab>
 </Tabs>
 </Steps>
-
-
-Searchers are **recommended** to source opportunities via the opportunity endpoints and construct transactions intended for the `OpportunityAdapter`.
-However, searchers can use custom contracts to execute transactions if they prefer.
-If searchers use custom contracts, they can still use the Express Relay server to source opportunities and craft bids based on the opportunity details.
-
-Check the following example of a custom contract that executes liquidation transactions:
-
-```solidity copy
-...
-function callLiquidation(Opportunity memory opp){
-    for (uint i=0; i<opp.sell_tokens.length; i++) {
-        let token = opp.sell_tokens[i];
-        IERC20(token.contract).approve(opp.contract, token.amount);
-    }
-
-    uint256[] before = new uint256[](opp.buy_tokens.length);
-    for (uint j=0; j<opp.buy_tokens.length; j++) {
-        let token = opp.buy_tokens[j];
-        before = IERC20(token.contract).balanceOf(address(this));
-    }
-
-    opp.target_contract.call{value: opp.target_call_value}(opp.target_calldata);
-
-    uint256[] after = new uint256[](opp.buy_tokens.length);
-    for (uint j=0; j<opp.buy_tokens.length; j++) {
-        let token = opp.buy_tokens[j];
-        after = IERC20(token.target_contract).balanceOf(address(this));
-
-        assert(after[j] == before[j] + token.amount);
-    }
-}
-...
-```
-
-<Callout type="info" emoji="ℹ️"> 
-Make sure to approve the `opp.contract` for the necessary amount of `sell_tokens`. 
-</Callout>

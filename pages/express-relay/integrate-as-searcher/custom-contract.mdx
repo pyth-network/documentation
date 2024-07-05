@@ -1,0 +1,40 @@
+import { Callout } from "nextra/components";
+
+# Custom Searcher Contract
+
+Searchers can use their in-house custom contracts to execute the opportunities provided by the auction server.
+In this case they need to construct the bids based on the opportunity details.
+
+Check the following example of a custom contract that executes liquidation transactions:
+
+```solidity copy
+...
+function callLiquidation(Opportunity memory opp){
+    for (uint i=0; i<opp.sell_tokens.length; i++) {
+        let token = opp.sell_tokens[i];
+        IERC20(token.contract).approve(opp.contract, token.amount);
+    }
+
+    uint256[] before = new uint256[](opp.buy_tokens.length);
+    for (uint j=0; j<opp.buy_tokens.length; j++) {
+        let token = opp.buy_tokens[j];
+        before = IERC20(token.contract).balanceOf(address(this));
+    }
+
+    opp.target_contract.call{value: opp.target_call_value}(opp.target_calldata);
+
+    uint256[] after = new uint256[](opp.buy_tokens.length);
+    for (uint j=0; j<opp.buy_tokens.length; j++) {
+        let token = opp.buy_tokens[j];
+        after = IERC20(token.target_contract).balanceOf(address(this));
+
+        assert(after[j] == before[j] + token.amount);
+    }
+}
+...
+```
+
+<Callout type="info" emoji="ℹ️">
+  Make sure to approve the `opp.contract` for the necessary amount of
+  `sell_tokens`.
+</Callout>

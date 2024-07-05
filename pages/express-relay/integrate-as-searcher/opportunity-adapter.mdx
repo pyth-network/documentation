@@ -1,10 +1,39 @@
-# Integrate with opportunity adapter
+import { Steps } from "nextra/components";
 
-The `OpportunityAdapter` is a utility contract that can be used for easier integration with express relay while maintaining maximum security. 
-In this integration, searchers use the `Permit2` contract for safe asset management (`ERC20` tokens and Wrapped ETH) and the adapter contract to transfer bids, execute the opportunity, and ensure the assets are transferred correctly. 
+# Prepare assets for OpportunityAdapter
+
+The `OpportunityAdapter` is a utility contract that can be used for easier integration with express relay while maintaining maximum security.
+In this integration, searchers use the [`Permit2`](https://github.com/Uniswap/permit2/) contract for safe asset management (`ERC20` tokens and Wrapped ETH) and the adapter contract to transfer bids, execute the opportunity, and ensure the assets are transferred correctly.
 Using the `OpportunityAdapter` means that a searcher does not need to deploy their own custom contract for inventory management and routing to the protocol contracts where liquidation takes place.
 
-After [integrating with the auction server](./auction-server), you can integrate with the `OpportunityAdapter` framework via the following steps:
-1. Hold your assets in your wallet. You will need to own all assets you expect to provide as `sell_tokens` to different opportunities. You will also need to approve `WETH`, as the `OpportunityAdapter` will pay your bids by deducting the bid amounts from your wallet's `WETH` balance.
-2. Approve your assets to the `Permit2` contract, `0x000000000022D473030F116dDEE9F6B43aC78BA3`.
-3. When bidding, set `target_contract` to the `OpportunityAdapterFactory` and craft your `target_calldata` based on the format of the `OpportunityAdapter`. The express relay [JavaScript SDK](https://www.npmjs.com/package/@pythnetwork/express-relay-evm-js) and [Python SDK](https://pypi.org/project/express-relay/) have helper functions that handle this step for you.
+In order to use `OpportunityAdapter`, you need to prepare your assets via the following steps. We use [`cast`](https://book.getfoundry.sh/cast/) as a simple tool to interact with the blockchain but you can use any other tool you prefer.
+
+<Steps>
+### Transfer tokens to your wallet
+
+You will need to own all the tokens you expect to provide as `sell_tokens` for different opportunities.
+You will also need to approve `WETH`, as the `OpportunityAdapter` will pay your bids by deducting the bid amounts from your wallet's `WETH` balance. You can find the `WETH` contract address on the [contract address page](../contract-addresses).
+You can use the following command to deposit native ETH to `WETH`:
+
+```bash copy
+cast send \
+--private-key $PRIVATE_KEY \
+--rpc-url https://sepolia.optimism.io/  \
+$WETH_ADDRESS \
+"deposit()" --value 0.1ether # Change the value to the amount you want to deposit
+```
+
+### Approve your assets to Permit2
+
+Approve your tokens, including `WETH`, to the `Permit2` contract `0x000000000022D473030F116dDEE9F6B43aC78BA3`. This step allows the searcher to approve token spending with off-chain signatures.
+
+```bash copy
+cast send \
+--private-key $PRIVATE_KEY \
+--rpc-url https://sepolia.optimism.io/  \
+$TOKEN_ADDRESS \
+"approve(address spender, uint256 value)" \
+0x000000000022D473030F116dDEE9F6B43aC78BA3 100000000000000000000000000 # You can use a large amount to avoid approving multiple times
+```
+
+</Steps>
