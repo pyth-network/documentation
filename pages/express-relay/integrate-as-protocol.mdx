@@ -45,12 +45,12 @@ Then add the following line to `remappings.txt` file:
 
 ### Modifying the Protocol's Contract
 
-The following steps show how to modify your protocol's contract to permit Express Relay transactions and receive funds from Express Relay.
+The following steps show how to modify your protocol's contract to verify if the current transaction is permissioned by Express Relay and to receive the auction proceedings.
 
-1. Call [`isPermissioned`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelay.sol#L10C14-L10C28) method from `IExpressRelay` interface to **permit** Express Relay transactions.
+1. Call the [`isPermissioned`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelay.sol#L10C14-L10C28) method from `IExpressRelay` interface to make sure the current transaction is permissioned by Express Relay.
 1. Implement the [`IExpressRelayFeeReceiver`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelayFeeReceiver.sol#L4) interface to **receive** auction proceedings. 
 
-#### 1. Permit Express Relay Transactions
+#### 1. Verify Permissioning
 
 The `isPermissioned` function takes two arguments:
 1. `protocolFeeReceiver`: The address to receive the protocol's share of auction proceedings.
@@ -80,7 +80,7 @@ require(
 </Callout>
 
 #### 2. Set up Fee Receiver
-The Express Relay will call the `receiveAuctionProceedings` method present in `IExpressRelayFeeReceiver`. The call will transfer the protocol's share of the auction proceeding to the `protocolFeeReceiver` address.
+Express Relay will call the `receiveAuctionProceedings` method present in `IExpressRelayFeeReceiver`. The call will transfer the protocol's share of the auction proceeding to the `protocolFeeReceiver` address.
 
 ```solidity copy
 interface IExpressRelayFeeReceiver {
@@ -145,7 +145,7 @@ contract EasyLend is IExpressRelayFeeReceiver {
     }
 
     /**
-     * @notice receiveAuctionProceedings function - receives the native token from the express relay
+     * @notice receiveAuctionProceedings function - receives the native token from express relay
      * You can use the permission key to distribute the received funds to users who got liquidated, LPs, etc...
      *
      * @param permissionKey: permission key that was used for the auction
@@ -165,27 +165,27 @@ contract EasyLend is IExpressRelayFeeReceiver {
 
 DeFi protocols must fetch opportunities and expose them to Express Relay for auction.
 
-The Express Relay provides a **POST** method, [`/v1/opportunities`](https://per-staging.dourolabs.app/redoc#tag/opportunity/operation/post_opportunity), which accepts a JSON payload containing the details of the opportunity.
+Express Relay provides a **POST** method, [`/v1/opportunities`](https://per-staging.dourolabs.app/redoc#tag/opportunity/operation/post_opportunity), which accepts a JSON payload containing the details of the opportunity.
 
 The JSON payload should contain opportunities in the following format:
 
 ```json
 {
-  "target_calldata": "0xdeadbeef",                                      // Calldata to the execute opportunity
+  "target_calldata": "0xdeadbeef",                                      // Calldata to execute the opportunity
   "chain_id": "op_sepolia",                                             
-  "target_contract": "0xcA11bde05977b3631167028862bE2a173976CA11",      // Protocol contract address to call for
+  "target_contract": "0xcA11bde05977b3631167028862bE2a173976CA11",      // Protocol contract address to call
   "permission_key": "0xcafebabe",                                       // Unique identifier for the opportunity
-  "target_call_value": "1",                                             // Value(in Wei) to send with to the Protocol contract.
-  "buy_tokens": [                                                       // Tokens to buy 
-    {
-      "amount": "1000",
-      "token": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
-    }
-  ],
-  "sell_tokens": [                                                      // Tokens to S
+  "target_call_value": "1",                                             // Value (in Wei) to send to the protocol contract.
+  "sell_tokens": [                                                      // Tokens the protocol expects to receive
     {
       "amount": "900",
       "token": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+    }
+  ],
+  "buy_tokens": [                                                       // Tokens the protocol will send in return
+    {
+      "amount": "1000",
+      "token": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
     }
   ],
   "version": "v1"                                                       // Opportunity format version
@@ -193,10 +193,11 @@ The JSON payload should contain opportunities in the following format:
 ```
 
 
-Each protocol integrated with Express Relay must evaluate every position's health using the latest Oracle prices before exposing them to Express Relay. 
-You can do this by indexing the chain, listening to protocol events, or querying open positions through an RPC provider.
+Each protocol integrated with Express Relay must actively monitor for new opportunities.
+You can do this by indexing the chain, listening to protocol events, or querying protocol state through an RPC provider.
 
-Check the [`monitor.ts`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/examples/easy_lend/src/monitor.ts) script, which fetches opportunities for the below-mentioned [Easy Lend](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend) example and exposes them to Express Relay for auction.
+Check the [`monitor.ts`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/examples/easy_lend/src/monitor.ts) script,
+which fetches opportunities for the below-mentioned [Easy Lend](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend) example and exposes them to Express Relay for auction.
 
 
 ## Additional Resources
@@ -205,7 +206,8 @@ You may find these additional resources helpful for integrating Express Relay as
 
 ### Example Application
 
-[Easy Lend](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend) is a dummy lending protocol contract that allows users to borrow and lend assets. This lending protocol contract is updated to permit Express Relay transactions.
+[Easy Lend](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend) is a dummy lending protocol contract that allows users to borrow and lend assets.
+This lending protocol contract is updated to use Express Relay.
 
 ### Contract Address
 
@@ -213,6 +215,8 @@ The [Contract Address](./contract-addresses.mdx) page lists the addresses of Exp
 
 ### Error Codes
 
+The [Error Codes](./error-codes.mdx) page lists the error codes returned by Express Relay.
+
 ### API Reference
 
-The [API Reference](https://per-staging.dourolabs.app/redoc/) provides detailed information on the Express Relay APIs for submitting opportunities.
+The [API Reference](https://per-staging.dourolabs.app/redoc/) provides detailed information on Express Relay APIs for submitting opportunities.
