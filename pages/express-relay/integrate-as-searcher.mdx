@@ -15,9 +15,9 @@ Searchers can integrate with Express Relay in three steps:
 
 <Steps>
 
-### Subscribe to new opportunities
+### Subscribe to new Opportunities
 
-Express Relay provides searchers with `Typescript` and `Python` SDKs to interact with Express Relay. 
+Express Relay provides searchers with [`Typescript`](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/sdk/js) and [`Python`](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/sdk/python) SDKs to interact with Express Relay. 
 Searchers can also directly fetch available opportunities via HTTP or subscribe to them via WebSocket.
 
 <Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
@@ -119,7 +119,7 @@ The server responds with opportunities in the following format:
 }
 ```
 
-### Evaluate the opportunity and construct the bid
+### Evaluate the Opportunity and Construct the Bid
 
 Searchers should construct a bid based on the fetched opportunity.
 The SDKs provide an easy way to construct a bid using the [`OpportunityAdapter`](./integrate-as-searcher/opportunity-adapter.mdx) contract. 
@@ -173,7 +173,7 @@ def opportunity_callback(opportunity: Opportunity):
 
 If you prefer to use your own custom contracts instead of the `OpportunityAdapter`, please refer to the [custom contracts](./integrate-as-searcher/custom-contract.mdx) section.
 
-### Submit bids on opportunities to Express Relay
+### Submit Bids on Opportunities to Express Relay
 
 Searchers can submit the constructed bids to Express Relay via the SDKs, an HTTP POST request, or a WebSocket connection.
 

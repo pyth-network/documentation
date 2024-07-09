@@ -20,7 +20,7 @@ Refer to the following command to deposit native ETH to `WETH`:
 ```bash copy
 cast send \
 --private-key $PRIVATE_KEY \
---rpc-url https://sepolia.optimism.io/  \
+--rpc-url https://mainnet.mode.network/  \
 $WETH_ADDRESS \
 "deposit()" --value 0.1ether # Change the value to the amount you want to deposit
 ```
@@ -35,7 +35,7 @@ Refer to the following command to approve a token to `Permit2`:
 ```bash copy
 cast send \
 --private-key $PRIVATE_KEY \
---rpc-url https://sepolia.optimism.io/  \
+--rpc-url https://mainnet.mode.network/  \
 $TOKEN_ADDRESS \
 "approve(address spender, uint256 value)" \
 0x000000000022D473030F116dDEE9F6B43aC78BA3 100000000000000000000000000 # You can use a large amount to avoid approving multiple times

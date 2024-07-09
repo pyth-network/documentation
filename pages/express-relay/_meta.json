@@ -25,14 +25,16 @@
 
   "api-reference": {
     "title": "HTTP API Reference ↗",
-    "href": "https://pyth-express-relay-mainnet.asymmetric.re/docs/"
+    "href": "https://pyth-express-relay-mainnet.asymmetric.re/redoc/",
+    "newWindow": true
   },
   "websocket-api-reference": "Websocket API Reference",
   "contract-addresses": "Contract Addresses",
   "errors": "Error Codes",
   "examples": {
     "title": "Example Application ↗",
-    "href": "https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend"
+    "href": "https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend",
+    "newWindow": true
   },
   "-- Understand Express Relay": {
     "title": "Understanding Express Relay",

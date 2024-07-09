@@ -74,7 +74,7 @@ require(
 );
 ```
 <Callout type="info" emoji="ℹ️">
-  The `permissionId` represents unique identifying information of an opportunity. 
+  The `permissionId` represents a unique identifier of an opportunity. 
   For a liquidation opportunity, the vault address or ID could be concatenated into `bytes` format. 
   Consult [`Permissioning`](./how-express-relay-works/permissioning.mdx) for more information on generating permission IDs. 
 </Callout>
@@ -202,7 +202,7 @@ The JSON payload should contain opportunities in the following format:
 
 
 Each protocol integrated with Express Relay must actively monitor for new opportunities.
-You can do this by indexing the chain, listening to protocol events, or querying protocol state through an RPC provider.
+Protocols can do this by indexing the chain, listening to protocol events, or querying protocol state through an RPC provider.
 
 Check the [`monitor.ts`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/examples/easy_lend/src/monitor.ts) script,
 which fetches opportunities for the below-mentioned [Easy Lend](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend) example and exposes them to Express Relay for auction.
