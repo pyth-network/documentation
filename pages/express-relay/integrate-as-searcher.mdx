@@ -186,7 +186,7 @@ The code snippet below demonstrates how to submit a bid using the `Typescript` S
 ```typescript {4} copy
 const handleOpporunity = async (opportunity: Opportunity) => {
     ...
-    const bid = await client.signBid(opportunity, {amount, nonce, deadline},privateKey)
+    const bid = await client.signBid(opportunity, {amount, nonce, deadline}, privateKey)
     await client.submitBid(bid)
 }
 ```

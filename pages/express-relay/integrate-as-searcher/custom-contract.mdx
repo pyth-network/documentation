@@ -2,10 +2,10 @@ import { Callout } from "nextra/components";
 
 # Custom Searcher Contract
 
-Searchers can use their in-house custom contracts to execute the opportunities provided by the auction server.
-In this case they need to construct the bids based on the opportunity details.
+Searchers can use their in-house custom contracts to execute the opportunities Express Relay provides.
+In this case, they must construct the bids based on the opportunity details.
 
-Check the following example of a custom contract that executes liquidation transactions:
+Refer to the following example of a custom contract that executes liquidation transactions:
 
 ```solidity copy
 ...
@@ -35,6 +35,5 @@ function callLiquidation(Opportunity memory opp){
 ```
 
 <Callout type="info" emoji="ℹ️">
-  Make sure to approve the `opp.contract` for the necessary amount of
-  `sell_tokens`.
+Make sure to allow the [Express Relay contract](../contract-addresses.mdx) to call the relevant methods in your custom contract.
 </Callout>
