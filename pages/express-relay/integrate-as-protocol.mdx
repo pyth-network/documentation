@@ -9,7 +9,7 @@ Integrating with Express Relay involves two main steps:
 - **Update** your DeFi protocol's contract.
 - **Expose** opportunities to searchers for auction.
 
-## Update your defi Protocol's Contract
+## Update your DeFi Protocol's Contract
 
 To integrate with Express Relay, your protocol's contract must check if Express Relay has permissioned the current transaction.
 
@@ -43,17 +43,17 @@ Then add the following line to `remappings.txt` file:
   </Tabs.Tab>
 </Tabs>
 
-### Modifying the Protocol's Contract
+### Modify the Protocol's Contract
 
-The following steps show how to modify your protocol's contract to verify if the current transaction is permissioned by Express Relay and to receive the auction proceedings.
+The following steps show how to modify your protocol's contract to verify if the current transaction is permissioned by Express Relay and to receive the auction proceeds.
 
 1. Call the [`isPermissioned`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelay.sol#L10C14-L10C28) method from `IExpressRelay` interface to make sure the current transaction is permissioned by Express Relay.
-1. Implement the [`IExpressRelayFeeReceiver`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelayFeeReceiver.sol#L4) interface to **receive** auction proceedings. 
+1. Implement the [`IExpressRelayFeeReceiver`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelayFeeReceiver.sol#L4) interface to **receive** auction proceeds. 
 
 #### 1. Verify Permissioning
 
 The `isPermissioned` function takes two arguments:
-1. `protocolFeeReceiver`: The address to receive the protocol's share of auction proceedings.
+1. `protocolFeeReceiver`: The address to receive the protocol's share of auction proceeds.
 1. `permissionId`: A unique identifier for the opportunity.
 
 ```solidity copy
@@ -80,7 +80,7 @@ require(
 </Callout>
 
 #### 2. Set up Fee Receiver
-Express Relay will call the `receiveAuctionProceedings` method present in `IExpressRelayFeeReceiver`. The call will transfer the protocol's share of the auction proceeding to the `protocolFeeReceiver` address.
+Express Relay will call the `receiveAuctionProceedings` method present in `IExpressRelayFeeReceiver`. The call will transfer the protocol's share of the auction proceeds to the `protocolFeeReceiver` address.
 
 ```solidity copy
 interface IExpressRelayFeeReceiver {
@@ -90,7 +90,7 @@ interface IExpressRelayFeeReceiver {
 }
 ```
 
-The following code snippet shows a sample liquidation opportunity via Express Relay.
+The following code snippet shows a sample Express Relay-integrated contract that performs liquidation.
 Note: The highlighted lines show the contract's relevant additions for Express Relay integration.
 
 ```solidity showLineNumbers {1,2,12,14,21,38-42, 57-61} copy
@@ -116,6 +116,14 @@ contract EasyLend is IExpressRelayFeeReceiver {
       _nVaults = 0;
       expressRelay = expressRelayAddress;
       _allowUndercollateralized = allowUndercollateralized;
+    }
+
+    /**
+    * @notice createVault function - creates a vault
+    * @param vaultParams: params of the vault to be created
+    */
+    function createVault(VaultParams memory vaultParams) public {
+      ..
     }
 
     /**
@@ -163,7 +171,7 @@ contract EasyLend is IExpressRelayFeeReceiver {
 
 ## Expose Opportunities to Searchers
 
-DeFi protocols must fetch opportunities and expose them to Express Relay for auction.
+DeFi protocols should fetch opportunities and expose them to Express Relay for auction.
 
 Express Relay provides a **POST** method, [`/v1/opportunities`](https://per-staging.dourolabs.app/redoc#tag/opportunity/operation/post_opportunity), which accepts a JSON payload containing the details of the opportunity.
 
