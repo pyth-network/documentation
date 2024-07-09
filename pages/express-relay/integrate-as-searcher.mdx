@@ -2,34 +2,34 @@ import { Callout, Tabs, Steps } from "nextra/components";
 
 # How to Integrate Express Relay as a Searcher
 
-Express Relay gives one place stop for on-chain opportunities. Searchers can access opportunities from various DeFi protocols via a simple and unified interface.
+Express Relay allows searchers to integrate once and access all existing and future opportunities across integrated DeFi protocols.
+Searchers **bid** on these opportunities exposed by Express Relay.
 
-Searchers **bid** on opportunities exposed by the Express Relay server.
-The server exposes different endpoints for interaction, which can be used directly via HTTP, WebSocket, or one of the SDKs for convenience.
+Express Relay exposes different endpoints for interaction, which can be used directly via HTTP, WebSocket, or one of the SDKs for convenience.
 
-Searchers can integrate with the Express Relay server in three steps:
+Searchers can integrate with Express Relay in three steps:
 
 1. Subscribe to new opportunities
 2. Evaluate the opportunity and construct the bid
-3. Submit the bid to the auction server
+3. Submit the bid to Express Relay.
 
 <Steps>
 
-### Subscribing to new opportunities
+### Subscribe to new opportunities
 
-Express Relay provides searchers with `Typescript` and `Python` SDKs to interact with the server. 
-Searchers can also fetch available opportunities via HTTP or subscribe to them via WebSocket.
+Express Relay provides searchers with `Typescript` and `Python` SDKs to interact with Express Relay. 
+Searchers can also directly fetch available opportunities via HTTP or subscribe to them via WebSocket.
 
 <Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
 
 <Tabs.Tab>
-Our JavaScript SDK provides a convenient way to subscribe to opportunities:
+Pyth provides a `Typescript` SDK, which allows searchers to subscribe to opportunities:
 
 ```typescript
 import { Client, Opportunity } from "@pythnetwork/express-relay-evm-js";
 
 const handleOpporunity = async (opportunity: Opportunity) => {
-  // TODO: Implement your opportunity handler here
+  // Implement your opportunity handler here
 };
 
 const client = new Client(
@@ -42,7 +42,7 @@ await client.subscribeChains(["op_sepolia"]);
 
 </Tabs.Tab>
 <Tabs.Tab>
-    Our Python SDK provides a convenient way to subscribe to opportunities:
+Pyth provides a `Python` SDK, which allows searchers to subscribe to opportunities:
 
 ```python copy
 from express_relay.client import (
@@ -50,11 +50,9 @@ from express_relay.client import (
 )
 from express_relay.express_relay_types import Opportunity
 
-
 def opportunity_callback(opportunity: Opportunity):
-    # TODO: Implement your opportunity handler here
+    # Implement your opportunity handler here
     pass
-
 
 client = ExpressRelayClient(
     'server_url',
@@ -67,20 +65,18 @@ await client.subscribe_chains(['op_sepolia'])
 
 </Tabs.Tab>
 <Tabs.Tab>
-Searchers can request opportunities through an HTTP GET call to the `/v1/opportunities` endpoint.
+Searchers can request opportunities through an HTTP **GET** call to the [`/v1/opportunities`](https://pyth-express-relay-mainnet.asymmetric.re/redoc#tag/opportunity/operation/get_opportunities) endpoint.
 
 ```bash copy
 curl -X 'GET' \
   'https://pyth-express-relay-mainnet.asymmetric.re/v1/opportunities?chain_id=op_sepolia&mode=live'
 ```
 
-Opportunities are short-lived and will be executed in a matter of seconds. So, the above endpoint can return an empty response.
-
-You can fetch historical opportunities by setting the `mode` parameter to `historical`.
+Opportunities are short-lived and could be executed in a matter of seconds. So, the above endpoint could return an empty response.
 
 </Tabs.Tab>
 <Tabs.Tab>
-Searchers can connect to the server via WebSocket to reduce latency and subscribe to various events. The WebSocket endpoint relies at `/v1/ws`(e.g `wss://pyth-express-relay-mainnet.asymmetric.re/v1/ws`).
+Searchers can connect to the server via WebSocket to reduce latency and subscribe to various events. The WebSocket endpoint lives at `/v1/ws`(e.g `wss://pyth-express-relay-mainnet.asymmetric.re/v1/ws`).
 Here is a sample JSON payload to subscribe to opportunities:
 
 ```bash copy
@@ -102,49 +98,50 @@ The server responds with opportunities in the following format:
 
 ```bash copy
 {
-  "target_calldata": "0xdeadbeef",                                  // Calldata to execute the opportunity
-  "chain_id": "op_sepolia",
-  "target_contract": "0xcA11bde05977b3631167028862bE2a173976CA11",  // Protocol contract address to call for execution
-  "permission_key": "0xcafebabe",                                   // Permission key required for the liquidation opportunity
-  "target_call_value": "1",                                         // Value(in Wei) to send with to the Protocol contract.
-  "buy_tokens": [                                                   // Tokens to buy
-    {
-      "amount": "1000",
-      "token": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
-    }
-  ],
-  "sell_tokens": [                                                  // Tokens to sell
+  "target_calldata": "0xdeadbeef",                                      // Calldata to execute the opportunity
+  "chain_id": "op_sepolia",                                             
+  "target_contract": "0xcA11bde05977b3631167028862bE2a173976CA11",      // Protocol contract address to call
+  "permission_key": "0xcafebabe",                                       // Unique identifier for the opportunity
+  "target_call_value": "1",                                             // Value (in Wei) to send to the protocol contract.
+  "sell_tokens": [                                                      // Tokens the protocol expects to receive
     {
       "amount": "900",
       "token": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
     }
   ],
-  "version": "v1"                                                   // Opportunity format version
+  "buy_tokens": [                                                       // Tokens the protocol will send in return
+    {
+      "amount": "1000",
+      "token": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    }
+  ],
+  "version": "v1"                                                       // Opportunity format version
 }
 ```
 
 ### Evaluate the opportunity and construct the bid
 
-Searchers should construct a bit based on the fetched opportunity details like `buy_tokens` and `sell_tokens`.
-The SDKs provide an easy way to construct a bid using the `OpportunityAdapter` contract. 
+Searchers should construct a bid based on the fetched opportunity.
+The SDKs provide an easy way to construct a bid using the [`OpportunityAdapter`](./integrate-as-searcher/opportunity-adapter.mdx) contract. 
 The `OpportunityAdapter` contract handles asset transfers and ensures the opportunity is executed correctly.
 
-You can learn more about the `OpportunityAdapter` contract and how to prepare your assets in the [Opportunity Adapter](./integrate-as-searcher/opportunity-adapter.mdx) section.
-If you have already developed an in-house searcher contract, integrating using the Opportunity Adapter contract is unnecessary.
-You can use our lower-level APIs, which allow higher flexibility for advanced users.
-Please refer to the [custom contracts](./integrate-as-searcher/custom-contract.mdx) section for more details.
+<Callout type="warning" emoji="⚠️">
+Before constructing the bid, make sure your wallet has the required assets and has made the necessary approvals.
+Refer to the [Prepare assets for OpportunityAdapter](./integrate-as-searcher/opportunity-adapter.mdx) section for more details.
+</Callout>
 
-Here is an example of how to construct a bid using the SDKs:
+
+Here is an example of how to construct a bid using `OpportunityAdapter` via the SDKs:
 
 <Tabs items={['Typescript', 'Python']}>
 <Tabs.Tab>
 ```typescript copy
 const handleOpportunity = async (opportunity: Opportunity) => {
     const nonce = BigInt(Math.floor(Math.random() * 2 ** 50));
-    const privateKey = `0x0000`; // This should be the private key of the searcher
-    const amount = BigInt(1000); // This should be determined based on opportunity
-    const deadline = BigInt(Math.round(Date.now() / 1000 + 60)) // bid is valid for a minute
-    const bid = await client.signBid(opportunity, {amount, nonce, deadline},privateKey)
+    const privateKey = `0x0000`; // Private key of the searcher
+    const bidAmount = BigInt(1000); // The bidAmount should be determined based on opportunity
+    const deadline = BigInt(Math.round(Date.now() / 1000 + 60)) // Bid is valid for a minute
+    const bid = await client.signBid(opportunity, {bidAmount, nonce, deadline}, privateKey)
 }
 ```
 </Tabs.Tab>
@@ -161,25 +158,30 @@ from express_relay.express_relay_types import Opportunity, OpportunityBidParams
 
 def opportunity_callback(opportunity: Opportunity):
     nonce = randbits(64)
-    deadline = datetime.utcnow().timestamp() + 60 # bid is valid for a minute
-    amount = 1000 # This should be determined based on the opportunity
-    private_key = '0x00000'
+    deadline = datetime.utcnow().timestamp() + 60 # Bid is valid for a minute
+    bid_amount = 1000 # The bid_amount should be determined based on the opportunity
+    private_key = '0x00000' # Private key of the searcher
     signed_bid = sign_bid(opportunity, 
-                          OpportunityBidParams(amount=amount, deadline=int(deadline), nonce=nonce), 
+                          OpportunityBidParams(amount=bid_amount, deadline=int(deadline), nonce=nonce), 
                           private_key)
 ```
 </Tabs.Tab>
 </Tabs>
 
-### Submit bids on opportunities to the auction server
 
-Searchers can submit the constructed bids to the auction server via the SDKs, an HTTP POST request, or a WebSocket connection.
+
+
+If you prefer to use your own custom contracts instead of the `OpportunityAdapter`, please refer to the [custom contracts](./integrate-as-searcher/custom-contract.mdx) section.
+
+### Submit bids on opportunities to Express Relay
+
+Searchers can submit the constructed bids to Express Relay via the SDKs, an HTTP POST request, or a WebSocket connection.
 
 <Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
 
 <Tabs.Tab>
 
-The code snippet below demonstrates how to submit a bid using the Typescript SDK:
+The code snippet below demonstrates how to submit a bid using the `Typescript` SDK:
 
 ```typescript {4} copy
 const handleOpporunity = async (opportunity: Opportunity) => {
@@ -192,7 +194,7 @@ const handleOpporunity = async (opportunity: Opportunity) => {
 </Tabs.Tab>
 <Tabs.Tab>
 
-The code snippet below demonstrates how to submit a bid using the Python   SDK:
+The code snippet below demonstrates how to submit a bid using the `Python` SDK:
 
 ```python {5} copy
 def opportunity_callback(opportunity: Opportunity):
@@ -203,7 +205,7 @@ def opportunity_callback(opportunity: Opportunity):
 ```
 </Tabs.Tab>
 <Tabs.Tab>
-Searchers can submit bids through an HTTP POST call to the `/v1/bids` endpoint. This endpoint accepts a JSON payload containing the details of the bid.
+Searchers can submit bids through an HTTP POST call to the [`/v1/bids`](https://pyth-express-relay-mainnet.asymmetric.re/redoc#tag/bid/operation/bid) endpoint. This endpoint accepts a JSON payload containing the details of the bid.
 
 ```bash copy
 curl -X POST https://pyth-express-relay-mainnet.asymmetric.re/v1/bids \
