@@ -1,29 +1,27 @@
 # How Express Relay Works
 
-Express Relay allows protocols to eliminate maximal extractable value (MEV).
+Express Relay allows protocols to eliminate [Maximal Extractable Value](https://www.ledger.com/academy/glossary/maximal-extractable-value-mev) (MEV).
 Many protocols generate MEV on a regular basis.
 For example, borrow-lending protocols provide bonuses to searchers for liquidating undercollateralized loans.
 Searchers compete for these bonuses by tipping the chain's miners or validators.
-The validators capture most of the value of the liquidation bonus via these tips, so the liquidation bonus is in essence a transfer of wealth from the protocol's users to the validators.
+The validators capture most of the value of the liquidation bonus via these tips, so the liquidation bonus is a transfer of wealth from the protocol's users to the validators in the form of tips.
 
-Express Relay solves the problem of MEV by providing protocol developers with an auction primitive that they can use to prioritize access to valuable protocol operations.
+Express Relay solves the problem of MEV by providing protocol developers with an [auction](./how-express-relay-works/auction.mdx) primitive that they can use to prioritize access to valuable protocol operations.
 Developers specify a set of operations in their protocol that must be accessed through Express Relay.
 Searchers then participate in an off-chain auction to access these operations.
-Their bids in the auction are used to determine the priority of their transactions, i.e., the order in which their transactions will be executed.
-The winners' transactions are forwarded to the blockchain, which both pays their bid and executes the operation.
-The profits of the auction are then split between the integrated protocol and other participants in Express Relay.
+Their bids in the auction are used to determine the order in which their transactions will be executed.
+The winners' transactions are forwarded to the Express Relay smart contract. As part of the transaction, searchers must pay their specified bid. 
+The auction profits are then split between the integrated protocol and other participants in Express Relay.
 
-![](images/express_relay/express_relay_schematic.svg)
+![](images/express_relay/before_express.jpg)
+![](images/express_relay/after_express.jpg)
 
-FIXME: update this diagram with the designers' version
 
 The diagram above shows how Express Relay changes the MEV landscape for a liquidation.
-In the status quo (left), Searchers tip miners in order to guarantee that their liquidation transaction lands on-chain, and their transaction directly interacts with the protocol exposing the liquidation opportunity.
-With Express Relay (right), Searchers submit bids for their transaction to the Express Relay auction.
-After the auction, the winning bids are relayed to the blockchain, where the transactions are processed by the Express Relay smart contract before being forwarded on to the integrated protocol.
+In the status quo (above), Searchers tip miners to guarantee that their liquidation transaction lands on-chain and that their transaction directly interacts with the protocol, exposing the liquidation opportunity.
+With Express Relay (down), Searchers submit bids for their transaction to the Express Relay auction.
+After the auction, the winning bids are relayed to the blockchain, where the Express Relay smart contract processes the transactions before being forwarded on to the integrated protocol.
 The Express Relay contract collects payment from the Searchers and forwards a share of the revenue back to the integrated protocol.
-
-FIXME: I think the diagram is wrong (specifically the liquidation bonus going back to express relay)
 
 ## Which protocols can use Express Relay?
 

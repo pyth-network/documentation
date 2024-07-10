@@ -37,13 +37,15 @@ The `OpportunityAdapter` contract uses the [Permit2](https://github.com/Uniswap/
 
 Once on-chain opportunities arise, searchers can be notified of their existence via the opportunity server. Like the auction server, this is an off-chain piece of the Express Relay stack that is run by an infrastructure partner designated by the DAO. The opportunity server presents opportunities to searchers in a way that abstracts away bespoke integration work for the searcher: instead of worrying about crafting calldata specific to every new liquidation interface, searchers now view liquidation opportunities in terms of tokens they need to sell (debt they repay) in exchange for tokens they buy (collateral they liquidate). This simplified interface unifies different liquidation schemas and allows searchers to easily plug into more protocols.
 
-In addition to learning about present opportunities, searchers can also query the opportunity server for data around historical opportunities.
+In addition to learning about present opportunities, searchers can also query the opportunity server for data about historical opportunities.
 
--(TODO) Diagram of searchers before and after ExpressRelay
--before: searcher connects to every new protocol bespokely.  similarly, protocols have to court and incentivize individual searchers. maybe a messy looking bipartite graph with O(NM) edges
--after: searcher connects once to ExpressRelay, then gets access to opportunities of all integrated protocols. similarly, protocol connects once to ExpressRelay, then gets access to DeFi services of all integrated searchers. a cleaner looking graph with ER in the middle as a hub for both protocols and searchers.
+![](images/express_relay/before_searcher.jpg)
+![](images/express_relay/after_searcher.jpg)
 
-## Opportunity monitor
+-Before The searcher connects to every new bespoke protocol. Similarly, protocols have to court and incentivize individual searchers. Maybe a messy-looking bipartite graph with O(NM) edges
+-After Searcher connects once to ExpressRelay, then gets access to opportunities of all integrated protocols. Similarly, the protocol connects once to Express Relay and then gets access to DeFi services for all integrated searchers. A cleaner-looking graph with ER in the middle as a hub for both protocols and searchers.
+
+## Opportunity Monitor
 
 Many integrated protocols with Express Relay build out an opportunity monitor script to query executable opportunities on their protocol and expose them to searchers. This allows them to tap into all Express Relay-integrated searchers, who do not need to do any additional integration work beyond having access to the relevant tokens to execute opportunities on the protocol.
 

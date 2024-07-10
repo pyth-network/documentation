@@ -1,10 +1,12 @@
+import {Tabs} from "nextra/components"
 import AddressTable from "../../components/AddressTable";
 
 Express Relay is currently deployed on the following networks:
 
-## Mainnets
+<Tabs items={['Mainnet', 'Testnet']}>
 
-You can access the Auction Server via the following endpoint: https://pyth-express-relay-mainnet.asymmetric.re/
+<Tabs.Tab>
+Auction Server endpoint: https://pyth-express-relay-mainnet.asymmetric.re/
 
 ### Mode
 
@@ -46,6 +48,7 @@ You can access the Auction Server via the following endpoint: https://pyth-expre
 
 This list contains the addresses of the commonly used assets present in opportunities on the Mode network:
 
+
 <AddressTable
   explorer={"https://explorer.mode.network/address/$ADDRESS"}
   entries={[
@@ -62,9 +65,9 @@ This list contains the addresses of the commonly used assets present in opportun
   ]}
 />
 
-## Testnets
-
-You can access the Auction Server via the following endpoint: https://per-staging.dourolabs.app/
+</Tabs.Tab>
+<Tabs.Tab>
+Auction Server endpoint: https://per-staging.dourolabs.app/
 
 ### Optimism Sepolia
 
@@ -106,6 +109,7 @@ You can access the Auction Server via the following endpoint: https://per-stagin
 
 This list contains the addresses of the commonly used assets present in opportunities on the Optimism Sepolia network:
 
+
 <AddressTable
   explorer={"https://optimism-sepolia.blockscout.com/address/$ADDRESS"}
   entries={[
@@ -131,3 +135,6 @@ This list contains the addresses of the commonly used assets present in opportun
     },
   ]}
 />
+
+</Tabs.Tab>
+</Tabs>
