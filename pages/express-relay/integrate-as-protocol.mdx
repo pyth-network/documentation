@@ -6,7 +6,7 @@ This guide will explain how DeFi protocols can integrate Express Relay.
 
 Integrating with Express Relay involves two main steps:
 
-- **Update** your DeFi protocol's contract.
+- **Update** your DeFi Protocol's Contract.
 - **Expose** opportunities to searchers for auction.
 
 ## Update your DeFi Protocol's Contract
@@ -93,7 +93,7 @@ interface IExpressRelayFeeReceiver {
 The following code snippet shows a sample Express Relay-integrated contract that performs liquidation.
 Note: The highlighted lines show the contract's relevant additions for Express Relay integration.
 
-```solidity showLineNumbers {1,2,12,14,21,38-42, 57-61} copy
+```solidity showLineNumbers {1,2,12,14,21,38,39,41,42, 57-61} copy
 import "@pythnetwork/express-relay-sdk-solidity/IExpressRelay.sol";
 import "@pythnetwork/express-relay-sdk-solidity/IExpressRelayFeeReceiver.sol";
 

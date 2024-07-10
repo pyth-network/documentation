@@ -15,15 +15,15 @@ Searchers can integrate with Express Relay in three steps:
 
 <Steps>
 
-### Subscribe to new Opportunities
+### Subscribe to New Opportunities
 
-Express Relay provides searchers with [`Typescript`](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/sdk/js) and [`Python`](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/sdk/python) SDKs to interact with Express Relay. 
+Express Relay provides searchers with [Typescript](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/sdk/js) and [Python](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/sdk/python) SDKs to interact with Express Relay. 
 Searchers can also directly fetch available opportunities via HTTP or subscribe to them via WebSocket.
 
 <Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
 
 <Tabs.Tab>
-Pyth provides a `Typescript` SDK, which allows searchers to subscribe to opportunities:
+Pyth provides a Typescript SDK, which allows searchers to subscribe to opportunities:
 
 ```typescript
 import { Client, Opportunity } from "@pythnetwork/express-relay-evm-js";
@@ -42,7 +42,7 @@ await client.subscribeChains(["op_sepolia"]);
 
 </Tabs.Tab>
 <Tabs.Tab>
-Pyth provides a `Python` SDK, which allows searchers to subscribe to opportunities:
+Pyth provides a Python SDK, which allows searchers to subscribe to opportunities:
 
 ```python copy
 from express_relay.client import (
@@ -181,7 +181,7 @@ Searchers can submit the constructed bids to Express Relay via the SDKs, an HTTP
 
 <Tabs.Tab>
 
-The code snippet below demonstrates how to submit a bid using the `Typescript` SDK:
+The code snippet below demonstrates how to submit a bid using the Typescript SDK:
 
 ```typescript {4} copy
 const handleOpporunity = async (opportunity: Opportunity) => {
@@ -194,7 +194,7 @@ const handleOpporunity = async (opportunity: Opportunity) => {
 </Tabs.Tab>
 <Tabs.Tab>
 
-The code snippet below demonstrates how to submit a bid using the `Python` SDK:
+The code snippet below demonstrates how to submit a bid using the Python SDK:
 
 ```python {5} copy
 def opportunity_callback(opportunity: Opportunity):
