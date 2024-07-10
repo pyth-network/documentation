@@ -1,35 +1,56 @@
 import Link from "next/link";
-
 import { Cards, Card } from "nextra/components";
 import SearchIcon from "../../components/icons/SearchIcon";
 import ContractIcon from "../../components/icons/ContractIcon";
+import QuestionMarkIcon from "../../components/icons/QuestionMarkIcon";
+import CodeIcon from "../../components/icons/CodeIcon";
 
 # Introduction
 
-Express Relay is a priority auction that enables protocols to eliminate maximal extractable value (MEV).
-
-
+Express Relay is a priority auction that enables protocols to eliminate [Maximal Extractable Value](https://www.ledger.com/academy/glossary/maximal-extractable-value-mev) (MEV).
 
 - **For Protocol Developers:** Express Relay allows protocols to recapture MEV and access a network of searchers. 
 With Express Relay, protocols don't need to spend time and energy bootstrapping a protocol-specific searcher network.
 
-<Card
-  icon={<ContractIcon />}
-  title="Integrate with Express Relay as a protocol"
-  href="./express-relay/integrate-as-protocol"
-/>
-
 - **For Searchers:** Express Relay provides easy and unified access by aggregating liquidation and other MEV opportunities across integrated DeFi protocols. 
 Searchers integrate once and gain access to all existing and future opportunities. 
 
+## Integration
+
+To integrate with Express Relay, you can integrate as a protocol or as a searcher.
+
+<Cards>
 <Card
-  icon={<SearchIcon />}
-  title="Integrate with Express Relay as a searcher"
-  href="./express-relay/integrate-as-searcher"
+  icon={<ContractIcon />}
+  title="Integrate with Express Relay as a Protocol"
+  href="./express-relay/integrate-as-protocol"
 />
 
-To learn more about Express Relay's design and how it eliminates MEV, please see [How Express Relay Works](/express-relay/how-express-relay-works).
+<Card
+  icon={<SearchIcon />}
+  title="Integrate with Express Relay as a Searcher"
+  href="./express-relay/integrate-as-searcher"
+/>
+</Cards>
 
-## Useful Links
+## Learn
 
-TODO: Add Useful Links
+To learn more about Express Relay, refer to the following resources:
+
+<Cards>
+<Card
+  icon={<QuestionMarkIcon />}
+  title="How Express Relay Works"
+  href="./express-relay/how-express-relay-works "
+/>
+
+<Card
+  icon={<CodeIcon />}
+  title="Example Protocol Integration"
+  href="https://github.com/pyth-network/pyth-examples/tree/main/express-relay/easy_lend"
+/>
+</Cards>
+
+
+
+

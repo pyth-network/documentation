@@ -34,7 +34,7 @@ const handleOpporunity = async (opportunity: Opportunity) => {
 
 const client = new Client(
   { baseUrl: "https://pyth-express-relay-mainnet.asymmetric.re" },
-  undefined,
+  undefined,                                                      // Default WebSocket options
   handleOpporunity
 );
 await client.subscribeChains(["op_sepolia"]);
@@ -127,11 +127,11 @@ The `OpportunityAdapter` contract handles asset transfers and ensures the opport
 
 <Callout type="warning" emoji="⚠️">
 Before constructing the bid, make sure your wallet has the required assets and has made the necessary approvals.
-Refer to the [Prepare assets for OpportunityAdapter](./integrate-as-searcher/opportunity-adapter.mdx) section for more details.
+Refer to the [Prepare assets for Opportunity Adapter](./integrate-as-searcher/opportunity-adapter.mdx) section for more details.
 </Callout>
 
 
-Here is an example of how to construct a bid using `OpportunityAdapter` via the SDKs:
+Here is an example of how to construct a bid object using `OpportunityAdapter` via the SDKs:
 
 <Tabs items={['Typescript', 'Python']}>
 <Tabs.Tab>
@@ -171,7 +171,7 @@ def opportunity_callback(opportunity: Opportunity):
 
 
 
-If you prefer to use your own custom contracts instead of the `OpportunityAdapter`, please refer to the [custom contracts](./integrate-as-searcher/custom-contract.mdx) section.
+If you prefer to use your custom contracts instead of the `OpportunityAdapter`, please refer to the [custom contracts](./integrate-as-searcher/custom-contract.mdx) section.
 
 ### Submit Bids on Opportunities to Express Relay
 

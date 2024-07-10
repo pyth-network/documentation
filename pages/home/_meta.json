@@ -16,14 +16,14 @@
     "href": "/benchmarks"
   },
 
-  "Entropy": {
-    "title": "Entropy →",
-    "href": "/entropy"
-  },
-
   "Express Relay": {
     "title": "Express Relay →",
     "href": "/express-relay"
+  },
+
+  "Entropy": {
+    "title": "Entropy →",
+    "href": "/entropy"
   },
 
   "--- Additional Information": {
