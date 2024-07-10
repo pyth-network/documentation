@@ -10,12 +10,11 @@ Express Relay solves the problem of MEV by providing protocol developers with an
 Developers specify a set of operations in their protocol that must be accessed through Express Relay.
 Searchers then participate in an off-chain auction to access these operations.
 Their bids in the auction are used to determine the order in which their transactions will be executed.
-The winners' transactions are forwarded to the Express Relay smart contract. As part of the transaction, searchers must pay their specified bid. 
+The winners' transactions are forwarded to the Express Relay smart contract. As part of the transaction, searchers must pay their specified bid.
 The auction profits are then split between the integrated protocol and other participants in Express Relay.
 
 ![](images/express_relay/before_express.jpg)
 ![](images/express_relay/after_express.jpg)
-
 
 The diagram above shows how Express Relay changes the MEV landscape for a liquidation.
 In the status quo (above), Searchers tip miners to guarantee that their liquidation transaction lands on-chain and that their transaction directly interacts with the protocol, exposing the liquidation opportunity.

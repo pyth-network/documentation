@@ -17,7 +17,7 @@ Searchers can integrate with Express Relay in three steps:
 
 ### Subscribe to New Opportunities
 
-Express Relay provides searchers with [Typescript](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/sdk/js) and [Python](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/sdk/python) SDKs to interact with Express Relay. 
+Express Relay provides searchers with [Typescript](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/sdk/js) and [Python](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/sdk/python) SDKs to interact with Express Relay.
 Searchers can also directly fetch available opportunities via HTTP or subscribe to them via WebSocket.
 
 <Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
@@ -34,7 +34,7 @@ const handleOpporunity = async (opportunity: Opportunity) => {
 
 const client = new Client(
   { baseUrl: "https://pyth-express-relay-mainnet.asymmetric.re" },
-  undefined,                                                      // Default WebSocket options
+  undefined, // Default WebSocket options
   handleOpporunity
 );
 await client.subscribeChains(["op_sepolia"]);
@@ -99,7 +99,7 @@ The server responds with opportunities in the following format:
 ```bash copy
 {
   "target_calldata": "0xdeadbeef",                                      // Calldata to execute the opportunity
-  "chain_id": "op_sepolia",                                             
+  "chain_id": "op_sepolia",
   "target_contract": "0xcA11bde05977b3631167028862bE2a173976CA11",      // Protocol contract address to call
   "permission_key": "0xcafebabe",                                       // Unique identifier for the opportunity
   "target_call_value": "1",                                             // Value (in Wei) to send to the protocol contract.
@@ -122,14 +122,15 @@ The server responds with opportunities in the following format:
 ### Construct the Bid
 
 Searchers should construct a bid by evaluating the fetched opportunity.
-The SDKs provide an easy way to construct a bid using the [`OpportunityAdapter`](./integrate-as-searcher/opportunity-adapter.mdx) contract. 
+The SDKs provide an easy way to construct a bid using the [`OpportunityAdapter`](./integrate-as-searcher/opportunity-adapter.mdx) contract.
 The `OpportunityAdapter` contract handles asset transfers and ensures the opportunity is executed correctly.
 
 <Callout type="warning" emoji="⚠️">
-Before constructing the bid, make sure your wallet has the required assets and has made the necessary approvals.
-Refer to the [Prepare assets for Opportunity Adapter](./integrate-as-searcher/opportunity-adapter.mdx) section for more details.
+  Before constructing the bid, make sure your wallet has the required assets and
+  has made the necessary approvals. Refer to the [Prepare assets for Opportunity
+  Adapter](./integrate-as-searcher/opportunity-adapter.mdx) section for more
+  details.
 </Callout>
-
 
 Here is an example of how to construct a bid object using `OpportunityAdapter` via the SDKs:
 
@@ -150,21 +151,22 @@ const handleOpportunity = async (opportunity: Opportunity) => {
 from datetime import datetime
 
 from express_relay.client import (
-    ExpressRelayClient,
-    sign_bid
+ExpressRelayClient,
+sign_bid
 )
 from secrets import randbits
 from express_relay.express_relay_types import Opportunity, OpportunityBidParams
 
 def opportunity_callback(opportunity: Opportunity):
-    nonce = randbits(64)
-    deadline = datetime.utcnow().timestamp() + 60 # Bid is valid for a minute
-    bid_amount = 1000 # The bid_amount should be determined based on the opportunity
-    private_key = '0x00000' # Private key of the searcher
-    signed_bid = sign_bid(opportunity, 
-                          OpportunityBidParams(amount=bid_amount, deadline=int(deadline), nonce=nonce), 
-                          private_key)
-```
+nonce = randbits(64)
+deadline = datetime.utcnow().timestamp() + 60 # Bid is valid for a minute
+bid_amount = 1000 # The bid_amount should be determined based on the opportunity
+private_key = '0x00000' # Private key of the searcher
+signed_bid = sign_bid(opportunity,
+OpportunityBidParams(amount=bid_amount, deadline=int(deadline), nonce=nonce),
+private_key)
+
+````
 </Tabs.Tab>
 </Tabs>
 
@@ -189,7 +191,7 @@ const handleOpporunity = async (opportunity: Opportunity) => {
     const bid = await client.signBid(opportunity, {amount, nonce, deadline}, privateKey)
     await client.submitBid(bid)
 }
-```
+````
 
 </Tabs.Tab>
 <Tabs.Tab>
@@ -203,6 +205,7 @@ def opportunity_callback(opportunity: Opportunity):
                           private_key)
     await client.submit_bid(signed_bid, subscribe_to_updates=True)
 ```
+
 </Tabs.Tab>
 <Tabs.Tab>
 Searchers can submit bids through an HTTP POST call to the [`/v1/bids`](https://pyth-express-relay-mainnet.asymmetric.re/redoc#tag/bid/operation/bid) endpoint. This endpoint accepts a JSON payload containing the details of the bid.

@@ -2,7 +2,7 @@ import { Tabs } from "nextra/components";
 
 # WebSocket API Reference
 
-Searchers can connect to the server via WebSocket to reduce latency and subscribe to various events. 
+Searchers can connect to the server via WebSocket to reduce latency and subscribe to various events.
 The WebSocket endpoint lives at `/v1/ws`(e.g `wss://pyth-express-relay-mainnet.asymmetric.re/v1/ws`).
 
 ## General format
@@ -76,7 +76,7 @@ To unsubscribe from a list of chains, you can send the following message:
 
 ## Submitting bids
 
-In addition to the HTTP methods, you can submit your bids via WebSocket in order to avoid additional network round trips and get notified about changes to your bid status. 
+In addition to the HTTP methods, you can submit your bids via WebSocket in order to avoid additional network round trips and get notified about changes to your bid status.
 Here is an example JSON payload for submitting a new bid:
 
 ```json copy
@@ -108,7 +108,7 @@ A successful response to a bid submission has the following schema:
 }
 ```
 
-After submitting your bid via WebSocket, you will receive notifications about the bid status updates in JSON format. 
+After submitting your bid via WebSocket, you will receive notifications about the bid status updates in JSON format.
 Refer to the four examples below, one for each of the status options (`pending`, `submitted`, `lost`, `won`):
 
 <Tabs items={[`pending`, `submitted`, `lost`, `won`]}>

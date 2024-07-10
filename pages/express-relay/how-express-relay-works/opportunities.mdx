@@ -1,6 +1,6 @@
 # Opportunities
 
-In the context of Express Relay, an opportunity refers to a potential transaction that a searcher can execute on a protocol. Typically, the term "opportunity" is used for such transactions that are lucrative and therefore competed for by many searchers. 
+In the context of Express Relay, an opportunity refers to a potential transaction that a searcher can execute on a protocol. Typically, the term "opportunity" is used for such transactions that are lucrative and therefore competed for by many searchers.
 
 In the pre-Express Relay world, opportunities therefore corresponded to MEV: a protocol generated MEV when an opportunity appeared on that protocol and searchers bid up the right to execute the opportunity at the validator level.
 
@@ -11,6 +11,7 @@ In the context of Express Relay, the value deriving from an opportunity no longe
 Opportunities do not refer to only transactions that use an oracle. In truth, any transaction that is lucrative but limited (available to only the first user(s) who executes it) generates MEV. As a result, Express Relay and the opportunity schema have been designed to be oracle-agnostic.
 
 Examples of opportunities include:
+
 - liquidations
 - open trade offers
 - NFT mints
@@ -19,6 +20,7 @@ Examples of opportunities include:
 ## Opportunity Adapter
 
 The Opportunity Adapter contract enables searchers to engage with opportunities from different protocols without needing to do any bespoke integration work per protocol. Instead of exposing lower-level fields determined by protocols (e.g. `amountCollateral`, `addressBorrower`), the Opportunity Adapter abstracts away the semantics of the opportunity and instead [exposes the fundamental traits](https://github.com/pyth-network/per/blob/30c3fc695034f518225f8255ebe8423604e8aca3/contracts/src/opportunity-adapter/Structs.sol#L20-L23) of any opportunity:
+
 - the tokens sold by the searcher
 - the tokens bought by the searcher
 - the identity of the searcher executing this opportunity
