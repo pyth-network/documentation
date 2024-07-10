@@ -10,7 +10,7 @@ Express Relay exposes different endpoints for interaction, which can be used dir
 Searchers can integrate with Express Relay in three steps:
 
 1. Subscribe to new opportunities
-2. Evaluate the opportunity and construct the bid
+2. Construct the bid
 3. Submit the bid to Express Relay.
 
 <Steps>
@@ -119,9 +119,9 @@ The server responds with opportunities in the following format:
 }
 ```
 
-### Evaluate the Opportunity and Construct the Bid
+### Construct the Bid
 
-Searchers should construct a bid based on the fetched opportunity.
+Searchers should construct a bid by evaluating the fetched opportunity.
 The SDKs provide an easy way to construct a bid using the [`OpportunityAdapter`](./integrate-as-searcher/opportunity-adapter.mdx) contract. 
 The `OpportunityAdapter` contract handles asset transfers and ensures the opportunity is executed correctly.
 
