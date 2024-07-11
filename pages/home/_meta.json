@@ -16,6 +16,11 @@
     "href": "/benchmarks"
   },
 
+  "Express Relay": {
+    "title": "Express Relay →",
+    "href": "/express-relay"
+  },
+
   "Entropy": {
     "title": "Entropy →",
     "href": "/entropy"

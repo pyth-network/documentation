@@ -1,0 +1,46 @@
+import { Steps } from "nextra/components";
+
+# Prepare Assets for Opportunity Adapter
+
+The [`OpportunityAdapter`](https://github.com/pyth-network/per/blob/main/contracts/src/opportunity-adapter/OpportunityAdapter.sol) is a utility contract that can be used for easier integration with Express Relay while maintaining maximum security.
+In this integration, searchers use the [`Permit2`](https://github.com/Uniswap/permit2/) contract for safe asset management (`ERC20` tokens and Wrapped ETH) and the adapter contract to transfer bids, execute the opportunity, and ensure the assets are transferred correctly.
+Using the `OpportunityAdapter` means that a searcher does not need to deploy their own custom contract for inventory management and routing to the protocol contracts where liquidation takes place.
+
+In order to use `OpportunityAdapter`, you need to prepare your assets using the following steps. We use [`cast`](https://book.getfoundry.sh/cast/) as a simple tool to interact with the blockchain but you can use any other tool you prefer.
+
+<Steps>
+### Transfer Tokens to your Wallet
+
+Searchers are expected to own all the tokens that they expect to provide as `sell_tokens` for different opportunities.
+They will also need to approve `WETH`, as the `OpportunityAdapter` will pay the bids by deducting the bid amounts from their wallet's `WETH` balance.
+
+You can find the `WETH` contract address on the [contract address page](../contract-addresses).
+Refer to the following command to deposit native ETH to `WETH`:
+
+```bash copy
+cast send \
+--private-key $PRIVATE_KEY \
+--rpc-url https://mainnet.mode.network/  \
+$WETH_ADDRESS \
+"deposit()" --value 0.1ether # Change the value to the amount you want to deposit
+```
+
+### Approve your Assets to Permit2
+
+Approve your tokens, including `WETH`, to the `Permit2` contract at `0x000000000022D473030F116dDEE9F6B43aC78BA3`.
+This step enables token spending with off-chain signatures.
+
+You can find the `Permit2` and `WETH` contract address on the [contract address page](../contract-addresses.mdx).
+
+Refer to the following command to approve a token to `Permit2`:
+
+```bash copy
+cast send \
+--private-key $PRIVATE_KEY \
+--rpc-url https://mainnet.mode.network/  \
+$TOKEN_ADDRESS \
+"approve(address spender, uint256 value)" \
+0x000000000022D473030F116dDEE9F6B43aC78BA3 100000000000000000000000000 # You can use a large amount to avoid approving multiple times
+```
+
+</Steps>
