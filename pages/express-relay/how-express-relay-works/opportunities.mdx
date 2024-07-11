@@ -2,7 +2,7 @@
 
 In the context of Express Relay, an opportunity refers to a potential transaction that a searcher can execute on a protocol. Typically, the term "opportunity" is used for such transactions that are lucrative and therefore competed for by many searchers.
 
-In the pre-Express Relay world, opportunities therefore corresponded to MEV: a protocol generated MEV when an opportunity appeared on that protocol and searchers bid up the right to execute the opportunity at the validator level.
+In the pre-Express Relay world, opportunities corresponded to MEV: a protocol generated MEV when an opportunity appeared on that protocol and searchers bid up the right to execute the opportunity at the validator level.
 
 In the context of Express Relay, the value deriving from an opportunity no longer flows to the validator but instead is recaptured by the system and shared back with the protocol. In Express Relay, protocols expose opportunities to the network of integrated searchers, and the searchers then bid on priority to execute those opportunities. Critically, the auction has moved from being determined by validators to a lower level of the stack (the protocol level).
 
@@ -44,8 +44,9 @@ In addition to learning about present opportunities, searchers can also query th
 ![](images/express_relay/before_searcher.jpg)
 ![](images/express_relay/after_searcher.jpg)
 
--Before The searcher connects to every new bespoke protocol. Similarly, protocols have to court and incentivize individual searchers. Maybe a messy-looking bipartite graph with O(NM) edges
--After Searcher connects once to ExpressRelay, then gets access to opportunities of all integrated protocols. Similarly, the protocol connects once to Express Relay and then gets access to DeFi services for all integrated searchers. A cleaner-looking graph with ER in the middle as a hub for both protocols and searchers.
+The diagrams above illustrate the difference between the nature of integrations pre- and post-Express Relay. In the status quo, each searcher must connect to every new protocol with a custom integration. Similarly, protocols have to court and incentivize individual searchers. This creates a lot of integration overhead and friction for both parties.
+
+With Express Relay, the integration is abstracted away, and searchers can connect to all current and future Express Relay-integrated protocols by **integrating once** with Express Relay. On the other hand, protocols that integrate with Express Relay gain access to the network of searchers integrated with Express Relay.
 
 ## Opportunity Monitor
 
