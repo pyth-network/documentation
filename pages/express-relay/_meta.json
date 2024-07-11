@@ -33,7 +33,7 @@
   "errors": "Error Codes",
   "examples": {
     "title": "Example Application ↗",
-    "href": "https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend",
+    "href": "https://github.com/pyth-network/pyth-examples/tree/main/express-relay/easy_lend",
     "newWindow": true
   },
   "-- Understand Express Relay": {
