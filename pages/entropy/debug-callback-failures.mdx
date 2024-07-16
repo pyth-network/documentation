@@ -22,7 +22,7 @@ This call requires the chain id, contract address and four arguments.
 The chain id and contract address can be retrieved from [Contract Addresses](/entropy/contract-addresses).
 Export these values as environment variables for later use:
 
-```bash
+```bash copy
 export CHAIN_ID=blast
 export ENTROPY_ADDRESS=0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb
 ```
@@ -43,7 +43,7 @@ export USER_RANDOM_NUMBER=0xb1db70cfe95d9e823ac591362921c20eb45f136dbf417362f0a0
 ```
 
 Next, collect the provider's revelation.
-Every provider exposes a URL which allows users to get the provider's revelation for unfulfilled requests.
+Every provider exposes a URL that allows users to get the provider's revelation for unfulfilled requests.
 The URLs for the default providers are as follows:
 
 | Network type | Provider URL                             |
@@ -53,7 +53,7 @@ The URLs for the default providers are as follows:
 
 Retrieve the `/v1/chains/$CHAIN_ID/revelations/$SEQUENCE_NUMBER` endpoint from this server:
 
-```bash
+```bash copy
 curl https://fortuna.dourolabs.app/v1/chains/$CHAIN_ID/revelations/$SEQUENCE_NUMBER
 ```
 
@@ -70,13 +70,13 @@ This endpoint will return the provider's revelation as a hexadecimal value, such
 
 Export this value as an environment variable (prefixed with 0x):
 
-```bash
+```bash copy
 export PROVIDER_REVELATION=0x5d4bfa3abeaf15fe8b7771c74c0e3e210096015632831460870bc5374e05d4d8
 ```
 
 Finally, submit the transaction to invoke `revealWithCallback`:
 
-```bash
+```bash copy
 cast send $ENTROPY_ADDRESS 'revealWithCallback(address, uint64, bytes32, bytes32)' $ENTROPY_ADDRESS $SEQUENCE_NUMBER $USER_RANDOM_NUMBER $PROVIDER_REVELATION
 ```
 
