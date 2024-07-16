@@ -24,6 +24,7 @@
   },
 
   "generate-random-numbers": "Generate Random Numbers",
+  "debug-callback-failures": "Debug Callback Failures",
 
   "-- Reference Material": {
     "title": "Reference Material",
