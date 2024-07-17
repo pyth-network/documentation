@@ -272,4 +272,12 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "testnet",
     rpc: "https://rpc-internal.testnet.tabichain.com/",
   },
+  b3_testnet: {
+    address: "0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb",
+    explorer: "https://sepolia.explorer.b3.fun/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://sepolia.b3.fun/http/",
+  },
 };
