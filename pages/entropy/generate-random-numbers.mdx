@@ -1,9 +1,7 @@
 # Generate Random Numbers
 
-Integrations use a simple one-step on-chain process:
-
-1. **Request** a random number. Send a transaction with a random number that you have generated off-chain and receive a sequence number.
-
-Entropy will callback your contract with the generated random number once the request is fullfilled by the provider.
+Integrations simply call an on-chain function to request a random number from Entropy.
+This function takes a random number that you have generated off-chain and returns a sequence number.
+Entropy will then callback your contract with the generated random number once the request is fullfilled by the provider.
 
 See [How to Generate Random numbers in EVM dApps](generate-random-numbers/evm.mdx) to integrate your application with Pyth Entropy.
