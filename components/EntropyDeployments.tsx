@@ -264,7 +264,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "testnet",
     rpc: "https://rpc.ankr.com/klaytn_testnet",
   },
-  tabi_testnet: {
+  "tabi-testnet": {
     address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
     explorer: "https://testnet.tabiscan.com/address/$ADDRESS",
     delay: "",
@@ -272,7 +272,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "testnet",
     rpc: "https://rpc-internal.testnet.tabichain.com/",
   },
-  b3_testnet: {
+  "b3-testnet": {
     address: "0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb",
     explorer: "https://sepolia.explorer.b3.fun/address/$ADDRESS",
     delay: "",
