@@ -18,8 +18,8 @@ The function has the following signature:
 function revealWithCallback(address provider, uint64 sequenceNumber, bytes32 userRandomNumber, bytes32 providerRevelation)
 ```
 
-This call requires the chain id, contract address and four arguments.
-The chain id and contract address can be retrieved from [Contract Addresses](/entropy/contract-addresses).
+This call requires the chain ID, contract address, and four arguments.
+The chain ID and contract address can be retrieved from [Contract Addresses](/entropy/contract-addresses).
 Export these values as environment variables for later use:
 
 ```bash copy
@@ -82,7 +82,7 @@ cast send $ENTROPY_ADDRESS 'revealWithCallback(address, uint64, bytes32, bytes32
 
 You may also need to provide the `-r` with an RPC for your chain, plus an additional argument (such as `--private-key`) to specify the wallet to use to sign the transaction.
 
-## Interpeting the Results
+## Interpreting the Results
 
 If the transaction succeeds, check how much gas the transaction used.
 If the gas exceeds the callback gas limit for your chain as shown on [Contract Addresses](/entropy/contract-addresses), please reduce the gas usage to allow the provider to invoke the callback in the future.
