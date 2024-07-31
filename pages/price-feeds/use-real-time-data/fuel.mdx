@@ -118,12 +118,12 @@ The code snippet below provides an example of how to fetch price updates using N
 import { TestContractAbi__factory } from "@/sway-api";
 import PYTH_CONTRACT_ABI from "../abi/pyth-contract-abi.json";
 import { arrayify, Contract, hexlify } from "fuels";
+import { HermesClient } from "@pythnetwork/hermes-client";
 
-const HERMES_V2_LATEST_PRICE_UPDATES_ENDPOINT =
-  "https://hermes.pyth.network/v2/updates/price/latest?ids[]=";
+const HERMES_ENDPOINT = "https://hermes.pyth.network/";
 const FUEL_ETH_BASE_ASSET_ID =
   "0xf8f8b6283d7fa5b672b530cbb84fcccb4ff8dc40f8176ef4544ddb1f1952ad07";
-const PRICE_FEED_ID =
+const ETH_USD_PRICE_FEED_ID =
   "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace"; // ETH/USD
 
 const contractId =
@@ -135,15 +135,14 @@ const pythContractId = process.env
 
 async function updateAndGetPrice() {
   const fetchPriceUpdateData = async () => {
-    const response = await fetch(
-      HERMES_V2_LATEST_PRICE_UPDATES_ENDPOINT + PRICE_FEED_ID
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch price");
-    }
-    const data = await response.json();
-    const binaryData = data.binary.data[0];
-    const buffer = Buffer.from(binaryData, "hex");
+    const connection = new HermesClient(HERMES_ENDPOINT);
+
+    // Latest price updates
+    const priceUpdates = await connection.getLatestPriceUpdates([
+      ETH_USD_PRICE_FEED_ID,
+    ]);
+
+    const buffer = Buffer.from(priceUpdates.binary.data[0], "hex");
     return buffer;
   };
 
