@@ -11,6 +11,7 @@ import { autocapturePlugin } from "@amplitude/plugin-autocapture-browser";
 import { CosmosChains, GlobalContextProvider } from "../contexts/GlobalContext";
 import "../styles/styles.css";
 import TagManager from "react-gtm-module";
+import { AskCookbook } from "../components/AskCookbook";
 
 const tagManagerArgs = {
   gtmId: "GTM-MN3TWRGJ",
@@ -71,6 +72,7 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
          gtag('config', 'G-7TVVW3MEK7');
        `}
         </Script>
+        <AskCookbook />
         <GrazProvider grazOptions={{ chains: CosmosChains }}>
           <WagmiConfig config={config}>
             <ConnectKitProvider
