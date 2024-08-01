@@ -31,11 +31,11 @@ Find the implementation in our [GitHub](https://github.com/pyth-network/pyth-cli
 
 **How does Pyth calculate its EMA Price and EMA Confidence?**
 
-The EMA Price (`ema_price`) and EMA Confidence (`ema_confidence`) values are derived directly from the aggregated prices and confidences Pyth has generated on-chain. Publishers do not submit either EMA Price or EMA Confidence values, they only publish to Solana a “live” price and its associated confidence interval which will, in turn, be used for EMA Price and EMA Confidence calculation.
+The EMA Price (`ema_price`) and EMA Confidence (`ema_confidence`) values are derived directly from the aggregated prices and confidences Pyth has generated on-chain. Publishers do not submit either EMA Price or EMA Confidence values, they only publish to Pythnet a “live” price and its associated confidence interval which will, in turn, be used for EMA Price and EMA Confidence calculation.
 
 The current Pyth averaging method is a slot-weighted, inverse confidence-weighted exponential moving average of the aggregate price (and confidence interval).
 
-- **Slot weighted** — The Pyth EMA uses the Solana slot number to measure the passage of time. The averaging period is 5921 slots, which corresponds to approximately 1 hour on Solana mainnet.
+- **Slot weighted** — The Pyth EMA uses the Pythnet slot number to measure the passage of time. The averaging period is 5921 slots, which corresponds to approximately 1 hour on Pythnet.
 - **Inverse confidence weighted** — Weighting each sample by 1/Confidence lets the EMA give more weight to samples with tight confidence and ignore samples with very wide confidence. Below is an example of an outlier aggregate price with a wide confidence interval. Notice how the average using inverse confidence weighting does not get pulled up by the outlier sample while the uniform weighted average does.
 
 ![](../../../images/EMA_Price_Aggregation_2.png)

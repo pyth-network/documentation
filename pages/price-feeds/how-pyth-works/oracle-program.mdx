@@ -7,8 +7,8 @@ The oracle program is responsible for several tasks:
 3. Combining the individual data providers' prices into a single aggregate price and confidence interval.
 4. Performing any additional stateful computations on the resulting price series, such as computing moving averages.
 
-The oracle solves these problems by maintaining a collection of [Solana accounts](account-structure.md) to represent the set of price feeds.
-Each feed has two accounts: a product account to store [metadata](product-metadata.md) and a price account.
+The oracle solves these problems by maintaining a collection of [Solana accounts](../pythnet-reference/account-structure.md) to represent the set of price feeds.
+Each feed has two accounts: a product account to store [metadata](../pythnet-reference/product-metadata.md) and a price account.
 The price account stores a list of authorized data providers for this specific price feed, and allocates storage space for each data provider's price.
 The oracle program exposes an instruction called `upd_price` that enables an authorized data provider to update the price account with their current estimate of the price and confidence interval.
 Additionally, the first time that `upd_price` is called in a slot, it will [aggregate](price-aggregation.md) the individual data provider's prices into an aggregate price and confidence interval.
