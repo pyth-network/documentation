@@ -13,7 +13,7 @@ Second, the **aggregate price should appropriately weight data sources with diff
 ![](../../../images/Price_Aggregation_2.png)
 
 Finally, the **aggregate confidence interval should reflect the variation between publishers’ prices.**
-Under normal market conditions, we expect the a product to trade at a similar price across exchanges.
+Under normal market conditions, we expect the product to trade at a similar price across exchanges.
 In these cases, we would like the aggregate confidence interval to reflect the confidence intervals of the individual data providers, as shown in the figure on the left.
 However, in some rare situations, a product can trade at different prices on different exchanges.
 In these cases, the aggregate confidence interval should widen out to reflect the variation between these prices, as shown in the figure on the right.
@@ -24,11 +24,11 @@ In these cases, the aggregate confidence interval should widen out to reflect th
 
 The aggregation algorithm itself is a simple two-step process.
 The first step computes the aggregate price by giving each publisher three votes — one vote at their price and one vote at each of their price +/- their confidence interval — then taking the median of all the votes.
-The second step computes distance from the aggregate price to the 25th and 75th percentiles of the votes, then selects the larger of the two as the aggregate confidence interval.
+The second step computes the distance from the aggregate price to the 25th and 75th percentiles of the votes, and then selects the larger of the two as the aggregate confidence interval.
 
 This process acts like a hybrid between a mean and a median, giving confident publishers more influence, while still capping the maximum influence of any single publisher.
 The algorithm has an interpretation as computing the minimum of an objective function that penalizes the aggregate price from deviating too far from the publishers' prices.
-This interpretation allows us to prove properties of the algorithm's behavior: for example, the aggregate price will always lie between the 25th and 75th percentiles of the publishers' prices.
+This interpretation allows us to prove the properties of the algorithm's behavior: for example, the aggregate price will always lie between the 25th and 75th percentiles of the publishers' prices.
 
 **Scenarios**
 
