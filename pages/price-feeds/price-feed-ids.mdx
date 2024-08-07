@@ -8,3 +8,9 @@ Price feeds also have different IDs in the Stable and Beta channels.
 
 The full catalog of price feeds is listed on the [pyth.network website](https://pyth.network/price-feeds/).
 The [Price Feed ID reference](https://pyth.network/developers/price-feed-ids) also lets you identify a feed's ID in your chosen ecosystem.
+
+## Solana Price Feed Accounts
+
+On Solana, each feed additionally has a collection of **price feed accounts** containing the feed's data.
+The addresses of these accounts are programmatically derived from the feed id and a shard id, which is simply a 16-bit number.
+See [How to Use Real-Time Data on Solana](price-feeds/use-real-time-data/solana#write-frontend-code) for more information on price feed accounts.
