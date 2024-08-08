@@ -121,7 +121,10 @@ contract MyFirstPythContract {
   // ... other functions omitted
 
   function mint() public payable {
-    PythStructs.Price memory price = pyth.getPrice(ethUsdPriceId);
+    PythStructs.Price memory price = pyth.getPriceNoOlderThan(
+      ethUsdPriceId,
+      60
+    );
 
     uint ethPrice18Decimals = (uint(uint64(price.price)) * (10 ** 18)) /
       (10 ** uint8(uint32(-1 * price.expo)));
@@ -144,7 +147,7 @@ contract MyFirstPythContract {
 
 ```
 
-This function first reads a `Price` from the pyth contract.
+This function first reads a `Price` from the pyth contract if it is updated within the last 60 seconds.
 It then performs some arithmetic on the price in order to calculate how much the caller needs to pay. This conversion
 assumes that 10^18 wei is equal to the native token (ETH in this example); in some networks (like Hedera) the decimal
 places are different and you need to change the math.
@@ -292,8 +295,8 @@ Now run `forge test -vvv`
 ```
 
 Oh no, the test fails with a `StalePrice` error!
-When our contract calls `getPrice`, it checks the timestamp on the blockchain and compares it to the timestamp for the Pyth price.
-If the Pyth price's timestamp is too far in the past, then a `StalePrice` error occurs.
+When our contract calls `getPriceNoOlderThan(.., 60)`, it checks the timestamp on the blockchain and compares it to the timestamp for the Pyth price.
+If the Pyth price's timestamp is more than 60 seconds in the past, then a `StalePrice` error occurs.
 `skip` moves the timestamp on the blockchain forward, which triggers the error.
 
 We can fix this problem, but first, let's fix the test case.
@@ -413,7 +416,10 @@ contract MyFirstPythContract {
   }
 
   function mint() public payable {
-    PythStructs.Price memory price = pyth.getPrice(ethUsdPriceId);
+    PythStructs.Price memory price = pyth.getPriceNoOlderThan(
+      ethUsdPriceId,
+      60
+    );
     console2.log("price of ETH in USD");
     console2.log(price.price);
 
