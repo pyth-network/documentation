@@ -10,14 +10,14 @@
     "type": "separator"
   },
 
-  "get-price": "getPrice",
+  "get-price": "getPrice (deprecated)",
   "get-price-unsafe": "getPriceUnsafe",
   "get-price-no-older-than": "getPriceNoOlderThan",
   "get-ema-price": "getEmaPrice",
   "get-ema-price-unsafe": "getEmaPriceUnsafe",
   "get-ema-price-no-older-than": "getEmaPriceNoOlderThan",
   "get-update-fee": "getUpdateFee",
-  "get-valid-time-period": "getValidTimePeriod",
+  "get-valid-time-period": "getValidTimePeriod (deprecated)",
   "parse-price-feed-updates": "parsePriceFeedUpdates",
   "parse-price-feed-updates-unique": "parsePriceFeedUpdatesUnique",
   "update-price-feeds": "updatePriceFeeds",
