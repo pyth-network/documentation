@@ -11,7 +11,7 @@ import { Tab, Tabs } from "nextra-theme-docs";
 
 Parse `updateData` and return the price feeds for the given `priceIds` within, if they are all published between `minPublishTime` and `maxPublishTime` (`minPublishTime <= publishTime <= maxPublishTime`).
 Use this function if you want to use a Pyth price for a fixed time and not the most recent price;
-otherwise, consider using [updatePriceFeeds](update-price-feeds) followed by [getPrice](get-price) or one of its variants.
+otherwise, consider using [updatePriceFeeds](update-price-feeds) followed by [getPriceNoOlderThan](get-price-no-older-than) or one of its variants.
 Unlike `updatePriceFeeds`, calling this function will not update the on-chain price.
 
 If you need to make sure the price update is the earliest update after the `minPublishTime` consider using [parsePriceFeedUpdatesUnique](parse-price-feed-updates-unique).
