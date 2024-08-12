@@ -78,13 +78,12 @@ This analogy suggests two simple solutions to races:
 To mitigate the risk of latency, derivative protocols should consider the following strategies:
 
 1. **Use a Delayed Settlement**: Derivative protocols can introduce a delay between the time a contract is executed and the time it is settled. This delay gives the protocol time to observe price changes and reject transactions that are based on manipulated prices.
-   Moreover, As mentioned above the protocol can introduce a short delay (~5 seconds) between the time a user submits the tx to the application and the keeper submits the tx to the blockchain. 
+   Moreover, As mentioned above the protocol can introduce a short delay (~5 seconds) between the time a user submits the tx to the application and the keeper submits the tx to the blockchain.
    The keeper can use Pyth Benchmark to get the price of `t - 5` seconds, where `t` is the current time and `t - 5` is the time when the user submitted the tx to the dApp.
    Now the keeper can use [`parsePriceFeedUpdates()`](https://api-reference.pyth.network/price-feeds/evm/parsePriceFeedUpdates) to parse the prices and submit to prevent price frontrunning.
 
-1. **Use a Confidence Interval**: Pyth provides a confidence interval for each price update. Derivative protocols can use this confidence interval to determine the range in which the true price probably lies. 
+1. **Use a Confidence Interval**: Pyth provides a confidence interval for each price update. Derivative protocols can use this confidence interval to determine the range in which the true price probably lies.
    By using the lower bound of the confidence interval, derivative protocols can protect themselves from price manipulation that drives the price down. By using the upper bound of the confidence interval, derivative protocols can protect themselves from price manipulation that drives the price up.
-
 
 ## Confidence Intervals
 
