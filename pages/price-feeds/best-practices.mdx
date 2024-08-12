@@ -75,9 +75,9 @@ This analogy suggests two simple solutions to races:
 
 ### Latency Mitigations for Derivative Protocols
 
-To mitigate the risk of latency, derivative protocols should consider the following strategies:
+Derivative protocols are encouraged to consider the following strategies to mitigate the impact of oracle latency:
 
-1. **Use a Delayed Settlement**: Derivative protocols can introduce a delay between the time a contract is executed and the time it is settled. This delay gives the protocol time to observe price changes and reject transactions that are based on manipulated prices.
+1. **Use a Delayed Settlement**: Derivative protocols can introduce a delay between the time a ordere is created and the time it is executed. This delay gives the protocol time to observe price changes and reject trades/transactions that profit over latency.
    Moreover, As mentioned above the protocol can introduce a short delay (~5 seconds) between the time a user submits the tx to the application and the keeper submits the tx to the blockchain.
    The keeper can use Pyth Benchmark to get the price of `t - 5` seconds, where `t` is the current time and `t - 5` is the time when the user submitted the tx to the dApp.
    Now the keeper can use [`parsePriceFeedUpdates()`](https://api-reference.pyth.network/price-feeds/evm/parsePriceFeedUpdates) to parse the prices and submit to prevent price frontrunning.
