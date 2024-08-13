@@ -20,7 +20,7 @@ The confidence interval is `1500 * 10^(-5) = $0.015`, and the price is `12276250
 Sometimes, Pyth will not be able to provide a current price for a product.
 This situation can happen for various reasons.
 For example, US equity markets only trade during certain hours, and outside those hours, it's not clear what an equity's price is.
-Pyth price feeds follow the [traditional market hours](https://www.cmegroup.com/trading-hours.html) for each asset class. \
+Pyth price feeds follow the traditional market hours for each asset class. \
 Consult [Market Hours](./market-hours.md) to know the market hours for each asset class.
 
 Alternatively, a network outage (at the internet level, blockchain level, or at multiple data providers) may prevent the protocol from producing new price updates.
@@ -42,7 +42,7 @@ This ability is functionally equivalent to latency: it allows users to see the p
 
 The simplest way to guard against this attack vector is to incorporate a **staleness check** to ensure that the price used in a transaction is sufficiently recent.
 
-Pyth SDK provides the [`getPriceNoOlderThan()`](https://api-reference.pyth.network/price-feeds/evm/getPriceNoOlderThan) method to help users guard against this attack vector. This method returns the most recent price update that is not older than a specified threshold.
+The Pyth SDK provides the [`getPriceNoOlderThan()`](https://api-reference.pyth.network/price-feeds/evm/getPriceNoOlderThan) method to help users guard against this attack vector. This method returns the most recent price update that is not older than a specified threshold.
 Highly latency-sensitive protocols may wish to reduce the threshold to a few seconds to better suit their needs.
 Please also see the section below on [latency mitigations](best-practices.md#latency) for additional ideas on how latency-sensitive protocols can minimize the impact of oracle latency.
 
@@ -54,35 +54,15 @@ The threat model for integrating protocols should assume that adversaries see pr
 In this threat model, protocol designers should avoid situations where a Pyth price update must race against an adversary's transaction.
 Adversaries are highly likely to win these races, as they have a head start, and sophisticated adversaries can additionally optimize their network latencies or pay miners for priority blockspace.
 
-This situation is analogous to market-making in traditional finance.
-Market makers place resting orders on exchanges with the hope of earning the bid/ask spread.
-When the “true price” moves, these market makers get picked off by adverse “smart flow” that is faster than they are.
-The smart flow is balanced by two-way flow, that is, people wanting to trade for other reasons besides a price change.
-
-This analogy suggests two simple solutions to races:
-
-1. Configure protocol parameters to balance the losses from smart flow against the gains from two-way flow.
-   Market makers in traditional finance implement this approach by offering a bid/ask spread and limited liquidity.
-   The limited liquidity caps the losses to smart flow, while still earning profits from the two-way flow.
-   A successful market maker tunes the spread and offers liquidity to limit adverse selection from smart traders while still interacting with the two-way flow.
-2. Give the protocol a "last look" to decide which transactions to accept.
-   In traditional finance, some exchanges give market makers a chance to walk back a trade offer after someone else has requested it.
-   Protocols can implement this technique by splitting transactions into two parts: a request and a fulfillment.
-   In the first transaction, the user requests to perform an action.
-   In the second transaction, the protocol chooses whether or not to fulfill the user's request; this step can be implemented as a permissionless operation.
-   The protocol can require a short delay between the two transactions, and the user's request gets fulfilled at the Pyth price as of the second transaction.
-   This technique gives the protocol extra time to observe price changes, giving it a head start in the latency race.
-
 ### Latency Mitigations for Derivative Protocols
 
 Derivative protocols are encouraged to consider the following strategies to mitigate the impact of oracle latency:
 
-1. **Use a Delayed Settlement**: Derivative protocols can introduce a delay between the time a ordere is created and the time it is executed. This delay gives the protocol time to observe price changes and reject trades/transactions that profit over latency.
-   Moreover, As mentioned above the protocol can introduce a short delay (~5 seconds) between the time a user submits the tx to the application and the keeper submits the tx to the blockchain.
-   The keeper can use Pyth Benchmark to get the price of `t - 5` seconds, where `t` is the current time and `t - 5` is the time when the user submitted the tx to the dApp.
-   Now the keeper can use [`parsePriceFeedUpdates()`](https://api-reference.pyth.network/price-feeds/evm/parsePriceFeedUpdates) to parse the prices and submit to prevent price frontrunning.
+1. **Use Delayed Settlement**: Derivative protocols can introduce a delay between the time an order is created and the time it is executed. This delay gives the protocol time to observe price changes and reject trades/transactions that profit over latency.
+   Suppose a user submits a trade transaction at a time `t`. The protocol should execute the trade by using the price at the time `t`, which will be available to the protocol after a short delay.
+   The protocol can fetch this price from [Pyth Benchmark service](https://benchmarks.pyth.network/docs#/Updates/price_updates_timestamp_route_v1_updates_price__timestamp__get) and then can use [`parsePriceFeedUpdates()`](https://api-reference.pyth.network/price-feeds/evm/parsePriceFeedUpdates) to parse the prices and submit to prevent price frontrunning.
 
-1. **Use a Confidence Interval**: Pyth provides a confidence interval for each price update. Derivative protocols can use this confidence interval to determine the range in which the true price probably lies.
+1. **Use a Spread**: Pyth provides a confidence interval for each price update. Derivative protocols can use this confidence interval to determine the range in which the true price probably lies.
    By using the lower bound of the confidence interval, derivative protocols can protect themselves from price manipulation that drives the price down. By using the upper bound of the confidence interval, derivative protocols can protect themselves from price manipulation that drives the price up.
 
 ## Confidence Intervals
