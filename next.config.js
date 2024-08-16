@@ -118,7 +118,10 @@ const permanentRedirectArray = [
   ["/documentation", "/home"],
 
   ["/api-explorer/:slug*", "/price-feeds/api-reference/:slug*"],
-  ["/price-feeds/api-reference/evm/:slug*", "https://api-reference.pyth.network/price-feeds/evm/:slug*"],
+  [
+    "/price-feeds/api-reference/evm/:slug*",
+    "https://api-reference.pyth.network/price-feeds/evm/:slug*",
+  ],
 
   [
     "/guides/how-to-schedule-price-updates-with-gelato",
