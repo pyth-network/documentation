@@ -118,10 +118,6 @@ const permanentRedirectArray = [
   ["/documentation", "/home"],
 
   ["/api-explorer/:slug*", "/price-feeds/api-reference/:slug*"],
-  [
-    "/price-feeds/api-reference/evm/:slug*",
-    "https://api-reference.pyth.network/price-feeds/evm/:slug*",
-  ],
 
   [
     "/guides/how-to-schedule-price-updates-with-gelato",
@@ -132,13 +128,6 @@ const permanentRedirectArray = [
     "/benchmarks/how-to-create-tradingview-charts",
   ],
   ["/guides", "/price-feeds"],
-];
-
-const temperoryRedirectsArray = [
-  [
-    "/price-feeds/api-reference/evm/:slug*",
-    "https://api-reference.pyth.network/price-feeds/evm/:slug*",
-  ],
 ];
 
 /** @type {import('next').NextConfig} */
@@ -153,7 +142,7 @@ const nextConfig = {
   },
 
   async redirects() {
-    permanentRedirects = permanentRedirectArray.map((value) => {
+    const permanentRedirects = permanentRedirectArray.map((value) => {
       return {
         source: value[0],
         destination: value[1],
@@ -161,15 +150,20 @@ const nextConfig = {
       };
     });
 
-    temperoryRedirects = temperoryRedirectsArray.map((value) => {
-      return {
-        source: value[0],
-        destination: value[1],
+    return [
+      ...permanentRedirects,
+      {
+        source: "/price-feeds/api-reference/evm/:slug",
+        destination:
+          "https://api-reference.pyth.network/price-feeds/evm/:slug",
         permanent: false,
-      };
-    });
-
-    return [...permanentRedirects, ...temperoryRedirects];
+      },
+      {
+        source: "/price-feeds/api-reference/evm/",
+        destination: "https://api-reference.pyth.network/price-feeds/evm/",
+        permanent: false,
+      },
+    ];
   },
 };
 
