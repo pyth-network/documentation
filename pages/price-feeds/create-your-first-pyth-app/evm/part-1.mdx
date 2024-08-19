@@ -336,9 +336,9 @@ contract MyFirstPythContract {
 ```
 
 The end of this function calls the `mint` function we defined before.
-Before that, however, the function calls [`updatePriceFeeds`](https://docs.pyth.network/price-feeds/api-reference/evm/update-price-feeds) on the Pyth contract.
+Before that, however, the function calls [`updatePriceFeeds`](../../api-reference/evm/updatePriceFeeds) on the Pyth contract.
 This function takes a payload of `bytes[]` that is passed into the function itself.
-The Pyth contract requires a fee to perform this update; the code snippet above calculates the needed fee using [`getUpdateFee`](https://docs.pyth.network/price-feeds/api-reference/evm/get-update-fee).
+The Pyth contract requires a fee to perform this update; the code snippet above calculates the needed fee using [`getUpdateFee`](https://api-reference.pyth.network/price-feeds/evm/getUpdateFee).
 The caller of this function can pass in a recent Pyth price update as this payload, guaranteeing that the `StalePrice` error won't occur.
 
 We can test this function by adding the following snippet to the test file:

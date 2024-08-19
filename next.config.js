@@ -140,14 +140,29 @@ const nextConfig = {
     config.resolve.fallback = { fs: false, net: false, tls: false };
     return config;
   },
+
   async redirects() {
-    return permanentRedirectArray.map((value) => {
+    const permanentRedirects = permanentRedirectArray.map((value) => {
       return {
         source: value[0],
         destination: value[1],
         permanent: true,
       };
     });
+
+    return [
+      ...permanentRedirects,
+      {
+        source: "/price-feeds/api-reference/evm/:slug",
+        destination: "https://api-reference.pyth.network/price-feeds/evm/:slug",
+        permanent: false,
+      },
+      {
+        source: "/price-feeds/api-reference/evm/",
+        destination: "https://api-reference.pyth.network/price-feeds/evm/",
+        permanent: false,
+      },
+    ];
   },
 };
 

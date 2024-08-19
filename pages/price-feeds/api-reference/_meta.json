@@ -1,5 +1,9 @@
 {
-  "evm": "EVM",
+  "evm": {
+    "title": "EVM ↗",
+    "href": "https://api-reference.pyth.network/price-feeds/evm/getPriceNoOlderThan",
+    "newWindow": true
+  },
   "aptos": "Aptos",
   "cosmwasm": "CosmWasm",
   "hermes": {
