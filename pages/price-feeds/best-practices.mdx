@@ -60,7 +60,7 @@ Derivative protocols are encouraged to consider the following strategies to miti
 
 1. **Use Delayed Settlement**: Derivative protocols can introduce a delay between the time an order is created and the time it is executed. This delay gives the protocol time to observe price changes and reject trades/transactions that profit over latency.
    Suppose a user submits a trade transaction at a time `t`. The protocol should execute the trade by using the price at the time `t`, which will be available to the protocol after a short delay.
-   The protocol can fetch this price from [Pyth Benchmark service](https://benchmarks.pyth.network/docs#/Updates/price_updates_timestamp_route_v1_updates_price__timestamp__get) and then can use [`parsePriceFeedUpdates()`](https://api-reference.pyth.network/price-feeds/evm/parsePriceFeedUpdates) to parse the prices and submit to prevent price frontrunning.
+   The protocol can fetch this price update of a specific timestamp from [Hermes](https://hermes.pyth.network/docs/#/rest/timestamp_price_updates) and can use [`parsePriceFeedUpdates()`](https://api-reference.pyth.network/price-feeds/evm/parsePriceFeedUpdates) to parse the prices and submit to prevent price frontrunning.
 
 1. **Use a Spread**: Pyth provides a confidence interval for each price update. Derivative protocols can use this confidence interval to determine the range in which the true price probably lies.
    By using the lower bound of the confidence interval, derivative protocols can protect themselves from price manipulation that drives the price down. By using the upper bound of the confidence interval, derivative protocols can protect themselves from price manipulation that drives the price up.
