@@ -154,8 +154,7 @@ const nextConfig = {
       ...permanentRedirects,
       {
         source: "/price-feeds/api-reference/evm/:slug",
-        destination:
-          "https://api-reference.pyth.network/price-feeds/evm/:slug",
+        destination: "https://api-reference.pyth.network/price-feeds/evm/:slug",
         permanent: false,
       },
       {
