@@ -134,6 +134,13 @@ const permanentRedirectArray = [
   ["/guides", "/price-feeds"],
 ];
 
+const temperoryRedirectsArray = [
+  [
+    "/price-feeds/api-reference/evm/:slug*",
+    "https://api-reference.pyth.network/price-feeds/evm/:slug*",
+  ],
+];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -144,14 +151,25 @@ const nextConfig = {
     config.resolve.fallback = { fs: false, net: false, tls: false };
     return config;
   },
+
   async redirects() {
-    return permanentRedirectArray.map((value) => {
+    permanentRedirects = permanentRedirectArray.map((value) => {
       return {
         source: value[0],
         destination: value[1],
         permanent: true,
       };
     });
+
+    temperoryRedirects = temperoryRedirectsArray.map((value) => {
+      return {
+        source: value[0],
+        destination: value[1],
+        permanent: false,
+      };
+    });
+
+    return [...permanentRedirects, ...temperoryRedirects];
   },
 };
 
