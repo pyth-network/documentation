@@ -280,4 +280,12 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "testnet",
     rpc: "https://sepolia.b3.fun/http/",
   },
+  "b3-mainnet": {
+    address: "0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb",
+    explorer: "https://explorer.b3.fun/address/$ADDRESS",
+    delay: "1 block",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://mainnet-rpc.b3.fun/http",
+  },
 };
