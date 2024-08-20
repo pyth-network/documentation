@@ -158,7 +158,7 @@ const nextConfig = {
         permanent: false,
       },
       {
-        source: "/price-feeds/api-reference/evm/",
+        source: "/price-feeds/api-reference/evm",
         destination: "https://api-reference.pyth.network/price-feeds/evm/",
         permanent: false,
       },
