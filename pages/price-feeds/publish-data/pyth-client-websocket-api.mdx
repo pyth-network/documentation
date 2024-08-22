@@ -8,7 +8,8 @@
 - [get_product](pyth-client-websocket-api.md#get_product)
 - [get_all_products](pyth-client-websocket-api.md#get_all_products)
 
-Batch requests are processed in the order the requests appear within the batch.
+Batch requests are processed in the order the requests appear within the batch. **Batching is highly recommended if the client sends
+updates to over 50 price feeds.**
 
 ## get_product_list
 
@@ -112,6 +113,9 @@ A successful response looks like:
 ```
 
 ## subscribe_price_sched
+
+**This method can saturate the connection between the agent and the client. Please create a scheduler on the client side to avoid saturating the connection or
+send price updates as soon as they are available.**
 
 Subscribe to price update schedule. pyth-agent will notify the client whenever it should submit the next price for a subscribed symbol.
 
