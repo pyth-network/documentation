@@ -54,7 +54,7 @@ The threat model for integrating protocols should assume that adversaries see pr
 In this threat model, protocol designers should avoid situations where a Pyth price update must race against an adversary's transaction.
 Adversaries are highly likely to win these races, as they have a head start, and sophisticated adversaries can additionally optimize their network latencies or pay miners for priority blockspace.
 
-### Latency Mitigations for Derivative Protocols
+### Latency Mitigations for Derivative Protocols[^1]
 
 Derivative protocols are encouraged to consider the following strategies to mitigate the impact of oracle latency:
 
@@ -64,6 +64,10 @@ Derivative protocols are encouraged to consider the following strategies to miti
 
 1. **Use a Spread**: Pyth provides a confidence interval for each price update. Derivative protocols can use this confidence interval to determine the range in which the true price probably lies.
    By using the lower bound of the confidence interval, derivative protocols can protect themselves from price manipulation that drives the price down. By using the upper bound of the confidence interval, derivative protocols can protect themselves from price manipulation that drives the price up.
+
+1. **Enforce Position Holding**: Derivative protocols can enforce hold times on positions to prevent users from exploiting oracle latency.
+   For example, a protocol could require users to hold an asset or a position for a certain period before they can trade or close it.
+   This hold time gives the protocol time to observe price changes and reject trades that profit over latency.
 
 ## Confidence Intervals
 
@@ -87,3 +91,9 @@ The same principle would apply if you wrote a derivative contract. If someone wa
 1. Using Pyth's exponential moving average price, which represents estimates of the average price of the asset over a specified time period (e.g., over the past 1 hour). The exponential moving average price is computed such that it lessens the influence of prices with wide confidence intervals. You may find more details in [EMA Price Aggregation](./how-pyth-works/ema-price-aggregation.md).
 2. Using the aggregate price, which is Pyth's best estimate of the price at a single point in time. The quality of this estimate depends on the width of the confidence interval at settlement time and on occasion, it may be imprecise. However, it is the best you can do with Pyth data if you need a single price at that exact point in time.
 3. Defining the contract to depend on confidence. For example, you could create an option that refunds the option premium to the buyer (so both sides of the transaction are even) if the strike price is within the confidence interval at settlement time. You could also create a contract that delayed settlement until the confidence interval was sufficiently small. If you choose this second option, you should ensure that your contract is guaranteed to eventually settle even if the confidence interval never narrows.
+
+##
+
+[^1]:
+    _The strategies and methodologies outlined in this page, including those addressing price latency mitigation, are provided solely for informational purposes and might not fully eliminate the discussed problems. Do your own research before using them. \
+    Refer to [Terms of Use](https://www.pyth.network/terms-of-use) for more information._
