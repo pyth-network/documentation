@@ -1,20 +1,57 @@
-# Introduction
+import React from "react";
+import { ProductBox } from "../../components/ProductBox";
+import PriceFeedIcon from "../../components/icons/PriceFeedIcon";
+import EntropyIcon from "../../components/icons/EntropyIcon";
+import ExpressRelayIcon from "../../components/icons/ExpressRelayIcon";
+import BenchmarkIcon from "../../components/icons/BenchmarkIcon";
 
-Pyth Network is an oracle protocol that connects the owners of market data to applications on multiple blockchains.
-Pyth's market data is contributed by over 100 [first-party publishers](https://pyth.network/publishers/), including some of the biggest exchanges and market making firms in the world.
-[Over 350 protocols](https://defillama.com/oracles/Pyth) on 55+ blockchains trust Pyth to secure their applications.
-
-Pyth Network offers several products for developers:
-
-- [Price Feeds](../price-feeds) provide real-time prices for 500+ assets on 55+ blockchain ecosystems, including Solana, many EVM chains,
-  Aptos, Sui, NEAR, and several Cosmos chains.
-- [Benchmarks](../benchmarks) provides historical Pyth prices for both on- and off-chain use.
-- [Express Relay](../express-relay/) enables protocols to eliminate their MEV while gaining access to active searchers and liquidators.
-- [Entropy](../entropy) allows developers to generate secure random numbers on the blockchain.
-
-Please follow the links above to learn about each product and how to integrate them into your application.
-
-Other useful links may be:
-
-- [Pyth Token](home/pyth-token) -- Learn more about the Pyth governance token PYTH.
-- [Pyth Metrics](home/metrics) -- See metrics of the network's adoption and growth.
+<div className="text-white p-8">
+  <div className="flex mb-8">
+    <div className="w-full max-w-4xl mx-auto">
+      <h1 className="text-5xl font-extrabold mb-8 whitespace-nowrap">
+        Introduction to Pyth Documentation
+      </h1>
+      <p className="text-gray-300 mb-4">
+        Pyth Network is an oracle protocol that connects the owners of market
+        data to applications on multiple blockchains. Pyth's market data is
+        contributed by over 100 first- party publishers, including some of the
+        biggest exchanges and market making firms in the world. Over 350
+        protocols on 55+ blockchains trust Pyth to secure their applications.
+      </p>
+    </div>
+  </div>
+  <div className="grid grid-cols-3 gap-4 mb-8">
+    <ProductBox
+      icon={<PriceFeedIcon className="w-8 h-8" />}
+      title="Price Feeds"
+      description="Price Feeds provide real-time prices for 500+ assets on 55+ blockchain ecosystems, including Solana, many EVM chains, Aptos, Sui, NEAR, and several Cosmos chains."
+    />
+    <ProductBox
+      icon={<BenchmarkIcon className="w-8 h-8" />}
+      title="Benchmarks"
+      description="Benchmarks provides historical Pyth prices for both on- and off-chain use."
+    />
+    <ProductBox
+      icon={<EntropyIcon className="w-8 h-8" />}
+      title="Entropy"
+      description="Entropy allows developers to generate secure random numbers on the blockchain."
+    />
+    <ProductBox
+      icon={<ExpressRelayIcon className="w-8 h-8" />}
+      title="Express Relay"
+      description="Express Relayer provides a secure and reliable way to connect your application to the Pyth network."
+    />
+  </div>
+  <div className="grid grid-cols-2 gap-4">
+    <ProductBox
+      icon={<div className="w-8 h-8 bg-purple-500 rounded-full" />}
+      title="Pyth Token"
+      description="Learn more about the Pyth governance token PYTH."
+    />
+    <ProductBox
+      icon={<div className="w-8 h-8 bg-purple-500 rounded-full" />}
+      title="Pyth Metrics"
+      description="See metrics of the network's adoption and growth."
+    />
+  </div>
+</div>
