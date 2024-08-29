@@ -19,6 +19,7 @@ const withNextra = require("nextra")({
         }),
     },
   },
+  latex: true,
 });
 
 // Use this array as a shorter way to specify redirect URLs so we can write down a lot of them.
