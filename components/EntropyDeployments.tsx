@@ -280,4 +280,20 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "mainnet",
     rpc: "https://mainnet-rpc.b3.fun/http",
   },
+  "apechain-testnet": {
+    address: "0x23f0e8FAeE7bbb405E7A7C3d60138FCfd43d7509",
+    explorer: "https://curtis.explorer.caldera.xyz/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://curtis.rpc.caldera.xyz/http",
+  },
+  "soneium-minato-testnet": {
+    address: "0x23f0e8FAeE7bbb405E7A7C3d60138FCfd43d7509",
+    explorer: "https://explorer-testnet.soneium.org/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://rpc.minato.soneium.org/",
+  },
 };
