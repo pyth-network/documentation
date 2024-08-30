@@ -8,28 +8,35 @@ import BenchmarkIcon from "../../components/icons/BenchmarkIcon";
 <div className="text-white p-8">
   <div className="flex mb-8">
     <div className="w-full max-w-4xl mx-auto">
-      <h1 className="text-5xl font-extrabold mb-8 whitespace-nowrap">
+      <h1 className="text-4xl font-extrabold">
         Introduction to Pyth Documentation
       </h1>
-      <p className="text-gray-300 mb-4">
-        Pyth Network is an oracle protocol that connects the owners of market
-        data to applications on multiple blockchains. Pyth's market data is
-        contributed by over 100 first- party publishers, including some of the
-        biggest exchanges and market making firms in the world. Over 350
-        protocols on 55+ blockchains trust Pyth to secure their applications.
-      </p>
+      <div className="mt-16">
+        <p className="text-gray-300 mb-8">
+          Pyth Network is the permissionless data infrastructure that empowers
+          the next generation of decentralized applications. Pyth provides
+          builders with the supercharged infrastructure to create dApps that
+          compete with apps.
+        </p>
+      </div>
     </div>
+  </div>
+  <div className="w-full max-w-4xl mx-auto mb-8">
+    <h2 className="text-3xl font-bold text-left">Products</h2>
+    <hr className="border-t border-gray-600 my-4" />
   </div>
   <div className="grid grid-cols-3 gap-4 mb-8">
     <ProductBox
       icon={<PriceFeedIcon className="w-8 h-8" />}
       title="Price Feeds"
-      description="Price Feeds provide real-time prices for 500+ assets on 55+ blockchain ecosystems, including Solana, many EVM chains, Aptos, Sui, NEAR, and several Cosmos chains."
+      description="Price Feeds provide real-time prices for crypto, stocks, forex, and metals on number of blockchains, including Solana, many EVM chains, Aptos, Sui, NEAR, and several Cosmos chains."
+      link="/price-feeds"
     />
     <ProductBox
       icon={<BenchmarkIcon className="w-8 h-8" />}
       title="Benchmarks"
       description="Benchmarks provides historical Pyth prices for both on- and off-chain use."
+      link="/benchmarks"
     />
     <ProductBox
       icon={<EntropyIcon className="w-8 h-8" />}
@@ -40,6 +47,7 @@ import BenchmarkIcon from "../../components/icons/BenchmarkIcon";
       icon={<ExpressRelayIcon className="w-8 h-8" />}
       title="Express Relay"
       description="Express Relayer provides a secure and reliable way to connect your application to the Pyth network."
+      link="/express-relayer"
     />
   </div>
   <div className="grid grid-cols-2 gap-4">
@@ -47,11 +55,13 @@ import BenchmarkIcon from "../../components/icons/BenchmarkIcon";
       icon={<div className="w-8 h-8 bg-purple-500 rounded-full" />}
       title="Pyth Token"
       description="Learn more about the Pyth governance token PYTH."
+      link="/pyth-token"
     />
     <ProductBox
       icon={<div className="w-8 h-8 bg-purple-500 rounded-full" />}
       title="Pyth Metrics"
       description="See metrics of the network's adoption and growth."
+      link="/metrics"
     />
   </div>
 </div>
