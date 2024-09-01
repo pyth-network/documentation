@@ -152,14 +152,6 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     explorer: "https://base-sepolia.blockscout.com/address/$ADDRESS",
     gasLimit: "500K",
   },
-  "berachain-testnet": {
-    rpc: "https://rpc.ankr.com/berachain_testnet",
-    network: "testnet",
-    delay: "",
-    address: "0x26DD80569a8B23768A1d80869Ed7339e07595E85",
-    explorer: "https://artio.beratrail.io/address/$ADDRESS",
-    gasLimit: "500K",
-  },
   "berachain-testnet-v2": {
     rpc: "https://evm-rpc-bera.rhino-apis.com/",
     network: "testnet",
@@ -287,5 +279,21 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     gasLimit: "500K",
     network: "mainnet",
     rpc: "https://mainnet-rpc.b3.fun/http",
+  },
+  "apechain-testnet": {
+    address: "0x23f0e8FAeE7bbb405E7A7C3d60138FCfd43d7509",
+    explorer: "https://curtis.explorer.caldera.xyz/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://curtis.rpc.caldera.xyz/http",
+  },
+  "soneium-minato-testnet": {
+    address: "0x23f0e8FAeE7bbb405E7A7C3d60138FCfd43d7509",
+    explorer: "https://explorer-testnet.soneium.org/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://rpc.minato.soneium.org/",
   },
 };
