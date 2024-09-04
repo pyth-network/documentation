@@ -296,12 +296,4 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "testnet",
     rpc: "https://rpc.minato.soneium.org/",
   },
-  "apechain-mainnet": {
-    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
-    explorer: "https://apechain.calderaexplorer.xyz/address/$ADDRESS",
-    delay: "1 block",
-    gasLimit: "500K",
-    network: "mainnet",
-    rpc: "https://apechain.calderachain.xyz/http",
-  },
 };
