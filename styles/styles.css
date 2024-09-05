@@ -56,6 +56,13 @@
     @apply p-2 font-semibold;
   }
 
+  img {
+    background-color: black;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
   .api-params table {
     width: 100%;
     border-collapse: collapse;
