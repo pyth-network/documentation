@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const StakingCapBar = () => {
   const [maxRewardRate, setMaxRewardRate] = useState(10);
@@ -10,7 +10,10 @@ const StakingCapBar = () => {
     <div className="flex flex-col items-start p-4 max-w-md">
       <h2 className="text-xl font-bold mb-2">Example:</h2>
       <div className="mb-4 w-full">
-        <label htmlFor="rewardRateSlider" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="rewardRateSlider"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Max Reward Rate: {maxRewardRate}%
         </label>
         <input
@@ -24,7 +27,7 @@ const StakingCapBar = () => {
         />
       </div>
       <div className="relative w-full h-8 bg-gray-200 rounded">
-        <div 
+        <div
           className="absolute top-0 left-0 h-full bg-blue-500 rounded"
           style={{ width: `${maxRewardRate}%` }}
         ></div>
@@ -33,7 +36,9 @@ const StakingCapBar = () => {
           <span className="text-sm font-semibold">100%</span>
         </div>
       </div>
-      <p className="mt-2 text-sm text-gray-600">Max Reward Rate = {maxRewardRate}%</p>
+      <p className="mt-2 text-sm text-gray-600">
+        Max Reward Rate = {maxRewardRate}%
+      </p>
     </div>
   );
 };
