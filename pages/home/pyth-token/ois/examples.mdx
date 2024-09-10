@@ -1,0 +1,45 @@
+import StakingCapBar from '@/components/StakingCapBar'
+
+# Examples(WIP)
+
+
+### Example 1:Only Publisher State
+
+$$
+\text{Publisher's Stake} \quad{S^p_p} = 100
+$$
+
+$$
+\text{Delegator Stake} \quad{S^d_p} = 0
+$$
+
+$$
+\text{Total Stake} \quad{S_p} = {S^p_p} + {S^d_p} = 100
+$$
+
+$$
+\text{Pool Cap} \quad{C}_p = 500
+$$
+
+$$
+\text{Total Amount eligible for Reward} \quad{R_a} = min({S}_p, {C}_p) = min(500, 100) = 100
+$$
+
+
+
+
+$$
+\text{Reward Rate} \quad{r} = 10\%
+$$
+
+$$
+\text{Total Reward} \quad{R_p} = {r} \times {R_a} = 10\% \times 100 = 10
+$$
+
+$$
+\text{Publisher Reward} \quad{R^p_p} = {r} \times min({S^p_p}, {C}_p) = 10\% \times 100 = 10
+$$
+
+$$
+\text{Delegator Reward} \quad{R^d_p} = {r} \times min({S^d_p}, {C}_p) = 10\% \times 0 = 0
+$$
