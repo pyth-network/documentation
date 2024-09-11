@@ -1,43 +1,122 @@
 import StakingCapBar from "@/components/StakingCapBar";
 
-# Examples(WIP)
+# Examples
 
-<StakingCapBar fillPercentage={50} secondFillPercentage={20} />
+This reference page provides examples of various scenarios to illustrate the Mathematical Representations of OIS.
 
-### Example 1:Only Publisher State
+NOTE: All the symbols used in the examples are explained in the [Mathematical Representation](/home/pyth-token/oracle-integrity-staking/mathematical-representation) section.
 
-$$
-\text{Publisher's Stake} \quad{S^p_p} = 100
-$$
+## Example 1: Only Publisher Stake
 
-$$
-\text{Delegator Stake} \quad{S^d_p} = 0
-$$
+This example take the case where only the publisher has staked PYTH tokens.
 
 $$
-\text{Total Stake} \quad{S_p} = {S^p_p} + {S^d_p} = 100
+\begin{aligned}
+{S^p_p} &= 100 \\
+{S^d_p} &= 0 \\
+{S^p} &= {S^p_p} + {S^d_p} = 100 + 0 = 100 \\
+{C}_p &= 500 \\
+\text{Total Amount eligible for Reward} \quad{R_p} &= min({S}_p, {C}_p) = min(500, 100) = 100 \\
+\text{Reward Rate} \quad{r} &= 10\% \\
+
+\text{Total Reward} \quad{R_p} &= {r} \times {E_p} = 10\% \times 100 = 10 \\
+\text{Publisher Reward} \quad{R^p_p} &= {r} \times min({S^p_p}, {C}_p) = 10\% \times 100 = 10 \\
+\text{Delegator Reward} \quad{R^d_p} &= {R_p} - {R^p_p} = 10 - 10 = 0 \\
+\end{aligned}
 $$
 
-$$
-\text{Pool Cap} \quad{C}_p = 500
-$$
+
+# Example 2: Publisher and Delegator Stake
+
+This example take the case where both the publisher and the delegator have staked PYTH tokens.
 
 $$
-\text{Total Amount eligible for Reward} \quad{R_a} = min({S}_p, {C}_p) = min(500, 100) = 100
+\begin{aligned}
+{S^p_p} &= 100 \\
+{S^d_p} &= 100 \\
+{S^p} &= {S^p_p} + {S^d_p} = 100 + 100 = 200 \\
+{C}_p &= 500 \\
+\text{Total Amount eligible for Reward} \quad{R_p} &= min({S}_p, {C}_p) = min(500, 200) = 200 \\
+\text{Reward Rate} \quad{r} &= 10\% \\
+\text{Total Reward} \quad{R_p} &= {r} \times {E_p} = 10\% \times 200 = 20 \\
+\text{Publisher Reward} \quad{R^p_p} &= {r} \times min({S^p_p}, {C}_p) = 10\% \times 100 = 10 \\
+\text{Delegator Reward} \quad{R^d_p} &= {R_p} - {R^p_p} = 20 - 10 = 10 \\
+\end{aligned}
 $$
 
-$$
-\text{Reward Rate} \quad{r} = 10\%
-$$
+# Example 3: Publisher and Delegator Stake more than the Cap
+
+This example take the case where the combined stake of both the publisher and the delegator is more than the cap.
 
 $$
-\text{Total Reward} \quad{R_p} = {r} \times {E_p} = 10\% \times 100 = 10
+\begin{aligned}
+{S^p_p} &= 300 \\
+{S^d_p} &= 300 \\
+{S^p} &= {S^p_p} + {S^d_p} = 300 + 300 = 600 \\
+{C}_p &= 500 \\
+\text{Total Amount eligible for Reward} \quad{R_p} &= min({S}_p, {C}_p) = min(500, 600) = 500 \\
+\text{Reward Rate} \quad{r} &= 10\% \\
+\text{Total Reward} \quad{R_p} &= {r} \times {E_p} = 10\% \times 500 = 50 \\
+\text{Publisher Reward} \quad{R^p_p} &= {r} \times min({S^p_p}, {C}_p) = 10\% \times 300 = 30 \\
+\text{Delegator Reward} \quad{R^d_p} &= {R_p} - {R^p_p} = 50 - 30 = 20 \\
+\end{aligned}
 $$
 
-$$
-\text{Publisher Reward} \quad{R^p_p} = {r} \times min({S^p_p}, {C}_p) = 10\% \times 100 = 10
-$$
+
+# Example 4: Introducing Delegator Fees
+
+This example demonstrates how delegator fees affect the reward distribution between publishers and delegators.
 
 $$
-\text{Delegator Reward} \quad{R^d_p} = {R_p} - {R^p_p} = 10 - 10 = 0
+\begin{aligned}
+\quad{S^p_p} &= 200 \\
+\quad{S^d_p} &= 300 \\
+\quad{S^p} &= {S^p_p} + {S^d_p} = 200 + 300 = 500 \\
+\quad{C}_p &= 500 \\
+\quad{R_p} &= min({S}_p, {C}_p) = min(500, 500) = 500 \\
+\quad{r} &= 10\% \\
+\quad{f} &= 2\% \\
+
+\quad{R_p} &= {r} \times {R_p} = 10\% \times 500 = 50 \\
+\quad{R^p_p} &= {r} \times min({S^p_p}, {C}_p) = 10\% \times 200 = 20 \\
+\quad{R^d_p} &= {R_p} - {R^p_p} = 50 - 20 = 30 \\
+\text{Fee paid by Delegator} \quad{F^d_p} &= {f} \times {R^d_p} = 2\% \times 30 = 0.6 \\
+\text{Final Delegator Reward} \quad{R^d_p} &= {R^d_p} - {F^d_p} = 30 - 0.6 = 29.4 \\
+\text{Total Publisher Reward} \quad{R^p_p} &= {R^p_p} + {F^d_p} = 20 + 0.6 = 20.6 \\
+\end{aligned}
 $$
+
+In this example, the delegator pays a 2% fee on their rewards to the publisher. This fee is deducted from the delegator's reward and added to the publisher's reward.
+
+
+# Example 5: Slashing event on the pool
+
+This example demonstrates the impact of a slashing event on the staked PYTH tokens.
+
+$$
+\begin{aligned}
+\quad{S^p_p} &= 200 \\
+\quad{S^d_p} &= 300 \\
+\quad{S^p} &= {S^p_p} + {S^d_p} = 200 + 300 = 500 \\
+\quad{C}_p &= 500 \\
+\quad{R_p} &= min({S}_p, {C}_p) = min(500, 500) = 500 \\
+\quad{r} &= 10\% \\
+\quad{f} &= 2\% \\
+
+\quad{R_p} &= {r} \times {R_p} = 10\% \times 500 = 50 \\
+\quad{R^p_p} &= {r} \times min({S^p_p}, {C}_p) = 10\% \times 200 = 20 \\
+\quad{R^d_p} &= {R_p} - {R^p_p} = 50 - 20 = 30 \\
+\text{Fee paid by Delegator} \quad{F^d_p} &= {f} \times {R^d_p} = 2\% \times 30 = 0.6 \\
+
+\text{Slashed percentage}\quad{z} &= 50\% \\
+\text{Final Delegator Reward} \quad{\Pi^d_p} &= ( R^p_p + f \cdot R^d_p ) - z \cdot S^p_p = (20 + 0.6) - 0.5 \cdot 200 = 20.6 - 100 = -79.4 \\
+\text{Total Publisher Reward} \quad{\Pi^p_p} &= {R^p_p} + {F^d_p} = 20 + 0.6 = 20.6 \\
+\end{aligned}
+$$
+
+In this example, the publisher's stake is slashed by 50%. This means that the publisher's stake is reduced to 100 and the delegator's stake remains the same.
+
+
+
+{/* <StakingCapBar fillPercentage={50} secondFillPercentage={20} labelText="100" /> */}
+
