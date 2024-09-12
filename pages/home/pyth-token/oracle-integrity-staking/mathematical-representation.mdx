@@ -17,7 +17,7 @@ Where:
 
 - $M$ is a constant parameter representing the target stake per symbol.
 - $\text{Symbols\_p}$ is the number of symbols published by the publisher $p$.
-- $n_s$ is the number of elements in Symbols_p , or $n_s$ = $|\text{Symbols\_p}|$
+- $n_s$ be the number of publishers for symbol $s$.
 - $Z$ is a constant parameter to control cap contribution from symbols with a low number of publishers.
 
 This formula actually ensures that symbols with a lower number of publishers contribute more to the overall cap, while symbols with a higher number of publishers contribute less. This is because the contribution of each symbol is inversely proportional to the number of publishers (or Z, whichever is larger).
@@ -33,7 +33,7 @@ $$
 
 Where:
 
-- $y$ is the cap to the rate of rewards for any pool.
+- $y$ is the yearly cap to the rate of rewards for any pool.
 - $S_p$ be the stake assigned to the publisher p pool , made of self-staked amount $S^{p}_{p}$ and delegated stake $S^{d}_{p}$ , or $S_{p} = S^{p}_{p} + S^{d}_{p}$.
 - $C_p$ be the stake cap for the pool assigned to publisher p.
 

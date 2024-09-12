@@ -19,17 +19,17 @@ The core design principles behind OIS include the following:
 
 ## Implementation
 
-OIS implements the principle above through the following structure:
+OIS implements the design principles above through the following structure:
 
 1. OIS is subject to the same 7-day epoch as Governance voting. All parameters used in the OIS protocol are captured at each start of the epoch on Thursdays at 0:00 UTC and remain constant until the end of the epoch. Staking into OIS is also subject to warmup and cooldown period prior and post epoch respectively.
 
 2. Each publisher is programmatically assigned a staking pool where they can self-stake and to which other stakers can delegate
    - The staking pool assigned to each publisher covers all price feeds/symbols they publish.
    - Each staking pool has a soft cap. This soft cap dynamically expands and shrinks given the number of symbols published by the assigned publisher.
-   - Price feeds with a low number of publishers contribute less to the cap's expansion.
+   - Price feeds with a low number of publishers contribute more to the cap's expansion.
    - Staking into the pool can exceed the soft cap. However no rewards are paid nor penalties are levied on the excess amount.
    - The OIS protocol prioritizes self-stake attributed to the **publisher's stake** when distributing rewards to the publisher's pool.
-   - All staking pools charge the same delegation fee for stakers who are delating stake to one or many pools.
+   - All staking pools charge the same delegation fee for stakers who are delegating stake to one or many pools.
 3. Each pool has a maximum reward rate per epoch, which applies only to the staked amount within the soft cap.
 4. The total amount of rewards paid to all pools is bound by the same cap relative to the amount of rewards available to the OIS protocol.
 5. Slashing of stake has a hard cap and only impacts pools that assigned to publishers responsible for the poor data quality. Both self-stakers and delegators are also slashed proportionally to their staked amount in the impacted pools.
