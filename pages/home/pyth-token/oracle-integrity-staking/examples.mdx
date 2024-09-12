@@ -109,12 +109,31 @@ $$
 \text{Fee paid by Delegator} \quad{F^d_p} &= {f} \times {R^d_p} = 2\% \times 30 = 0.6 \\
 \text{Final Delegator Reward} \quad{R^d_p} &= {R^d_p} - {F^d_p} = 30 - 0.6 = 29.4 \\
 \text{Total Publisher Reward} \quad{R^p_p} &= {R^p_p} + {F^d_p} = 20 + 0.6 = 20.6 \\
-
 \text{Slashed percentage}\quad{w} &=50\% \\
-
-\text{Net Publisher Stake} \quad{\Pi^p_p} = ( R^p_p + f \cdot R^d_p ) - w \cdot S^p_p = (20 + 0.6) - 0.5 \cdot 200 = 20.6 - 100 = -79.4 \\
-\text{Net Deligator Stake} \quad{\Pi^d_p} = R^d_p - ( f \cdot R^d_p + w \cdot S^d_p ) = 30 - ( 0.6 + 0.5 \cdot 300 ) = 30 - 150.6 = -120.6 \\
 \end{aligned}
+$$
+
+
+$$
+\begin{equation}
+\begin{split} \text{Net Publisher Stake} \quad{\Pi^p_p} 
+& = ( R^p_p + f \cdot R^d_p ) - w \cdot S^p_p \\
+& = (20 + 0.6) - 0.5 \cdot 200 \\
+& = 20.6 - 100 \\
+& = -79.4 
+\end{split}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\begin{split} \text{Net Deligator Stake} \quad{\Pi^d_p} 
+& = R^d_p - ( f \cdot R^d_p + w \cdot S^d_p ) \\
+& = 30 - ( 0.6 + 0.5 \cdot 300 ) \\
+& = 30 - 150.6 \\
+& = -120.6 
+\end{split}
+\end{equation}
 $$
 
 In this example, the publisher's stake is slashed by 50%. This means that the publisher's stake is reduced by 79.4 PYTH tokens and the delegator's stake is reduced by 120.6 PYTH tokens.
