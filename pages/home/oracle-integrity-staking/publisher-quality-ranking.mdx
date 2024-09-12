@@ -4,14 +4,16 @@ import { Callout} from "nextra/components";
 
 This document introduces a quality ranking system to ensure high-quality pricing data on Pythnet. The ranking system will use **three** metrics to evaluate each publisher's performance: 
 - Uptime (40% weight), 
-- Price deviation (40% weight), 
-- Lack of stalled prices (20% weight). 
+- Price Deviation (40% weight), 
+- Lack of Stalled Prices (20% weight). 
 
 The ranking will be calculated **monthly** to ensure that only the top-performing publishers remain permissioned for each price feed on Pythnet.
 
 **Important: Publishers with an uptime of at least 50% from the previous week will be included in the ranking. If a publisher's uptime is less than 50%, then the deviation and the stalled score of the publisher will be 0 to reflect their ineligibility.**
 
 Publishers in Pythtest conformance who are not publishing on Pythnet and pass this uptime condition will also be ranked together with the Pythnet publishers for each symbol.
+
+[Pubslisher Rankings](https://www.pyth.network/publishers/ranking) on the main website shows the updated rank of the publishers. 
 
 ## Metrics Used for Ranking
 
@@ -35,8 +37,8 @@ Each metric is assigned a weight as mentioned above, and the score for each metr
 The scores from each metrics are aggregated with respect to their weights to get the final score for each publisher. 
 The weight distribution is as follows:
 - Uptime: 40%
-- Price deviation: 40%
-- Lack of stalled prices: 20%
+- Price Deviation: 40%
+- Lack of Stalled Prices: 20%
 
 Publishers are then sorted based on their final scores with the highest score indicating the best performance.
 As mentioned earlier, the score for each metric range from 0 to 1, where 1 represents the best performance. 
@@ -80,5 +82,37 @@ Where:
 - $A_i$ is the aggregate price at instance $i$
 - ${CI}_i$ is the aggregate confidence interval at instance $i$
 
+
+It is calculated similarly to a z-score, where the aggregate price $A_i$ is the mean, and the aggregate confidence interval $CI_i$ is the Standard Deviation. A higher deviation score indicates that the publisher's prices are significantly inconsistent with the aggregate prices, especially when these deviations exceed the confidence interval. The $\text{Score}_{\text{Deviation}}$ is calculated by ranking the $\text{Penalty}_{\text{Deviation}}$ among all publishers and expressing this rank as a percentage of the total number of publishers.
+
 Price deviation is given **40% weight** in the final ranking. 
+
+**Reason for Weight:** To maintain trust in the data published on a feed, it is crucial to ensure that reported prices are within a reasonable range of the aggregate price when adjusted for confidence intervals. Significant inconsistencies can undermine confidence in the published data, hence the weight of 40%.
+
+
+### Lack of Stalled Prices
+
+This metric checks if the publisher is reporting the same price continuously for a specified duration. Repeated prices over an extended period can indicate data staleness or a problem with the data feed.
+
+$$
+\text{Penalty}_{\text{Stalled}} =  \frac{1}{N} \sum_{i=T+1}^{N} \mathbf{1} \left( P_i = P_{i-1} = \cdots = P_{i-T} \right)
+$$
+
+$$
+\text{Score}_{\text{Stalled}} = \max \text((1 -  \text{Penalty}_{\text{Stalled}} \times 10) , 0)
+$$
+
+
+Where:
+- $N$ is the total number of slots for the aggregate price.
+- $T$ is the duration threshold for staleness in slot. The threshold is $100$ slots (or about $40$ seconds) for all the symbols but can change in the future on a per-symbol basis.
+- $P_i$ is the price reported by the publisher at time $i$.
+- $\mathbf{1}(\cdot)$ is an indicator function that returns 1 if the condition inside it is true and 0 otherwise.
+- $\text{Penalty}_{\text{Stalled}}$ calculates the fraction of time periods where the price remains unchanged for T consecutive intervals.
+- $\text{Score}_{\text{Stalled}} $ adjusts the raw stalled penalty multiplied by $10$ to a score out of 1, which penalizes higher staleness rates. It means that if a publisher publishes stalled prices more than 10% of the times, it will get the score of 0.
+
+This metric is given **20% weight** in the final ranking.
+
+**Reason for Weight:** Staleness in data can mislead users into thinking the market conditions are unchanged, which can be detrimental in volatile market conditions. While important, measuring data staleness is deemed relatively less critical than evaluating uptime and price accuracy, hence a weight of 20%.
+
 
