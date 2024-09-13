@@ -1,5 +1,5 @@
 import StakingCapBar from "@/components/StakingCapBar";
-import RewardSimulator from '@/components/RewardSimulator';
+import RewardSimulator from "@/components/RewardSimulator";
 
 # Examples
 
@@ -10,7 +10,6 @@ NOTE: All the symbols used in the examples are explained in the [Mathematical Re
 ## Example 1: Only Publisher Stake
 
 This example take the case one pool where the pool has stake from only the publisher.
-
 
 $$
 \begin{aligned}
@@ -26,10 +25,6 @@ $$
 \text{Delegator Reward} \quad{R^d_p} &= {R_p} - {R^p_p} = 10 - 10 = 0 \\
 \end{aligned}
 $$
-
-{/* <div className="flex justify-center">
-  <StakingCapBar fillPercentage={20} labelText="100" secondFillPercentage={10} />
-</div> */}
 
 ## Example 2: Publisher and Delegator Stake
 
@@ -113,9 +108,6 @@ $$
 $$
 
 In this example, the stake is uniformly slashed by 5\%, affecting both the publisher and the delegator. Slashing impact the total stake into the pool, regardless of the Cap.
-
-{/* <StakingCapBar fillPercentage={50} secondFillPercentage={20} labelText="100" /> */}
-
 
 ## Reward Calculator
 
