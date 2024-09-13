@@ -5,7 +5,9 @@ interface StakingCapBarProps {
   height?: number
   fillPercentage: number
   secondFillPercentage: number
-  labelText?: string
+  firstFillLabel?: string
+  secondFillLabel?: string
+  totalLabel?: string
 }
 
 export default function StakingCapBar({
@@ -13,7 +15,9 @@ export default function StakingCapBar({
   height = 80,
   fillPercentage,
   secondFillPercentage,
-  labelText
+  firstFillLabel,
+  secondFillLabel,
+  totalLabel
 }: StakingCapBarProps) {
   // Ensure fillPercentages are between 0 and 100
   const clampedFillPercentage = Math.min(100, Math.max(0, fillPercentage))
@@ -23,7 +27,7 @@ export default function StakingCapBar({
   return (
     <div className="flex flex-col items-start">
       <div 
-        className="rounded overflow-hidden"
+        className="rounded overflow-hidden relative"
         style={{ 
           width: `${totalLength}px`, 
           height: `${height}px`,
@@ -37,24 +41,46 @@ export default function StakingCapBar({
       >
         <div className="flex h-full">
           <div
-            className="h-full transition-all duration-300 ease-in-out"
+            className="h-full transition-all duration-300 ease-in-out relative"
             style={{ 
               width: `${clampedFillPercentage}%`,
               backgroundColor: '#7142CF'
             }}
-          ></div>
+          >
+            {firstFillLabel && (
+              <div 
+                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mt-1 text-xs font-medium text-gray-700 whitespace-nowrap"
+                style={{
+                  transition: 'left 300ms ease-in-out'
+                }}
+              >
+                {firstFillLabel}: {clampedFillPercentage}%
+              </div>
+            )}
+          </div>
           <div
-            className="h-full transition-all duration-300 ease-in-out"
+            className="h-full transition-all duration-300 ease-in-out relative"
             style={{ 
               width: `${clampedSecondFillPercentage}%`,
-              backgroundColor: '#E6DAFE'
+              backgroundColor: '#7142CF'
             }}
-          ></div>
+          >
+            {secondFillLabel && (
+              <div 
+                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mt-1 text-xs font-medium text-gray-700 whitespace-nowrap"
+                style={{
+                  transition: 'left 300ms ease-in-out'
+                }}
+              >
+                {secondFillLabel}: {clampedSecondFillPercentage}%
+              </div>
+            )}
+          </div>
         </div>
       </div>
-      {labelText && (
-        <div className="mt-2 text-sm font-medium text-gray-700">
-          {labelText}: {totalFillPercentage}%
+      {totalLabel && (
+        <div className="mt-6 text-sm font-medium text-gray-700">
+          {totalLabel}: {totalFillPercentage}%
         </div>
       )}
     </div>
