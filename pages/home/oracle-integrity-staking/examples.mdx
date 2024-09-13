@@ -1,5 +1,6 @@
 import StakingCapBar from "@/components/StakingCapBar";
 
+
 # Examples
 
 This reference page provides examples of various scenarios to illustrate the Mathematical Representations of OIS.
@@ -26,7 +27,9 @@ $$
 \end{aligned}
 $$
 
-<StakingCapBar fillPercentage={100} labelText="100" secondFillPercentage={0} secondFillLabel="0" totalLabel="50"/>
+{/* <div className="flex justify-center">
+  <StakingCapBar fillPercentage={20} labelText="100" secondFillPercentage={10} />
+</div> */}
 
 ## Example 2: Publisher and Delegator Stake
 
@@ -112,3 +115,12 @@ $$
 In this example, the stake is uniformly slashed by 5\%, affecting both the publisher and the delegator. Slashing impact the total stake into the pool, regardless of the Cap.
 
 {/* <StakingCapBar fillPercentage={50} secondFillPercentage={20} labelText="100" /> */}
+
+
+## Interactive Reward Simulator
+
+Use the simulator below to calculate publisher and delegator rewards based on your inputs.
+
+import RewardSimulator from '@/components/RewardSimulator';
+
+<RewardSimulator />

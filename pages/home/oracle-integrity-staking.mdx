@@ -4,26 +4,27 @@ This document outlines the design principles and implementation details of the O
 
 ## Design Principles
 
-OIS's economic design focuses on awarding and penalizing Stakers over the primary dimension of data accuracy.
-Stakers receive rewards from an open-ended pool for helping to ensure data quality. They will also have their stake slashed as a penalty for failing to maintain data accuracy.
+OIS's economic design focuses on awarding and penalizing stakers over the primary dimension of data accuracy.
+
+Stakers are incentivized to help maintain data quality by receiving rewards from an open-ended pool. However, they also face the risk of having their stake slashed as a penalty for failing to maintain data accuracy.
 
 The core design principles behind OIS include the following:
 
-- Integrity Staking secures all current and future price feeds produced by the Pyth Network.
+- Oracle Integrity Staking secures all current and future price feeds produced by the Pyth Network.
 - Data Publishers are individually responsible for data accuracy.
-- Rewards and penalties are proportionate to the stake assigned to each publisher. Delegators share in the risk-reward of the publisher(s) they assign their stake to.
+- Rewards and penalties are proportionate to the stake assigned to each publisher. Delegators share the risks and rewards of the publisher(s) to whom they assign their stake.
 - A higher number of publishers for each price feed contributes positively to the security of such feed.
-- Staking for OIS is complementary to Staking for Governance, and eligible $PYTH tokens can be used for both purposes.
-- The ability to slash stake in OIS requires **unlocked** \$PYTH tokens, whereas Staking for Governance can use both locked and unlocked $PYTH tokens.
+- Staking for **OIS** is complementary to staking for **governance**, and eligible $PYTH tokens can be used for both purposes.
+- The ability to slash stake in OIS requires **unlocked** \$PYTH tokens, whereas staking for governance can use both locked and unlocked $PYTH tokens.
 - All parameter related to the OIS protocol are subject to the governance of the Pyth DAO.
 
 ## Implementation
 
 OIS implements the design principles above through the following structure:
 
-1. OIS is subject to the same 7-day epoch as Governance voting. All parameters used in the OIS protocol are captured at each start of the epoch on Thursdays at 0:00 UTC and remain constant until the end of the epoch. Staking into OIS is also subject to warmup and cooldown period prior and post epoch respectively.
+1. OIS is subject to the same 7-day epoch as governance voting. All parameters used in the OIS protocol are captured at each start of the epoch on Thursdays at 0:00 UTC and remain constant until the end of the epoch. Staking into OIS is also subject to warmup and cooldown period prior and post epoch respectively.
 
-2. Each publisher is programmatically assigned a staking pool where they can self-stake and to which other stakers can delegate
+2. Each publisher is programmatically assigned a staking pool where they can self-stake and to which other stakers can delegate.
    - The staking pool assigned to each publisher covers all price feeds/symbols they publish.
    - Each staking pool has a soft cap. This soft cap dynamically expands and shrinks given the number of symbols published by the assigned publisher.
    - Price feeds with a low number of publishers contribute more to the cap's expansion.

@@ -11,7 +11,7 @@ interface StakingCapBarProps {
 }
 
 export default function StakingCapBar({
-  totalLength = 300,
+  totalLength = 500,
   height = 80,
   fillPercentage,
   secondFillPercentage,
@@ -19,7 +19,8 @@ export default function StakingCapBar({
   secondFillLabel,
   totalLabel
 }: StakingCapBarProps) {
-  // Ensure fillPercentages are between 0 and 100
+  const borderWidth = 4
+  const gapWidth = 2
   const clampedFillPercentage = Math.min(100, Math.max(0, fillPercentage))
   const clampedSecondFillPercentage = Math.min(100 - clampedFillPercentage, Math.max(0, secondFillPercentage))
   const totalFillPercentage = clampedFillPercentage + clampedSecondFillPercentage
@@ -27,12 +28,13 @@ export default function StakingCapBar({
   return (
     <div className="flex flex-col items-start">
       <div 
-        className="rounded overflow-hidden relative"
+        className="rounded-lg overflow-hidden relative"
         style={{ 
           width: `${totalLength}px`, 
           height: `${height}px`,
-          border: '2px solid #7142CF',
-          backgroundColor: '#FFFFFF'
+          border: `${borderWidth}px solid #7142CF`,
+          backgroundColor: '#FFFFFF',
+          padding: `${gapWidth}px`
         }}
         role="progressbar"
         aria-valuenow={totalFillPercentage}
@@ -44,17 +46,17 @@ export default function StakingCapBar({
             className="h-full transition-all duration-300 ease-in-out relative"
             style={{ 
               width: `${clampedFillPercentage}%`,
-              backgroundColor: '#7142CF'
+              backgroundColor: '#5c48e4'
             }}
           >
             {firstFillLabel && (
               <div 
-                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mt-1 text-xs font-medium text-gray-700 whitespace-nowrap"
+                className="absolute top-full left-full transform -translate-x-1/2 mt-2 text-xs font-medium text-gray-700 whitespace-nowrap"
                 style={{
                   transition: 'left 300ms ease-in-out'
                 }}
               >
-                {firstFillLabel}: {clampedFillPercentage}%
+                {firstFillLabel}
               </div>
             )}
           </div>
@@ -62,25 +64,27 @@ export default function StakingCapBar({
             className="h-full transition-all duration-300 ease-in-out relative"
             style={{ 
               width: `${clampedSecondFillPercentage}%`,
-              backgroundColor: '#7142CF'
+              backgroundColor: '#f0b6bb'
             }}
           >
             {secondFillLabel && (
               <div 
-                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mt-1 text-xs font-medium text-gray-700 whitespace-nowrap"
+                className="absolute top-full left-full transform -translate-x-1/2 mt-2 text-xs font-medium text-gray-700 whitespace-nowrap"
                 style={{
                   transition: 'left 300ms ease-in-out'
                 }}
               >
-                {secondFillLabel}: {clampedSecondFillPercentage}%
+                {secondFillLabel}
               </div>
             )}
           </div>
         </div>
       </div>
       {totalLabel && (
-        <div className="mt-6 text-sm font-medium text-gray-700">
-          {totalLabel}: {totalFillPercentage}%
+        <div 
+          className="absolute top-full right-0 transform translate-x-1/2 mt-2 text-xs font-medium text-gray-700 whitespace-nowrap"
+        >
+          {totalLabel}
         </div>
       )}
     </div>
