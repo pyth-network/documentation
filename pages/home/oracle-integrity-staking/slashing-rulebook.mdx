@@ -4,8 +4,6 @@ import { Steps } from "nextra/components";
 
 This Pyth Slashing Rulebook (this ”Rulebook”) outlines the Terms & Conditions for slashing PYTH that has been staked for price feed accuracy on the Pyth network. This document develops the rules that the DAO must adhere to when assessing conditions and amounts of slashing.
 
-# Staking Publisher Responsibility
-
 ## Upholding Pyth Data quality
 
 ### Role of Data Publishers
@@ -36,7 +34,11 @@ Staking through OIS is a program to enhance the security of price feeds produced
 
 Per the design of OIS, a pool aligned with a data publisher accepts stake from the moment such publisher declares its stake account through configuration. The additional stake allows such publisher to earn a delegation fee to contribute to the costs of providing data to the Pyth Network. Data publishers compete with one another to increase the number of price feeds they contribute to, and/or increase the quality of data that allows them to be selected to publish and/or enable higher staking cap for the pool each publisher is aligned to.
 
-# Slashing Conditions
+## Slashing
+
+In the event of a Pyth data inaccuracy that can be verified against independent data references, a portion of the stake can be reduced from the pools aligned with the publishers responsible for the erroneous data.
+
+### Slashing Conditions
 
 A data quality issue happens when the aggregated price from Pyth is deemed inaccurate. Such inaccuracy has to fulfil the following criteria:
 
@@ -45,7 +47,7 @@ A data quality issue happens when the aggregated price from Pyth is deemed inacc
 - Confidence Intervals prints from Pyth do not show an abnormal deviation during the misprint
 - The market conditions are normal and the incident is not related to one or many macro events that make the accurate pricing of assets not feasible
 
-# Slashing Calculation and Distribution
+### Slashing Calculation and Distribution
 
 If slashing event confirmed, the Pythian Council will process calculation and distribution of the slashed stake according to the following:
 
@@ -57,15 +59,15 @@ If slashing event confirmed, the Pythian Council will process calculation and di
 - **Temporary or Permanent Removal:**
   - Stakers responsible for more than 4 slashing events per calendar year may be excluded permanently from the network exclusion from the set of stakers and/or publishers
 
-# Slashing Process
+### Slashing Process
 
-## Evidence Collection & Analysis
+#### Evidence Collection & Analysis
 
 - The Pythian Council is tasked by the DAO to review the evidence presented by the protocols impacted by the potential Pyth data misprint
 - The Pythian Council will review the evidence compares the evidence collected for the potential losses and against historical data
 - In the case that the evidence corroborates, the Pythian Council will identify the publishers responsible for the slashing and define a slashable amount, up to 5% of the total amount staked into the pools of the publishers responsible the event
 
-## Reporting
+#### Reporting
 
 - The Pythian Council is responsible to report on with reasonable details on the evidence found that led to the slashing event through [forum.pyth.network](http://forum.pyth.network). Such report should include:
   - a recap of the slashing event and evidence collected
@@ -73,11 +75,11 @@ If slashing event confirmed, the Pythian Council will process calculation and di
   - a recap of the slashing amount
 - Such report is deemed definitive and not subject to further discussion in the absence of new evidence
 
-## Timeline
+#### Timeline
 
 - The Pythian Council is responsible for analysing and delivering its conclusions within the same epoch when the potential slashing event happened or during the following epoch at the latest
 
-## Post Slashing
+#### Post Slashing
 
 - Stakers continue staking with the residual amount post slashing. No forced unstaking happens post slashing
 - The Pyth DAO controls the slashed amount upon execution of the slashing
@@ -96,11 +98,11 @@ The Pyth DAO is responsible for implementing procedures for proposing, reviewing
    - Key Terms - a detailed description of the technical and/or commercial terms associated with the PIP
    - Implementation Plan - steps envisioned to implement the PIP, including resources needed for each step and timelines. The implementation plan may include binding on-chain actions that will automatically execute when the PIP passes.
 
-## Review and Approval
+### Review and Approval
 
 The decision on whether to approve a PIP related to this Rulebook remains with the Pyth DAO. A simple majority is required to approve Operational PIPs that make amendments to this Rulebook and its associated procedures.
 
-## Implementation
+### Implementation
 
 1. **Effective Date:** Approved changes will become effective from the time they are approved or on the specified date
 2. **Transition Period:** If necessary, a transition period may be established to allow the Pyth DAO and the Pythian Council to adjust to the new rules or procedures
