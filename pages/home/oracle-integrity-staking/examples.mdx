@@ -122,15 +122,15 @@ In this scenario, let's assume that
 
 - The constant parameter representing the target stake per symbol $M$ is 100
 - The constant parameter to control cap contribution $Z$ is 5
-- Current symbols published $n_p$ = 5 where for every symbol currently published $n_s$ = 5
+- Current symbols published are $\{$s*{1}$,.., $s*{5}$\}$ where for every symbol currently published $n_s$ = 5 (for i = 1 .. 5 $n_{s_i}$ = 5)
 
 The cap of the pool is calculated as follows:
 
 $$
 \begin{aligned}
-\quad{C_p} &= M \cdot \sum_{s \in \text{\{s\_1,.., s\_5\}}} \frac{1}{\max(n_s, Z)} \\
-&= 100 \cdot \sum_{s \in \text{\{s\_1,.., s\_5\}}} \frac{1}{\max(5, 5)} \\
-&= 100 \cdot \sum_{s \in \text{\{s\_1,.., s\_5\}}} \frac{1}{5} \\
+\quad{C_p} &= M \cdot \sum_{s \in \text{\{$s_{1}$,.., $s_{5}$\}}} \frac{1}{\max(n_s, Z)} \\
+&= 100 \cdot \sum_{s \in \text{\{$s_{1}$,.., $s_{5}$\}}} \frac{1}{\max(5, 5)} \\
+&= 100 \cdot \sum_{s \in \text{\{$s_{1}$,.., $s_{5}$\}}} \frac{1}{5} \\
 &= 100 \cdot 1 = 100 \\
 \end{aligned}
 $$
@@ -155,11 +155,11 @@ $$
 
 Assuming there is room to publish 5 more symbols $\{s_6, .., s_{10}\}$ where each have currently 9 publishers ( for i = 6 .. 10 $n_{s_i}$ = 9)
 
-The new pool cap would change as the sum of the current cap from the 5 symbols published plus the cap gained from publishing the additional symbols $\{s_6, .., s_{10}\}$ (where for i = 6 .. 10 $n_{s_i}$ = 10)
+The new pool cap would change as the sum of the current cap from the 5 symbols published plus the cap gained from publishing the additional symbols $\{$s*{6}$,.., $s*{10}$\}$ (where for i = 6 .. 10 $n_{s_i}$ = 10)
 
 $$
 \begin{aligned}
-C_{p_{option2}} &= 100 + 100 \cdot \sum_{s \in \text{\{s\_1,.., s\_5, s\_6,.., s\_{10}\}}} \frac{1}{\max(10, 5)} \\
+C_{p_{option2}} &= 100 + 100 \cdot \sum_{s \in \text{\{$s_{6}$,.., $s_{10}$\}}} \frac{1}{\max(10, 5)} \\
 &= 100 + 100 \cdot 5 \cdot \frac{1}{10} \\
 &= 100 + 50 = 150
 \end{aligned}
