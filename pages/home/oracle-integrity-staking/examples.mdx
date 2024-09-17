@@ -128,9 +128,9 @@ The cap of the pool is calculated as follows:
 
 $$
 \begin{aligned}
-\quad{C_p} &= M \cdot \sum_{s \in \text{Symbols\_p}} \frac{1}{\max(n_s, Z)} \\
-&= 100 \cdot \sum_{s \in \text{Symbols\_p}} \frac{1}{\max(5, 5)} \\
-&= 100 \cdot \sum_{s \in \text{Symbols\_p}} \frac{1}{5} \\
+\quad{C_p} &= M \cdot \sum_{s \in \text{\{s\_1,.., s\_5\}}} \frac{1}{\max(n_s, Z)} \\
+&= 100 \cdot \sum_{s \in \text{\{s\_1,.., s\_5\}}} \frac{1}{\max(5, 5)} \\
+&= 100 \cdot \sum_{s \in \text{\{s\_1,.., s\_5\}}} \frac{1}{5} \\
 &= 100 \cdot 1 = 100 \\
 \end{aligned}
 $$
@@ -159,7 +159,7 @@ The new pool cap would change as the sum of the current cap from the 5 symbols p
 
 $$
 \begin{aligned}
-C_{p_{option2}} &= 100 + 100 \cdot \sum_{s \in \text{\{s\_6,.., s\_{10}\}}} \frac{1}{\max(10, 5)} \\
+C_{p_{option2}} &= 100 + 100 \cdot \sum_{s \in \text{\{s\_1,.., s\_5, s\_6,.., s\_{10}\}}} \frac{1}{\max(10, 5)} \\
 &= 100 + 100 \cdot 5 \cdot \frac{1}{10} \\
 &= 100 + 50 = 150
 \end{aligned}
