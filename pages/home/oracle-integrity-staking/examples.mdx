@@ -109,6 +109,62 @@ $$
 
 In this example, the stake is uniformly slashed by 5\%, affecting both the publisher and the delegator. Slashing impact the total stake into the pool, regardless of the Cap.
 
+## Example 6: Increasing the cap of the pool
+
+This example shows how a publisher can increase the cap of the pool assigned to them.
+As described in the [Mathematical Representation](/home/pyth-token/oracle-integrity-staking/mathematical-representation#pool-cap), the cap is caluclated as:
+
+$$
+\large{{\bold{C_p}} = M \cdot \sum_{s \in \text{Symbols\_p}} \frac{1}{\max(n_s, Z)}}
+$$
+
+In this scenario, let's assume that
+
+- The constant parameter representing the target stake per symbol $M$ is 100
+- The constant parameter to control cap contribution $Z$ is 5
+- Current symbols published $n_p$ = 5 where for every symbol currently published $n_s$ = 5
+
+The cap of the pool is calculated as follows:
+
+$$
+\begin{aligned}
+\quad{C_p} &= M \cdot \sum_{s \in \text{Symbols\_p}} \frac{1}{\max(n_s, Z)} \\
+&= 100 \cdot \sum_{s \in \text{Symbols\_p}} \frac{1}{\max(5, 5)} \\
+&= 100 \cdot \sum_{s \in \text{Symbols\_p}} \frac{1}{5} \\
+&= 100 \cdot 1 = 100 \\
+\end{aligned}
+$$
+
+Here publisher has 2 options to increase the cap of the pool assigned to it.
+
+### Option 1: Publish new symbol with low number of publishers
+
+Assume the publisher decides to publish a new symbol with only 3 publishers, $n_{s_{low}}$ = 3.
+
+The new pool cap would change as the sum of the current cap from the 5 symbols published plus the cap gained from publishing $s_{low}$ (where $n_{s_{low}}$ = 3 + 1 = 4)
+
+$$
+\begin{aligned}
+C_{p_{option1}} &= 100 + 100 \cdot \frac{1}{\max(4, 5)} \\
+&= 100 + 100 \cdot \frac{1}{5} \\
+&= 100 + 20 = 120
+\end{aligned}
+$$
+
+### Option 2: Publish additional symbols where cap of 32 publishers is not reached
+
+Assuming there is room to publish 5 more symbols $\{s_6, .., s_{10}\}$ where each have currently 9 publishers ( for i = 6 .. 10 $n_{s_i}$ = 9)
+
+The new pool cap would change as the sum of the current cap from the 5 symbols published plus the cap gained from publishing the additional symbols $\{s_6, .., s_{10}\}$ (where for i = 6 .. 10 $n_{s_i}$ = 10)
+
+$$
+\begin{aligned}
+C_{p_{option2}} &= 100 + 100 \cdot \sum_{s \in \text{\{s\_6,.., s\_{10}\}}} \frac{1}{\max(10, 5)} \\
+&= 100 + 100 \cdot 5 \cdot \frac{1}{10} \\
+&= 100 + 50 = 150
+\end{aligned}
+$$
+
 ## Reward Calculator
 
 Use the calculator below to calculate publisher and delegator rewards based on your inputs.
