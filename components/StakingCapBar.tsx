@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type ReactNode, useMemo } from "react";
 
 interface StakingCapBarProps {
   totalLength?: number;
@@ -19,76 +19,64 @@ export default function StakingCapBar({
   secondFillLabel,
   totalLabel,
 }: StakingCapBarProps) {
-  const borderWidth = 4;
-  const gapWidth = 2;
-  const clampedFillPercentage = Math.min(100, Math.max(0, fillPercentage));
-  const clampedSecondFillPercentage = Math.min(
+  const clampedFillPercentage = useMemo(() => Math.min(100, Math.max(0, fillPercentage)), [fillPercentage]);
+  const clampedSecondFillPercentage = useMemo(() => Math.min(
     100 - clampedFillPercentage,
     Math.max(0, secondFillPercentage)
-  );
+  ), [clampedFillPercentage, secondFillPercentage]);
   const totalFillPercentage =
-    clampedFillPercentage + clampedSecondFillPercentage;
+    useMemo(() => clampedFillPercentage + clampedSecondFillPercentage, [clampedFillPercentage, clampedSecondFillPercentage]);
 
   return (
-    <div className="flex flex-col items-start">
-      <div
-        className="rounded-lg overflow-hidden relative"
-        style={{
-          width: `${totalLength}px`,
-          height: `${height}px`,
-          border: `${borderWidth}px solid #7142CF`,
-          backgroundColor: "#FFFFFF",
-          padding: `${gapWidth}px`,
-        }}
-        role="progressbar"
-        aria-valuenow={totalFillPercentage}
-        aria-valuemin={0}
-        aria-valuemax={100}
-      >
-        <div className="flex h-full">
-          <div
-            className="h-full transition-all duration-300 ease-in-out relative"
-            style={{
-              width: `${clampedFillPercentage}%`,
-              backgroundColor: "#5c48e4",
-            }}
-          >
-            {firstFillLabel && (
-              <div
-                className="absolute top-full left-full transform -translate-x-1/2 mt-2 text-xs font-medium text-gray-700 whitespace-nowrap"
-                style={{
-                  transition: "left 300ms ease-in-out",
-                }}
-              >
-                {firstFillLabel}
-              </div>
-            )}
-          </div>
-          <div
-            className="h-full transition-all duration-300 ease-in-out relative"
-            style={{
-              width: `${clampedSecondFillPercentage}%`,
-              backgroundColor: "#f0b6bb",
-            }}
-          >
-            {secondFillLabel && (
-              <div
-                className="absolute top-full left-full transform -translate-x-1/2 mt-2 text-xs font-medium text-gray-700 whitespace-nowrap"
-                style={{
-                  transition: "left 300ms ease-in-out",
-                }}
-              >
-                {secondFillLabel}
-              </div>
-            )}
-          </div>
-        </div>
+    <div
+      className="rounded-lg relative border border-4 border-[#7142CF] p-1 bg-white whitespace-nowrap"
+      style={{
+        width: `${totalLength}px`,
+        height: `${height}px`,
+      }}
+      role="progressbar"
+      aria-valuenow={totalFillPercentage}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
+      <Bar color="#5c48e4" fillPercent={clampedFillPercentage}>
+        {firstFillLabel}
+      </Bar>
+      <Bar color="#f0b6bb" fillPercent={clampedSecondFillPercentage}>
+        {secondFillLabel}
+      </Bar>
+      <div className="absolute right-0 bottom-full mb-[1.65rem]">
+        {totalLabel && <Label>{totalLabel}</Label>}
       </div>
-      {totalLabel && (
-        <div className="absolute top-full right-0 transform translate-x-1/2 mt-2 text-xs font-medium text-gray-700 whitespace-nowrap">
-          {totalLabel}
-        </div>
-      )}
     </div>
   );
 }
+
+type BarProps = {
+  fillPercent: number;
+  children?: ReactNode | undefined;
+  color: string;
+}
+
+const Bar = ({ fillPercent, children, color }: BarProps) => (
+  <div
+    className="inline-block h-full transition-all duration-300 ease-in-out relative"
+    style={{
+      backgroundColor: color,
+      width: `${fillPercent}%`,
+    }}
+  >
+    {children && <Label>{children}</Label>}
+  </div>
+);
+
+const Label = ({ children }: { children: ReactNode }) => (
+  <div
+    className="absolute top-full left-full transform -translate-x-1/2 mt-2 text-xs font-medium text-gray-800 dark:text-gray-200 whitespace-nowrap"
+    style={{
+      transition: "left 300ms ease-in-out",
+    }}
+  >
+    {children}
+  </div>
+);
