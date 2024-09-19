@@ -11,6 +11,8 @@ const RewardSimulator: React.FC = () => {
 
   const [publisherReward, setPublisherReward] = useState(0);
   const [delegatorReward, setDelegatorReward] = useState(0);
+  const [publisherRewardRate, setPublisherRewardRate] = useState(0);
+  const [delegatorRewardRate, setDelegatorRewardRate] = useState(0);
 
   useEffect(() => {
     const calculateRewards = () => {
@@ -29,6 +31,12 @@ const RewardSimulator: React.FC = () => {
 
       setPublisherReward(Number(finalPublisherReward.toFixed(2)));
       setDelegatorReward(Number(finalDelegatorReward.toFixed(2)));
+      setPublisherRewardRate(
+        Number(((finalPublisherReward * 100) / publisherStake).toFixed(2))
+      );
+      setDelegatorRewardRate(
+        Number(((finalDelegatorReward * 100) / delegatorStake).toFixed(2))
+      );
     };
 
     calculateRewards();
@@ -94,14 +102,25 @@ const RewardSimulator: React.FC = () => {
           />
         </div>
       </div>
-      <div className="mt-6">
-        <h4 className="font-semibold mb-2">Calculated Rewards:</h4>
-        <p>
-          <Latex>{`Publisher Reward ($R^p_p$): ${publisherReward}`}</Latex>
-        </p>
-        <p>
-          <Latex>{`Delegator Reward ($R^d_p$): ${delegatorReward}`}</Latex>
-        </p>
+      <div className="flex mt-6">
+        <div className="flex-1">
+          <h4 className="font-semibold mb-2">Calculated Rewards:</h4>
+          <p>
+            <Latex>{`Publisher Reward ($R^p_p$): ${publisherReward}`}</Latex>
+          </p>
+          <p>
+            <Latex>{`Delegator Reward ($R^d_p$): ${delegatorReward}`}</Latex>
+          </p>
+        </div>
+        <div className="flex-1 ml-6">
+          <h4 className="font-semibold mb-2">Calculated Reward Rates:</h4>
+          <p>
+            <Latex>{`Publisher Reward Rate ($r^p_p$): ${publisherRewardRate}%`}</Latex>
+          </p>
+          <p>
+            <Latex>{`Delegator Reward Rate ($r^d_p$): ${delegatorRewardRate}%`}</Latex>
+          </p>
+        </div>
       </div>
     </div>
   );
