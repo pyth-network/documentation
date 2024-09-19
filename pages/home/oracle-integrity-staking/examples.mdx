@@ -1,4 +1,3 @@
-import StakingCapBar from "@/components/StakingCapBar";
 import RewardSimulator from "@/components/RewardSimulator";
 
 # Examples
@@ -9,7 +8,7 @@ NOTE: All the symbols used in the examples are explained in the [Mathematical Re
 
 ## Example 1: Only Publisher Stake
 
-This example take the case one pool where the pool has stake from only the publisher.
+This example takes the case of one pool where the pool has stake from only the publisher.
 
 $$
 \begin{aligned}
@@ -23,12 +22,14 @@ $$
 \text{Total Reward for one year} \quad{R_p} &= {r} \times {E_p} = 10\% \times 100 = 10 \\
 \text{Publisher Reward} \quad{R^p_p} &= {r} \times min({S^p_p}, {C}_p) = 10\% \times 100 = 10 \\
 \text{Delegator Reward} \quad{R^d_p} &= {R_p} - {R^p_p} = 10 - 10 = 0 \\
+\text{Effective Publisher Yield Rate} \quad{r^p_p} &= \frac{R^p_p}{S^p_p} = \frac{10}{100} = 10\% \\
+\text{Effective Delegator Yield Rate} \quad{r^d_p} &= \frac{R^d_p}{S^d_p} = \frac{0}{0} = 0\% \\
 \end{aligned}
 $$
 
 ## Example 2: Publisher and Delegator Stake
 
-This example take the case where the pool has stake from both the publisher and the delegator.
+This example takes the case where the pool has stake from both the publisher and the delegator.
 
 $$
 \begin{aligned}
@@ -42,12 +43,14 @@ $$
 \text{Total Reward for one year} \quad{R_p} &= {r} \times {E_p} = 10\% \times 200 = 20 \\
 \text{Publisher Reward} \quad{R^p_p} &= {r} \times min({S^p_p}, {C}_p) = 10\% \times 100 = 10 \\
 \text{Delegator Reward} \quad{R^d_p} &= {R_p} - {R^p_p} = 20 - 10 = 10 \\
+\text{Effective Publisher Yield Rate} \quad{r^p_p} &= \frac{R^p_p}{S^p_p} = \frac{10}{100} = 10\% \\
+\text{Effective Delegator Yield Rate} \quad{r^d_p} &= \frac{R^d_p}{S^d_p} = \frac{10}{100} = 10\% \\
 \end{aligned}
 $$
 
 ## Example 3: Publisher and Delegator Stake more than the Cap
 
-This example take the case where the combined stake of both the publisher and the delegator exceeds the cap.
+This example takes the case where the combined stake of both the publisher and the delegator exceeds the cap.
 
 $$
 \begin{aligned}
@@ -61,6 +64,8 @@ $$
 \text{Total Reward for one year} \quad{R_p} &= {r} \times {E_p} = 10\% \times 500 = 50 \\
 \text{Publisher Reward} \quad{R^p_p} &= {r} \times min({S^p_p}, {C}_p) = 10\% \times 300 = 30 \\
 \text{Delegator Reward} \quad{R^d_p} &= {R_p} - {R^p_p} = 50 - 30 = 20 \\
+\text{Effective Publisher Yield Rate} \quad{r^p_p} &= \frac{R^p_p}{S^p_p} = \frac{30}{300} = 10\% \\
+\text{Effective Delegator Yield Rate} \quad{r^d_p} &= \frac{R^d_p}{S^d_p} = \frac{20}{300} = 6.67\% \\
 \end{aligned}
 $$
 

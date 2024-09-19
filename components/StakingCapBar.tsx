@@ -19,13 +19,19 @@ export default function StakingCapBar({
   secondFillLabel,
   totalLabel,
 }: StakingCapBarProps) {
-  const clampedFillPercentage = useMemo(() => Math.min(100, Math.max(0, fillPercentage)), [fillPercentage]);
-  const clampedSecondFillPercentage = useMemo(() => Math.min(
-    100 - clampedFillPercentage,
-    Math.max(0, secondFillPercentage)
-  ), [clampedFillPercentage, secondFillPercentage]);
-  const totalFillPercentage =
-    useMemo(() => clampedFillPercentage + clampedSecondFillPercentage, [clampedFillPercentage, clampedSecondFillPercentage]);
+  const clampedFillPercentage = useMemo(
+    () => Math.min(100, Math.max(0, fillPercentage)),
+    [fillPercentage]
+  );
+  const clampedSecondFillPercentage = useMemo(
+    () =>
+      Math.min(100 - clampedFillPercentage, Math.max(0, secondFillPercentage)),
+    [clampedFillPercentage, secondFillPercentage]
+  );
+  const totalFillPercentage = useMemo(
+    () => clampedFillPercentage + clampedSecondFillPercentage,
+    [clampedFillPercentage, clampedSecondFillPercentage]
+  );
 
   return (
     <div
@@ -56,7 +62,7 @@ type BarProps = {
   fillPercent: number;
   children?: ReactNode | undefined;
   color: string;
-}
+};
 
 const Bar = ({ fillPercent, children, color }: BarProps) => (
   <div
