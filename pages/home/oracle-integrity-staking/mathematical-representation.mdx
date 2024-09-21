@@ -26,7 +26,7 @@ This formula ensures that symbols with a lower number of publishers contribute m
 The reward $R_p$ distributed to each pool is calculated as follows:
 
 $$
-\large{R_p = y \cdot \min(S_p, C_p)}
+\large{\bold{R_p} = y \cdot \min(S_p, C_p)}
 $$
 
 Where:
@@ -49,7 +49,7 @@ Where:
 Whereas the reward component relative to the amount self-staked by the publisher $p$ is defined as:
 
 $$
-\large{R^{p}_{p} = y \cdot \min(S^p_p, C_p) = R_p - R^d_p}
+\large{\bold{R^{p}_{p}} = y \cdot \min(S^p_p, C_p) = R_p - R^d_p}
 $$
 
 Where:
@@ -63,7 +63,7 @@ Slashing is an important aspect of the OIS protocol to ensure the integrity of t
 The slashed amount for each pool is calculated as follows:
 
 $$
-\large{SL_p = w \cdot S_p = w \cdot (S^{p}_{p} + S^{d}_{p})}
+\large{\bold{SL_p} = w \cdot S_p = w \cdot (S^{p}_{p} + S^{d}_{p})}
 $$
 
 Where:
@@ -77,11 +77,11 @@ Here $SL_p$ is uniformly allocated to both the self-staking publisher and delega
 Subsequently, the rewards received by a publisher and delegators into a pool, net of any slashed amounts can be expressed as below:
 
 $$
-\large{\Pi^p_p = ( R^p_p + f \cdot R^d_p ) - w \cdot S^p_p}
+\large{\bold{\Pi^p_p} = ( R^p_p + f \cdot R^d_p ) - w \cdot S^p_p}
 $$
 
 $$
-\large{\Pi^d_p = R^d_p - ( f \cdot R^d_p + w \cdot S^d_p )}
+\large{\bold{\Pi^d_p} = R^d_p - ( f \cdot R^d_p + w \cdot S^d_p )}
 $$
 
 Where:
