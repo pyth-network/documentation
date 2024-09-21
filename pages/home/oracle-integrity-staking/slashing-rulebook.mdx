@@ -30,7 +30,7 @@ The Pyth Network is designed to provide reliable and trustworthy financial data 
 
 Staking through OIS is a program to enhance the security of price feeds produced by publisher on the Pyth Network.
 
-Per the design of OIS, a pool aligned with a data publisher accepts stake from the moment such publisher declares its stake account through configuration. The additional stake allows such publisher to earn a delegation fee to contribute to the costs of providing data to the Pyth Network. Data publishers compete with one another to increase the number of price feeds they contribute to, and/or increase the quality of data that allows them to be selected to publish and/or enable higher staking cap for the pool each publisher is aligned to.
+Per the design of OIS, a pool aligned with a data publisher accepts stake from the publisher itself and from delegators. The additional stake allows such publisher to earn a delegation fee to contribute to the costs of providing data to the Pyth Network. Data publishers compete with one another to increase the number of price feeds they contribute to, and/or increase the quality of data that allows them to be selected to publish and/or enable higher staking cap for the pool each publisher is aligned to.
 
 ## Slashing
 
@@ -52,8 +52,6 @@ If slashing event confirmed, the Pythian Council will process calculation and di
 - **Stake Slashed**
   - capped at 5% of the total amount staked (including the amount delegated) into pools associated with publishers identified as directly responsible for poor data quality. distribution of the slashed amount is uniform amongst publishers and delegator(s)
   - In the case the total amount staked by the stakers responsible for the data quality issue is nil, no slashing takes place
-- **Loss of Rewards**
-  - the stakers that may be responsible for the data quality issue forfeit any rewards the epoch following the slashing event
 - **Temporary or Permanent Removal:**
   - Stakers responsible for more than 4 slashing events per calendar year may be excluded permanently from the network exclusion from the set of stakers and/or publishers
 
