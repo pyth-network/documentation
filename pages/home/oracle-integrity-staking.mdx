@@ -28,7 +28,7 @@ OIS implements the design principles above through the following structure:
    - The staking pool assigned to each publisher covers all price feeds/symbols they publish.
    - Each staking pool has a soft cap. This soft cap dynamically expands and shrinks given the number of symbols published by the assigned publisher.
    - Price feeds with a low number of publishers contribute more to the cap's expansion.
-   - Staking into the pool can exceed the soft cap. However no rewards are paid nor penalties are levied on the excess amount.
+   - Staking into the pool can exceed the soft cap. However no rewards are paid for the excess amount. On the contrary, the excess amount is subject to the penalty if the assigned publisher's data is inaccurate.
    - The OIS protocol prioritizes self-stake attributed to the **publisher's stake** when distributing rewards to the publisher's pool.
    - All staking pools charge the same delegation fee for stakers who are delegating stake to one or many pools.
 3. Each pool has a maximum reward rate per epoch, which applies only to the staked amount within the soft cap.
