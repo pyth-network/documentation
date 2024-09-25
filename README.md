@@ -15,8 +15,6 @@ First, run `npm i` to install the dependencies.
 
 Then, run `npm run dev` to start the development server and visit localhost:3000.
 
-If you need to fetch the latest cosmos chains, run `npm run fetch-cosmos-chains`.
-
 ## Deployment
 
 Use the `Dockerfile` in the root of the repository to build a docker image that can be run for production deployments.

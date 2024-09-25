@@ -18,7 +18,7 @@ import {
   osmosis,
   osmosistestnet,
   seitestnet2,
-} from "../store/cosmos-chains";
+} from "graz/chains";
 import PythAbi from "../abis/IPyth.json";
 import PythErrorsAbi from "../abis/PythErrors.json";
 import { ChainInfo } from "@keplr-wallet/types";
