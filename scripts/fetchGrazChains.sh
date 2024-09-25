@@ -26,14 +26,14 @@ fetch_graz_chains() {
 
     while [ $retry_count -lt $MAX_RETRIES ]; do
         echo "Attempt $((retry_count + 1)) to fetch cosmos chains..."
-        
+
         if graz generate -g; then
             echo "Successfully fetched cosmos chains!"
-            
+
             # Copy generated files to the output directory
             cp -R node_modules/graz/chains/* "$OUTPUT_DIR"
             echo "Copied generated files to $OUTPUT_DIR"
-            return 0 
+            return 0
         else
             retry_count=$((retry_count + 1))
             if [ $retry_count -lt $MAX_RETRIES ]; then
@@ -45,7 +45,7 @@ fetch_graz_chains() {
         fi
     done
 
-    return 1  
+    return 1
 }
 
 if fetch_graz_chains; then
