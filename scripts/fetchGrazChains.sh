@@ -1,5 +1,5 @@
 #!/bin/bash
-MAX_RETRIES=5
+MAX_RETRIES=10
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
@@ -19,7 +19,7 @@ fetch_graz_chains() {
     while [ $retry_count -lt $MAX_RETRIES ]; do
         echo "Attempt $((retry_count + 1)) to fetch cosmos chains..."
 
-        if graz generate -g -b; then
+        if graz generate -g; then
             echo "Successfully fetched cosmos chains!"
             return 0
         else
