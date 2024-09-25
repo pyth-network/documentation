@@ -6,7 +6,7 @@ const RewardSimulator: React.FC = () => {
   const [publisherStake, setPublisherStake] = useState(200);
   const [delegatorStake, setDelegatorStake] = useState(300);
   const [maxCap, setMaxCap] = useState(500);
-  const [delegatorFee, setDelegatorFee] = useState(2);
+  const [delegatorFee, setDelegatorFee] = useState(20);
   const [rewardRate, setRewardRate] = useState(10);
 
   const [publisherReward, setPublisherReward] = useState(0);
@@ -113,7 +113,9 @@ const RewardSimulator: React.FC = () => {
           </p>
         </div>
         <div className="flex-1 ml-6">
-          <h4 className="font-semibold mb-2">Calculated Reward Rates:</h4>
+          <h4 className="font-semibold mb-2">
+            Calculated Reward Rates(Yearly):
+          </h4>
           <p>
             <Latex>{`Publisher Reward Rate ($r^p_p$): ${publisherRewardRate}%`}</Latex>
           </p>
