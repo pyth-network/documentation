@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "postinstall": "graz generate -g"
+    "postinstall": "bash scripts/fetchGrazChains.sh"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.8.1",
