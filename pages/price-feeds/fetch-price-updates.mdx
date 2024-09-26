@@ -110,46 +110,46 @@ data:{"binary":{"encoding":"hex","data":["504e41550100000003b801000000040d00c225
 
 ## SDK
 
-Pyth provides a typescript SDK to fetch price updates.
-The `PriceServiceConnection` class in this SDK connects to Hermes to fetch and stream price updates.
+Pyth provides a typescript SDK for Hermes to fetch price updates.
+The [`HermesClient`](https://github.com/pyth-network/pyth-crosschain/blob/main/apps/hermes/client/js/src/HermesClient.ts#L41) class in this [SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/apps/hermes/client/js) connects to Hermes to fetch and stream price updates.
 
 ```typescript copy
-const connection = new PriceServiceConnection("https://hermes.pyth.network", {
-  priceFeedRequestConfig: {
-    // Provide this option to retrieve binary price updates for on-chain contracts.
-    // Ignore this option for off-chain use.
-    binary: true,
-  },
-});
+const connection = new HermesClient("https://hermes.pyth.network", {});
 
 const priceIds = [
-  // You can find the IDs of prices at https://pyth.network/developers/price-feed-ids
+  // You can find the ids of prices at https://pyth.network/developers/price-feed-ids
   "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", // BTC/USD price id
   "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", // ETH/USD price id
 ];
 
-// Get the latest price updates for the given price IDs.
-// If you set `binary: true` above, then this method also returns signed price updates for the on-chain Pyth contract.
-const priceUpdates = await connection.getLatestVaas(priceIds);
+// Get price feeds
+// You can also fetch price feeds for other assets by specifying the asset name and asset class.
+const priceFeeds = await connection.getPriceFeeds("btc", "crypto");
+console.log(priceFeeds);
+
+// Latest price updates
+const priceUpdates = await connection.getLatestPriceUpdates(priceIds);
+console.log(priceUpdates);
 ```
 
-`PriceServiceConnection` also allows subscribing to price updates via a WebSocket connection:
+`HermesClient` also allows subscribing to real-time price updates over a Server-Sent Events (SSE) connection:
 
 ```typescript copy
-// priceIds here is the one declared in the above code snippet.
-const priceFeeds = await connection.getLatestPriceFeeds(priceIds);
+// Streaming price updates
+const eventSource = await connection.getStreamingPriceUpdates(priceIds);
 
-connection.subscribePriceFeedUpdates(priceIds, (priceFeed) => {
-  // It will include signed price updates if the binary option was provided to the connection constructor.
-  console.log(
-    `Received an update for ${priceFeed.id}: ${priceFeed.getPriceNoOlderThan(
-      60
-    )}`
-  );
-});
+eventSource.onmessage = (event) => {
+  console.log("Received price update:", event.data);
+};
 
-// When using the subscription, make sure to close the websocket upon termination to finish the process gracefully.
-setTimeout(() => {
-  connection.closeWebSocket();
-}, 60000);
+eventSource.onerror = (error) => {
+  console.error("Error receiving updates:", error);
+  eventSource.close();
+};
+
+await sleep(5000);
+
+// To stop listening to the updates, you can call eventSource.close();
+console.log("Closing event source.");
+eventSource.close();
 ```
