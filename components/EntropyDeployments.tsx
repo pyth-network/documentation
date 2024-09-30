@@ -120,14 +120,6 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     explorer: "https://sepolia.arbiscan.io/address/$ADDRESS",
     gasLimit: "2.5M",
   },
-  "fantom-sonic": {
-    rpc: "https://rpc.sonic.fantom.network/",
-    network: "testnet",
-    delay: "",
-    address: "0xb27e5ca259702f209a29225d0eDdC131039C9933",
-    explorer: "https://public-sonic.fantom.network/address/$ADDRESS",
-    gasLimit: "500K",
-  },
   "blast-testnet": {
     rpc: "https://sepolia.blast.io",
     network: "testnet",
