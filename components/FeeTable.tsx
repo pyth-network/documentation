@@ -33,7 +33,7 @@ const FeeTable = ({
       <thead>
         <tr>
           <th>Chain Id</th>
-          <th>Fee</th>
+          <th>Fee (ETH)</th>
         </tr>
       </thead>
       <tbody>
