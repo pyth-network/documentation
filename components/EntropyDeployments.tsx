@@ -121,11 +121,11 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     gasLimit: "2.5M",
   },
   "fantom-sonic": {
-    rpc: "https://rpc.sonic.fantom.network/",
+    rpc: "https://rpc.testnet.soniclabs.com",
     network: "testnet",
     delay: "",
-    address: "0xb27e5ca259702f209a29225d0eDdC131039C9933",
-    explorer: "https://public-sonic.fantom.network/address/$ADDRESS",
+    address: "0x5124FAE0890dE83B3bb2cc30Bb3EDAfFc07Da744",
+    explorer: "https://testnet.soniclabs.com/address/$ADDRESS",
     gasLimit: "500K",
   },
   "blast-testnet": {
