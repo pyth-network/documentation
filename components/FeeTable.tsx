@@ -33,7 +33,7 @@ const FeeTable = ({
       <thead>
         <tr>
           <th>Chain Id</th>
-          <th>Fee (ETH)</th>
+          <th>Fee</th>
         </tr>
       </thead>
       <tbody>
@@ -51,7 +51,13 @@ const FeeTable = ({
               </a>
             </StyledTd>
             <StyledTd>
-              {fees[name] === undefined ? "Loading..." : fees[name]}
+              {fees[name] === undefined ? (
+                "Loading..."
+              ) : (
+                <>
+                  {fees[name]} <b>{deployment.nativeCurrency}</b>
+                </>
+              )}
             </StyledTd>
           </tr>
         ))}
