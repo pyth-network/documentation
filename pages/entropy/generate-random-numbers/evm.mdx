@@ -56,13 +56,13 @@ Entropy also requires selecting a **randomness provider**. The randomness provid
 who participates in the generation process. Each provider is identified by an address and hosts
 a keeper service for fullfilling requests.
 
-The simplest way to choose a provider is to use the default provider called [**Fortuna**](https://github.com/pyth-network/pyth-crosschain/tree/main/apps/fortuna).
+The simplest way to choose a provider is to use the [default provider](../contract-addresses).
 The default provider for each contract and their corresponding URI is also listed in the
 [Entropy contract addresses](../contract-addresses).
 
 </Callout>
 
-You can also get the default provider's address by calling the [`getDefaultProvider`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropy.sol#L94) method:
+You can also get the default provider's address by calling the [`getDefaultProvider`](https://github.com/pyth-network/pyth-crosschain/blob/f8ebeb6af31d98f94ce73edade6da2ebab7b2456/target_chains/ethereum/entropy_sdk/solidity/IEntropy.sol#L94) method:
 
 ```solidity copy
 address provider = entropy.getDefaultProvider();
@@ -110,7 +110,7 @@ This method returns a sequence number and emits a [`RequestedWithCallback`](http
 
 ### 3. Implement callback for Entropy
 
-```solidity {28-37} copy
+```solidity {28-38} copy
 pragma solidity ^0.8.0;
 
 import { IEntropyConsumer } from "@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol";
@@ -138,11 +138,12 @@ contract YourContract is IEntropyConsumer {
     // Store the sequence number to identify the callback request
   }
 
-  // It is called by the entropy contract when a random number is generated.
+  // @param sequenceNumber The sequence number of the request.
+  // @param provider The address of the provider that generated the random number. If your app uses multiple providers, you can use this argument to distinguish which one is calling the app back.
+  // @param randomNumber The generated random number.
+  // This method is called by the entropy contract when a random number is generated.
   function entropyCallback(
     uint64 sequenceNumber,
-    // If your app uses multiple providers, you can use this argument to
-    // distinguish which one is calling the app back.
     address provider,
     bytes32 randomNumber
   ) internal override {
@@ -168,7 +169,7 @@ You may find these additional resources helpful while integrating Pyth Entropy i
 
 ### Debug Callback Failures
 
-Check how to [Debug Callback Failures](/entropy/debug-callback-failures) if you are having trouble getting the callback to run.
+Check how to [Debug Callback Failures](../debug-callback-failures) if you are having trouble getting the callback to run.
 
 ### Pyth Entropy Contract Addresses
 
@@ -180,4 +181,4 @@ Check the [Current Fees](../current-fees) to find the current fee for each provi
 
 ### Best Practices
 
-Check out the [Best Practices](/entropy/best-practices) guide for tips to limit gas usage, or generate multiple random numbers in a single transaction.
+Check out the [Best Practices](../best-practices) guide for tips to limit gas usage, or generate multiple random numbers in a single transaction.
