@@ -14,7 +14,7 @@ import EntropyDeploymentTable from "../../components/EntropyDeploymentTable";
   showReveal={true}
 />
 
-The default provider for above mainnet chains is `0x52DeaA1c84233F7bb8C8A45baeDE41091c616506`.
+**The default provider for above mainnet chains is `0x52DeaA1c84233F7bb8C8A45baeDE41091c616506`.**
 
 The default provider on mainnet has a reveal delay to avoid changes on the outcome of the Entropy request because of block reorgs.
 The reveal delay can be a number of blocks (measured from the `latest` block) or `safe` which means the reveal will be delayed until the request transaction is included in a block with `safe` tag.
@@ -33,8 +33,8 @@ The default provider fulfills the request by sending a transaction with a gas li
   showReveal={false}
 />
 
-The default provider for above testnet chains is `0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344`.
+**The default provider for above testnet chains is `0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344`.**
 
-The default provider on testnet doesn't have a reveal delay. It reveals the commitment as soon as the request transaction is included in a block.
+The default provider on testnet **doesn't have a reveal delay**. It reveals the commitment as soon as the request transaction is included in a block.
 
 The default provider fulfills the request by sending a transaction with a gas limit as mentioned in above table. Entropy callbacks the consumer as part of this transaction.
