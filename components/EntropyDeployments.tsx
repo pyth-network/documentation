@@ -333,4 +333,22 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://rpc.minato.soneium.org/",
     nativeCurrency: "ETH",
   },
+  sanko: {
+    address: "0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb",
+    explorer: "https://explorer.sanko.xyz/address/$ADDRESS",
+    delay: "1 block",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://mainnet.sanko.xyz",
+    nativeCurrency: "DMT",
+  },
+  "sanko-testnet": {
+    address: "0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb",
+    explorer: "https://sanko-arb-sepolia.explorer.caldera.xyz/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://sanko-arb-sepolia.rpc.caldera.xyz",
+    nativeCurrency: "DMT",
+  },
 };
