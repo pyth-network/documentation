@@ -51,7 +51,13 @@ const FeeTable = ({
               </a>
             </StyledTd>
             <StyledTd>
-              {fees[name] === undefined ? "Loading..." : fees[name]}
+              {fees[name] === undefined ? (
+                "Loading..."
+              ) : (
+                <>
+                  {fees[name]} <b>{deployment.nativeCurrency}</b>
+                </>
+              )}
             </StyledTd>
           </tr>
         ))}
