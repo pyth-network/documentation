@@ -1,13 +1,27 @@
 # Price Feed IDs
 
-Every Pyth Price Feed has a unique ID, representing the specific pair of assets being priced (e.g., BTC/USD).
+Every Pyth Price Feed has a unique ID, representing the specific pair of assets being priced (e.g. BTC/USD).
 Every price update is tagged with the corresponding price feed ID.
 Applications need to store the IDs of the feeds they wish to read.
-However, the IDs may be represented in different formats (e.g., hex or base58) depending on the blockchain.
+However, the IDs may be represented in different formats (e.g. hex or base58) depending on the blockchain.
 Price feeds also have different IDs in the Stable and Beta channels.
 
-The full catalog of price feeds is listed on the [pyth.network website](https://pyth.network/price-feeds/).
-The [Price Feed ID reference](https://pyth.network/developers/price-feed-ids) also lets you identify a feed's ID in your chosen ecosystem.
+Refer to the [Price Feed ID reference catalog](https://pyth.network/developers/price-feed-ids) to identify a feed's ID in your chosen ecosystem.
+
+At the time of writing, Pyth provides price feeds of the following asset types:
+
+- **Crypto**
+  These asset types represent various cryptocurrencies. For example: Crypto.ADA/USD, Crypto.ETH/USD, Crypto.BTC/USD, etc.
+- **Forex (FX)**
+  These asset types represent various forex pairs. For example: FX.USD/CHF, FX.AUD/USD, FX.GBP/USD, etc.
+- **Equity**
+  These asset types represent various equity securities. For example: Equity.US.AMZN/USD, Equity.US.GOOG/USD, Equity.US.MSFT/USD, etc.
+- **Metals**
+  These asset types represent various metals. For example: Metal.XAG/USD, Metal.XAU/USD, etc.
+- **Rates** (Coming soon)
+  These asset types represent various interest rates. For example: Rates.US10Y, Rates.US2Y, Rates.US6M, etc.
+- **Redemption Rates** (Coming soon)
+  These asset types represent various redemption rates. These prices will be sourced directly from the smart contract. This asset class will be important for assets like liquid staking derivatives or interest bearing assets, whose values change based on internal mechanisms like accumulated rewards or interest accruals.
 
 ## Solana Price Feed Accounts
 
