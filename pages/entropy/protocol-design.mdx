@@ -25,39 +25,21 @@ up-front using a hash chain. Users of the protocol then simply grab the next ran
 The provider commits to $x_0$ by posting it to the Entropy contract.
 Each random number in the sequence can then be verified against the previous one in the sequence by hashing it, i.e., $\mathrm{hash}(x_i) = x_{i - 1}$
 
-**Request**: To produce a random number, the following steps occur.
+Pyth Entropy uses automatic callbacks to simplify the flow:
 
-1. The user U draws a random number $x_U$, and submits $h_U = \mathrm{hash}(x_U)$ to the contract
-2. The contract remembers $h_U$ and assigns it an incrementing sequence number $i$, representing which
-   of the provider's random numbers the user will receive.
-3. The user submits an off-chain request (e.g. via HTTP) to the provider to reveal the $i$'th random number.
-4. The provider checks the on-chain sequence number and ensures it is > $i$. If it is not, the provider
-   refuses to reveal the ith random number. The provider should wait for a sufficient number of block confirmations
-   to ensure that the request does not get re-orged out of the blockchain.
-5. The provider reveals $x_i$ to the user.
-6. The user submits both the provider's revealed number $x_i$ and their own $x_U$ to the contract.
-7. The contract verifies $\mathrm{hash}(x_i) = x_{i-1}$ to prove that $x_i$ is the $i$'th random number. The contract also checks that $\mathrm{hash}(x_U) = h_U$.
-   The contract stores $x_i$ as the $i$'th random number to reuse for future verifications.
-8. If both of the above conditions are satisfied, the random number $r = \mathrm{hash}(x_i, x_U)$.
-   As an added security mechanism, this step can incorporate the blockhash of the block that the
-   request transaction landed in: $r = \mathrm{hash}(x_i, x_U, \mathrm{blockhash})$.
-
-This protocol has the same security properties as the 2-party randomness protocol above: as long as either
-the provider or user is honest, the number $r$ is random. Honesty here means that the participant keeps their
-random number $x$ a secret until the revelation phase (step 5) of the protocol. Note that providers need to
-be careful to ensure their off-chain service isn't compromised to reveal the random numbers -- if this occurs,
-then users will be able to influence the random number $r$.
-
-With automatic callbacks the flow is simplified:
-
-1. The user U draws a random number $x_U$, and submits **both** $x_U$ and $h_U = \mathrm{hash}(x_U)$ to the contract
-2. The contract remembers $h_U$ and assigns it an incrementing sequence number $i$, representing which
-   of the provider's random numbers the user will receive. $x_U$ is recorded in the event logs.
+1. The user U draws a random number $x_U$, and submits it to the contract. The contract generates the hash $h_U = \mathrm{hash}(x_U)$ and records both $x_U$ and $h_U$. The contract uses [`constructUserCommitment`](https://github.com/pyth-network/pyth-crosschain/blob/7bccde484f01c19844b7105d63df207a24018957/target_chains/ethereum/contracts/contracts/entropy/Entropy.sol#L628-L632) to generate the user's commitment.
+2. The contract [remembers $h_U$ and assigns it an incrementing **sequence number $i$**](https://github.com/pyth-network/pyth-crosschain/blob/7bccde484f01c19844b7105d63df207a24018957/target_chains/ethereum/contracts/contracts/entropy/Entropy.sol#L232-L246), representing which
+   of the provider's random numbers the user will receive. $x_U$ is recorded in the [event logs](https://github.com/pyth-network/pyth-crosschain/blob/7bccde484f01c19844b7105d63df207a24018957/target_chains/ethereum/contracts/contracts/entropy/Entropy.sol#L300-L306).
 3. After sufficient block confirmations, the provider submits a reveal transaction with $x_i$ and $x_U$ to the contract.
 4. The contract verifies $\mathrm{hash}(x_U) = h_U$ and $\mathrm{hash}(x_i) = x_{i-1}$ to prove that $x_i$ is the $i$'th random number.
 5. If both of the above conditions are satisfied,
    the random number $r = \mathrm{hash}(x_i, x_U)$ is generated and a callback is made to the requesting contract.
 
+This protocol has the same security properties as the 2-party randomness protocol above: as long as either
+the provider or user is honest, the number $r$ is random.
+
 In this flow, providers can refuse revealing $x_i$ if the final random number $r$ is not in their favor, or
 they may be able to access $x_U$ before on-chain submission (e.g. via mempool) and rotate their commitments to influence the random number $r$.
 Of course, both of these behaviors are detectable and protocols can blacklist providers that exhibit them.
+
+Pyth Network deployed a default entropy provider. The code of default provider can be found [here](https://github.com/pyth-network/pyth-crosschain/tree/7bccde484f01c19844b7105d63df207a24018957/apps/fortuna).
