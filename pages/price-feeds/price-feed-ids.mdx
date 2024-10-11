@@ -8,17 +8,7 @@ Price feeds also have different IDs in the Stable and Beta channels.
 
 Refer to the [Price Feed ID reference catalog](https://pyth.network/developers/price-feed-ids) to identify a feed's ID in your chosen ecosystem.
 
-At the time of writing, Pyth provides price feeds of the following asset types:
-
-- **Crypto**: Real-time price feeds for cryptocurrencies and digital assets.
-  - **Redemption Rates** (Coming soon): Price feeds for redemption rates of liquid staking derivatives and interest-bearing assets, sourced directly from smart contracts.
-  - **Crypto.Index**: Aggregated price feeds representing baskets of digital assets.
-- **Forex (FX)**: Real-time price feeds for major fiat currency pairs.
-- **Equity**: Real-time price feeds for US stocks.
-- **Metals**: Real-time price feeds for precious metals.
-- **Rates** (Coming soon): Real-time interest rate feeds, including benchmark rates.
-
-## Solana Price Feed Accounts
+# Solana Price Feed Accounts
 
 On Solana, each feed additionally has a collection of **price feed accounts** containing the feed's data.
 The addresses of these accounts are programmatically derived from the feed id and a shard id, which is simply a 16-bit number.
