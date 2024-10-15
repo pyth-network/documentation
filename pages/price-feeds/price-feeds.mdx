@@ -1,0 +1,48 @@
+# Price Feeds
+
+Pyth Price Feeds provide real-time, first-party, market data for a wide range of assets.
+
+Every price feed has a **unique ID**, representing the specific pair of assets being priced. 
+These specific pairs are part of an asset class, which is a broader category of assets.
+
+Anyone can fetch available price feeds and their IDs via [Hermes API](https://hermes.pyth.network/docs/#/rest/price_feeds_metadata).
+
+## Asset Classes
+
+At the time of writing, Pyth price feeds are available for the following asset classes:
+
+- **Crypto**
+    - **Spot Prices**: Real-time prices for cryptocurrencies and digital assets
+    - **Redemption Rates**: Real-time swap rates derived from smart contracts for the redemption of liquid staking and liquid restaking tokens (LSTs and LRTs), liquidity provider tokens (LP Tokens) and interest-bearing assets, including tokenised notes
+    - **Indices**: Real-time prices that measure the performance of baskets of cryptocurrencies and digital assets
+- **US Equities**
+    - **Spot Prices**: Real-time prices for US equities
+- **FX**
+    - **Spot Prices**: Real-time prices for fiat currency pairs
+- **Metals**
+    - **Spot Prices**: Real-time prices for precious metals
+- **Rates**
+    - **Future Prices**: Real-time prices for fixed income products, including bond futures
+- **Commodities**
+    - **Futures Prices**: Real-time prices for commodity futures
+
+
+
+
+
+## Price Feed IDs
+
+Price Feed IDs are unique identifiers for each specific pair of assets being priced (e.g. BTC/USD).
+Every price update is tagged with the corresponding price feed ID.
+
+Applications need to store the IDs of the feeds they wish to read.
+However, the IDs may be represented in different formats (e.g. hex or base58) depending on the blockchain.
+Price feeds also have different IDs in the Stable and Beta channels.
+
+Refer to the [Price Feed ID reference catalog](./price-feed-ids/index.md) to identify a feed's ID in your chosen ecosystem.
+
+### Solana Price Feed Accounts
+
+On Solana, each feed additionally has a collection of **price feed accounts** containing the feed's data.
+The addresses of these accounts are programmatically derived from the feed id and a shard id, which is simply a 16-bit number.
+See [How to Use Real-Time Data on Solana](./use-real-time-data/solana#price-feed-accounts) for more information on price feed accounts.
