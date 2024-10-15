@@ -1,0 +1,6 @@
+{
+  "evm": "EVM",
+  "solana": "Solana / SVM",
+  "aptos": "Aptos",
+  "sui": "Sui"
+}
