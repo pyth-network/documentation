@@ -270,22 +270,22 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://node.mainnet.etherlink.com/",
     nativeCurrency: "XTZ",
   },
-  klaytn: {
+  kaia: {
     address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
-    explorer: "https://klaytnfinder.io/account/$ADDRESS",
+    explorer: "https://kaiascan.io/account/$ADDRESS",
     delay: "1 block",
     gasLimit: "500K",
     network: "mainnet",
-    rpc: "https://rpc.ankr.com/klaytn",
+    rpc: "https://alpha-hardworking-orb.kaia-mainnet.quiknode.pro/",
     nativeCurrency: "KLAY",
   },
-  "klaytn-testnet": {
+  "kairos-testnet": {
     address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
-    explorer: "https://baobab.klaytnscope.com/account/$ADDRESS",
+    explorer: "https://kairos.kaiascan.io/account/$ADDRESS",
     delay: "",
     gasLimit: "500K",
     network: "testnet",
-    rpc: "https://rpc.ankr.com/klaytn_testnet",
+    rpc: "https://responsive-green-emerald.kaia-kairos.quiknode.pro/",
     nativeCurrency: "KLAY",
   },
   "tabi-testnet": {
