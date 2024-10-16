@@ -5,6 +5,7 @@
   "fuel": "in Fuel Contracts",
   "aptos": "in Aptos Contracts",
   "sui": "in Sui Contracts",
+  "ton": "in TON Contracts",
   "cosmwasm": "in CosmWasm Contracts",
   "near": "in Near Contracts",
   "off-chain": "in Off-Chain Applications"

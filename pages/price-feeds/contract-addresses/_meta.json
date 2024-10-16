@@ -7,5 +7,6 @@
   "sui": "Sui",
   "cosmwasm": "CosmWasm",
   "near": "NEAR",
-  "pythnet": "Pythnet"
+  "pythnet": "Pythnet",
+  "ton": "TON"
 }
