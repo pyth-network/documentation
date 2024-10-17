@@ -46,9 +46,14 @@ import { IEntropyConsumer } from "@pythnetwork/entropy-sdk-solidity/IEntropyCons
 import { IEntropy } from "@pythnetwork/entropy-sdk-solidity/IEntropy.sol";
 
 // @param entropyAddress The address of the entropy contract.
-contract YourContract(address entropyAddress) is IEntropyConsumer {
-  IEntropy entropy = IEntropy(entropyAddress);
+contract YourContract is IEntropyConsumer {
+  IEntropy public entropy;
+
+  constructor(address entropyAddress) {
+    entropy = IEntropy(entropyAddress);
+  }
 }
+
 ```
 
 <Callout type="info">
@@ -76,14 +81,18 @@ To generate a random number, follow these steps.
 
 Generate a 32-byte random number on the client side.
 
-<Tabs items={["web3.js", "ethers.js"]}>
-  <Tabs.Tab>
-    ```typescript copy const userRandomNumber = web3.utils.randomHex(32); ```
-  </Tabs.Tab>
-  <Tabs.Tab>
-    ```typescript copy const userRandomNumber = ethers.utils.randomBytes(32);
+<Tabs>
+  <TabItem value="web3.js" label="web3.js">
+    ```javascript
+       const userRandomNumber = web3.utils.randomHex(32);
+     ```
+  </TabItem>
+
+  <TabItem value="ethers.js" label="ethers.js">
+    ```javascript
+       const userRandomNumber = ethers.utils.randomBytes(32);
     ```
-  </Tabs.Tab>
+  </TabItem>
 </Tabs>
 
 ### 2. Request a number from Entropy
