@@ -102,3 +102,20 @@ The decision on whether to approve a PIP related to this Rulebook remains with t
 
 1. **Effective Date:** Approved changes will become effective from the time they are approved or on the specified date
 2. **Transition Period:** If necessary, a transition period may be established to allow the Pyth DAO and the Pythian Council to adjust to the new rules or procedures
+
+## Slashing Example
+
+This section provides a hypothetical scenario of a slashing event.
+
+### Scenario
+
+- Around datetime $t$, the community observes that an abnormal behaviour in the Pyth Price for `FOO/USD`.
+- Community members initiated a discussion on Pyth Forum on the abnormal behaviour and provided reference data for the issue.
+- The Pythian Council confirms the impact through on-chain data and collects reference data to cross-check the Pyth price.
+
+### Investigation Results
+
+- Reference data from 3 independent sources that cover the `FOO/USD` liquidity for the time period around $t$ are collected and analysed.
+- The analysis shows that the Pyth aggregate price for `FOO/USD` was 300 bps away from the median of the three sources for 60 seconds around $t$.
+- The issue was concentrated to `FOO/USD` and no other feed was impacted, nor was the issue found to be related to a macro event beyond `FOO/USD`.
+- The on-chain data reveals a total of $200K of preventable liquidations.
