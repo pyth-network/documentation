@@ -53,6 +53,7 @@ contract YourContract is IEntropyConsumer {
     entropy = IEntropy(entropyAddress);
   }
 }
+
 ```
 
 <Callout type="info">
@@ -82,13 +83,13 @@ Generate a 32-byte random number on the client side.
 
 <Tabs>
   <TabItem value="web3.js" label="web3.js">
-    ```javascript 
+    ```javascript
        const userRandomNumber = web3.utils.randomHex(32);
      ```
   </TabItem>
 
   <TabItem value="ethers.js" label="ethers.js">
-    ```javascript 
+    ```javascript
        const userRandomNumber = ethers.utils.randomBytes(32);
     ```
   </TabItem>
