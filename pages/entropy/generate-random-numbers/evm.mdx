@@ -1,4 +1,4 @@
-import { Tabs, Callout } from "nextra/components";
+import { Tab, Tabs, Callout } from "nextra/components";
 
 # How to Generate Random Numbers in EVM Contracts Using Pyth Entropy
 
@@ -81,18 +81,18 @@ To generate a random number, follow these steps.
 
 Generate a 32-byte random number on the client side.
 
-<Tabs>
-  <TabItem value="web3.js" label="web3.js">
+<Tabs items={['web3.js', 'ethers.js']}>
+  <Tabs.Tab>
     ```javascript
-       const userRandomNumber = web3.utils.randomHex(32);
-     ```
-  </TabItem>
-
-  <TabItem value="ethers.js" label="ethers.js">
-    ```javascript
-       const userRandomNumber = ethers.utils.randomBytes(32);
+    const userRandomNumber = web3.utils.randomHex(32);
     ```
-  </TabItem>
+  </Tabs.Tab>
+
+  <Tabs.Tab>
+    ```javascript
+    const userRandomNumber = ethers.utils.randomBytes(32);
+    ```
+  </Tabs.Tab>
 </Tabs>
 
 ### 2. Request a number from Entropy
