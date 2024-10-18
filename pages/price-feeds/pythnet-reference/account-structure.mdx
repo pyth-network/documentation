@@ -6,7 +6,7 @@ The Pyth oracle program manages a number of on-chain accounts. There are three d
 2. _Price accounts_ store the current price information for a particular product. This account has fields such as the current price, a confidence interval, an exponential moving average price, an exponential moving average confidence interval and whether or not a price is currently available.
 3. _Mapping accounts_ serve as a listing of other accounts. The mapping accounts are organized into a linked list whose values are the set of product accounts. These accounts allow applications to enumerate the full list of products whose prices are available on Pyth.&#x20;
 
-The [Pyth Rust SDK](https://github.com/pyth-network/pyth-sdk-rs) contains a sample application that prints the current content of all Pyth accounts. We will use the output of this application to better understand the content of these accounts.
+The [Pyth Rust SDK](https://github.com/pyth-network/pyth-sdk-rs) contains a sample application that prints the current content of all Pyth accounts. The following sections use the output of this application to better understand the content of these accounts.
 
 **Product Accounts**
 

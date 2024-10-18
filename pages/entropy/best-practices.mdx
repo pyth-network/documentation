@@ -42,7 +42,7 @@ For example, if you want to generate a random number between 1 and 52, the proba
 
 If you need to generate multiple random values in a single transaction, you can hash the random input provided by Entropy with a unique identifier for each random number.
 
-In the following example, we generate 6 random attributes for a character using the `mapRandomNumber` function defined above.
+In the following example, `mapRandomNumber` is used to generate 6 random attributes for a character.
 
 ```solidity
 function generateAttributes(bytes32 randomNumber) internal {

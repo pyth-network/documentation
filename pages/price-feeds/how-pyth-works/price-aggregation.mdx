@@ -8,13 +8,13 @@ The aggregation algorithm is designed to achieve 3 properties. First, it must be
 
 ![](../../../images/Price_Aggregation_1.png)
 
-Second, the **aggregate price should appropriately weight data sources with different levels of accuracy.** Pyth allows publishers to submit a confidence interval because they have varying levels of accuracy in observing the price of a product. This property can result in situations where one publisher reports a price of \$101 +/- 1, and another reports \$110 +/- 10. In these cases, we would like the aggregate price to be closer to \$101 than \$110, as in the figure below.
+Second, the **aggregate price should appropriately weight data sources with different levels of accuracy.** Pyth allows publishers to submit a confidence interval because they have varying levels of accuracy in observing the price of a product. This property can result in situations where one publisher reports a price of \$101 +/- 1, and another reports \$110 +/- 10. In these cases, aggregating the price to be closer to \$101 than \$110 is appropriate, as in the figure below.
 
 ![](../../../images/Price_Aggregation_2.png)
 
-Finally, the **aggregate confidence interval should reflect the variation between publishers’ prices.**
-Under normal market conditions, we expect a product to trade at a similar price across exchanges.
-In these cases, we would like the aggregate confidence interval to reflect the confidence intervals of the individual data providers, as shown in the figure on the left.
+Finally, the **aggregate confidence interval should reflect the variation between publishers' prices.**
+Under normal market conditions, it is reasonable to expect a product to trade at a similar price across exchanges.
+In these cases, aggregate confidence interval will be preferred to reflect the confidence intervals of the individual data providers, as shown in the figure on the left.
 However, in some rare situations, a product can trade at different prices on different exchanges.
 In these cases, the aggregate confidence interval should widen out to reflect the variation between these prices, as shown in the figure on the right.
 
@@ -28,11 +28,11 @@ The second step computes the distance from the aggregate price to the 25th and 7
 
 This process acts like a hybrid between a mean and a median, giving confident publishers more influence, while still capping the maximum influence of any single publisher.
 The algorithm has an interpretation as computing the minimum of an objective function that penalizes the aggregate price from deviating too far from the publishers' prices.
-This interpretation allows us to prove properties of the algorithm's behavior: for example, the aggregate price will always lie between the 25th and 75th percentiles of the publishers' prices.
+This interpretation allows proving properties of the algorithm's behavior: for example, the aggregate price will always lie between the 25th and 75th percentiles of the publishers' prices.
 
 **Scenarios**
 
-We can visualize the operation of this algorithm and objective function in the 4 scenarios from above.
+The operation of this algorithm and objective function can be visualized in the 4 scenarios described above.
 In the following graphs, the colored bars represent each publisher's price and confidence interval, and the grey dashed lines above depict the publisher's contribution to the overall objective function.
 The red line represents the combined objective function, that is, the sum of the dashed grey lines.
 The grey circles represent the 25th and 75th percentiles of the votes — the further one of these from the aggregate price determines the confidence interval’s width.
