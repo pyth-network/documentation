@@ -351,4 +351,13 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://sanko-arb-sepolia.rpc.caldera.xyz",
     nativeCurrency: "DMT",
   },
+  apechain: {
+    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
+    explorer: "https://apechain.calderaexplorer.xyz/address/$ADDRESS",
+    delay: "1 block",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://curtis.hub.caldera.xyz/",
+    nativeCurrency: "APE",
+  },
 };
