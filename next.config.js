@@ -128,6 +128,10 @@ const permanentRedirectArray = [
     "/guides/how-to-create-tradingview-charts",
     "/benchmarks/how-to-create-tradingview-charts",
   ],
+  [
+    "/home/oracle-integrity-staking/examples",
+    "/home/oracle-integrity-staking/reward-examples",
+  ],
   ["/guides", "/price-feeds"],
 ];
 
