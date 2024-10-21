@@ -80,6 +80,50 @@ If slashing event confirmed, the Pythian Council will process calculation and di
 - Stakers continue staking with the residual amount post slashing. No forced unstaking happens post slashing
 - The Pyth DAO controls the slashed amount upon execution of the slashing
 
+## Slashing Example
+
+This section provides a hypothetical scenario of a slashing event.
+
+### Scenario
+
+- Around datetime $t$, the community observes that an abnormal behaviour in the Pyth Price for `FOO/USD`.
+- Community members initiated a discussion on Pyth Forum on the abnormal behaviour and provided reference data for the issue.
+- The Pythian Council confirms the impact through on-chain data and collects reference data to cross-check the Pyth price.
+
+### Investigation Results
+
+- Reference data from 3 independent sources that cover the `FOO/USD` liquidity for the time period around $t$ are collected and analysed.
+- The analysis shows that the Pyth aggregate price for `FOO/USD` was 300 bps away from the median of the three sources for 60 seconds around $t$.
+- The issue was concentrated to `FOO/USD` and no other feed was impacted, nor was the issue found to be related to a macro event beyond `FOO/USD`.
+- The on-chain data reveals a total of $200K of preventable liquidations.
+
+The Pythian councile identifies there were 9 active publishers for `FOO/USD` at the time of the incident $t$.
+It was found that 7 of the 9 publishers were influencing the price of `FOO/USD` at the time of the incident.
+The other 2 publishers were found publish price closely to the mediuan of the reference data.
+
+![OIS Slashing Investigation](../../../images/ois/ois_slashin_investigation_dark.png)
+
+### Pythian Council Process for Slashing
+
+- Assume that the Pyth DAO has set the maximum slashable amount at 500 bps of the total stake of each responsible publisher's assigned pool, the maximum amount that can be slashed is $500 \text{ bps} \times 50\text{M} = 2.5\text{M PYTH}$.
+- From the investigation, \$200K of preventable liquidations were identified from on chain data, the Pythian Council could adjust the amount of stake slashed to 500K PYTH or 100bps (assuming PYTH/USD = $0.40).
+
+![Pre Slashing Pool](../../../images/ois/ois_slashing_pool_pre_dark.png)
+
+- The 500K PYTH slashed is charged pro-rata to the 7 pools that constitute the stake subject to slashing (i.e. calculated according to the total stake in the 7 pools assigned to the 7 publishers found responsible for the misprint).
+
+- Assume `pool_1` has 10M staked, made up of **6M self-staked and 4M delegated PYTH**.
+  - The publisher assigned to `pool_1` would see its self-stake slashed 100bps of 6M PYTH, ie. 60K PYTH, resulting in **5.84M** residual self-stake.
+  - Delegators to `pool_1` would see their stake slashed by 100bps of 4M PYTH, ie. 40K PYTH, resulting in **3.96M** residual delegated stake.
+
+![Post Slashing Pool](../../../images/ois/ois_slashing_pool_post_dark.png)
+
+- The total amount slashed in this example is 500K PYTH. This amount goes to the Pyth DAO treasury. The Pythian Council or the community can propose to the DAO to vote on means to distribute the slashed amount.
+
+### Timeline for Slashing
+
+Assuming datetime $t$ happened during $\text{epoch}_t$ (7-day period from Thursday 0:00 UTC to Wednesday 23:59:59 UTC of the following week), the investigation and slashing are concluded by the end of the epoch following $\text{epoch}_t$ (or $\text{epoch}_t + 1$).
+
 ## Change Process
 
 The Pyth DAO is responsible for implementing procedures for proposing, reviewing, approving, and adopting changes to the rules, policies, or procedures related to this Rulebook.
