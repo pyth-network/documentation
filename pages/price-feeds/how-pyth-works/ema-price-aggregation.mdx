@@ -27,7 +27,7 @@ In an EMA the most recent samples receive the most weight, and samples further b
 
 While conceptually not as simple as an SMA (Simple Moving Average), the EMA has a particularly simple implementation for streaming applications such as Pyth. The exponential weighting method allows the entire history of prices and weights to be represented by a single number.
 
-Find the implementation in our [GitHub](https://github.com/pyth-network/pyth-client/blob/852b991fb4403dcf23043752e3a799a40ed0133b/program/src/oracle/upd_aggregate.h).
+Find the implementation in [GitHub](https://github.com/pyth-network/pyth-client/blob/852b991fb4403dcf23043752e3a799a40ed0133b/program/src/oracle/upd_aggregate.h).
 
 **How does Pyth calculate its EMA Price and EMA Confidence?**
 
@@ -40,4 +40,4 @@ The current Pyth averaging method is a slot-weighted, inverse confidence-weighte
 
 ![](../../../images/EMA_Price_Aggregation_2.png)
 
-For more details and explanations, be sure to read our dedicated blog post on this topic [here](https://pythnetwork.medium.com/whats-in-a-name-302a03e6c3e1).
+For more details and explanations, be sure to read the dedicated blog post on this topic [here](https://pythnetwork.medium.com/whats-in-a-name-302a03e6c3e1).
