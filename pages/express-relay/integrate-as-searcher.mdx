@@ -65,7 +65,7 @@ await client.subscribe_chains(['op_sepolia'])
 
 </Tabs.Tab>
 <Tabs.Tab>
-Searchers can request opportunities through an HTTP **GET** call to the [`/v1/opportunities`](https://pyth-express-relay-mainnet.asymmetric.re/redoc#tag/opportunity/operation/get_opportunities) endpoint.
+Searchers can request opportunities through an HTTP **GET** call to the [`/v1/opportunities`](https://pyth-express-relay-mainnet.asymmetric.re/docs#tag/opportunity/operation/get_opportunities) endpoint.
 
 ```bash copy
 curl -X 'GET' \
@@ -208,7 +208,7 @@ def opportunity_callback(opportunity: Opportunity):
 
 </Tabs.Tab>
 <Tabs.Tab>
-Searchers can submit bids through an HTTP POST call to the [`/v1/bids`](https://pyth-express-relay-mainnet.asymmetric.re/redoc#tag/bid/operation/bid) endpoint. This endpoint accepts a JSON payload containing the details of the bid.
+Searchers can submit bids through an HTTP POST call to the [`/v1/bids`](https://pyth-express-relay-mainnet.asymmetric.re/docs#tag/bid/operation/bid) endpoint. This endpoint accepts a JSON payload containing the details of the bid.
 
 ```bash copy
 curl -X POST https://pyth-express-relay-mainnet.asymmetric.re/v1/bids \
