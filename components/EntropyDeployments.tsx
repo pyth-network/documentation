@@ -360,4 +360,13 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://curtis.hub.caldera.xyz/",
     nativeCurrency: "APE",
   },
+  "abstract-testnet": {
+    address: "0x858687fD592112f7046E394A3Bf10D0C11fF9e63",
+    explorer: "https://explorer.testnet.abs.xyz/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://api.testnet.abs.xyz",
+    nativeCurrency: "ETH",
+  },
 };
