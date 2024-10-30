@@ -17,7 +17,7 @@ To integrate with Express Relay, your protocol's contract must check if Express 
 ### Install the Express Relay SDK
 
 Pyth provides a [Solidity SDK](https://www.npmjs.com/package/@pythnetwork/express-relay-sdk-solidity) to help developers integrate Express Relay into their DeFi protocol.
-The SDK exposes [`IExpressRelay`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelay.sol) and [`IExpressRelayFeeReceiver`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelayFeeReceiver.sol) interfaces to interact with Express Relay.
+The SDK exposes [`IExpressRelay`](https://github.com/pyth-network/per/tree/main/sdk/solidity/IExpressRelay.sol) and [`IExpressRelayFeeReceiver`](https://github.com/pyth-network/per/tree/main/sdk/solidity/IExpressRelayFeeReceiver.sol) interfaces to interact with Express Relay.
 
 <Tabs items={['Hardhat', 'Foundry']}>
   <Tabs.Tab>
@@ -49,8 +49,8 @@ Then add the following line to `remappings.txt` file:
 
 The following steps show how to modify your protocol's contract to verify if the current transaction is permissioned by Express Relay and to receive the auction proceeds.
 
-1. Call the [`isPermissioned`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelay.sol#L10C14-L10C28) method from `IExpressRelay` interface to make sure the current transaction is permissioned by Express Relay.
-1. Implement the [`IExpressRelayFeeReceiver`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/sdk/solidity/IExpressRelayFeeReceiver.sol#L4) interface to **receive** auction proceeds.
+1. Call the [`isPermissioned`](https://github.com/pyth-network/per/tree/main/sdk/solidity/IExpressRelay.sol#L10C14-L10C28) method from `IExpressRelay` interface to make sure the current transaction is permissioned by Express Relay.
+1. Implement the [`IExpressRelayFeeReceiver`](https://github.com/pyth-network/per/tree/main/sdk/solidity/IExpressRelayFeeReceiver.sol#L4) interface to **receive** auction proceeds.
 
 #### 1. Verify Permissioning
 
@@ -211,8 +211,8 @@ The JSON payload should contain opportunities in the following format:
 Each protocol integrated with Express Relay must actively monitor for new opportunities.
 Protocols can do this by indexing the chain, listening to protocol events, or querying protocol state through an RPC provider.
 
-Check the [`monitor.ts`](https://github.com/pyth-network/pyth-crosschain/blob/main/express_relay/examples/easy_lend/src/monitor.ts) script,
-which fetches opportunities for the below-mentioned [Easy Lend](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend) example and exposes them to Express Relay for auction.
+Check the [`monitor.ts`](https://github.com/pyth-network/per/tree/main/examples/easy_lend/src/monitor.ts) script,
+which fetches opportunities for the below-mentioned [Easy Lend](https://github.com/pyth-network/per/tree/main/examples/easy_lend) example and exposes them to Express Relay for auction.
 
 ## Additional Resources
 
@@ -220,7 +220,7 @@ You may find these additional resources helpful for integrating Express Relay as
 
 ### Example Application
 
-[Easy Lend](https://github.com/pyth-network/pyth-crosschain/tree/main/express_relay/examples/easy_lend) is a dummy lending protocol contract that allows users to borrow and lend assets.
+[Easy Lend](https://github.com/pyth-network/per/tree/main/examples/easy_lend) is a dummy lending protocol contract that allows users to borrow and lend assets.
 This lending protocol contract is updated to use Express Relay.
 
 ### Contract Address

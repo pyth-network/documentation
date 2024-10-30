@@ -3,136 +3,194 @@ import AddressTable from "../../components/AddressTable";
 
 Express Relay is currently deployed on the following networks:
 
-<Tabs items={['Mainnet', 'Testnet']}>
+<Tabs items={['EVM', 'SVM']}>
+  <Tabs.Tab>
+    <Tabs items={['Mainnet', 'Testnet']}>
 
-<Tabs.Tab>
-Auction Server endpoint: https://pyth-express-relay-mainnet.asymmetric.re/
+    <Tabs.Tab>
+    Auction Server endpoint: https://pyth-express-relay-mainnet.asymmetric.re/
 
-### Mode
+    ### Mode
 
-**Network Details:**
+    **Network Details:**
 
-<AddressTable
-  explorer={"https://explorer.mode.network/address/$ADDRESS"}
-  entries={[
-    {
-      name: "Express Relay",
-      value: "0x5Cc070844E98F4ceC5f2fBE1592fB1ed73aB7b48",
-    },
-    {
-      name: "Opportunity Adapter Factory",
-      value: "0x59F78DE21a0b05d96Ae00c547BA951a3B905602f",
-    },
-    {
-      name: "Network Id",
-      value: "34443",
-    },
-    {
-      name: "Chain Id",
-      value: "mode",
-    },
-    {
-      name: "Public RPC",
-      value: "https://mainnet.mode.network/",
-    },
-    {
-      name: "Wrapped ETH",
-      value: "0x4200000000000000000000000000000000000006",
-    },
-    {
-      name: "Permit2 Contract",
-      value: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
-    },
-  ]}
-/>
+    <AddressTable
+      explorer={"https://explorer.mode.network/address/$ADDRESS"}
+      entries={[
+        {
+          name: "Express Relay",
+          value: "0x5Cc070844E98F4ceC5f2fBE1592fB1ed73aB7b48",
+        },
+        {
+          name: "Opportunity Adapter Factory",
+          value: "0x59F78DE21a0b05d96Ae00c547BA951a3B905602f",
+        },
+        {
+          name: "Network Id",
+          value: "34443",
+        },
+        {
+          name: "Chain Id",
+          value: "mode",
+        },
+        {
+          name: "Public RPC",
+          value: "https://mainnet.mode.network/",
+        },
+        {
+          name: "Wrapped ETH",
+          value: "0x4200000000000000000000000000000000000006",
+        },
+        {
+          name: "Permit2 Contract",
+          value: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+        },
+      ]}
+    />
 
-This list contains the addresses of the commonly used assets present in opportunities on the Mode network:
+    This list contains the addresses of the commonly used assets present in opportunities on the Mode network:
 
-<AddressTable
-  explorer={"https://explorer.mode.network/address/$ADDRESS"}
-  entries={[
-    { name: "WETH", value: "0x4200000000000000000000000000000000000006" },
-    { name: "USDC", value: "0xd988097fb8612cc24eeC14542bC03424c656005f" },
-    { name: "USDT", value: "0xf0F161fDA2712DB8b566946122a5af183995e2eD" },
-    { name: "WBTC", value: "0xcDd475325D6F564d27247D1DddBb0DAc6fA0a5CF" },
-    { name: "ezETH", value: "0x2416092f143378750bb29b79eD961ab195CcEea5" },
-    { name: "STONE", value: "0x80137510979822322193FC997d400D5A6C747bf7" },
-    { name: "wrsETH", value: "0xe7903B1F75C534Dd8159b313d92cDCfbC62cB3Cd" },
-    { name: "weETH.mode", value: "0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A" },
-    { name: "M-BTC", value: "0x59889b7021243dB5B1e065385F918316cD90D46c" },
-    { name: "MODE", value: "0xDfc7C877a950e49D2610114102175A06C2e3167a" },
-  ]}
-/>
+    <AddressTable
+      explorer={"https://explorer.mode.network/address/$ADDRESS"}
+      entries={[
+        { name: "WETH", value: "0x4200000000000000000000000000000000000006" },
+        { name: "USDC", value: "0xd988097fb8612cc24eeC14542bC03424c656005f" },
+        { name: "USDT", value: "0xf0F161fDA2712DB8b566946122a5af183995e2eD" },
+        { name: "WBTC", value: "0xcDd475325D6F564d27247D1DddBb0DAc6fA0a5CF" },
+        { name: "ezETH", value: "0x2416092f143378750bb29b79eD961ab195CcEea5" },
+        { name: "STONE", value: "0x80137510979822322193FC997d400D5A6C747bf7" },
+        { name: "wrsETH", value: "0xe7903B1F75C534Dd8159b313d92cDCfbC62cB3Cd" },
+        { name: "weETH.mode", value: "0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A" },
+        { name: "M-BTC", value: "0x59889b7021243dB5B1e065385F918316cD90D46c" },
+        { name: "MODE", value: "0xDfc7C877a950e49D2610114102175A06C2e3167a" },
+      ]}
+    />
 
-</Tabs.Tab>
-<Tabs.Tab>
-Auction Server endpoint: https://per-staging.dourolabs.app/
+    </Tabs.Tab>
+    <Tabs.Tab>
+    Auction Server endpoint: https://per-staging.dourolabs.app/
 
-### Optimism Sepolia
+    ### Optimism Sepolia
 
-**Network Details:**
+    **Network Details:**
 
-<AddressTable
-  explorer={"https://optimism-sepolia.blockscout.com/address/$ADDRESS"}
-  entries={[
-    {
-      name: "Express Relay",
-      value: "0x2F968931d1B7326d2875E9500980211dcc535eE5",
-    },
-    {
-      name: "Opportunity Adapter Factory",
-      value: "0xfA119693864b2F185742A409c66f04865c787754",
-    },
-    {
-      name: "Network Id",
-      value: "11155420",
-    },
-    {
-      name: "Chain Id",
-      value: "op_sepolia",
-    },
-    {
-      name: "Public RPC",
-      value: "https://sepolia.optimism.io/",
-    },
-    {
-      name: "Wrapped ETH",
-      value: "0x74A4A85C611679B73F402B36c0F84A7D2CcdFDa3",
-    },
-    {
-      name: "Permit2 Contract",
-      value: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
-    },
-  ]}
-/>
+    <AddressTable
+      explorer={"https://optimism-sepolia.blockscout.com/address/$ADDRESS"}
+      entries={[
+        {
+          name: "Express Relay",
+          value: "0x2F968931d1B7326d2875E9500980211dcc535eE5",
+        },
+        {
+          name: "Opportunity Adapter Factory",
+          value: "0xfA119693864b2F185742A409c66f04865c787754",
+        },
+        {
+          name: "Network Id",
+          value: "11155420",
+        },
+        {
+          name: "Chain Id",
+          value: "op_sepolia",
+        },
+        {
+          name: "Public RPC",
+          value: "https://sepolia.optimism.io/",
+        },
+        {
+          name: "Wrapped ETH",
+          value: "0x74A4A85C611679B73F402B36c0F84A7D2CcdFDa3",
+        },
+        {
+          name: "Permit2 Contract",
+          value: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+        },
+      ]}
+    />
 
-This list contains the addresses of the commonly used assets present in opportunities on the Optimism Sepolia network:
+    This list contains the addresses of the commonly used assets present in opportunities on the Optimism Sepolia network:
 
-<AddressTable
-  explorer={"https://optimism-sepolia.blockscout.com/address/$ADDRESS"}
-  entries={[
-    {
-      name: "BTC",
-      value: "0x3745007F7C8DD8Bec89b3B35f33f13f58b008533 ",
-    },
-    {
-      name: "USDC",
-      value: "0x1e3d75F24296abBC7bd10D151F51d758bCE379Ef",
-    },
-    {
-      name: "DOGE",
-      value: "0x0160Ba0A02A910e27b4189040aC74febcc476687 ",
-    },
-    {
-      name: "SOL",
-      value: "0x193aD24BeeDfAf27f217395f52fA20C7A36D79B3",
-    },
-    {
-      name: "PYTH",
-      value: "0x20e0b5Ff7aa971dAd8f489112Ae009A70608d2D5",
-    },
-  ]}
-/>
+    <AddressTable
+      explorer={"https://optimism-sepolia.blockscout.com/address/$ADDRESS"}
+      entries={[
+        {
+          name: "BTC",
+          value: "0x3745007F7C8DD8Bec89b3B35f33f13f58b008533 ",
+        },
+        {
+          name: "USDC",
+          value: "0x1e3d75F24296abBC7bd10D151F51d758bCE379Ef",
+        },
+        {
+          name: "DOGE",
+          value: "0x0160Ba0A02A910e27b4189040aC74febcc476687 ",
+        },
+        {
+          name: "SOL",
+          value: "0x193aD24BeeDfAf27f217395f52fA20C7A36D79B3",
+        },
+        {
+          name: "PYTH",
+          value: "0x20e0b5Ff7aa971dAd8f489112Ae009A70608d2D5",
+        },
+      ]}
+    />
 
-</Tabs.Tab>
+    </Tabs.Tab>
+    </Tabs>
+  </Tabs.Tab>
+
+  <Tabs.Tab>
+  <Tabs items={['Testing']}>
+
+    <Tabs.Tab>
+    Auction Server endpoint: https://per-staging.dourolabs.app/
+
+    ### Solana
+
+    **Network Details:**
+
+    <AddressTable
+      explorer={"https://solscan.io/account/$ADDRESS"}
+      entries={[
+        {
+          name: "Express Relay Program",
+          value: "PytERJFhAKuNNuaiXkApLfWzwNwSNDACpigT3LwQfou",
+        },
+        {
+          name: "Limo Limit Order Program",
+          value: "LiMoM9rMhrdYrfzUCxQppvxCSG1FcrUK9G8uLq4A1GF",
+        },
+        {
+          name: "Chain Id",
+          value: "development-solana",
+        },
+        {
+          name: "Public RPC",
+          value: "https://api.mainnet-beta.solana.com",
+        },
+        {
+          name: "Limo Global Order Config",
+          value: "TeStcUQMmECYEtdeXo9cXpktQWaGe4bhJ7zxAUMzB2X",
+        },
+        {
+          name: "Testing Frontend",
+          value: "https://wip-limit-orders.kamino-webapp.pages.dev/limit-order?VITE_LIMIT_ORDERS_REAL_WSOL",
+        }
+      ]}
+    />
+
+    This list contains the addresses of the commonly used assets present in opportunities on `development-solana`:
+
+    <AddressTable
+      explorer={"https://solscan.io/account/$ADDRESS"}
+      entries={[
+        { name: "WSOL", value: "So11111111111111111111111111111111111111112" },
+        { name: "USDC", value: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" },
+      ]}
+    />
+
+    </Tabs.Tab>
+    </Tabs>
+  </Tabs.Tab>
 </Tabs>
