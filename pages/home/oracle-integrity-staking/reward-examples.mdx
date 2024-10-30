@@ -1,5 +1,14 @@
 import RewardSimulator from "@/components/RewardSimulator";
+import DualModeImage from "../../../components/DualModeImage";
 import Image from "next/image";
+import OIS_Rewards_Example_Dark_1 from "../../../images/ois/OIS_Rewards_Example_Dark_1.png";
+import OIS_Rewards_Example_Light_1 from "../../../images/ois/OIS_Rewards_Example_Light_1.png";
+import OIS_Rewards_Example_Dark_2 from "../../../images/ois/OIS_Rewards_Example_Dark_2.png";
+import OIS_Rewards_Example_Light_2 from "../../../images/ois/OIS_Rewards_Example_Light_2.png";
+import OIS_Rewards_Example_Dark_3 from "../../../images/ois/OIS_Rewards_Example_Dark_3.png";
+import OIS_Rewards_Example_Light_3 from "../../../images/ois/OIS_Rewards_Example_Light_3.png";
+import OIS_Rewards_Example_Dark_4 from "../../../images/ois/OIS_Rewards_Example_Dark_4.png";
+import OIS_Rewards_Example_Light_4 from "../../../images/ois/OIS_Rewards_Example_Light_4.png";
 
 # Examples
 
@@ -10,6 +19,15 @@ NOTE: All the symbols used in the examples are explained in the [Mathematical Re
 ## Example 1: Only Publisher Stake
 
 This example takes the case of one pool where the pool has stake from only the publisher.
+
+<br />
+<DualModeImage
+  darkSrc={OIS_Rewards_Example_Dark_1}
+  lightSrc={OIS_Rewards_Example_Light_1}
+  alt="Example 1"
+  sizes="100%"
+  placeholder="blur"
+/>
 
 $$
 \begin{aligned}
@@ -32,6 +50,15 @@ $$
 
 This example takes the case where the pool has stake from both the publisher and the delegator.
 
+<br />
+<DualModeImage
+  darkSrc={OIS_Rewards_Example_Dark_2}
+  lightSrc={OIS_Rewards_Example_Light_2}
+  alt="Example 2"
+  sizes="100%"
+  placeholder="blur"
+/>
+
 $$
 \begin{aligned}
 {S^p_p} &= 100 \\
@@ -53,6 +80,15 @@ $$
 
 This example takes the case where the combined stake of both the publisher and the delegator exceeds the cap.
 
+<br />
+<DualModeImage
+  darkSrc={OIS_Rewards_Example_Dark_3}
+  lightSrc={OIS_Rewards_Example_Light_3}
+  alt="Example 3"
+  sizes="100%"
+  placeholder="blur"
+/>
+
 $$
 \begin{aligned}
 {S^p_p} &= 300 \\
@@ -73,6 +109,15 @@ $$
 ## Example 4: Introducing Delegator Fees
 
 This example demonstrates how the delegation fee affect the reward distribution between the publisher and the delegator.
+
+<br />
+<DualModeImage
+  darkSrc={OIS_Rewards_Example_Dark_4}
+  lightSrc={OIS_Rewards_Example_Light_4}
+  alt="Example 4"
+  sizes="100%"
+  placeholder="blur"
+/>
 
 $$
 \begin{aligned}
@@ -116,6 +161,8 @@ $$
 $$
 
 In this example, the stake is uniformly slashed by 5\%, affecting both the publisher and the delegator. Slashing impact the total stake into the pool, regardless of the Cap.
+
+Checkout out the detailed slashing example at [Slashing Rulebook](./slashing-rulebook#slashing-example)
 
 ## Example 6: Increasing the cap of the pool
 
