@@ -1,6 +1,12 @@
+import { Tabs } from "nextra/components";
+
 # Error Codes
 
-The following table lists the error codes and their explanations for [`ExpressRelay`](https://github.com/pyth-network/per/blob/main/contracts/src/express-relay/ExpressRelay.sol) and [`OpportunityAdapter`](https://github.com/pyth-network/per/blob/main/contracts/src/opportunity-adapter/OpportunityAdapter.sol) contracts.
+<Tabs items={['EVM', 'SVM']}>
+
+<Tabs.Tab>
+
+The following table lists the error codes and their explanations for [`ExpressRelay`](https://github.com/pyth-network/per/blob/main/contracts/evm/src/express-relay/ExpressRelay.sol) and [`OpportunityAdapter`](https://github.com/pyth-network/per/blob/main/contracts/evm/src/opportunity-adapter/OpportunityAdapter.sol) contracts.
 They can be used to identify the cause of a failed transaction or bid.
 
 ## ExpressRelay
@@ -31,3 +37,26 @@ They can be used to identify the cause of a failed transaction or bid.
 | `EthOrWethBalanceDecreased()`          | `0x1979776d` | The ETH or WETH balance of the contract decreased as a result of the call to targetContract and the bid payment. |
 | `TargetContractNotAllowed()`           | `0x9c86e59e` | The provided targetContract is not allowed. (e.g. can not call the Permit2 contract).                            |
 | `OnlyOwnerCanCall()`                   | `0x47a8ea58` | Only the owner of the contract can call this method.                                                             |
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+
+The following table lists the error codes and their explanations for the [`ExpressRelay`](https://github.com/pyth-network/per/blob/main/contracts/svm/programs/express_relay) programs.
+They can be used to identify the cause of a failed transaction or bid.
+
+## ExpressRelay
+
+| Error                         | Explanation                                                                                 |
+| ----------------------------- | ------------------------------------------------------------------------------------------- |
+| `FeeSplitLargerThanPrecision` | The proposed fee split is invalid (split is larger than `FEE_SPLIT_PRECISION`, 10000)       |
+| `FeesHigherThanBid`           | The fees to pay out exceed the value of the bid amount.                                     |
+| `DeadlinePassed`              | The bid is no longer valid, as the Unix time deadline has passed.                           |
+| `InvalidCPISubmitBid`         | The `SubmitBid` instruction should not be called via CPI.                                   |
+| `MissingPermission`           | The transaction is missing a `SubmitBid` instruction with the matching permission key.      |
+| `MultiplePermissions`         | The transaction should not contain more than one `SubmitBid` instruction.                   |
+| `InsufficientSearcherFunds`   | The searcher lacks the funds to pay the specified bid amount.                               |
+| `InsufficientRent`            | The fees splits received by different parties must be sufficient to cover the account rent. |
+
+</Tabs.Tab>
+</Tabs>
