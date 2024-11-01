@@ -118,7 +118,6 @@ Here is an example JSON payload for submitting a new bid:
 </Tabs.Tab>
 </Tabs>
 
-
 A successful response to a bid submission has the following schema:
 
 ```json
@@ -292,25 +291,26 @@ Refer to the examples below, one for each of the status options in EVM and SVM:
 	```
 	</Tabs.Tab>
 
-	<Tabs.Tab>
-	```json
-	// expired
-	// /// The bid expired without being submitted on chain.
-	{
-		"type": "bid_status_update",
-		"status": {
-			"id": "beedbeed-0e42-400f-a8ef-d78aa5422252",
-			"bid_status": {
-				// the enum for the bid_status
-				"type": "expired",
-				// the hash of the transaction that the bid's calldata was included in
-				"result": "Jb2urXPyEh4xiBgzYvwEFe4q1iMxG1DNxWGGQg94AmKgqFTwLAiTiHrYiYxwHUB4DV8u5ahNEVtMMDm3sNSRdTg",
-			}
-		}
-	}
-	```
-	</Tabs.Tab>
-	</Tabs>
+    <Tabs.Tab>
+    ```json
+    // expired
+    // /// The bid expired without being submitted on chain.
+    {
+    	"type": "bid_status_update",
+    	"status": {
+    		"id": "beedbeed-0e42-400f-a8ef-d78aa5422252",
+    		"bid_status": {
+    			// the enum for the bid_status
+    			"type": "expired",
+    			// the hash of the transaction that the bid's calldata was included in
+    			"result": "Jb2urXPyEh4xiBgzYvwEFe4q1iMxG1DNxWGGQg94AmKgqFTwLAiTiHrYiYxwHUB4DV8u5ahNEVtMMDm3sNSRdTg",
+    		}
+    	}
+    }
+    ```
+    </Tabs.Tab>
+    </Tabs>
+
 </Tabs.Tab>
 </Tabs>
 
