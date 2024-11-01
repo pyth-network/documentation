@@ -126,7 +126,7 @@ const handleOpporunity = async (opportunity: Opportunity) => {
     const bid = await generateBid(opportunity as OpportunitySvm, this.recentBlockhash[this.chainId]);
     await client.submitBid(bid);
 }
-````
+```
 
 </Tabs.Tab>
 <Tabs.Tab>
