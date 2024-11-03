@@ -4,11 +4,11 @@
 
 @layer base {
   body {
-    @apply font-body bg-white text-lightForeground !important;
+    @apply font-body bg-white text-lightForeground; /* Removed !important */
   }
 
   html[class~="dark"] body {
-    @apply bg-darkBackground text-white !important;
+    @apply bg-darkBackground text-white; /* Removed !important */
   }
 }
 
@@ -17,39 +17,39 @@
   ul,
   ol,
   table {
-    @apply text-base16 text-lightForeground !important;
+    @apply text-base16 text-lightForeground; /* Removed !important */
   }
 
   article a {
-    @apply text-lightLinks no-underline hover:underline !important;
+    @apply text-lightLinks no-underline hover:underline; /* Removed !important */
   }
 
   [role="tablist"] button[data-headlessui-state="selected"] {
-    @apply text-lightLinks border-lightLinks !important;
+    @apply text-lightLinks border-lightLinks; /* Removed !important */
   }
 
   .nextra-sidebar-container .active > a {
-    @apply text-lightLinks bg-black/10 !important;
+    @apply text-lightLinks bg-black/10; /* Removed !important */
   }
 
   .nextra-toc .nx-text-primary-600 {
-    @apply text-lightLinks !important;
+    @apply text-lightLinks; /* Removed !important */
   }
 
   table {
-    @apply w-full table !important;
+    @apply w-full; /* Removed !important */
   }
 
   tr {
-    @apply text-base p-4 !important;
+    @apply text-base p-4; /* Removed !important */
   }
 
   th {
-    @apply text-left p-4 leading-[1.15em] font-normal text-base !important;
+    @apply text-left p-4 leading-[1.15em] font-normal text-base; /* Removed !important */
   }
 
   td {
-    @apply py-2 px-4 text-base !important;
+    @apply py-2 px-4 text-base; /* Removed !important */
   }
 
   input {
@@ -73,15 +73,15 @@
 
   .required,
   .input-error {
-    color: red !important;
+    color: red; /* Removed !important */
   }
 
   .response {
-    @apply py-4 text-light bg-darkGray rounded-xl !important;
+    @apply py-4 text-light bg-darkGray rounded-xl; /* Removed !important */
   }
 
   .response p {
-    @apply text-light !important;
+    @apply text-light; /* Removed !important */
   }
 
   html[class~="dark"] {
@@ -89,36 +89,36 @@
     ul,
     ol,
     table {
-      @apply text-white !important;
+      @apply text-white; /* Removed !important */
     }
 
     article a {
-      @apply text-darkLinks !important;
+      @apply text-darkLinks; /* Removed !important */
     }
 
     [role="tablist"] button[data-headlessui-state="selected"] {
-      @apply text-darkLinks border-darkLinks !important;
+      @apply text-darkLinks border-darkLinks; /* Removed !important */
     }
 
     .nextra-sidebar-container .active > a {
-      @apply text-darkLinks bg-white/10 !important;
+      @apply text-darkLinks bg-white/10; /* Removed !important */
     }
 
     .nextra-toc .nx-text-primary-600 {
-      @apply text-darkLinks !important;
+      @apply text-darkLinks; /* Removed !important */
     }
 
     ul li[data-headlessui-state="active"] {
-      @apply bg-darkLinks/10 text-darkLinks !important;
+      @apply bg-darkLinks/10 text-darkLinks; /* Removed !important */
     }
 
     .required,
     .input-error {
-      color: red !important;
+      color: red; /* Removed !important */
     }
 
     .response p {
-      @apply text-light !important;
+      @apply text-light; /* Removed !important */
     }
   }
 }
