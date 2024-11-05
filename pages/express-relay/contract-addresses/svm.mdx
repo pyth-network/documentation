@@ -1,0 +1,56 @@
+import { Tabs } from "nextra/components";
+import AddressSvmTable from "../../../components/AddressSvmTable";
+
+Express Relay is currently deployed on the following SVM networks:
+
+<Tabs items={['Testing']}>
+
+<Tabs.Tab>
+Auction Server endpoint: https://per-staging.dourolabs.app/
+
+### Solana
+
+**Network Details:**
+
+<AddressSvmTable
+  explorer={"https://solscan.io/account/$ADDRESS"}
+  entries={[
+    {
+      name: "Express Relay Program",
+      value: "PK-PytERJFhAKuNNuaiXkApLfWzwNwSNDACpigT3LwQfou",
+    },
+    {
+      name: "Limo Limit Order Program",
+      value: "PK-LiMoM9rMhrdYrfzUCxQppvxCSG1FcrUK9G8uLq4A1GF",
+    },
+    {
+      name: "Chain Id",
+      value: "development-solana",
+    },
+    {
+      name: "Public RPC",
+      value: "https://api.mainnet-beta.solana.com",
+    },
+    {
+      name: "Limo Global Order Config",
+      value: "PK-TeStcUQMmECYEtdeXo9cXpktQWaGe4bhJ7zxAUMzB2X",
+    },
+    {
+      name: "Testing Frontend",
+      value: "https://limo.kamino-webapp.pages.dev/swap",
+    },
+  ]}
+/>
+
+This list contains the addresses of the commonly used assets present in opportunities on `development-solana`:
+
+<AddressSvmTable
+  explorer={"https://solscan.io/account/$ADDRESS"}
+  entries={[
+    { name: "WSOL", value: "PK-So11111111111111111111111111111111111111112" },
+    { name: "USDC", value: "PK-EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" },
+  ]}
+/>
+
+</Tabs.Tab>
+</Tabs>

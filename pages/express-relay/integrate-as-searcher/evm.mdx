@@ -6,7 +6,7 @@ import { Callout, Tabs, Steps } from "nextra/components";
 
 ### Subscribe to New Opportunities
 
-Express Relay provides searchers with [Typescript](https://github.com/pyth-network/per/tree/main/sdk/js) and [Python](https://github.com/pyth-network/per/tree/main/sdk/python) SDKs to interact with Express Relay.
+Express Relay provides searchers with [Typescript](https://github.com/pyth-network/per/tree/8e311d3dce7a54865ff98b25e57c6af2dd984d1f/sdk/js) and [Python](https://github.com/pyth-network/per/tree/8e311d3dce7a54865ff98b25e57c6af2dd984d1f/sdk/python) SDKs to interact with Express Relay.
 Searchers can also directly fetch available opportunities via HTTP or subscribe to them via WebSocket.
 
 <Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
@@ -111,7 +111,7 @@ The server responds with opportunities in the following format:
 ### Construct the Bid
 
 Searchers should construct a bid by evaluating the fetched opportunity.
-The SDKs provide an easy way to construct a bid using the [`OpportunityAdapter`](https://github.com/pyth-network/per/blob/main/contracts/src/opportunity-adapter/OpportunityAdapter.sol) contract.
+The SDKs provide an easy way to construct a bid using the [`OpportunityAdapter`](https://github.com/pyth-network/per/blob/fccac65b00cff1cfe5c278b333a582fe66bda0f8/contracts/evm/src/opportunity-adapter/OpportunityAdapter.sol) contract.
 The `OpportunityAdapter` contract handles asset transfers and ensures the opportunity is executed correctly.
 
 <Callout type="warning" emoji="⚠️">
