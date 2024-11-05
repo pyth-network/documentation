@@ -46,7 +46,7 @@ def opportunity_callback(opportunity: Opportunity):
     pass
 
 client = ExpressRelayClient(
-    'server_url',
+    "https://per-staging.dourolabs.app",
     None,
     opportunity_callback,
     None,
@@ -89,11 +89,11 @@ The server responds with opportunities in the following format:
 
 ```bash copy
 {
-  "order": "DUcTi3rDyS5QEmZ4BNRBejtArmDCWaPYGfN44vBJXKL5",              // The Limo order to be executed, encoded in base64
-  "order_address": "DUcTi3rDyS5QEmZ4BNRBejtArmDCWaPYGfN44vBJXKL5",      // Address of the order account
-  "program": "limo",                                                    // Identifier of the program that the order exists in
+  "order": "UxMUbQAsjrfQUp5stVwMJ6Mucq7VWTvt4ICe69BJ8lVXqwM+0sysV8OqZTdM0W4p...",      // The Limo order to be executed, encoded in base64
+  "order_address": "DUcTi3rDyS5QEmZ4BNRBejtArmDCWaPYGfN44vBJXKL5",                     // Address of the order account
+  "program": "limo",                                                                   // Identifier of the program that the order exists in
   "chain_id": "development-solana",
-  "version": "v1"                                                       // Opportunity format version
+  "version": "v1"                                                                      // Opportunity format version
 }
 ```
 
@@ -106,9 +106,22 @@ The SDKs provide an easy way to construct a bid; refer to these basic examples i
   Before constructing the bid, make sure your wallet has the required assets.
 </Callout>
 
+The bid you construct will look like
+
+```
+{
+  // serialized transaction object, in base-64 encoding
+  transaction: "SGVsbG8sIFdvcmxkIQ==",
+  chain_id: "solana",
+  env: "svm"
+}
+```
+
+where the serialized transaction object should contain an Express Relay `SubmitBid` instruction that specifies the amount you are bidding and the permission details.
+
 ### Submit Bids on Opportunities to Express Relay
 
-Searchers can submit the constructed bids to Express Relay via the SDKs, an HTTP POST request, or a WebSocket connection.
+Searchers can submit their constructed bids to Express Relay via the SDKs, an HTTP POST request, or a WebSocket connection.
 
 <Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
 
