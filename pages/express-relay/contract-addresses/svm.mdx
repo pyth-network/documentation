@@ -1,9 +1,15 @@
-import { Tabs } from "nextra/components";
+import { Tabs, Callout } from "nextra/components";
 import AddressSvmTable from "../../../components/AddressSvmTable";
 
-Express Relay is currently deployed on the following SVM networks:
+Express Relay is currently deployed on the following SVM environments:
 
-<Tabs items={['Testing']}>
+<Tabs items={['Solana Mainnet-Beta Testing']}>
+
+<Callout type="warning" emoji="⚠️">
+  To simulate real performance conditions and activity, the staging/testing
+  environment for Solana is on the mainnet-beta network. This environment is not
+  for production use and should only be used for testing.
+</Callout>
 
 <Tabs.Tab>
 Auction Server endpoint: https://per-staging.dourolabs.app/
