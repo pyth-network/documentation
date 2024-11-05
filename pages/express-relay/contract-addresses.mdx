@@ -1,5 +1,6 @@
 import { Tabs } from "nextra/components";
 import AddressTable from "../../components/AddressTable";
+import AddressSvmTable from "../../components/AddressSvmTable";
 
 Express Relay is currently deployed on the following networks:
 
@@ -151,16 +152,16 @@ Express Relay is currently deployed on the following networks:
 
     **Network Details:**
 
-    <AddressTable
+    <AddressSvmTable
       explorer={"https://solscan.io/account/$ADDRESS"}
       entries={[
         {
           name: "Express Relay Program",
-          value: "PytERJFhAKuNNuaiXkApLfWzwNwSNDACpigT3LwQfou",
+          value: "PK-PytERJFhAKuNNuaiXkApLfWzwNwSNDACpigT3LwQfou",
         },
         {
           name: "Limo Limit Order Program",
-          value: "LiMoM9rMhrdYrfzUCxQppvxCSG1FcrUK9G8uLq4A1GF",
+          value: "PK-LiMoM9rMhrdYrfzUCxQppvxCSG1FcrUK9G8uLq4A1GF",
         },
         {
           name: "Chain Id",
@@ -172,22 +173,22 @@ Express Relay is currently deployed on the following networks:
         },
         {
           name: "Limo Global Order Config",
-          value: "TeStcUQMmECYEtdeXo9cXpktQWaGe4bhJ7zxAUMzB2X",
+          value: "PK-TeStcUQMmECYEtdeXo9cXpktQWaGe4bhJ7zxAUMzB2X",
         },
         {
           name: "Testing Frontend",
-          value: "https://wip-limit-orders.kamino-webapp.pages.dev/limit-order?VITE_LIMIT_ORDERS_REAL_WSOL",
+          value: "https://limo.kamino-webapp.pages.dev/swap",
         }
       ]}
     />
 
     This list contains the addresses of the commonly used assets present in opportunities on `development-solana`:
 
-    <AddressTable
+    <AddressSvmTable
       explorer={"https://solscan.io/account/$ADDRESS"}
       entries={[
-        { name: "WSOL", value: "So11111111111111111111111111111111111111112" },
-        { name: "USDC", value: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" },
+        { name: "WSOL", value: "PK-So11111111111111111111111111111111111111112" },
+        { name: "USDC", value: "PK-EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" },
       ]}
     />
 
