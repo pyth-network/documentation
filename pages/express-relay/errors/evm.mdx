@@ -1,0 +1,33 @@
+# EVM Error Codes
+
+The following table lists the error codes and their explanations for [`ExpressRelay`](https://github.com/pyth-network/per/blob/fccac65b00cff1cfe5c278b333a582fe66bda0f8/contracts/evm/src/express-relay/ExpressRelay.sol) and [`OpportunityAdapter`](https://github.com/pyth-network/per/blob/fccac65b00cff1cfe5c278b333a582fe66bda0f8/contracts/evm/src/opportunity-adapter/OpportunityAdapter.sol) contracts.
+They can be used to identify the cause of a failed transaction or bid.
+
+## ExpressRelay
+
+| Error                                        | Selector     | Explanation                                                                                 |
+| -------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------- |
+| `Unauthorized()`                             | `0x82b42900` | This function is called by an unauthorized party.                                           |
+| `InvalidMagicValue()`                        | `0x4ed848c1` | An upgrade was attempted to a contract that does not match the ExpressRelay specification.  |
+| `InvalidPermission()`                        | `0x868a64de` | The provided permissionKey is invalid (too short).                                          |
+| `InvalidFeeSplit()`                          | `0x0601f697` | The proposed fee split is invalid (fee is larger than feePrecision, 10\*\*18).              |
+| `InvalidTargetContract()`                    | `0x5569851a` | The provided target contract is not allowed. (e.g. can not call the ExpressRelay contract). |
+| `DuplicateRelayerSubwallet()`                | `0xb40d37c3` | The provided subwallet to add has already been added.                                       |
+| `RelayerSubwalletNotFound()`                 | `0xac4d92b3` | The provided subwallet to delete does not exist in the store.                               |
+| `ExternalCallFailed(MulticallStatus status)` | `0x740d0306` | The external call failed with the following MulticallStatus output.                         |
+
+## OpportunityAdapter
+
+| Error                                  | Selector     | Explanation                                                                                                      |
+| -------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------- |
+| `NotCalledByExpressRelay()`            | `0xd5668c88` | The OpportunityAdapterFactory contract was not called by the ExpressRelay contract.                              |
+| `NotCalledByFactory()`                 | `0xb02436cc` | The OpportunityAdapter contract was not called by the OpportunityAdapterFactory contract.                        |
+| `AdapterOwnerMismatch()`               | `0x446f3eeb` | The provided executor field does not match the owner of the called OpportunityAdapter contract.                  |
+| `InsufficientTokenReceived()`          | `0x4af147aa` | The specified buyTokens were not received after calling the target contract.                                     |
+| `InsufficientEthToSettleBid()`         | `0x9caaa1d7` | The contract did not receive enough ETH to pay the specified bid.                                                |
+| `InsufficientWethForTargetCallValue()` | `0x5e520cd4` | The contract did not receive enough Wrapped ETH to pay the targetCallValue to the targetContract.                |
+| `TargetCallFailed(bytes returnData)`   | `0xa932c97a` | The call to targetContract failed with the specified returnData.                                                 |
+| `DuplicateToken()`                     | `0x464e3f6a` | There is a duplicate token in either the sellTokens or buyTokens.                                                |
+| `EthOrWethBalanceDecreased()`          | `0x1979776d` | The ETH or WETH balance of the contract decreased as a result of the call to targetContract and the bid payment. |
+| `TargetContractNotAllowed()`           | `0x9c86e59e` | The provided targetContract is not allowed. (e.g. can not call the Permit2 contract).                            |
+| `OnlyOwnerCanCall()`                   | `0x47a8ea58` | Only the owner of the contract can call this method.                                                             |

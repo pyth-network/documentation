@@ -2,7 +2,7 @@ import { Steps } from "nextra/components";
 
 # Prepare Assets for Opportunity Adapter
 
-The [`OpportunityAdapter`](https://github.com/pyth-network/per/blob/main/contracts/src/opportunity-adapter/OpportunityAdapter.sol) is a utility contract that can be used for easier integration with Express Relay while maintaining maximum security.
+The [`OpportunityAdapter`](https://github.com/pyth-network/per/blob/fccac65b00cff1cfe5c278b333a582fe66bda0f8/contracts/evm/src/opportunity-adapter/OpportunityAdapter.sol) is a utility contract that can be used for easier integration with Express Relay while maintaining maximum security.
 In this integration, searchers use the [`Permit2`](https://github.com/Uniswap/permit2/) contract for safe asset management (`ERC20` tokens and Wrapped ETH) and the adapter contract to transfer bids, execute the opportunity, and ensure the assets are transferred correctly.
 Using the `OpportunityAdapter` means that a searcher does not need to deploy their own custom contract for inventory management and routing to the protocol contracts where liquidation takes place.
 
@@ -14,7 +14,7 @@ In order to use `OpportunityAdapter`, you need to prepare your assets using the 
 Searchers are expected to own all the tokens that they expect to provide as `sell_tokens` for different opportunities.
 They will also need to approve `WETH`, as the `OpportunityAdapter` will pay the bids by deducting the bid amounts from their wallet's `WETH` balance.
 
-You can find the `WETH` contract address on the [contract address page](../contract-addresses).
+You can find the `WETH` contract address on the [contract address page](../../contract-addresses/evm).
 Refer to the following command to deposit native ETH to `WETH`:
 
 ```bash copy
@@ -30,7 +30,7 @@ $WETH_ADDRESS \
 Approve your tokens, including `WETH`, to the `Permit2` contract at `0x000000000022D473030F116dDEE9F6B43aC78BA3`.
 This step enables token spending with off-chain signatures.
 
-You can find the `Permit2` and `WETH` contract address on the [contract address page](../contract-addresses.mdx).
+You can find the `Permit2` and `WETH` contract address on the [contract address page](../../contract-addresses/evm.mdx).
 
 Refer to the following command to approve a token to `Permit2`:
 
