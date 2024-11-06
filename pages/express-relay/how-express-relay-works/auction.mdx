@@ -6,7 +6,7 @@ A relayer selected by governance serves as the auctioneer and determines the auc
 
 Thus, the Express Relay auction is analogous to a sealed-bid auction, i.e., participants in the auction will not have the contents of their bid disclosed publicly unless they win the auction and are forwarded on-chain.
 
-The forwarded subset of transactions is submitted on-chain and first processed by the [`ExpressRelay`](https://github.com/pyth-network/per/blob/main/contracts/src/express-relay/ExpressRelay.sol) contract before individual searchers' submissions are routed to their corresponding `targetContract`s.
+The forwarded subset of transactions is submitted on-chain and first processed by the [`ExpressRelay`](https://github.com/pyth-network/per/blob/fccac65b00cff1cfe5c278b333a582fe66bda0f8/contracts/evm/src/express-relay/ExpressRelay.sol) contract before individual searchers' submissions are routed to their corresponding `targetContract`s.
 
 Generally, the auction server expects bids to execute successfully on-chain. Falback bids are also forwarded in case of execution failures for the predicted winners.
 
