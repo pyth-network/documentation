@@ -95,13 +95,12 @@ Pyth also provides a javascript SDK to construct transaction blocks that update 
 
 The code snippet below provides a general template for what your contract code should look like:
 
-```rust {20} copy
+```rust {18} copy
 module pyth_example::main {
     use sui::clock::Clock;
     use pyth::price_info;
     use pyth::price_identifier;
     use pyth::price;
-    use pyth::state::{State as PythState};
     use pyth::pyth;
     use pyth::price_info::PriceInfoObject;
 
@@ -110,12 +109,11 @@ module pyth_example::main {
     public fun use_pyth_price(
         // Other arguments
         clock: &Clock,
-        pyth_state: &PythState,
         price_info_object: &PriceInfoObject,
     ){
         let max_age = 60;
         // Make sure the price is not older than max_age seconds
-        let price_struct = pyth::get_price(pyth_state,price_info_object, clock);
+        let price_struct = pyth::get_price_no_older_than(price_info_object,clock, max_age);
 
         // Check the price feed ID
         let price_info = price_info::get_price_info_from_price_info_object(price_info_object);
@@ -168,7 +166,6 @@ tx.moveCall({
     target: `pyth_example::main::use_pyth_price`,
     arguments: [
         ..., // other arguments needed for your contract
-        tx.object(pythStateId),
         tx.object(priceInfoObjectIds[0]),
     ],
 });
