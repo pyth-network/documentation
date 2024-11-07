@@ -1,18 +1,7 @@
 import { useState, useEffect } from "react";
-import {
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  TextField,
-  Select,
-  MenuItem,
-  Box,
-  Snackbar,
-} from "@mui/material";
+import { TextField, Select, MenuItem, Box } from "@mui/material";
 import { HermesClient } from "@pythnetwork/hermes-client";
-import copy from "copy-to-clipboard";
+import { Table, Td, Th, Tr, CopyToClipboard } from "nextra/components";
 
 interface PriceFeed {
   id: string;
@@ -24,7 +13,58 @@ export function PriceFeedTable() {
   const [priceFeeds, setPriceFeeds] = useState<PriceFeed[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedAssetType, setSelectedAssetType] = useState("All");
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  // enum AssetTypesStateType {
+  //   NotLoaded,
+  //   Loading,
+  //   Loaded,
+  //   Error,
+  // }
+
+  // const AssetTypesState = {
+  //   NotLoaded: () => ({ type: AssetTypesStateType.NotLoaded as const }),
+  //   Loading: () => ({ type: AssetTypesStateType.Loading as const }),
+  //   Loaded: (assetTypes: string[]) => ({
+  //     type: AssetTypesStateType.Loaded as const,
+  //     assetTypes,
+  //   }),
+  //   Error: (error: unknown) => ({
+  //     type: AssetTypesStateType.Error as const,
+  //     error,
+  //   }),
+  // };
+
+  const fetchAssetTypes = async () => {
+    const hermesClient = new HermesClient("https://hermes.pyth.network");
+    const feeds = await hermesClient.getPriceFeeds();
+    return Array.from(
+      new Set(feeds.map((feed) => feed.attributes.asset_type ?? ""))
+    );
+  };
+
+  // const useAssetTypes = (): typeof AssetTypesState => {
+  //   const [assetTypes, setAssetTypes] = useState<typeof AssetTypesState>(
+  //     AssetTypesState.NotLoaded()
+  //   );
+
+  //   useEffect(() => {
+  //     setAssetTypes(AssetTypesState.Loading());
+  //   }, []);
+
+  //   return assetTypes;
+  // };
+
+  // type AssetTypesSelectorProps = {
+  //   selectedAssetType: string;
+  //   setSelectedAssetType: (assetType: string) => void;
+  // };
+
+  // const AssetTypesSelector = ({
+  //   selectedAssetType,
+  //   setSelectedAssetType,
+  // }: AssetTypesSelectorProps) => {
+  //   const assetTypes = useAssetTypes();
+  // };
 
   useEffect(() => {
     const fetchPriceFeeds = async () => {
@@ -49,12 +89,6 @@ export function PriceFeedTable() {
       selectedAssetType === "All" || feed.assetType === selectedAssetType;
     return matchesSearch && matchesAssetType;
   });
-
-  const handleCopy = (id: string) => {
-    copy(id);
-    setOpenSnackbar(true);
-  };
-
   return (
     <Box>
       <Box sx={{ mb: 3, display: "flex", gap: 2 }}>
@@ -84,40 +118,26 @@ export function PriceFeedTable() {
       </Box>
 
       <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Ticker</TableCell>
-            <TableCell>Asset Type</TableCell>
-            <TableCell>Feed ID</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
+        <thead>
+          <Tr>
+            <Th>Ticker</Th>
+            <Th>Asset Type</Th>
+            <Th>Feed ID</Th>
+          </Tr>
+        </thead>
+        <tbody>
           {filteredData.map((feed) => (
-            <TableRow key={feed.id}>
-              <TableCell>{feed.name}</TableCell>
-              <TableCell>{feed.assetType}</TableCell>
-              <TableCell
-                onClick={() => handleCopy(feed.id)}
-                sx={{
-                  cursor: "pointer",
-                  "&:hover": {
-                    backgroundColor: "#BB86FC",
-                  },
-                }}
-              >
+            <Tr key={feed.id}>
+              <Td>{feed.name}</Td>
+              <Td>{feed.assetType}</Td>
+              <Td>
                 {feed.id}
-              </TableCell>
-            </TableRow>
+                <CopyToClipboard getValue={() => feed.id} />
+              </Td>
+            </Tr>
           ))}
-        </TableBody>
+        </tbody>
       </Table>
-
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={2000}
-        onClose={() => setOpenSnackbar(false)}
-        message="Feed ID copied to clipboard"
-      />
     </Box>
   );
 }
