@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { TextField, Select, MenuItem } from "@mui/material";
 import { HermesClient, PriceFeedMetadata } from "@pythnetwork/hermes-client";
 import { Table, Td, Th, Tr, CopyToClipboard } from "nextra/components";
+import base58 from "bs58";
+import { getPriceFeedAccountForProgram } from "@pythnetwork/pyth-solana-receiver";
 
-const fetchStablePriceFeeds = async () => {
+const fetchPriceFeeds = async (stable: boolean) => {
   const priceFeeds = await new HermesClient(
-    "https://hermes.pyth.network"
+    stable ? "https://hermes.pyth.network" : "https://hermes-beta.pyth.network"
   ).getPriceFeeds();
   const assetTypes = Array.from(
     new Set(priceFeeds.map((feed) => feed.attributes.asset_type ?? ""))
@@ -14,15 +16,12 @@ const fetchStablePriceFeeds = async () => {
   return { priceFeeds, assetTypes };
 };
 
-const fetchBetaPriceFeeds = async () => {
-  const priceFeeds = await new HermesClient(
-    "https://hermes-beta.pyth.network"
-  ).getPriceFeeds();
-  const assetTypes = Array.from(
-    new Set(priceFeeds.map((feed) => feed.attributes.asset_type ?? ""))
+const fetchSolanaPriceFeedAccounts = async () => {
+  const priceFeeds = await fetchPriceFeeds(true);
+  const priceFeedIds = priceFeeds.priceFeeds.map((feed) =>
+    getPriceFeedAccountForProgram(0, base58.decode(feed.id)).toBase58()
   );
-  console.log(priceFeeds);
-  return { priceFeeds, assetTypes };
+  return priceFeedIds;
 };
 
 type AssetTypesSelectorProps = {
@@ -63,7 +62,8 @@ const usePriceFeeds = (): PriceFeedsState => {
 
   useEffect(() => {
     setPriceFeeds(PriceFeedsState.Loading());
-    fetchStablePriceFeeds()
+    // console.log(fetchSolanaPriceFeedAccounts())
+    fetchPriceFeeds(true)
       .then(({ priceFeeds, assetTypes }) => {
         setPriceFeeds(PriceFeedsState.Loaded(priceFeeds, assetTypes));
       })
