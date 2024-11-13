@@ -357,7 +357,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     delay: "1 block",
     gasLimit: "500K",
     network: "mainnet",
-    rpc: "https://curtis.hub.caldera.xyz/",
+    rpc: "https://apechain.calderachain.xyz/http",
     nativeCurrency: "APE",
   },
   "abstract-testnet": {
