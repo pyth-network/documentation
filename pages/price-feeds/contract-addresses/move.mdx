@@ -1,0 +1,43 @@
+import CopyAddress from "../../../components/CopyAddress";
+
+# Price Feed Contract Addresses on Move
+
+Pyth is currently deployed on the following Movement networks.
+
+- [Aptos Movement Testnet](#aptos-movement-testnet) 
+- [Move EVM (MEVM)](#move-evm-mevm)
+- [Sui Movement Testnet](#sui-movement-testnet)
+
+## Aptos Movement Testnet
+
+Use the following addresses for both Suzuka and Porto testnets:
+
+| Named Address | Value                                                                                                                                                                                                                                              |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pyth`        | <CopyAddress address={`0x9357e76fe965c9956a76181ee49f66d51b7f9c3800182a944ed96be86301e49f`} url="https://explorer.testnet.porto.movementnetwork.xyz/account/0x9357e76fe965c9956a76181ee49f66d51b7f9c3800182a944ed96be86301e49f?network=testnet" /> |
+| `wormhole`    | <CopyAddress address={`0x9236893d6444b208b7e0b3e8d4be4ace90b6d17817ab7d1584e46a33ef5c50c9`} url="https://explorer.testnet.porto.movementnetwork.xyz/account/0x9236893d6444b208b7e0b3e8d4be4ace90b6d17817ab7d1584e46a33ef5c50c9?network=testnet" /> |
+| `deployer`    | <CopyAddress address={`0xa3ad2d9c8114b9a4fe97d45b7a9d3c731148d936b0f5dd396fc20a53a11a70da`} url="https://explorer.testnet.porto.movementnetwork.xyz/account/0xa3ad2d9c8114b9a4fe97d45b7a9d3c731148d936b0f5dd396fc20a53a11a70da?network=testnet" /> |
+
+`deployer` and `wormhole` are implementation details of the Pyth contract: you will not need to interact with these.
+
+
+## Move EVM (MEVM)
+
+Use the following address for the Movement Devnet Imola testnet:
+
+
+| Network                          | Contract Address                                                                                                                                                                                                                                              |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Movement Devnet Imola             | [`0x2880aB155794e7179c9eE2e38200202908C17B43`](https://explorer.devnet.imola.movementlabs.xyz/#/account/0x2880aB155794e7179c9eE2e38200202908C17B43?network=testnet)          |
+
+
+## Sui Movement Testnet
+
+Use the following addresses for the Movement M2 devnet:
+
+| Name                | Address                                                                                                                                                                                                          |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pyth State ID       | [`0xa2b4997fe170d5d7d622d5f43e54880ccdf69716df4ac4d215a69c35a0a1831f`](https://explorer.sui.devnet.m2.movementlabs.xyz/object/0x1f9310238ee9298fb703c3419030b35b22bb1cc37113e3bb5007c99aec79e5b8?network=devnet) |
+| Pyth Package ID     | [`0x46522b54385efa424e0582ea4886bb5cfbe11d5c2a6a19ac0c82c2c81c73f9c5`](https://explorer.sui.devnet.m2.movementlabs.xyz/object/0x04e20ddf36af412a4096f9014f4a565af9e812db9a05cc40254846cf6ed0ad91?network=devnet) |
+| Wormhole State ID   | [`0xcf185fbc1af3a437a600587e0b39e5fede163336ffbb7ff24dca9b6eb19d2656`](https://explorer.sui.devnet.m2.movementlabs.xyz/object/0xaeab97f96cf9877fee2883315d459552b2b921edc16d7ceac6eab944dd88919c?network=devnet) |
+| Wormhole Package ID | [`0x23a373b70e6e23a39e4846fa6896fa12beb08da061b3d4ec856bc8ead54f1e22`](https://explorer.sui.devnet.m2.movementlabs.xyz/object/0x5306f64e312b581766351c07af79c72fcb1cd25147157fdc2f8ad76de9a3fb6a?network=devnet) |

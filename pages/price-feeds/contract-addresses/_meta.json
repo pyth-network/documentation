@@ -1,12 +1,13 @@
 {
   "evm": "EVM",
   "solana": "Solana / SVM",
-  "starknet": "Starknet",
-  "fuel": "Fuel",
   "aptos": "Aptos",
   "sui": "Sui",
+  "move": "Move",
+  "ton": "TON",
+  "fuel": "Fuel",
   "cosmwasm": "CosmWasm",
   "near": "NEAR",
-  "pythnet": "Pythnet",
-  "ton": "TON"
+  "starknet": "Starknet",
+  "pythnet": "Pythnet"
 }
