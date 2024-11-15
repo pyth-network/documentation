@@ -1,6 +1,6 @@
 {
   "coin-flip": {
     "title": "Coin Flip ↗",
-    "href": "https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/examples/coin_flip"
+    "href": "https://github.com/pyth-network/pyth-examples/tree/main/entropy/coin_flip"
   }
 }
