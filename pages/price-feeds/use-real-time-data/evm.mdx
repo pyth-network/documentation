@@ -91,6 +91,71 @@ The code snippet above does the following things:
 5. Call `IPyth.getPriceNoOlderThan` to read the current price, providing the [price feed ID](https://pyth.network/developers/price-feed-ids) that you wish to read and your acceptable staleness threshold for
    the price.
 
+## Interacting with the Contract
+
+Here's how to call the contract from JavaScript using the Pyth API and ethers.js:
+
+```
+import { ethers } from "ethers";
+import dotenv from "dotenv";
+import { HermesClient } from "@pythnetwork/hermes-client";
+
+dotenv.config();
+
+const connection = new HermesClient("https://hermes.pyth.network", {});
+ 
+const priceIds = [
+  "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", // BTC/USD
+  "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", // ETH/USD
+];
+
+// Fetch price updates
+const priceUpdates = await connection.getLatestPriceUpdates(priceIds);
+
+// Set up provider and contract
+const provider = new ethers.JsonRpcProvider(process.env.YOUR_INFURA_URL);
+const contractAddress = process.env.YOUR_CONTRACT_ADDRESS;
+
+const abi = [
+  "function exampleMethod(bytes[] calldata priceUpdate) external payable",
+  "function getUpdateFee(bytes[] calldata priceUpdate) external view returns (uint256)",
+];
+
+const contract = new ethers.Contract(contractAddress, abi, provider);
+
+// Sign the transaction
+const privateKey = process.env.PRIVATE_KEY;
+const signer = new ethers.Wallet(privateKey, provider);
+const contractWithSigner = contract.connect(signer);
+
+// Add "0x" to each data string in the priceUpdate
+const priceUpdateData = priceUpdates.binary.data.map(data => "0x" + data);
+
+const tx = await contractWithSigner.exampleMethod(priceUpdateData, {
+  gasLimit: 1000000,
+  value: ethers.utils.parseEther("0.01"),
+});
+
+console.log("Transaction hash:", tx.hash);
+const receipt = await tx.wait();
+console.log("Transaction confirmed:", receipt);
+```
+
+The code snippet above does the following things:
+
+1. **Fetch Price Updates from Hermes**  
+   Retrieve the latest price updates using Hermes. Ensure you use the correct price feed IDs, which can be found in the Pyth documentation. These IDs correspond to specific assets like BTC/USD or ETH/USD.
+
+2. **Connect to Your Wallet and Infura Key**  
+   Set up a Web3 provider (e.g., Infura) and link it to your Ethereum wallet. This requires adding your Infura endpoint and private key to a `.env` file for secure access.
+   - `YOUR_INFURA_URL`: Your Infura endpoint.  
+   - `PRIVATE_KEY`: Your wallet's private key.
+
+3. **Add `0x` Prefix to the Data**  
+   This is a crucial step—ensure every piece of binary data has the `0x` prefix. Without it, the smart contract cannot correctly process the information, leading to transaction errors.  
+
+By following these steps, you can interact effectively with the Pyth contract and update on-chain prices while adhering to the necessary requirements.
+
 ## Additional Resources
 
 You may find these additional resources helpful for developing your EVM application.
