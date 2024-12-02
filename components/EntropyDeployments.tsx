@@ -369,4 +369,22 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://api.testnet.abs.xyz",
     nativeCurrency: "ETH",
   },
+  "fantom-sonic-devnet": {
+    address: "0xebe57e8045f2f230872523bbff7374986e45c486",
+    explorer: "https://blaze.soniclabs.com/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://rpc.blaze.soniclabs.com",
+    nativeCurrency: "S",
+  },
+  "unichain-sepolia": {
+    address: "0x8D254a21b3C86D32F7179855531CE99164721933",
+    explorer: "https://unichain-sepolia.blockscout.com/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://sepolia.unichain.org",
+    nativeCurrency: "ETH",
+  },
 };
