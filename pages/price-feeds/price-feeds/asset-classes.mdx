@@ -12,3 +12,9 @@
 | Metals      | Spot Prices      | Real-time prices for precious metals                                                                                                                                                                                             |
 | Rates       | Future Prices    | Real-time prices for fixed income products, including bond futures                                                                                                                                                               |
 | Commodities | Futures Prices   | Real-time prices for commodity futures                                                                                                                                                                                           |
+| Energy      | Spot Prices      | Real-time prices for a non-expiring Contract for Difference (CFD) that tracks the price of the asset                                                                                                                             |
+|             | Futures Prices   | Real-time prices for energy futures contract                                                                                                                                                                                     |
+
+**NOTE:** When integrating with **Energy Futures Price Feeds**, it is not recommended to rely solely on the first month expiry price feed as there is often lower liquidity towards expiration.
+Best practice is to combine, 1-month, 2-month and 3-month feeds or use the weighted average which is represented by spot price(USOILSPOT or UKOILSPOT).
+Please refer to the [Best Practices](../best-practices.mdx#pricing-futures-based-assets) page for more information.
