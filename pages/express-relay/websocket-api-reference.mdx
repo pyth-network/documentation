@@ -218,11 +218,12 @@ Refer to the examples below, one for each of the status options in EVM and SVM:
 </Tabs.Tab>
 
 <Tabs.Tab>
-	<Tabs items={[`pending`, `submitted`, `lost`, `won`, `expired`]}>
+	<Tabs items={[`pending`, `submitted`, `lost`, `won`, `failed`, `expired`]}>
 	<Tabs.Tab>
 	```json
 	// pending
-	// The temporary state, which means the auction for this bid is pending
+	// The temporary state which means the auction for this bid is pending.
+    // It will be updated to Lost or Submitted after the auction takes place.
 	{
 		"type": "bid_status_update",
 		"status": {
@@ -237,8 +238,8 @@ Refer to the examples below, one for each of the status options in EVM and SVM:
 	<Tabs.Tab>
 	```json
 	// submitted
-	/// The bid is submitted to the chain, with the transaction with the signature.
-    /// This state is temporary and will be updated to either lost or won after conclusion of the auction.
+    // The bid won the auction and was submitted to the chain, with the signature of the corresponding transaction provided in the result field.
+    // This state is temporary and will be updated to either Won or Failed after the transaction is included in a block, or Expired if the transaction expires before it is included.
 	{
 		"type": "bid_status_update",
 		"status": {
@@ -247,7 +248,7 @@ Refer to the examples below, one for each of the status options in EVM and SVM:
 				// the enum for the bid_status
 				"type": "submitted",
 				// the hash of the transaction that the bid's calldata was included in
-				"result": "0xabc393b634fdf3eb45be8350fd16cd1b4add47b96059beacc1d8c20e51d75ec3"
+				"result": "Jb2urXPyEh4xiBgzYvwEFe4q1iMxG1DNxWGGQg94AmKgqFTwLAiTiHrYiYxwHUB4DV8u5ahNEVtMMDm3sNSRdTg"
 			}
 		}
 	}
@@ -256,17 +257,17 @@ Refer to the examples below, one for each of the status options in EVM and SVM:
 	<Tabs.Tab>
 	```json
 	// lost
-	/// The bid lost the auction.
-    /// The result will be None if the auction was concluded off-chain and no auction was submitted to the chain.
-    /// The result will be not None if another bid were selected for submission to the chain.
-    /// The signature of the transaction for the submitted bid is the result value.
+    // The bid lost the auction.
+    // The result will be None if the auction had no winner (because all bids were found to be invalid).
+    // The result will be Some if this bid lost to another bid.
+    // The signature of the transaction for the submitted bid is the result value.
 	{
 		"type": "bid_status_update",
 		"status": {
 			"id": "beedbeed-0e42-400f-a8ef-d78aa5422252",
 			"bid_status": {
 				"type": "lost",
-				"result": "0x99c2bf411330ae997632f88abe8f86c0d1f4c448f7d5061319d23814a0fb1135"
+				"result": "Jb2urXPyEh4xiBgzYvwEFe4q1iMxG1DNxWGGQg94AmKgqFTwLAiTiHrYiYxwHUB4DV8u5ahNEVtMMDm3sNSRdTg"
 			}
 		}
 	}
@@ -275,7 +276,7 @@ Refer to the examples below, one for each of the status options in EVM and SVM:
 	<Tabs.Tab>
 	```json
 	// won
-	/// The bid won the auction, with the transaction with the signature.
+    // The bid won the auction and was included in a block successfully.
 	{
 		"type": "bid_status_update",
 		"status": {
@@ -283,18 +284,37 @@ Refer to the examples below, one for each of the status options in EVM and SVM:
 			"bid_status": {
 				// the enum for the bid_status
 				"type": "won",
-				// the hash of the transaction that the bid's calldata was included in
-				"result": "0xabc393b634fdf3eb45be8350fd16cd1b4add47b96059beacc1d8c20e51d75ec3"
+				// the signature of the transaction that included the bid
+				"result": "Jb2urXPyEh4xiBgzYvwEFe4q1iMxG1DNxWGGQg94AmKgqFTwLAiTiHrYiYxwHUB4DV8u5ahNEVtMMDm3sNSRdTg"
 			}
 		}
 	}
 	```
 	</Tabs.Tab>
 
+    	<Tabs.Tab>
+    ```json
+    // failed
+    // The bid was submitted on-chain, was included in a block, but resulted in a failed transaction.
+    {
+    	"type": "bid_status_update",
+    	"status": {
+    		"id": "beedbeed-0e42-400f-a8ef-d78aa5422252",
+    		"bid_status": {
+    			// the enum for the bid_status
+    			"type": "failed",
+    			// the signature of the transaction that included the bid
+    			"result": "Jb2urXPyEh4xiBgzYvwEFe4q1iMxG1DNxWGGQg94AmKgqFTwLAiTiHrYiYxwHUB4DV8u5ahNEVtMMDm3sNSRdTg"
+    		}
+    	}
+    }
+    ```
+    </Tabs.Tab>
+
     <Tabs.Tab>
     ```json
     // expired
-    // /// The bid expired without being submitted on chain.
+    // The bid was submitted on-chain but expired before it was included in a block.
     {
     	"type": "bid_status_update",
     	"status": {
@@ -302,7 +322,7 @@ Refer to the examples below, one for each of the status options in EVM and SVM:
     		"bid_status": {
     			// the enum for the bid_status
     			"type": "expired",
-    			// the hash of the transaction that the bid's calldata was included in
+    			// the signature of the transaction that included the bid
     			"result": "Jb2urXPyEh4xiBgzYvwEFe4q1iMxG1DNxWGGQg94AmKgqFTwLAiTiHrYiYxwHUB4DV8u5ahNEVtMMDm3sNSRdTg",
     		}
     	}
