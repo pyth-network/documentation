@@ -2,7 +2,7 @@ import { Callout, Tabs, Steps } from "nextra/components";
 
 # SVM Searcher Integration
 
-SVM Express Relay searchers fulfill opportunities representing limit orders on the [Limo]() program.
+SVM Express Relay searchers fulfill opportunities representing limit orders on the [Limo](https://explorer.solana.com/address/LiMoM9rMhrdYrfzUCxQppvxCSG1FcrUK9G8uLq4A1GF) program.
 
 <Steps>
 
@@ -19,16 +19,22 @@ Pyth provides a Typescript SDK, which allows searchers to subscribe to opportuni
 ```typescript
 import { Client, Opportunity } from "@pythnetwork/express-relay-js";
 
-const handleOpporunity = async (opportunity: Opportunity) => {
+const handleOpportunity = async (opportunity: Opportunity) => {
+  console.log("Received opportunity");
   // Implement your opportunity handler here
 };
 
 const client = new Client(
   { baseUrl: "https://pyth-express-relay-mainnet.asymmetric.re" },
   undefined, // Default WebSocket options
-  handleOpporunity
+  handleOpportunity
 );
-await client.subscribeChains(["development-solana"]);
+
+async function main() {
+  await client.subscribeChains(["solana"]);
+}
+
+main();
 ```
 
 </Tabs.Tab>
@@ -36,22 +42,30 @@ await client.subscribeChains(["development-solana"]);
 Pyth provides a Python SDK, which allows searchers to subscribe to opportunities:
 
 ```python copy
+import asyncio
 from express_relay.client import (
     ExpressRelayClient,
 )
-from express_relay.express_relay_types import Opportunity
+from express_relay.models import Opportunity
 
-def opportunity_callback(opportunity: Opportunity):
+async def opportunity_callback(opportunity: Opportunity):
+    print("Received opportunity")
     # Implement your opportunity handler here
-    pass
 
 client = ExpressRelayClient(
-    "https://per-staging.dourolabs.app",
+    "https://pyth-express-relay-mainnet.asymmetric.re",
     None,
     opportunity_callback,
     None,
 )
-await client.subscribe_chains(['development-solana'])
+
+async def main():
+    await client.subscribe_chains(["solana"])
+    task = await client.get_ws_loop()
+    await task
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 </Tabs.Tab>
@@ -60,7 +74,7 @@ Searchers can request opportunities through an HTTP **GET** call to the [`/v1/op
 
 ```bash copy
 curl -X 'GET' \
-  'https://pyth-express-relay-mainnet.asymmetric.re/v1/opportunities?chain_id=development-solana&mode=live'
+  'https://pyth-express-relay-mainnet.asymmetric.re/v1/opportunities?chain_id=solana&mode=live'
 ```
 
 Opportunities are short-lived and could be executed in a matter of seconds. So, the above endpoint could return an empty response.
@@ -75,7 +89,7 @@ Here is a sample JSON payload to subscribe to opportunities:
   "id": "1",
   "method": "subscribe",
   "params": {
-    "chain_ids": ["development-solana"]
+    "chain_ids": ["solana"]
   }
 }
 ```
