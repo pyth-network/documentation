@@ -127,48 +127,54 @@ See the following examples of how to construct a bid object via the SDKs:
 Below is an excerpt of example code. See the full example in the [Typescript SDK](https://github.com/pyth-network/per/blob/4be711525948cf24c0ebd4ebab007dc7f51b7069/sdk/js/src/examples/simpleSearcherLimo.ts).
 
 ```typescript copy
-  /**
-   * Generates a bid for a given opportunity. The transaction in this bid transfers assets from the searcher's wallet to fulfill the limit order.
-   * @param opportunity The SVM opportunity to bid on
-   * @returns The generated bid object
-   */
-  async generateBid(opportunity: OpportunitySvm): Promise<BidSvm> {
-    const order = opportunity.order;
-    const limoClient = new limo.LimoClient(
-      this.connectionSvm,
-      order.state.globalConfig
-    );
+import { OpportunitySvm } from "../index";
+import { BidSvm } from "../types";
 
-    const ixsTakeOrder = await this.generateTakeOrderIxs(limoClient, order);
-    const feeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
-      microLamports:
-        this.latestChainUpdate[this.chainId].latestPrioritizationFee,
-    });
-    const txRaw = new anchor.web3.Transaction().add(
-      feeInstruction,
-      ...ixsTakeOrder
-    );
+import * as anchor from "@coral-xyz/anchor";
+import * as limo from "@kamino-finance/limo-sdk";
 
-    const bidAmount = await this.getBidAmount(order);
+/**
+  * Generates a bid for a given opportunity. The transaction in this bid transfers assets from the searcher's wallet to fulfill the limit order.
+  * @param opportunity The SVM opportunity to bid on
+  * @returns The generated bid object
+  */
+async generateBid(opportunity: OpportunitySvm): Promise<BidSvm> {
+  const order = opportunity.order;
+  const limoClient = new limo.LimoClient(
+    this.connectionSvm,
+    order.state.globalConfig
+  );
 
-    const config = await this.getExpressRelayConfig();
-    const bid = await this.client.constructSvmBid(
-      txRaw,
-      this.searcher.publicKey,
-      getPdaAuthority(limoClient.getProgramID(), order.state.globalConfig),
-      order.address,
-      bidAmount,
-      new anchor.BN(Math.round(Date.now() / 1000 + DAY_IN_SECONDS)),
-      this.chainId,
-      config.relayerSigner,
-      config.feeReceiverRelayer
-    );
+  const ixsTakeOrder = await this.generateTakeOrderIxs(limoClient, order);
+  const feeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
+    microLamports:
+      this.latestChainUpdate[this.chainId].latestPrioritizationFee,
+  });
+  const txRaw = new anchor.web3.Transaction().add(
+    feeInstruction,
+    ...ixsTakeOrder
+  );
 
-    bid.transaction.recentBlockhash =
-      this.latestChainUpdate[this.chainId].blockhash;
-    bid.transaction.sign(this.searcher);
-    return bid;
-  }
+  const bidAmount = await this.getBidAmount(order);
+
+  const config = await this.getExpressRelayConfig();
+  const bid = await this.client.constructSvmBid(
+    txRaw,
+    this.searcher.publicKey,
+    getPdaAuthority(limoClient.getProgramID(), order.state.globalConfig),
+    order.address,
+    bidAmount,
+    new anchor.BN(Math.round(Date.now() / 1000 + DAY_IN_SECONDS)),
+    this.chainId,
+    config.relayerSigner,
+    config.feeReceiverRelayer
+  );
+
+  bid.transaction.recentBlockhash =
+    this.latestChainUpdate[this.chainId].blockhash;
+  bid.transaction.sign(this.searcher);
+  return bid;
+}
 ```
 
 </Tabs.Tab>
