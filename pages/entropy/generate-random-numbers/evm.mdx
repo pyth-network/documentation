@@ -175,8 +175,11 @@ contract YourContract is IEntropyConsumer {
 When the final random number is ready to use, the entropyCallback function will be called by the Entropy contract. This will happen in a separate transaction submitted by the requested provider.
 
 <Callout type="warning" emoji="⚠️">
-  The `entropyCallback` function should **never** return an error. If it returns an error, the keeper will not be able to invoke the callback.
-  If you are having problems receiving the callback, please see [Debugging Callback Failures](/entropy/debug-callback-failures).
+  The `entropyCallback` function should **never** return an error. If it returns
+  an error, the keeper will not be able to invoke the callback. If you are
+  having problems receiving the callback, please see [Debugging Callback
+  Failures](/entropy/debug-callback-failures).
+</Callout>
 
 ## Additional Resources
 
