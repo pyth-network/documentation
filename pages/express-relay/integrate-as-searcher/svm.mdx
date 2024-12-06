@@ -2,7 +2,7 @@ import { Callout, Tabs, Steps } from "nextra/components";
 
 # SVM Searcher Integration
 
-SVM Express Relay searchers fulfill opportunities representing limit orders on the [Limo]() program.
+SVM Express Relay searchers fulfill opportunities representing limit orders on the [Limo](https://solscan.io/account/LiMoM9rMhrdYrfzUCxQppvxCSG1FcrUK9G8uLq4A1GF) program.
 
 <Steps>
 
@@ -19,16 +19,22 @@ Pyth provides a Typescript SDK, which allows searchers to subscribe to opportuni
 ```typescript
 import { Client, Opportunity } from "@pythnetwork/express-relay-js";
 
-const handleOpporunity = async (opportunity: Opportunity) => {
+const handleOpportunity = async (opportunity: Opportunity) => {
+  console.log("Received opportunity");
   // Implement your opportunity handler here
 };
 
 const client = new Client(
   { baseUrl: "https://pyth-express-relay-mainnet.asymmetric.re" },
   undefined, // Default WebSocket options
-  handleOpporunity
+  handleOpportunity
 );
-await client.subscribeChains(["development-solana"]);
+
+async function main() {
+  await client.subscribeChains(["solana"]);
+}
+
+main();
 ```
 
 </Tabs.Tab>
@@ -36,22 +42,30 @@ await client.subscribeChains(["development-solana"]);
 Pyth provides a Python SDK, which allows searchers to subscribe to opportunities:
 
 ```python copy
+import asyncio
 from express_relay.client import (
     ExpressRelayClient,
 )
-from express_relay.express_relay_types import Opportunity
+from express_relay.models import Opportunity
 
-def opportunity_callback(opportunity: Opportunity):
+async def opportunity_callback(opportunity: Opportunity):
+    print("Received opportunity")
     # Implement your opportunity handler here
-    pass
 
 client = ExpressRelayClient(
-    "https://per-staging.dourolabs.app",
+    "https://pyth-express-relay-mainnet.asymmetric.re",
     None,
     opportunity_callback,
     None,
 )
-await client.subscribe_chains(['development-solana'])
+
+async def main():
+    await client.subscribe_chains(["solana"])
+    task = await client.get_ws_loop()
+    await task
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 </Tabs.Tab>
@@ -60,7 +74,7 @@ Searchers can request opportunities through an HTTP **GET** call to the [`/v1/op
 
 ```bash copy
 curl -X 'GET' \
-  'https://pyth-express-relay-mainnet.asymmetric.re/v1/opportunities?chain_id=development-solana&mode=live'
+  'https://pyth-express-relay-mainnet.asymmetric.re/v1/opportunities?chain_id=solana&mode=live'
 ```
 
 Opportunities are short-lived and could be executed in a matter of seconds. So, the above endpoint could return an empty response.
@@ -75,7 +89,7 @@ Here is a sample JSON payload to subscribe to opportunities:
   "id": "1",
   "method": "subscribe",
   "params": {
-    "chain_ids": ["development-solana"]
+    "chain_ids": ["solana"]
   }
 }
 ```
@@ -125,32 +139,41 @@ import * as limo from "@kamino-finance/limo-sdk";
   * @returns The generated bid object
   */
 async generateBid(opportunity: OpportunitySvm): Promise<BidSvm> {
-    const order = opportunity.order;
-    const limoClient = new limo.LimoClient(
-      this.connectionSvm,
-      order.state.globalConfig
-    );
+  const order = opportunity.order;
+  const limoClient = new limo.LimoClient(
+    this.connectionSvm,
+    order.state.globalConfig
+  );
 
-    const ixsTakeOrder = await this.generateTakeOrderIxs(limoClient, order);
-    const txRaw = new anchor.web3.Transaction().add(...ixsTakeOrder);
+  const ixsTakeOrder = await this.generateTakeOrderIxs(limoClient, order);
+  const feeInstruction = ComputeBudgetProgram.setComputeUnitPrice({
+    microLamports:
+      this.latestChainUpdate[this.chainId].latestPrioritizationFee,
+  });
+  const txRaw = new anchor.web3.Transaction().add(
+    feeInstruction,
+    ...ixsTakeOrder
+  );
 
-    const bidData = await this.getBidData(limoClient, order);
+  const bidAmount = await this.getBidAmount(order);
 
-    const bid = await this.client.constructSvmBid(
-      txRaw,
-      this.searcher.publicKey,
-      bidData.router,
-      order.address,
-      bidData.bidAmount,
-      new anchor.BN(Math.round(Date.now() / 1000 + DAY_IN_SECONDS)),
-      this.chainId,
-      bidData.relayerSigner,
-      bidData.relayerFeeReceiver
-    );
+  const config = await this.getExpressRelayConfig();
+  const bid = await this.client.constructSvmBid(
+    txRaw,
+    this.searcher.publicKey,
+    getPdaAuthority(limoClient.getProgramID(), order.state.globalConfig),
+    order.address,
+    bidAmount,
+    new anchor.BN(Math.round(Date.now() / 1000 + DAY_IN_SECONDS)),
+    this.chainId,
+    config.relayerSigner,
+    config.feeReceiverRelayer
+  );
 
-    bid.transaction.recentBlockhash = this.recentBlockhash[this.chainId];
-    bid.transaction.sign(this.searcher);
-    return bid;
+  bid.transaction.recentBlockhash =
+    this.latestChainUpdate[this.chainId].blockhash;
+  bid.transaction.sign(this.searcher);
+  return bid;
 }
 ```
 
@@ -179,24 +202,32 @@ async def assess_opportunity(self, opp: OpportunitySvm) -> BidSvm | None:
         A bid object if the opportunity is worth taking to be submitted to the Express Relay server, otherwise None.
     """
     order: OrderStateAndAddress = {"address": opp.order_address, "state": opp.order}
+
     ixs_take_order = await self.generate_take_order_ixs(order)
-    bid_data = await self.get_bid_data(order)
+    bid_amount = await self.get_bid_amount(order)
+    router = self.limo_client.get_pda_authority(
+        self.limo_client.get_program_id(), order["state"].global_config
+    )
 
     submit_bid_ix = self.client.get_svm_submit_bid_instruction(
         searcher=self.private_key.pubkey(),
-        router=bid_data.router,
+        router=router,
         permission_key=order["address"],
-        bid_amount=bid_data.bid_amount,
+        bid_amount=bid_amount,
         deadline=DEADLINE,
         chain_id=self.chain_id,
-        fee_receiver_relayer=bid_data.relayer_fee_receiver,
-        relayer_signer=bid_data.relayer_signer,
+        fee_receiver_relayer=(await self.get_metadata()).fee_receiver_relayer,
+        relayer_signer=(await self.get_metadata()).relayer_signer,
+    )
+    latest_chain_update = self.latest_chain_update[self.chain_id]
+    fee_instruction = set_compute_unit_price(
+        latest_chain_update.latest_prioritization_fee
     )
     transaction = Transaction.new_with_payer(
-        [submit_bid_ix] + ixs_take_order, self.private_key.pubkey()
+        [fee_instruction, submit_bid_ix] + ixs_take_order, self.private_key.pubkey()
     )
     transaction.partial_sign(
-        [self.private_key], recent_blockhash=self.recent_blockhash[self.chain_id]
+        [self.private_key], recent_blockhash=latest_chain_update.blockhash
     )
     bid = BidSvm(transaction=transaction, chain_id=self.chain_id)
     return bid
@@ -233,9 +264,9 @@ const generateBid = async (opportunity: OpportunitySvm, recentBlockhash: Blockha
     ...
 }
 
-const handleOpporunity = async (opportunity: Opportunity) => {
+const handleOpportunity = async (opportunity: Opportunity) => {
     ...
-    const bid = await generateBid(opportunity as OpportunitySvm, this.recentBlockhash[this.chainId]);
+    const bid = await this.generateBid(opportunity as OpportunitySvm);
     await client.submitBid(bid);
 }
 ```
@@ -252,7 +283,7 @@ async def generate_bid(opp: OpportunitySvm) -> BidSvm:
     ...
 
 def opportunity_callback(opportunity: Opportunity):
-    bid = generate_bid(typing.cast(OpportunitySvm, opportunity))
+    bid = await self.assess_opportunity(typing.cast(OpportunitySvm, opp))
     await client.submit_bid(bid, subscribe_to_updates=True)
 ```
 
@@ -264,7 +295,7 @@ Searchers can submit bids through an HTTP POST call to the [`/v1/bids`](https://
 curl -X POST https://pyth-express-relay-mainnet.asymmetric.re/v1/bids \
     -H "Content-Type: application/json" \
     -d '{
-    "chain_id": "development-solana",
+    "chain_id": "solana",
     "transaction": "SGVsbG8sIFdvcmxkIQ=="
 }'
 ```
@@ -280,7 +311,7 @@ Searchers can submit bids via Websocket to avoid additional network round-trips 
   "method": "post_bid",
   "params": {
     "bid": {
-      "chain_id": "development-solana",
+      "chain_id": "solana",
       "transaction": "SGVsbG8sIFdvcmxkIQ=="
     }
   }
