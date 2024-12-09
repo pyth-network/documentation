@@ -227,6 +227,17 @@ await pythSolanaReceiver.provider.sendAll(
 
 The [SDK documentation](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/solana/sdk/js/pyth_solana_receiver) contains more information about interacting with the Pyth solana receiver contract, including working examples.
 
+<Callout type="info" emoji="ℹ️">
+  Posting and verifying price updates currently requires multiple transactions
+  on Solana. If your usecase requires a single transaction, you can reduce the
+  verification level of the posted price updates by replacing
+  `addPostPriceUpdates` by `addPostPartiallyVerifiedPriceUpdates` in the
+  transaction builder. Please read the
+  [VerificationLevel](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/solana/pyth_solana_receiver_sdk/src/price_update.rs#L20)
+  docs to understand more about the data integrity tradeoffs when using
+  partially verified price updates.
+</Callout>
+
 ## Additional Resources
 
 You may find these additional resources helpful for developing your Solana application.
