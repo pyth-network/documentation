@@ -289,12 +289,12 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     nativeCurrency: "KLAY",
   },
   "tabi-testnet": {
-    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
-    explorer: "https://testnet.tabiscan.com/address/$ADDRESS",
+    address: "0xEbe57e8045F2F230872523bbff7374986E45C486",
+    explorer: "https://testnetv2.tabiscan.com/address/$ADDRESS",
     delay: "",
     gasLimit: "500K",
     network: "testnet",
-    rpc: "https://rpc-internal.testnet.tabichain.com/",
+    rpc: "https://rpc.testnetv2.tabichain.com",
     nativeCurrency: "TABI",
   },
   "b3-testnet": {
