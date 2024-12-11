@@ -30,25 +30,25 @@ import { Client, Opportunity } from "@pythnetwork/express-relay-js";
 latestChainUpdate: Record<string, SvmChainUpdate> = {}
 
 const handleOpportunity = async (opportunity: Opportunity) => {
-console.log("Received opportunity");
-// Implement your opportunity handler here
+    console.log("Received opportunity");
+    // Implement your opportunity handler here
 };
 
 const svmChainUpdateHandler = async (update: SvmChainUpdate) {
-// Store chain updates to use when constructing the transaction
-latestChainUpdate[update.chainId] = update;
+    // Store chain updates to use when constructing the transaction
+    latestChainUpdate[update.chainId] = update;
 }
 
 const client = new Client(
-{ baseUrl: "https://pyth-express-relay-mainnet.asymmetric.re" },
-undefined, // Default WebSocket options
-handleOpportunity,
-undefined,
-svmChainUpdateHandler
+    { baseUrl: "https://pyth-express-relay-mainnet.asymmetric.re" },
+    undefined, // Default WebSocket options
+    handleOpportunity,
+    undefined,
+    svmChainUpdateHandler
 );
 
 async function main() {
-await client.subscribeChains(["solana"]);
+    await client.subscribeChains(["solana"]);
 }
 
 main();
@@ -142,7 +142,10 @@ The server responds with opportunities in the following format:
 
 The `order` field includes the [Limo](https://solscan.io/account/LiMoM9rMhrdYrfzUCxQppvxCSG1FcrUK9G8uLq4A1GF) program
 order data that can be decoded using the SDKs provided or the program anchor idl. It includes all the necessary information
-to fill the limit order: - Maker address - Input token and amount (what the maker is selling) - Output token and amount (what the maker is buying in exchange for the input token)
+to fill the limit order:
+- Maker address
+- Input token and amount (what the maker is selling)
+- Output token and amount (what the maker is buying in exchange for the input token)
 
 <Callout type="info">
   Limo limit orders can also be filled partially in a linear fashion. For
@@ -300,9 +303,14 @@ The bid you construct will look like
 }
 ```
 
-The transaction submitted to the auction server as the bid should meet the following criteria: - It should contain an Express Relay `SubmitBid` instruction that specifies the amount you are bidding, the permission details, and the deadline.
-This instruction can be created via the SDKs. - The deadline specified in the `SubmitBid` instruction should be at least 5 seconds in the future. - It should contain an instruction to set the [transaction priority fee](https://solana.com/developers/guides/advanced/how-to-use-priority-fees#what-are-priority-fees). The priority fee should be at least as large the amount
-advertised via websocket. - It should contain valid signatures for all signers except the relayer - It should pass simulation
+The transaction submitted to the auction server as the bid should meet the following criteria:
+    - It should contain an Express Relay `SubmitBid` instruction that specifies the amount you are bidding, the permission details, and the deadline.
+This instruction can be created via the SDKs.
+    - The deadline specified in the `SubmitBid` instruction should be at least 5 seconds in the future.
+    - It should contain an instruction to set the [transaction priority fee](https://solana.com/developers/guides/advanced/how-to-use-priority-fees#what-are-priority-fees). The priority fee should be at least as large the amount
+advertised via websocket.
+    - It should contain valid signatures for all signers except the relayer
+    - It should pass simulation
 
 ### Submit Bids on Opportunities to Express Relay
 
@@ -331,7 +339,7 @@ const handleOpportunity = async (opportunity: Opportunity) => {
 
 The code snippet below demonstrates how to submit a bid using the Python SDK:
 
-```python {5} copy
+```python {8} copy
 import typing
 
 async def generate_bid(opp: OpportunitySvm) -> BidSvm:
@@ -377,10 +385,12 @@ A successful response to a bid submission has the following schema:
 
 ```bash copy
 {
-  "id": "1",                                            // WebSocket request id
+  // WebSocket request id
+  "id": "1",
   "status": "success",
   "result": {
-    "id": "beedbeed-b346-4fa1-8fab-2541a9e1872d",       // Bid id
+    // Bid id
+    "id": "beedbeed-b346-4fa1-8fab-2541a9e1872d",
     "status": "OK"
   }
 }
