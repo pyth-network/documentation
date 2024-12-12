@@ -1,5 +1,7 @@
 # Debug Callback Failures
 
+import { Callout } from 'nextra/components'
+
 This guide explains how to identify and resolve issues with the Entropy callback.
 The intended audience for this guide is developers who have made an Entropy random number request, but their application hasn't received a callback.
 
@@ -57,7 +59,7 @@ Retrieve the `/v1/chains/$CHAIN_ID/revelations/$SEQUENCE_NUMBER` endpoint from t
 curl https://fortuna.dourolabs.app/v1/chains/$CHAIN_ID/revelations/$SEQUENCE_NUMBER
 ```
 
-<Callout type="warning">
+<Callout type="warning" emoji="⚠️">
   The chain ID is the string name of the chain and not the EVM chain ID. The
   chain ids are available
   [here](https://fortuna.dourolabs.app/docs/#/crate%3A%3Aapi/chain_ids).
