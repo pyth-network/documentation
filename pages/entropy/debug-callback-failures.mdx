@@ -57,7 +57,9 @@ Retrieve the `/v1/chains/$CHAIN_ID/revelations/$SEQUENCE_NUMBER` endpoint from t
 curl https://fortuna.dourolabs.app/v1/chains/$CHAIN_ID/revelations/$SEQUENCE_NUMBER
 ```
 
-N.B. The chain ID is the string name of the chain and not the EVM chain ID. The chain ids are available [here](https://fortuna.dourolabs.app/docs/#/crate%3A%3Aapi/chain_ids)
+<Callout type="info">
+The chain ID is the string name of the chain and not the EVM chain ID. The chain ids are available [here](https://fortuna.dourolabs.app/docs/#/crate%3A%3Aapi/chain_ids).
+</Callout>
 
 This endpoint will return the provider's revelation as a hexadecimal value, such as:
 
