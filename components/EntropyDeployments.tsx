@@ -380,7 +380,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   },
   "sonic-fantom": {
     address: "0x36825bf3fbdf5a29e2d5148bfe7dcf7b5639e320",
-    explorer: "https://monitor.soniclabs.com/address/$ADDRESS",
+    explorer: "https://sonicscan.org/address/$ADDRESS",
     delay: "1 block",
     gasLimit: "500K",
     network: "mainnet",
