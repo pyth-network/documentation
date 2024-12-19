@@ -135,15 +135,6 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     gasLimit: "2.5M",
     nativeCurrency: "ETH",
   },
-  "fantom-sonic": {
-    rpc: "https://rpc.testnet.soniclabs.com",
-    network: "testnet",
-    delay: "",
-    address: "0x5124FAE0890dE83B3bb2cc30Bb3EDAfFc07Da744",
-    explorer: "https://testnet.soniclabs.com/address/$ADDRESS",
-    gasLimit: "500K",
-    nativeCurrency: "S",
-  },
   "blast-testnet": {
     rpc: "https://sepolia.blast.io",
     network: "testnet",
@@ -289,12 +280,12 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     nativeCurrency: "KLAY",
   },
   "tabi-testnet": {
-    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
-    explorer: "https://testnet.tabiscan.com/address/$ADDRESS",
+    address: "0xEbe57e8045F2F230872523bbff7374986E45C486",
+    explorer: "https://testnetv2.tabiscan.com/address/$ADDRESS",
     delay: "",
     gasLimit: "500K",
     network: "testnet",
-    rpc: "https://rpc-internal.testnet.tabichain.com/",
+    rpc: "https://rpc.testnetv2.tabichain.com",
     nativeCurrency: "TABI",
   },
   "b3-testnet": {
@@ -369,7 +360,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://api.testnet.abs.xyz",
     nativeCurrency: "ETH",
   },
-  "fantom-sonic-devnet": {
+  "sonic-fantom-testnet": {
     address: "0xebe57e8045f2f230872523bbff7374986e45c486",
     explorer: "https://blaze.soniclabs.com/address/$ADDRESS",
     delay: "",
@@ -386,5 +377,14 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "testnet",
     rpc: "https://sepolia.unichain.org",
     nativeCurrency: "ETH",
+  },
+  "sonic-fantom": {
+    address: "0x36825bf3fbdf5a29e2d5148bfe7dcf7b5639e320",
+    explorer: "https://sonicscan.org/address/$ADDRESS",
+    delay: "1 block",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://rpc.soniclabs.com",
+    nativeCurrency: "S",
   },
 };

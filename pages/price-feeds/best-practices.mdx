@@ -92,6 +92,15 @@ The same principle would apply if you wrote a derivative contract. If someone wa
 2. Using the aggregate price, which is Pyth's best estimate of the price at a single point in time. The quality of this estimate depends on the width of the confidence interval at settlement time and on occasion, it may be imprecise. However, it is the best you can do with Pyth data if you need a single price at that exact point in time.
 3. Defining the contract to depend on confidence. For example, you could create an option that refunds the option premium to the buyer (so both sides of the transaction are even) if the strike price is within the confidence interval at settlement time. You could also create a contract that delayed settlement until the confidence interval was sufficiently small. If you choose this second option, you should ensure that your contract is guaranteed to eventually settle even if the confidence interval never narrows.
 
+## Pricing Futures-Based Assets
+
+For assets like commodities, interest rates, and even volatility indices, pricing is primarily derived from futures contracts. These contracts form a series of prices for different delivery dates, collectively known as the futures curve. While the **front-month contract** is the most actively traded and often seen as the benchmark, it **doesn't** represent the current price of the asset but rather a proxy of the near-term price of the asset at the time of delivery.
+
+This reliance on futures, in the absence of a native spot price, means that market expectations, logistical constraints, amongst other factors can heavily influence the front-month price.
+For example, in times of extreme market stress, the front-month contract turn **negative** when traders avoid delivery, distorting its usefulness as a representative market signal. This happened in the case of the 2020 oil crash, where the front-month price of WTI Crude oil turned negative due to a lack of storage capacity, making applications that rely exclusively on the front-month price unreliable.
+
+Thus it is important that each contract **should have a weighted stratergy** based on the their expiration dates. As the front month approaches expiry, least weight should be allocated on this contract and the weights of the other contracts are determined proportionally. A daily re-adjusted strategy should be applied by the end user of the price feeds.
+
 ##
 
 [^1]:

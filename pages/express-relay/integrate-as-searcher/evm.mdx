@@ -17,14 +17,14 @@ Pyth provides a Typescript SDK, which allows searchers to subscribe to opportuni
 ```typescript
 import { Client, Opportunity } from "@pythnetwork/express-relay-js";
 
-const handleOpporunity = async (opportunity: Opportunity) => {
+const handleOpportunity = async (opportunity: Opportunity) => {
   // Implement your opportunity handler here
 };
 
 const client = new Client(
   { baseUrl: "https://pyth-express-relay-mainnet.asymmetric.re" },
   undefined, // Default WebSocket options
-  handleOpporunity
+  handleOpportunity
 );
 await client.subscribeChains(["op_sepolia"]);
 ```
@@ -175,7 +175,7 @@ Searchers can submit the constructed bids to Express Relay via the SDKs, an HTTP
 The code snippet below demonstrates how to submit a bid using the Typescript SDK:
 
 ```typescript {4} copy
-const handleOpporunity = async (opportunity: Opportunity) => {
+const handleOpportunity = async (opportunity: Opportunity) => {
     ...
     const bid = await client.signBid(opportunity, {amount, nonce, deadline}, privateKey)
     await client.submitBid(bid)
