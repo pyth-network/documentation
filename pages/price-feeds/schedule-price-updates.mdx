@@ -8,10 +8,22 @@ The Pyth Data Association sponsors regular on-chain updates for some price feeds
 See [Sponsored Feeds](/price-feeds/sponsored-feeds) for the current list of feeds and their update parameters.
 If you would like to see additional feeds on this list, please [contact the association via this form](https://tally.so/r/nGz2jj).
 
-There are also two different tools to schedule price updates:
+There are also three different tools to schedule price updates:
 
+- [Adrastia](https://adrastia.io)'s [Pyth Price Feed Updater](https://docs.adrastia.io/automatos/pyth-price-feed-updater) is a white-glove service that automates price updates based on time and price deviations, supporting any EVM chain.
 - [Gelato](schedule-price-updates/using-gelato) provides a turnkey automation solution for scheduled updates.
 - [Scheduler](schedule-price-updates/using-scheduler) is a service that developers can run to trigger price updates when certain time or price change conditions are met.
 
-For developers comparing these two options, Gelato is simpler, in that it does not require you to operate a service.
-However, Scheduler supports more blockchains than Gelato.
+For developers comparing these three options, the following table provides a high-level comparison:
+
+| Tool | Setup | Maintenance | Analytics | Redundancy | Supported Chains | Cost Structure |
+| --- | --- | --- | --- | --- | --- | --- |
+| **Adrastia** | Easiest (Full-service) | None (Full-service) | Detailed stats dashboard and granular uptime tracking | Multiple worker nodes, multiple blockchain RPC endpoints, multiple Pythnet RPC endpoints | Any EVM | Monthly fee per chain |
+| **Gelato** | Easy (Self-service) | None (Full-service) | Logs, status, and uptime tracking | Multiple worker nodes, multiple\* blockchain RPC endpoints, singular Pythnet RPC endpoint | 20+ EVM | Monthly fee per chain plus gas premiums |
+| **Scheduler** | Moderate (Self-service) | Moderate (Self-service) | None | Limited | Many | Free\** |
+
+\* Gelato has a decentralized set of worker nodes, so it's assumed that multiple blockchain RPC endpoints are used to ensure redundancy.
+
+\** Scheduler is free to use, but requires you to bring your own infrastructure and maintain it.
+
+Note: All tools require you to pay for the gas costs of updating the price feeds on-chain.
