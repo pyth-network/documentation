@@ -41,6 +41,7 @@ While the default entropy provider is highly reliable, in rare cases a callback 
 2. The callback function contains logic that throws an error
 
 If you're not receiving a callback, you can manually invoke it to identify the specific issue. This allows you to:
+
 - See if the transaction fails and why
 - Check the gas usage against the chain's callback gas limit
 - Debug your callback implementation
