@@ -4,7 +4,7 @@ export interface EntropyDeployment {
   explorer: string;
   delay: string;
   gasLimit: string;
-  rpc: string;
+  rpc?: string;
   nativeCurrency: string;
 }
 
@@ -393,7 +393,6 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     delay: "",
     gasLimit: "500K",
     network: "testnet",
-    rpc: "",
     nativeCurrency: "MON",
   },
 };

@@ -9,7 +9,7 @@ Note that the fees shown below will vary over time with prevailing gas prices on
 <FeeTable
   deployments={Object.fromEntries(
     Object.entries(EntropyDeployments).filter(
-      ([k, v]) => v.network === "mainnet"
+      ([k, v]) => v.network === "mainnet" && v.rpc !== undefined
     )
   )}
 />
@@ -19,7 +19,7 @@ Note that the fees shown below will vary over time with prevailing gas prices on
 <FeeTable
   deployments={Object.fromEntries(
     Object.entries(EntropyDeployments).filter(
-      ([k, v]) => v.network === "testnet"
+      ([k, v]) => v.network === "testnet" && v.rpc !== undefined
     )
   )}
 />
