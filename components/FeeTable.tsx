@@ -7,7 +7,7 @@ import { StyledTd } from "./Table";
 const FeeTable = ({
   deployments,
 }: {
-  deployments: Record<string, EntropyDeployment>;
+  deployments: Record<string, Required<EntropyDeployment>>;
 }) => {
   const [fees, setFees] = useState<Record<string, string>>({});
 
