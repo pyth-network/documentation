@@ -4,7 +4,7 @@ export interface EntropyDeployment {
   explorer: string;
   delay: string;
   gasLimit: string;
-  rpc: string;
+  rpc?: string;
   nativeCurrency: string;
 }
 
@@ -386,5 +386,13 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "mainnet",
     rpc: "https://rpc.soniclabs.com",
     nativeCurrency: "S",
+  },
+  "monad-devnet": {
+    address: "0x36825bf3fbdf5a29e2d5148bfe7dcf7b5639e320",
+    explorer: "https://brightstar-884.devnet1.monad.xyz/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    nativeCurrency: "MON",
   },
 };
