@@ -15,8 +15,8 @@
     "type": "separator"
   },
 
-  "integrate-as-consumer": "Integrate as a Consumer",
-  "integrate-as-publisher": "Integrate as a Publisher",
+  "integrate-as-protocol": "Integrate as a Protocol",
+  "integrate-as-searcher": "Integrate as a Searcher",
 
   "-- Reference Material": {
     "title": "Reference Material",
