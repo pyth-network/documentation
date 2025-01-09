@@ -4,11 +4,12 @@
     "href": "/home"
   },
 
-  "-- Express Relay": {
-    "title": "Express Relay",
+  "-- Lazer": {
+    "title": "Lazer",
     "type": "separator"
   },
   "index": "Introduction",
+  "getting-started": "Getting Started",
 
   "-- How-to Guides": {
     "title": "How-To Guides",
@@ -22,24 +23,27 @@
     "title": "Reference Material",
     "type": "separator"
   },
+  "price-feeds": "Price Feeds",
 
   "api-reference": {
     "title": "HTTP API Reference ↗",
-    "href": "https://pyth-express-relay-mainnet.asymmetric.re/docs",
+    "href": "TODO:",
     "newWindow": true
   },
+  
   "websocket-api-reference": "Websocket API Reference",
   "contract-addresses": "Contract Addresses",
+  
   "errors": "Error Codes",
   "examples": {
     "title": "Example Application ↗",
-    "href": "https://github.com/pyth-network/pyth-examples/tree/6cea7c9602c7949c6dacc94aec44c0fe78ccb128/express-relay/easy_lend",
+    "href": "https://github.com/pyth-network/pyth-examples/tree/main/lazer",
     "newWindow": true
   },
-  "-- Understand Express Relay": {
-    "title": "Understanding Express Relay",
+  "-- Understand Lazer": {
+    "title": "Understanding Lazer",
     "type": "separator"
   },
 
-  "how-express-relay-works": "How Express Relay Works"
+  "how-lazer-works": "How Lazer Works"
 }

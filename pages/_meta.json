@@ -9,6 +9,11 @@
     "type": "page"
   },
 
+  "lazer": {
+    "title": "Lazer",
+    "type": "page"
+  },
+
   "benchmarks": {
     "title": "Benchmarks",
     "type": "page"
