@@ -29,7 +29,7 @@ function byteArrayFormat(x: string): string | undefined {
     const o = JSON.parse(x);
     if (o instanceof Array) {
       for (let i = 0; i < o.length; i++) {
-        if (!(o[i] instanceof Number && o[i] >= 0 && o[i] <= 255)) {
+        if (typeof o[i] !== "number" || o[i] < 0 || o[i] > 255) {
           return "Each entry must be a byte value in [0, 255]";
         }
       }
