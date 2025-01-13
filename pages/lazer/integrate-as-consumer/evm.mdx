@@ -6,29 +6,63 @@ This guide is intended to serve for users who wants to consume prices from the P
 
 Integrating with Pyth Lazer in your smart contracts as a consumer is a three-step process:
 
-1. **Integrate** Pyth Lazer SDK into your smart contracts.
+1. **Use** Pyth Lazer SDK into your smart contracts to parse the price updates.
 2. **Subscribe** to Pyth Lazer websocket to receive price updates on your backend or frontend.
 3. **Include** the price updates into your smart contract transactions.
 
 <Steps>
 
-### Integrate Pyth Lazer SDK into your smart contracts
+### Use Pyth Lazer SDK into your smart contracts
 
-Pyth Lazer provides a solidity SDK, which allows consumers to TODO:
+Pyth Lazer provides a solidity SDK, which allows consumers to parse the price updates.
 
-```bash
+```bash copy
 forge install pythnet/pyth-crosschain
 ```
 
-TODO: requiremnts.txt
+Add the following to your `requirements.txt` file:
 
-```bash
+```bash copy
 pyth-lazer-sdk/=lib/pythnet/pyth-crosschain/lazer/contracts/evm
 ```
 
+Once the SDK is installed, one can import the sdk into your smart contracts:
+
+```solidity copy
+import { PythLazer } from "pyth-lazer/PythLazer.sol";
+import { PythLazerLib } from "pyth-lazer/PythLazerLib.sol";
+
+```
+
+After importing the SDK, initialize the `PythLazer` contract and set up state varables to store prices and timestamps:
+
+```solidity copy
+contract ExampleConsumer {
+  // Example state.
+  PythLazer pythLazer;
+  uint64 public price;
+  uint64 public timestamp;
+
+  //...
+
+  constructor(address pythLazerAddress) {
+    pythLazer = PythLazer(pythLazerAddress);
+  }
+}
+
+```
+
+Add an argument of type `bytes calldata` to the method which will receive the Pyth Lazer price udpate:
+
+```solidity copy
+function updatePrice(bytes calldata priceUpdate) public payable {
+  uint256 verification_fee = pythLazer.verification_fee();
+  (bytes calldata payload, ) = verifyUpdate{ value: verification_fee }(update);
+  //...
+}
+
+```
+
+The `verifyUpdate` function will verify the price update and return the payload and the verification fee. This call takes a fee which can be queried from `verification_fee()` function and passed to the `verifyUpdate` call. This fee is used to cover the cost of verifying the price update.
+
 </Steps>
-
-### Modify the smart contract to TODO:
-
-1. Import
-2. State Variables.

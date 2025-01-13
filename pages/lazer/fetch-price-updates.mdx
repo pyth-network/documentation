@@ -2,8 +2,7 @@ import { Callout, Steps } from "nextra/components";
 
 # How to Fetch Price Updates from Pyth Lazer
 
-Pyth Lazer provides a [websocket API (TODO: Prod)](https://pyth-lazer-staging.dourolabs.app/docs) to fetch price updates. 
-
+Pyth Lazer provides a [websocket API (TODO: Prod)](https://pyth-lazer-staging.dourolabs.app/docs) to fetch price updates.
 
 This guide explains how to **fetch** price updates, explore various **properties** of these updates, and configure the channel for **update frequency**. (TODO: Rewrite maybe)
 
@@ -24,7 +23,6 @@ Please fill out [this form](https://tally.so/r/nP2lG5) to contact the Pyth team 
 
 Use the access token to authenticate the websocket connection as a `Bearer {token}{:bash}`.
 
-
 ### 2. Adjust subscription parameters
 
 One can configure the request/subscription parameters to customize the received price updates. A sample request is shown below:
@@ -39,6 +37,7 @@ One can configure the request/subscription parameters to customize the received 
     channel: "fixed_rate@200ms",
   });
 ```
+
 Here:
 
 - `subscriptionId` is an arbitrary numeric identifier one can choose for a subscription. It will eb returned back in response by the server. It doesn not affect the signed payload.
@@ -53,8 +52,8 @@ There are also a few other parameters one may use. Refer to the [API documentati
 
 To subscribe to the price updates, one needs to send the request to the websocket server. The server will respond with a signed price update.
 
-1. Pyth Lazer provides a [SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/sdk/js) to seamlessly integrate the websocket API into your application. 
-It can be installed using the following command:
+1. Pyth Lazer provides a [SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/sdk/js) to seamlessly integrate the websocket API into your application.
+   It can be installed using the following command:
 
 ```bash
 npm install --save @pythnetwork/pyth-lazer-sdk
@@ -65,7 +64,10 @@ npm install --save @pythnetwork/pyth-lazer-sdk
 ```js
 import { PythLazerClient } from "@pythnetwork/pyth-lazer-sdk";
 
-const client = new PythLazerClient("wss://pyth-lazer-staging.dourolabs.app/v1/stream", "ctoken1");
+const client = new PythLazerClient(
+  "wss://pyth-lazer-staging.dourolabs.app/v1/stream",
+  "ctoken1"
+);
 ```
 
 3. After the client is created, one can adjust the subscription parameters and subscribe to the price updates.
@@ -116,7 +118,5 @@ By default, price updates contain the `parsed` field that one can use to easily 
   }
 }
 ```
-
-
 
 </Steps>
