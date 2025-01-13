@@ -1,4 +1,4 @@
 {
-  "evm": "EVM chains",
-  "svm": "SVM chains"
+  "evm": "on EVM chains",
+  "svm": "on SVM chains"
 }
