@@ -39,7 +39,7 @@ Here:
 
 - `subscriptionId` is an arbitrary numeric identifier one can choose for a subscription. It will be returned back in response by the server. It doesn not affect the signed payload.
 - `priceFeedIds` is the list of price feeds one like to receive. Data for all price feeds will be present in the signed price updates generated. Refer to the [Price Feed IDs list](./price-feeds.mdx) for the supported price feeds.
-- `properties` is the list of properties one can request, such as **price**, **bestBidPrice**, **bestAskPrice**, etc. 
+- `properties` is the list of properties one can request, such as **price**, **bestBidPrice**, **bestAskPrice**, etc.
 - `chains` is the list of chains for which one need a signed payload, such as **evm**, **solana**, etc.
 - `channel` allows to configure the update rate: updates in the **real_time** channel are sent as frequently as possible, while **fixed_rate@200ms** and **fixed_rate@50ms** channels are updated at fixed rates.
 
@@ -50,7 +50,7 @@ There are also a few other parameters one may use. Refer to the [API documentati
 To subscribe to the price updates, one needs to send the request to the websocket server. The server will respond with a signed price update.
 
 1. Pyth Lazer provides a [SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/sdk/js) to seamlessly integrate the websocket API into your application.
-It can be installed using the following command:
+   It can be installed using the following command:
 
 ```bash
 npm install --save @pythnetwork/pyth-lazer-sdk
@@ -117,8 +117,6 @@ By default, price updates contain the `parsed` field that one can use to easily 
 ```
 
 </Steps>
-
-
 
 ## Additional Resources
 
