@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StyledTd } from "./Table";
-
+import { Spinner } from "./Spinner";
 const fetchLazerPriceIdMetadata = async () => {
   const response = await fetch(
     "https://pyth-lazer-staging.dourolabs.app/history/v1/symbols"
@@ -64,7 +64,7 @@ export function LazerPriceIdTable() {
     case LazerPriceIdStateType.NotLoaded:
       return <div>Loading...</div>;
     case LazerPriceIdStateType.Loading:
-      return <div>Loading...</div>;
+      return <Spinner />;
     case LazerPriceIdStateType.Loaded:
       return (
         <table>
