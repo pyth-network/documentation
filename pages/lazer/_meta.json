@@ -24,15 +24,14 @@
     "title": "Reference Material",
     "type": "separator"
   },
-  "price-feeds": "Price Feeds",
+  "price-feeds-ids": "Price Feeds IDs",
 
-  "api-reference": {
-    "title": "HTTP API Reference ↗",
-    "href": "TODO:",
+  "websocket-api-reference": {
+    "title": "Websocket API Reference ↗",
+    "href": "https://pyth-lazer.dourolabs.app/docs",
     "newWindow": true
   },
 
-  "websocket-api-reference": "Websocket API Reference",
   "contract-addresses": "Contract Addresses",
 
   "errors": "Error Codes",
