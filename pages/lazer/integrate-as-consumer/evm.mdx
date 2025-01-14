@@ -2,17 +2,17 @@ import { Callout, Tabs, Steps } from "nextra/components";
 
 # Integrate Pyth Lazer as a Consumer on EVM chains
 
-This guide is intended to serve for users who wants to consume prices from the Pyth Lazer price feed on EVM chains.
+This guide is intended to serve users who wants to consume prices from the Pyth Lazer on EVM chains.
 
-Integrating with Pyth Lazer in your smart contracts as a consumer is a three-step process:
+Integrating with Pyth Lazer in smart contracts as a consumer is a three-step process:
 
-1. **Use** Pyth Lazer SDK into your smart contracts to parse the price updates.
-2. **Subscribe** to Pyth Lazer websocket to receive price updates on your backend or frontend.
-3. **Include** the price updates into your smart contract transactions.
+1. **Use** Pyth Lazer SDK into smart contracts to parse the price updates.
+2. **Subscribe** to Pyth Lazer websocket to receive price updates on backend or frontend.
+3. **Include** the price updates into the smart contract transactions.
 
 <Steps>
 
-### Use Pyth Lazer SDK into your smart contracts
+### Use Pyth Lazer SDK into smart contracts
 
 Pyth Lazer provides a solidity SDK, which allows consumers to parse the price updates.
 
@@ -20,13 +20,13 @@ Pyth Lazer provides a solidity SDK, which allows consumers to parse the price up
 forge install pythnet/pyth-crosschain
 ```
 
-Add the following to your `requirements.txt` file:
+Add the following to `requirements.txt{:js}` file:
 
 ```bash copy
 pyth-lazer-sdk/=lib/pythnet/pyth-crosschain/lazer/contracts/evm
 ```
 
-Once the SDK is installed, one can import the sdk into your smart contracts:
+Once the SDK is installed, one can import the sdk into smart contracts:
 
 ```solidity copy
 import { PythLazer } from "pyth-lazer/PythLazer.sol";
@@ -65,4 +65,81 @@ function updatePrice(bytes calldata priceUpdate) public payable {
 
 The `verifyUpdate` function will verify the price update and return the payload and the verification fee. This call takes a fee which can be queried from `verification_fee()` function and passed to the `verifyUpdate` call. This fee is used to cover the cost of verifying the price update.
 
+This SDK provides `parsePayloadHeader` method to retrieve the values from the payload header.
+
+```solidity copy
+(uint64 _timestamp, Channel channel, uint8 feedsLen, uint16 pos) = parsePayloadHeader(payload);
+```
+
+This method returns:
+
+- `_timestamp`: The timestamp of the price update.
+- `channel`: The channel of the price update.
+- `feedsLen`: The number of feeds in the price update.
+- `pos`: The cursor position of the payload.
+
+One can iterate over all the feeds and properties present within the price update, modifying the state variables as necessary.
+
+Here is an example of how to iterate over the feeds and properties:
+
+```solidity copy
+for (uint8 i = 0; i < feedsLen; i++) {
+    uint32 feedId;
+    uint8 num_properties;
+    (feedId, num_properties, pos) = parseFeedHeader(payload, pos);
+    for (uint8 j = 0; j < num_properties; j++) {
+        PriceFeedProperty property;
+        (property, pos) = parseFeedProperty(payload, pos);
+        if (property == PriceFeedProperty.Price) {
+            uint64 _price;
+            (_price, pos) = parseFeedValueUint64(payload, pos);
+            if (feedId == 2 && _timestamp > timestamp) {
+                price = _price;
+                timestamp = _timestamp;
+            }
+        } else if (property == PriceFeedProperty.BestBidPrice) {
+            uint64 _price;
+            (_price, pos) = parseFeedValueUint64(payload, pos);
+        } else if (property == PriceFeedProperty.BestAskPrice) {
+            uint64 _price;
+            (_price, pos) = parseFeedValueUint64(payload, pos);
+        } else {
+            revert("unknown property");
+        }
+    }
+}
+```
+
+### Subscribe to Pyth Lazer to receive Price Updates
+
+Pyth Lazer provides a websocket endpoint to receive price updates. Moreover, Pyth Lazer provides a typescript SDK to subscribe to the websocket endpoint.
+
+Consult [How to fetch price updates from Pyth Lazer](../fetch-price-updates.mdx) for a complete step-by-step guide.
+
+### Include the price updates into smart contract transactions
+
+Now that one have the price updates, and the smart contract is able to parse the price updates, one can include the price updates into the smart contract transactions by passing the price updates received from the websocket to the `updatePrice` method.
+
 </Steps>
+
+## Additional Resources
+
+You may find these additional resources helpful for integrating Pyth Lazer into your EVM smart contracts.
+
+### Price Feed IDs
+
+Pyth Lazer supports a wide range of price feeds. Consult the [Price Feed IDs](../price-feeds.mdx) page for a complete list of supported price feeds.
+
+### Examples
+
+[Pyth-lazer-example-evm](https://github.com/pyth-network/pyth-examples/tree/main/lazer/evm) is a simple example contract that parses and consumes price updates from Pyth Lazer.
+
+[pyth-lazer-example-js](https://github.com/pyth-network/pyth-examples/tree/main/lazer/js) is a simple example for subscribing to the Pyth Lazer websocket.
+
+### API Reference
+
+TODO:
+
+### Error Codes
+
+TODO: Add error codes for EVM.
