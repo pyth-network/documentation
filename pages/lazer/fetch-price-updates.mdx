@@ -8,9 +8,9 @@ Subscribing to price updates is a three-step process:
 
 1. **Acquire** an access token.
 2. **Adjust** subscription parameters.
-3. **Subscribe** to the price updates via [websocket API](https://pyth-lazer-staging.dourolabs.app/docs).
+3. **Subscribe** to the price updates via [websocket API](https://pyth-lazer.dourolabs.app/docs).
 
-The websocket server is available at `wss://pyth-lazer-staging.dourolabs.app/v1/stream{:bash}`.
+The websocket server is available at `wss://pyth-lazer.dourolabs.app/v1/stream{:bash}`.
 
 <Steps>
 
@@ -43,7 +43,7 @@ Here:
 - `chains` is the list of chains for which one need a signed payload, such as **evm**, **solana**, etc.
 - `channel` allows to configure the update rate: updates in the **real_time** channel are sent as frequently as possible, while **fixed_rate@200ms** and **fixed_rate@50ms** channels are updated at fixed rates.
 
-There are also a few other parameters one may use. Refer to the [API documentation](https://pyth-lazer-staging.dourolabs.app/docs) for more details.
+There are also a few other parameters one may use. Refer to the [API documentation](https://pyth-lazer.dourolabs.app/docs) for more details.
 
 ### 3. Subscribe to the price updates
 
@@ -62,7 +62,7 @@ npm install --save @pythnetwork/pyth-lazer-sdk
 import { PythLazerClient } from "@pythnetwork/pyth-lazer-sdk";
 
 const client = new PythLazerClient(
-  "wss://pyth-lazer-staging.dourolabs.app/v1/stream",
+  "wss://pyth-lazer.dourolabs.app/v1/stream",
   "ctoken1"
 );
 ```
