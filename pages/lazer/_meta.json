@@ -16,7 +16,7 @@
     "type": "separator"
   },
 
-  "fetch-price-updates": "Fetch Price Updates",
+  "subscribe-price-updates": "Subscribe to Price Updates",
   "integrate-as-consumer": "Integrate as a Consumer",
   "integrate-as-publisher": "Integrate as a Publisher",
 
