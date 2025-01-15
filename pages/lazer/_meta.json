@@ -32,11 +32,8 @@
     "newWindow": true
   },
 
-  "contract-addresses": "Contract Addresses",
-
-  "errors": "Error Codes",
   "examples": {
-    "title": "Example Application ↗",
+    "title": "Example Applications ↗",
     "href": "https://github.com/pyth-network/pyth-examples/tree/main/lazer",
     "newWindow": true
   },
