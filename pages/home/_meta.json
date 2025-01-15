@@ -11,6 +11,11 @@
     "href": "/price-feeds"
   },
 
+  "Lazer": {
+    "title": "Lazer →",
+    "href": "/lazer"
+  },
+
   "Benchmarks": {
     "title": "Benchmarks →",
     "href": "/benchmarks"
