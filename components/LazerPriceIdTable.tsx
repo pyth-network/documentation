@@ -3,7 +3,7 @@ import { StyledTd } from "./Table";
 import { Spinner } from "./Spinner";
 const fetchLazerPriceIdMetadata = async () => {
   const response = await fetch(
-    "https://pyth-lazer-staging.dourolabs.app/history/v1/symbols"
+    "https://history.pyth-lazer.dourolabs.app/history/v1/symbols"
   );
   const data = await response.json();
   return data;
