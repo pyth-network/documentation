@@ -16,11 +16,11 @@ Integrating with Pyth Lazer in smart contracts as a consumer is a three-step pro
 
 Pyth Lazer provides a [Solana SDK](https://docs.rs/pyth-lazer-solana-contract/latest/pyth_lazer_solana_contract/), which allows consumers to parse and verify the price updates on Solana-compatible chains.
 
-To start, add the following to your `Cargo.toml` file:
+To start, add the following to your `Cargo.toml` file (please check the current latest version at [crates.io](https://crates.io/crates/pyth-lazer-solana-contract)):
 
 ```toml copy
 [dependencies]
-pyth-lazer-solana-contract = { version = "0.2.0", features = ["no-entrypoint"] }
+pyth-lazer-solana-contract = { version = "x.y.z", features = ["no-entrypoint"] }
 ```
 
 Now you can create an instruction or multiple instructions that will receive Pyth Lazer messages.
