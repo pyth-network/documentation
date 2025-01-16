@@ -6,31 +6,31 @@ This guide is intended to serve users who wants to consume prices from the Pyth 
 
 Integrating with Pyth Lazer in smart contracts as a consumer is a three-step process:
 
-1. **Use** Pyth Lazer SDK into EVM smart contracts to parse the price updates.
+1. **Use** Pyth Lazer SDK in EVM smart contracts to parse the price updates.
 2. **Subscribe** to Pyth Lazer websocket to receive price updates on backend or frontend.
 3. **Include** the price updates into the smart contract transactions.
 
 <Steps>
 
-### Use Pyth Lazer SDK into smart contracts
+### Use Pyth Lazer SDK in smart contracts
 
-Pyth Lazer provides a [solidity SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/contracts/evm), which allows consumers to parse the price updates.
+Pyth Lazer provides a [Solidity SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/contracts/evm), which allows consumers to parse the price updates.
 
 ```bash copy
-forge install pythnet/pyth-crosschain
+forge install pyth-network/pyth-crosschain
 ```
 
 Add the following to `requirements.txt{:js}` file:
 
 ```bash copy
-pyth-lazer-sdk/=lib/pythnet/pyth-crosschain/lazer/contracts/evm
+pyth-lazer-sdk/=lib/pyth-network/pyth-crosschain/lazer/contracts/evm
 ```
 
 Once the SDK is installed, one can import the sdk into smart contracts:
 
 ```solidity copy
-import { PythLazer } from "pyth-lazer/PythLazer.sol";
-import { PythLazerLib } from "pyth-lazer/PythLazerLib.sol";
+import { PythLazer } from "pyth-lazer-sdk/PythLazer.sol";
+import { PythLazerLib } from "pyth-lazer-sdk/PythLazerLib.sol";
 
 ```
 
@@ -127,7 +127,7 @@ for (uint8 i = 0; i < feedsLen; i++) {
 
 ### Subscribe to Pyth Lazer to receive Price Updates
 
-Pyth Lazer provides a websocket endpoint to receive price updates. Moreover, Pyth Lazer also provides a [typescript SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/sdk/js) to subscribe to the websocket endpoint.
+Pyth Lazer provides a websocket endpoint to receive price updates. Moreover, Pyth Lazer also provides a [Typescript SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/sdk/js) to subscribe to the websocket endpoint.
 
 Consult [How to fetch price updates from Pyth Lazer](../fetch-price-updates.mdx) for a complete step-by-step guide.
 
