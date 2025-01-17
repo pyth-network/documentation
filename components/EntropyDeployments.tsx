@@ -342,7 +342,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://sanko-arb-sepolia.rpc.caldera.xyz/http",
     nativeCurrency: "DMT",
   },
-  apechain: {
+  "apechain-mainnet": {
     address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
     explorer: "https://apechain.calderaexplorer.xyz/address/$ADDRESS",
     delay: "1 block",
@@ -378,7 +378,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://sepolia.unichain.org",
     nativeCurrency: "ETH",
   },
-  "sonic-fantom": {
+  sonic: {
     address: "0x36825bf3fbdf5a29e2d5148bfe7dcf7b5639e320",
     explorer: "https://sonicscan.org/address/$ADDRESS",
     delay: "1 block",
