@@ -91,7 +91,7 @@ export PROVIDER_REVELATION=0x5d4bfa3abeaf15fe8b7771c74c0e3e210096015632831460870
 Finally, submit the transaction to invoke `revealWithCallback`:
 
 ```bash copy
-cast send $ENTROPY_ADDRESS 'revealWithCallback(address, uint64, bytes32, bytes32)' $PROVIDER_ADDRESS $SEQUENCE_NUMBER $USER_RANDOM_NUMBER $PROVIDER_REVELATION
+cast send $ENTROPY_ADDRESS 'revealWithCallback(address, uint64, bytes32, bytes32)' $PROVIDER $SEQUENCE_NUMBER $USER_RANDOM_NUMBER $PROVIDER_REVELATION
 ```
 
 You may also need to provide the `-r` with an RPC for your chain, plus an additional argument (such as `--private-key`) to specify the wallet to use to sign the transaction.
