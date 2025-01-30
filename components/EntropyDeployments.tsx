@@ -395,4 +395,13 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "testnet",
     nativeCurrency: "MON",
   },
+  abstract: {
+    address: "0x5a4a369F4db5df2054994AF031b7b23949b98c0e",
+    explorer: "https://abscan.org/address/$ADDRESS",
+    delay: "1 block",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://api.mainnet.abs.xyz",
+    nativeCurrency: "ETH",
+  },
 };
