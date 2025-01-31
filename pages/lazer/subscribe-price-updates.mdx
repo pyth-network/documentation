@@ -10,7 +10,9 @@ Subscribing to price updates is a three-step process:
 2. **Configure** subscription parameters.
 3. **Subscribe** to the price updates via [websocket API](https://pyth-lazer.dourolabs.app/docs).
 
-The websocket server is available at `wss://pyth-lazer.dourolabs.app/v1/stream{:bash}`.
+The websocket server is available at
+`wss://pyth-lazer.dourolabs.app/v1/stream{:bash}` for production and
+`wss://pyth-lazer-staging.dourolabs.app/v1/stream{:bash}` for staging.
 
 <Steps>
 
@@ -126,7 +128,7 @@ You may find these additional resources helpful for subscribing to price updates
 
 ### Price Feed IDs
 
-Pyth Lazer supports a wide range of price feeds. Consult the [Price Feed IDs](../price-feed-ids.mdx) page for a complete list of supported price feeds.
+Pyth Lazer supports a wide range of price feeds. Consult the [Price Feed IDs](./price-feed-ids.mdx) page for a complete list of supported price feeds.
 
 ### Examples
 
