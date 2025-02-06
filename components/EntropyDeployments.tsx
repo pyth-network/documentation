@@ -13,7 +13,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
     network: "mainnet",
     explorer: "https://berascan.com/address/$ADDRESS",
-    delay: "1 block",
+    delay: "",
     gasLimit: "500K",
     rpc: "https://rpc.berachain.com",
     nativeCurrency: "BERA",
