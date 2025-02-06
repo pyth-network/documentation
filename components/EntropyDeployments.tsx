@@ -9,6 +9,15 @@ export interface EntropyDeployment {
 }
 
 export const EntropyDeployments: Record<string, EntropyDeployment> = {
+  "berachain-mainnet": {
+    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
+    network: "mainnet",
+    explorer: "https://berascan.com/address/$ADDRESS",
+    delay: "1 block",
+    gasLimit: "500K",
+    rpc: "https://rpc.berachain.com",
+    nativeCurrency: "BERA",
+  },
   blast: {
     address: "0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb",
     network: "mainnet",
@@ -18,6 +27,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://rpc.blast.io",
     nativeCurrency: "ETH",
   },
+  
   "lightlink-phoenix": {
     address: "0x98046Bd286715D3B0BC227Dd7a956b83D8978603",
     network: "mainnet",
