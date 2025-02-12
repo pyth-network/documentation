@@ -14,7 +14,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "mainnet",
     explorer: "https://berascan.com/address/$ADDRESS",
     delay: "1 block",
-    gasLimit: "500K",
+    gasLimit: "2.5M",
     rpc: "https://rpc.berachain.com",
     nativeCurrency: "BERA",
   },
@@ -177,7 +177,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     delay: "",
     address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
     explorer: "https://bartio.beratrail.io/address/$ADDRESS",
-    gasLimit: "500K",
+    gasLimit: "2.5M",
     nativeCurrency: "BERA",
   },
   "coredao-testnet": {
