@@ -50,7 +50,7 @@ This section provides a detailed breakdown of how each metric is calculated.
 
 ### Uptime
 
-Uptime measures a publisher's reliability and availability. If a publisher consistently provides data without interruptions, it indicates a high level of reliability. This is aligned with the current conformance testing, which checks the publisher's availability based on price publication within 10 slots.
+Uptime measures a publisher's reliability and availability. If a publisher consistently provides data without interruptions, it indicates a high level of reliability. This is aligned with the current conformance testing, which checks the publisher's availability based on price publication within the number of slots as defined on each feed's "Max Slot Latency" which is available on each feed's web page and within each feed's metadata.
 
 $$
 \text{Score}_{\text{Uptime}} = \frac{\text{Publisher Slot Count}}{\text{Aggregate Slot Count}}
