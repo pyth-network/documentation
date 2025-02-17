@@ -2,5 +2,6 @@
   "evm": "EVM",
   "solana": "Solana / SVM",
   "aptos": "Aptos",
+  "movement": "Movement",
   "sui": "Sui"
 }
