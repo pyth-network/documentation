@@ -27,6 +27,7 @@
   "fetch-price-updates": "Fetch Price Updates",
   "schedule-price-updates": "Schedule Price Updates",
   "migrate-an-app-to-pyth": "Migrate an App to Pyth",
+  "use-pyth-for-morpho": "Use Pyth for Morpho Markets",
   "publish-data": "Publish Data",
   "troubleshoot": "Troubleshoot Errors",
 
