@@ -2,15 +2,16 @@ import { Steps } from "nextra/components";
 
 # How to use Pyth for Morpho Markets
 
-At the time of writing, Morpho supports an [oracle interface](https://github.com/morpho-org/morpho-blue-oracles/tree/main/src) similar to ChainlinkAggregatorV3Interface.
-
 This guide will show how you can leverage Pyth real time price data to power Morpho markets.
 
-There are three main steps to use Pyth price feeds for Morpho markets:
+At the time of writing, Morpho supports an [oracle interface](https://github.com/morpho-org/morpho-blue-oracles/tree/main/src) similar to [ChainlinkAggregatorV3Interface](https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol).
+We need to wrap the Pyth oracle with this interface to use it with Morpho.
+
+There are three steps to use Pyth price feeds for Morpho markets:
 
 1. Deploy the [`PythAggregatorV3`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/solidity/PythAggregatorV3.sol) contract to provide a Chainlink-compatible feed interface.
-2. Run the price pusher or scheduler
-3. Deploy the Morpho oracle contract
+2. Run the price pusher or scheduler.
+3. Deploy the Morpho oracle contract.
 
 <Steps>
 
@@ -22,7 +23,7 @@ This wrapper allows you to use Pyth price feeds with Morpho markets.
 
 You can use the forge [script](https://github.com/pyth-network/pyth-examples/blob/main/price_feeds/evm/chainlink_migration/script/PythAggregatorV3Deployment.s.sol) from the [pyth-examples](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/evm/chainlink_migration) directory to deploy the `PythAggregatorV3` contract.
 
-```bash
+```bash copy
 forge script script/PythAggregatorV3Deployment.s.sol --rpc-url $RPC_URL --broadcast --verify
 ```
 
@@ -38,17 +39,14 @@ If you are using the `PythAggregatorV3` contract, you must push price updates to
 The Pyth Data Association sponsors regular on-chain updates for some price feeds.
 See [Sponsored Feeds](./sponsored-feeds.mdx) for the current list of feeds and their update parameters.
 
-If you don't find relevant price feeds in the [Sponsored Feeds](./sponsored-feeds.mdx) list, you can run the scheduler/price pusher for the price feed you need.
+If you don't find relevant price IDs in the [Sponsored Feeds](./sponsored-feeds.mdx) list, you can run the scheduler/price pusher for the price feed you need.
 
 Please see [Schedule Price Updates](./schedule-price-updates.mdx) for more information on how to schedule price updates.
 
 ### Deploy the Morpho oracle contract
 
-After deploying the `PythAggregatorV3` contract and scheduling price updates, you can deploy the Morpho oracle contract with the address of the `PythAggregatorV3` contract.
+After deploying the `PythAggregatorV3` contract and scheduling price updates, you can deploy the Morpho oracle contract with the address of the `PythAggregatorV3` contract deployed in the first step.
 
 Please refer to the [Morpho documentation](https://docs.morpho.org/morpho/tutorials/deploy-an-oracle/) for more information on how to deploy the Morpho oracle contract.
 
-
 </Steps>
-
-
