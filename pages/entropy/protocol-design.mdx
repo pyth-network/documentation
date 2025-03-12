@@ -13,6 +13,9 @@ This protocol has the property that the result is random as long as either A or 
 Thus, neither party needs to trust the other -- as long as they are themselves honest, they can
 ensure that the result $r$ is random.
 
+The diagram below shows the protocol flow:
+![Entropy Protocol Flow](images/entropy-1.png)
+
 Entropy implements a version of this protocol that is optimized for on-chain usage. The
 key difference is that one of the participants (the provider) commits to a sequence of random numbers
 up-front using a hash chain. Users of the protocol then simply grab the next random number in the sequence.
@@ -43,6 +46,9 @@ Of course, both of these behaviors are detectable and protocols can blacklist pr
 
 This protocol has the same security properties as the 2-party randomness protocol above: as long as either
 the provider or user is honest, the number $r$ is random.
+
+The diagram below shows the user's interaction with the entropy contract to generate a random number:
+![Entropy Contract Flow](images/entropy-2.png)
 
 Note that providers need to be careful to ensure their off-chain service isn't compromised to reveal the random numbers -- if this occurs, then users will be able to influence the random number $r$.
 
