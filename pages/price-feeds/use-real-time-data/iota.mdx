@@ -111,8 +111,8 @@ const priceUpdateData = await connection.getPriceFeedsUpdateData(priceIDs);
 const wallet: SignerWithProvider = getWallet();
 // Get the state IDs of the Pyth and Wormhole contracts from
 // https://docs.pyth.network/price-feeds/contract-addresses/iota
-const wormholeStateId = "0x5306f64e312b581766351c07af79c72fcb1cd25147157fdc2f8ad76de9a3fb6a";
-const pythStateId = "0x1f9310238ee9298fb703c3419030b35b22bb1cc37113e3bb5007c99aec79e5b8";
+const wormholeStateId = "0x8bc490f69520a97ca1b3de864c96aa2265a0cf5d90f5f3f016b2eddf0cf2af2b";
+const pythStateId = "0x68dda579251917b3db28e35c4df495c6e664ccc085ede867a9b773c8ebedc2c1";
 
 const client = new IotaPythClient(wallet.provider, pythStateId, wormholeStateId);
 const tx = new Transaction();
@@ -168,11 +168,11 @@ You can run this example with `npm run example-relay`. A full command that updat
 
 ```bash
 export IOTA_KEY=YOUR_PRIV_KEY;
-npm run example-relay -- --feed-id "5a035d5440f5c163069af66062bac6c79377bf88396fa27e6067bfca8096d280" \
---hermes "https://hermes-beta.pyth.network" \
+npm run example-relay -- --feed-id "ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace" \
+--hermes "https://hermes.pyth.network" \
 --full-node "https://api.testnet.iota.cafe" \
---pyth-state-id "0xd3e79c2c083b934e78b3bd58a490ec6b092561954da6e7322e1e2b3c8abfddc0" \
---wormhole-state-id "0x31358d198147da50db32eda2562951d53973a0c0ad5ed738e9b17d88b213d790"
+--pyth-state-id "0x68dda579251917b3db28e35c4df495c6e664ccc085ede867a9b773c8ebedc2c1" \
+--wormhole-state-id "0x8bc490f69520a97ca1b3de864c96aa2265a0cf5d90f5f3f016b2eddf0cf2af2b"
 ```
 
 ### Contract Addresses
