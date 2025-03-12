@@ -396,14 +396,14 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://rpc.soniclabs.com",
     nativeCurrency: "S",
   },
-  "monad-devnet": {
-    address: "0x36825bf3fbdf5a29e2d5148bfe7dcf7b5639e320",
-    explorer: "https://brightstar-884.devnet1.monad.xyz/address/$ADDRESS",
+  "story-testnet": {
+    address: "0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb",
+    explorer: "https://aeneid.storyscan.xyz/address/$ADDRESS",
     delay: "",
     gasLimit: "500K",
     network: "testnet",
-    rpc: "https://rpc.devnet1.monad.xyz",
-    nativeCurrency: "MON",
+    rpc: "https://aeneid.storyrpc.io",
+    nativeCurrency: "IP",
   },
   "monad-testnet": {
     address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
@@ -422,5 +422,14 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     network: "mainnet",
     rpc: "https://api.mainnet.abs.xyz",
     nativeCurrency: "ETH",
+  },
+  story: {
+    address: "0xdF21D137Aadc95588205586636710ca2890538d5",
+    explorer: "https://storyscan.xyz/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://mainnet.storyrpc.io",
+    nativeCurrency: "IP",
   },
 };
