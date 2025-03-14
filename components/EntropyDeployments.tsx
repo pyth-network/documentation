@@ -432,4 +432,13 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://mainnet.storyrpc.io",
     nativeCurrency: "IP",
   },
+  "berachain-bepolia": {
+    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
+    explorer: "https://bepolia.beratrail.io/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "testnet",
+    rpc: "https://bepolia.rpc.berachain.com",
+    nativeCurrency: "BERA",
+  },
 };
