@@ -369,7 +369,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://api.testnet.abs.xyz",
     nativeCurrency: "ETH",
   },
-  "sonic-fantom-testnet": {
+  "sonic-blaze-testnet": {
     address: "0xebe57e8045f2f230872523bbff7374986e45c486",
     explorer: "https://blaze.soniclabs.com/address/$ADDRESS",
     delay: "",
