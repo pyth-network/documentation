@@ -8,7 +8,7 @@ This part of the tutorial will conver the following:
 
 - Deploy the contract on OP Sepolia testnet.
 - Interact with the contract from the command line.
-- Update and fetch the price from the contract using [pyth-evm-js](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/js).
+- Update and fetch the price from the contract using [hermes-client](https://github.com/pyth-network/pyth-crosschain/tree/main/apps/hermes/client/js).
 
 <Callout type="info" emoji="ℹ️">
   This tutorial is continuation of the [Part 1: Create a Contract](./part-1). If
@@ -166,7 +166,7 @@ cd ..
 mkdir app
 cd app
 npm init -y
-npm install --save typescript ts-node viem @pythnetwork/pyth-evm-js
+npm install --save typescript ts-node viem @pythnetwork/hermes-client
 ```
 
 Then open `src/mintNft.ts` and paste in the following content:
@@ -175,7 +175,7 @@ Then open `src/mintNft.ts` and paste in the following content:
 import { createWalletClient, http, parseEther } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { optimismSepolia } from "viem/chains";
-import { EvmPriceServiceConnection } from "@pythnetwork/pyth-evm-js";
+import { EvmPriceServiceConnection } from "@pythnetwork/hermes-client";
 import { getContract } from "viem";
 
 export const abi = [
@@ -236,13 +236,9 @@ async function run() {
     client,
   });
 
-  const connection = new EvmPriceServiceConnection(
-    "https://hermes.pyth.network"
-  );
+  const connection = new HermesClient("https://hermes.pyth.network");
   const priceIds = [process.env["ETH_USD_ID"] as string];
-  const priceFeedUpdateData = await connection.getPriceFeedsUpdateData(
-    priceIds
-  );
+  const priceFeedUpdateData = await connection.getLatestPriceUpdates(priceIds);
   console.log("Retrieved Pyth price update:");
   console.log(priceFeedUpdateData);
 
@@ -262,7 +258,7 @@ Notice: This `abi` variable which represents the interface of our contract and c
 The `run` function does two different things:
 
 - First, it instantiates an interface to our contract using the [`viem`](https://viem.sh/) library.
-- Second, it uses `EvmPriceServiceConnection` from [`@pythnetwork/pyth-evm-js`](<(https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/js)>) to retrieve
+- Second, it uses `HermesClient` from [`@pythnetwork/hermes-client`](<(https://github.com/pyth-network/pyth-crosschain/tree/main/apps/hermes/client/js)>) to retrieve
 
 Run this script using:
 
@@ -287,7 +283,7 @@ Congratulations! You've built your first app using Pyth price feeds.
 ## Conclusion
 
 In this tutorial, we created a Solidity contract that updates and reads Pyth prices, tested the contract locally,
-then deployed the contract and interacted with it both via the command line and `pyth-evm-js` sdk.
+then deployed the contract and interacted with it both via the command line and `hermes-client` sdk.
 
 ## Next Steps
 

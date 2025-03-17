@@ -12,7 +12,7 @@ then observe the Merkle root message and create a signed VAA for the Merkle root
 
 [Hermes](./hermes) continually listens to Wormhole for Pyth Merkle roots at each slot. It also
 listens to Pythnet to get all the price messages. It stores the latest price messages with their Merkle proof and signed
-Merkle root in memory and exposes HTTP and websocket APIs for retrieving the latest update. (Anyone can run an instance
+Merkle root in memory and exposes HTTP and server-side streaming APIs for retrieving the latest update. (Anyone can run an instance
 of this webservice, but the Pyth Data Association runs a public instance for convenience.) When a user wants to use a
 Pyth price in a transaction, they retrieve the latest update message from Hermes and submit it in their transaction. The
 update message includes the signed Merkle tree root, along with the Merkle proofs of each included price update. To

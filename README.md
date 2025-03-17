@@ -1,6 +1,6 @@
 # Pyth Network Documentation
 
-This repository contains interactive documentation for the [Pyth Network](pyth.network) blockchain oracle.
+This repository contains interactive documentation for the [Pyth Network](https://www.pyth.network/) blockchain oracle.
 
 ## Documentation Format
 
