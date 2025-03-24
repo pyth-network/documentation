@@ -441,4 +441,13 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://bepolia.rpc.berachain.com",
     nativeCurrency: "BERA",
   },
+  hyperevm: {
+    address: "0xfA25E653b44586dBbe27eE9d252192F0e4956683",
+    explorer: "https://hyperliquid.cloud.blockscout.com/address/$ADDRESS",
+    delay: "",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://rpc.hyperliquid.xyz/evm",
+    nativeCurrency: "HYPE",
+  },
 };
