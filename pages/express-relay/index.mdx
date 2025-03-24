@@ -7,17 +7,16 @@ import CodeIcon from "../../components/icons/CodeIcon";
 
 # Introduction
 
-Express Relay is a priority auction that enables protocols to eliminate [Maximal Extractable Value](https://www.ledger.com/academy/glossary/maximal-extractable-value-mev) (MEV).
+Express Relay is a priority auction which enables better orderflow mechanisms that eliminate [Maximal Extractable Value](https://www.ledger.com/academy/glossary/maximal-extractable-value-mev) (MEV).
 
-- **For Protocol Developers:** Express Relay allows protocols to recapture MEV and access a network of searchers.
-  With Express Relay, protocols don't need to spend time and energy bootstrapping a protocol-specific searcher network.
+- **For Protocol Developers:** Express Relay allows protocols to recapture MEV and access a network of searchers for more competitive pricing than on-chain sources provide.
+  With Express Relay, protocols get access to plug-and-play liquidity.
 
-- **For Searchers:** Express Relay provides easy and unified access by aggregating liquidation and other MEV opportunities across integrated DeFi protocols.
-  Searchers integrate once and gain access to all existing and future opportunities.
+- **For Searchers:** Express Relay provides easy and unified access to a range of orderflow opportunities across integrated DeFi protocols.
 
 ## Integration
 
-To integrate with Express Relay, you can integrate as a protocol or as a searcher.
+To integrate with Express Relay, you can integrate as a protocol (to power market orders/swaps) or as a searcher.
 
 <Cards>
 <Card
@@ -38,15 +37,9 @@ To integrate with Express Relay, you can integrate as a protocol or as a searche
 To learn more about Express Relay, refer to the following resources:
 
 <Cards>
-<Card
-  icon={<QuestionMarkIcon />}
-  title="How Express Relay Works"
-  href="./express-relay/how-express-relay-works "
-/>
-
-<Card
-  icon={<CodeIcon />}
-  title="Example Protocol Integration"
-  href="https://github.com/pyth-network/pyth-examples/tree/6cea7c9602c7949c6dacc94aec44c0fe78ccb128/express-relay/easy_lend"
-/>
+  <Card
+    icon={<QuestionMarkIcon />}
+    title="How Express Relay Works"
+    href="./express-relay/how-express-relay-works "
+  />
 </Cards>

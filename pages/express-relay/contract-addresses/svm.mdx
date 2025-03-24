@@ -3,18 +3,11 @@ import AddressSvmTable from "../../../components/AddressSvmTable";
 
 Express Relay is currently deployed on the following SVM environments:
 
-<Tabs items={['Solana Mainnet-Beta Testing']}>
-
-<Callout type="warning" emoji="⚠️">
-  To simulate real performance conditions and activity, the staging/testing
-  environment for Solana is on the mainnet-beta network. This environment is not
-  for production use and should only be used for testing.
-</Callout>
-
+<Tabs items={['Prod (Solana Mainnet-Beta)', 'Testing (Solana Mainnet-Beta)']}>
 <Tabs.Tab>
-Auction Server endpoint: https://per-staging.dourolabs.app/
+Auction Server endpoint: https://pyth-express-relay-mainnet.asymmetric.re/
 
-### Solana
+### Prod
 
 **Network Details:**
 
@@ -23,6 +16,62 @@ Auction Server endpoint: https://per-staging.dourolabs.app/
   entries={[
     {
       name: "Express Relay Program",
+      value: "PytERJFhAKuNNuaiXkApLfWzwNwSNDACpigT3LwQfou",
+      link: true,
+    },
+    {
+      name: "Limo Limit Order Program",
+      value: "LiMoM9rMhrdYrfzUCxQppvxCSG1FcrUK9G8uLq4A1GF",
+      link: true,
+    },
+    {
+      name: "Chain Id",
+      value: "solana",
+      link: false,
+    },
+    {
+      name: "Public RPC",
+      value: "https://api.mainnet-beta.solana.com",
+      link: false,
+    },
+    {
+      name: "Limo Global Order Config",
+      value: "prod7Mog8r56sn5dPwze8nVdf94veEawdxNNqd5v7A1",
+      link: true,
+    },
+    {
+      name: "Frontend",
+      value: "https://swap.kamino.finance",
+      link: false,
+    },
+  ]}
+/>
+</Tabs.Tab>
+
+<Tabs.Tab>
+
+<Callout type="warning" emoji="⚠️">
+  To simulate real performance conditions and activity, the staging/testing
+  environment for Solana is on the mainnet-beta network. This environment is not
+  for production use and should only be used for testing.
+</Callout>
+
+Auction Server endpoint: https://per-staging.dourolabs.app/
+
+### Testing
+
+**Network Details:**
+
+<AddressSvmTable
+  explorer={"https://solscan.io/account/$ADDRESS"}
+  entries={[
+    {
+      name: "Express Relay Program (Swaps)",
+      value: "stag1NN9voD7436oFvKmy1kvRZYLLW8drKocSCt2W79",
+      link: true,
+    },
+    {
+      name: "Express Relay Program (Limit Orders)",
       value: "PytERJFhAKuNNuaiXkApLfWzwNwSNDACpigT3LwQfou",
       link: true,
     },
