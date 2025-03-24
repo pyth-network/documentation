@@ -1,10 +1,15 @@
 import EntropyFeeTable from "../../components/EntropyFeeTable";
 import { EntropyDeployments } from "../../components/EntropyDeployments";
+import { Callout } from "nextra/components";
 
-The following tables shows the total fees payable when using the default provider.
+The following tables shows the total fees payable when using the **default provider**.
 Note that the fees shown below will vary over time with prevailing gas prices on each chain.
 
 ## Mainnet
+
+<Callout emoji="⚠️">
+  The fees for mainnet are dynamically set. Always use the onchain method `entropy.getFee(entropyProvider){:solidity}` to get the current fee.
+</Callout>
 
 <EntropyFeeTable
   deployments={Object.fromEntries(
@@ -15,6 +20,11 @@ Note that the fees shown below will vary over time with prevailing gas prices on
 />
 
 ## Testnet
+
+<Callout type="info" emoji="ℹ️">
+  The fees for testnets kept deliberately low and different from the mainnet
+  fees.
+</Callout>
 
 <EntropyFeeTable
   deployments={Object.fromEntries(
