@@ -37,30 +37,19 @@ In case of error, the `status` field will be `error`, and the error message will
 }
 ```
 
-## Subscribing to opportunities
+## Subscribing to chains
 
-To subscribe to opportunities, you can send a request using the `chain_ids` parameter, which specifies the chains as an array.
+To subscribe to opportunities and chain updates, you can send a request using the `chain_ids` parameter, which specifies the chains as an array.
 
 ```json
 {
   "id": "1",
   "method": "subscribe",
   "params": {
-    "chain_ids": ["op_sepolia"]
+    "chain_ids": ["solana"]
   }
 }
 ```
-
-After a successful subscription, you will receive new opportunities for the selected chains via the WebSocket in the following format:
-
-```json
-{
-	"type": "new_opportunity",
-	"opportunity": {...}
-}
-```
-
-The schema for the opportunity is similar to what’s returned in the [HTTP requests](https://pyth-express-relay-mainnet.asymmetric.re/docs#tag/opportunity/operation/get_opportunities)
 
 To unsubscribe from a list of chains, you can send the following message:
 
@@ -69,10 +58,54 @@ To unsubscribe from a list of chains, you can send the following message:
   "id": "1",
   "method": "unsubscribe",
   "params": {
-    "chain_ids": ["op_sepolia"]
+    "chain_ids": ["solana"]
   }
 }
 ```
+
+After a successful subscription, you will receive updates for the selected chains via the WebSocket in the following format:
+
+<Tabs items={['EVM', 'SVM']}>
+
+    <Tabs.Tab>
+
+```json
+{
+    "type": "new_opportunity",
+    "opportunity": {...}
+}
+```
+
+    </Tabs.Tab>
+    <Tabs.Tab>
+
+```json
+{
+    "type": "new_opportunity",
+    "opportunity": {...}
+}
+```
+
+You will receive svm specific updates in the following format:
+
+```json
+{
+  "type": "svm_chain_update",
+  "update": {
+    "chain_id": "development-solana",
+    // Recent blockhash that you can use when constructing the transaction
+    "blockhash": "6YK9yt6T1NhWNLhRGMapFxreYx6HPcW7RRcNSDsXjnLb",
+    // Latest prioritization fee that is necessary to include in the transaction
+    "latest_prioritization_fee": 319592
+  }
+}
+```
+
+    </Tabs.Tab>
+
+</Tabs>
+
+The schema for the opportunity is similar to what’s returned in the [HTTP requests](https://pyth-express-relay-mainnet.asymmetric.re/docs#tag/opportunity/operation/get_opportunities)
 
 ## Submitting bids
 

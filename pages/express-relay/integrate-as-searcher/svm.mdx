@@ -4,30 +4,48 @@ import { Callout, Tabs, Steps } from "nextra/components";
 
 SVM Express Relay searchers fulfill opportunities representing limit orders on the [Limo](https://solscan.io/account/LiMoM9rMhrdYrfzUCxQppvxCSG1FcrUK9G8uLq4A1GF) program.
 
+Bids are represented via [SVM transactions](https://solana.com/docs/core/transactions) that include instructions for submitting the bid.
+
 <Steps>
 
-### Subscribe to New Opportunities
+### Subscribe to SVM chain
 
-Express Relay provides searchers with [Typescript](https://github.com/pyth-network/per/tree/4be711525948cf24c0ebd4ebab007dc7f51b7069/sdk/js) and [Python](https://github.com/pyth-network/per/tree/4be711525948cf24c0ebd4ebab007dc7f51b7069/sdk/python) SDKs to interact with Express Relay.
+Searchers can use [Typescript](https://github.com/pyth-network/per/tree/4be711525948cf24c0ebd4ebab007dc7f51b7069/sdk/js)
+and [Python](https://github.com/pyth-network/per/tree/4be711525948cf24c0ebd4ebab007dc7f51b7069/sdk/python) SDKs to interact with auction server.
 Searchers can also directly fetch available opportunities via HTTP or subscribe to them via WebSocket.
 
-<Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
+<Callout type="warning" emoji="⚠️">
+  Polling the server via HTTP for new opportunities is not recommended because
+  of the additional delay it may incur. This can lead to late bid submissions
+  which will be rejected. Some submission information such as the most recent
+  blockhash and priority fees are **only** broadcasted via websocket.
+</Callout>
+
+<Tabs items={['Typescript', 'Python', 'HTTP', 'WebSocket']}>
 
 <Tabs.Tab>
-Pyth provides a Typescript SDK, which allows searchers to subscribe to opportunities:
 
 ```typescript
 import { Client, Opportunity } from "@pythnetwork/express-relay-js";
+
+latestChainUpdate: Record<string, SvmChainUpdate> = {}
 
 const handleOpportunity = async (opportunity: Opportunity) => {
   console.log("Received opportunity");
   // Implement your opportunity handler here
 };
 
+const svmChainUpdateHandler = async (update: SvmChainUpdate) {
+  // Store chain updates to use when constructing the transaction
+  latestChainUpdate[update.chainId] = update;
+}
+
 const client = new Client(
   { baseUrl: "https://pyth-express-relay-mainnet.asymmetric.re" },
   undefined, // Default WebSocket options
-  handleOpportunity
+  handleOpportunity,
+  undefined,
+  svmChainUpdateHandler
 );
 
 async function main() {
@@ -35,11 +53,11 @@ async function main() {
 }
 
 main();
+
 ```
 
 </Tabs.Tab>
 <Tabs.Tab>
-Pyth provides a Python SDK, which allows searchers to subscribe to opportunities:
 
 ```python copy
 import asyncio
@@ -48,15 +66,22 @@ from express_relay.client import (
 )
 from express_relay.models import Opportunity
 
+latest_chain_update = {}
+
 async def opportunity_callback(opportunity: Opportunity):
     print("Received opportunity")
     # Implement your opportunity handler here
+
+async def svm_chain_update_callback(svm_chain_update: SvmChainUpdate):
+    # Store chain updates to use when constructing the transaction
+    latest_chain_update[svm_chain_update.chain_id] = svm_chain_update
 
 client = ExpressRelayClient(
     "https://pyth-express-relay-mainnet.asymmetric.re",
     None,
     opportunity_callback,
     None,
+    svm_chain_update_callback
 )
 
 async def main():
@@ -77,8 +102,6 @@ curl -X 'GET' \
   'https://pyth-express-relay-mainnet.asymmetric.re/v1/opportunities?chain_id=solana&mode=live'
 ```
 
-Opportunities are short-lived and could be executed in a matter of seconds. So, the above endpoint could return an empty response.
-
 </Tabs.Tab>
 <Tabs.Tab>
 Searchers can connect to the server via WebSocket to reduce latency and subscribe to various events. The WebSocket endpoint lives at `/v1/ws`(e.g `wss://pyth-express-relay-mainnet.asymmetric.re/v1/ws`).
@@ -94,20 +117,57 @@ Here is a sample JSON payload to subscribe to opportunities:
 }
 ```
 
-Consult [`Websocket API reference`](./websocket-api-reference.mdx) for a complete list of methods and parameters.
+Consult [`WebSocket API reference`](./websocket-api-reference.mdx) for a complete list of methods and parameters.
 
 </Tabs.Tab>
 </Tabs>
 
 The server responds with opportunities in the following format:
 
-```bash copy
+```json copy
 {
-  "order": "UxMUbQAsjrfQUp5stVwMJ6Mucq7VWTvt4ICe69BJ8lVXqwM+0sysV8OqZTdM0W4p...",      // The Limo order to be executed, encoded in base64
-  "order_address": "DUcTi3rDyS5QEmZ4BNRBejtArmDCWaPYGfN44vBJXKL5",                     // Address of the order account
-  "program": "limo",                                                                   // Identifier of the program that the order exists in
-  "chain_id": "development-solana",
-  "version": "v1"                                                                      // Opportunity format version
+  // The Limo order to be executed, encoded in base64
+  "order": "UxMUbQAsjrfQUp5stVwMJ6Mucq7VWTvt4ICe69BJ8lVXqwM+0sysV8OqZTdM0W4p...",
+  // Address of the order account
+  "order_address": "DUcTi3rDyS5QEmZ4BNRBejtArmDCWaPYGfN44vBJXKL5",
+  // Identifier of the program that the order exists in
+  "program": "limo",
+  "chain_id": "solana",
+  // Opportunity format version
+  "version": "v1",
+  "opportunity_id": "271f2a7b-1ec5-420f-b5c0-e3e4317f3d7b",
+  // Creation time of the opportunity (in microseconds since the Unix epoch)
+  "creation_time": 1733503592579589,
+  "slot": 305802439
+}
+```
+
+The `order` field includes the [Limo](https://solscan.io/account/LiMoM9rMhrdYrfzUCxQppvxCSG1FcrUK9G8uLq4A1GF) program
+order data that can be decoded using the SDKs provided or the program anchor idl. It includes all the necessary information
+to fill the limit order:
+
+- Maker address
+- Input token and amount (what the maker is selling)
+- Output token and amount (what the maker is buying in exchange for the input token)
+
+<Callout type="info">
+  Limo limit orders can also be filled partially in a linear fashion. For
+  example, if the order is to buy 10 SOL for \$2000, you can provide 5 SOL and
+  get back \$1000.
+</Callout>
+
+The auction server also broadcast chain specific information that are necessary for building the transaction:
+
+```json copy
+{
+  "type": "svm_chain_update",
+  "update": {
+    "chain_id": "development-solana",
+    // Recent blockhash that you can use when constructing the transaction
+    "blockhash": "6YK9yt6T1NhWNLhRGMapFxreYx6HPcW7RRcNSDsXjnLb",
+    // Latest prioritization fee that is necessary to include in the transaction
+    "latest_prioritization_fee": 319592
+  }
 }
 ```
 
@@ -190,7 +250,7 @@ from solders.transaction import Transaction
 from express_relay.models.svm import BidSvm
 from express_relay.svm.limo_client import OrderStateAndAddress
 
-DEADLINE = 2**62
+DEADLINE = 2 * 10**10
 logger = logging.getLogger(__name__)
 
 async def generate_bid(self, opp: OpportunitySvm) -> BidSvm:
@@ -242,18 +302,25 @@ The bid you construct will look like
 {
   // serialized transaction object, in base-64 encoding
   "transaction": "SGVsbG8sIFdvcmxkIQ==",
-  "chain_id": "solana",
-  "env": "svm"
+  "chain_id": "solana"
 }
 ```
 
-where the serialized transaction object should contain an Express Relay `SubmitBid` instruction that specifies the amount you are bidding and the permission details.
+The transaction submitted to the auction server as the bid should meet the following criteria:
+
+- It should contain an Express Relay `SubmitBid` instruction that specifies the amount you are bidding, the permission details, and the deadline.
+  This instruction can be created via the SDKs.
+- The deadline specified in the `SubmitBid` instruction should be at least 5 seconds in the future.
+- It should contain an instruction to set the [transaction priority fee](https://solana.com/developers/guides/advanced/how-to-use-priority-fees#what-are-priority-fees). The priority fee should be at least as large the amount
+  advertised via websocket.
+- It should contain valid signatures for all signers except the relayer
+- It should pass simulation
 
 ### Submit Bids on Opportunities to Express Relay
 
 Searchers can submit their constructed bids to Express Relay via the SDKs, an HTTP POST request, or a WebSocket connection.
 
-<Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
+<Tabs items={['Typescript', 'Python', 'HTTP', 'WebSocket']}>
 
 <Tabs.Tab>
 
@@ -276,7 +343,7 @@ const handleOpportunity = async (opportunity: Opportunity) => {
 
 The code snippet below demonstrates how to submit a bid using the Python SDK:
 
-```python {5} copy
+```python {8} copy
 import typing
 
 async def generate_bid(opp: OpportunitySvm) -> BidSvm:
@@ -303,7 +370,7 @@ curl -X POST https://pyth-express-relay-mainnet.asymmetric.re/v1/bids \
 </Tabs.Tab>
 <Tabs.Tab>
 
-Searchers can submit bids via Websocket to avoid additional network round-trips and get notified about changes to the bid status.
+Searchers can submit bids via WebSocket to avoid additional network round-trips and get notified about changes to the bid status.
 
 ```bash copy
 {
@@ -322,16 +389,18 @@ A successful response to a bid submission has the following schema:
 
 ```bash copy
 {
-  "id": "1",                                            // Websocket request id
+  // WebSocket request id
+  "id": "1",
   "status": "success",
   "result": {
-    "id": "beedbeed-b346-4fa1-8fab-2541a9e1872d",       // Bid id
+    // Bid id
+    "id": "beedbeed-b346-4fa1-8fab-2541a9e1872d",
     "status": "OK"
   }
 }
 ```
 
-Consult [`Websocket API reference`](./websocket-api-reference.mdx) for more details.
+Consult [`WebSocket API reference`](../websocket-api-reference.mdx) for more details.
 
 </Tabs.Tab>
 </Tabs>
