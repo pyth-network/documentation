@@ -31,11 +31,6 @@
   "websocket-api-reference": "Websocket API Reference",
   "contract-addresses": "Contract Addresses",
   "errors": "Error Codes",
-  "examples": {
-    "title": "Example Application ↗",
-    "href": "https://github.com/pyth-network/pyth-examples/tree/6cea7c9602c7949c6dacc94aec44c0fe78ccb128/express-relay/easy_lend",
-    "newWindow": true
-  },
   "-- Understand Express Relay": {
     "title": "Understanding Express Relay",
     "type": "separator"
