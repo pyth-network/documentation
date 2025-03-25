@@ -1,3 +1,5 @@
+import copy from "copy-to-clipboard";
+import CopyIcon from "./icons/CopyIcon";
 import { StyledTd } from "./Table";
 
 const AddressSvmTable = ({
@@ -11,15 +13,6 @@ const AddressSvmTable = ({
     <table>
       <tbody>
         {entries.map(({ name, value, link }) => {
-          const component = (
-            <code
-              className={
-                "nx-border-black nx-border-opacity-[0.04] nx-bg-opacity-[0.03] nx-bg-black nx-break-words nx-rounded-md nx-border nx-py-0.5 nx-px-[.25em] nx-text-[.9em] dark:nx-border-white/10 dark:nx-bg-white/10  "
-              }
-            >
-              {value}
-            </code>
-          );
           const addLink = explorer.includes("$ADDRESS") && link;
           return (
             <tr key={name}>
@@ -28,16 +21,26 @@ const AddressSvmTable = ({
                 {addLink ? (
                   <a
                     href={explorer.replace("$ADDRESS", value)}
-                    className={
-                      "nx-text-primary-600 nx-underline nx-decoration-from-font [text-underline-position:from-font]"
-                    }
-                    target={"_blank"}
+                    className="nx-text-primary-600 nx-underline nx-decoration-from-font [text-underline-position:from-font]"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    {component}
+                    <code className="nx-border-black nx-border-opacity-[0.04] nx-bg-opacity-[0.03] nx-bg-black nx-break-words nx-rounded-md nx-border nx-py-0.5 nx-px-[.25em] nx-text-[.9em] dark:nx-border-white/10 dark:nx-bg-white/10">
+                      {value}
+                    </code>
                   </a>
                 ) : (
-                  component
+                  <code className="nx-border-black nx-border-opacity-[0.04] nx-bg-opacity-[0.03] nx-bg-black nx-break-words nx-rounded-md nx-border nx-py-0.5 nx-px-[.25em] nx-text-[.9em] dark:nx-border-white/10 dark:nx-bg-white/10">
+                    {value}
+                  </code>
                 )}
+
+                <button
+                  onClick={() => copy(value)}
+                  className="p-1 hover:bg-light dark:hover:bg-dark rounded"
+                >
+                  <CopyIcon className="shrink-0" />
+                </button>
               </StyledTd>
             </tr>
           );

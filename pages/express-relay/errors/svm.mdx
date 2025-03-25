@@ -1,3 +1,7 @@
+---
+title: SVM
+---
+
 # SVM Error Codes
 
 The following table lists the error codes and their explanations for the [`ExpressRelay`](https://github.com/pyth-network/per/tree/358eedc1f9072cdfc3418fba309697580f2474f9/contracts/svm/programs/express_relay) programs.
@@ -5,15 +9,15 @@ They can be used to identify the cause of a failed transaction or bid.
 
 ## ExpressRelay
 
-| Error                         | Explanation                                                                                     |
-| ----------------------------- | ----------------------------------------------------------------------------------------------- |
-| `FeeSplitLargerThanPrecision` | The proposed fee split is invalid (split is larger than `FEE_SPLIT_PRECISION`, 10000)           |
-| `FeesHigherThanBid`           | The fees to pay out exceed the value of the bid amount.                                         |
-| `DeadlinePassed`              | The bid is no longer valid, as the Unix time deadline has passed.                               |
-| `InvalidCPISubmitBid`         | The `SubmitBid` instruction should not be called via CPI.                                       |
-| `MissingPermission`           | The transaction is missing a `SubmitBid` instruction with the matching permission key.          |
-| `MultiplePermissions`         | The transaction should not contain more than one `SubmitBid` instruction.                       |
-| `InsufficientSearcherFunds`   | The searcher lacks the funds to pay the specified amount.                                       |
-| `InsufficientRent`            | The fees splits received by different parties must be sufficient to cover the account rent.     |
-| `InvalidReferralFee`          | The provided referral fee in the swap instruction data is too high to be a valid number of bps. |
-| `InsufficientUserFunds`       | The user lacks the funds to pay the specified amount in the swap instruction.                   |
+| Error                         | Explanation                                                                                              |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `FeeSplitLargerThanPrecision` | The proposed fee split is invalid (split is larger than `FEE_SPLIT_PRECISION`, 10000)                    |
+| `FeesHigherThanBid`           | The fees to pay out exceed the value of the bid amount.                                                  |
+| `DeadlinePassed`              | The bid is no longer valid, as the Unix time deadline has passed.                                        |
+| `InvalidCPISubmitBid`         | The `SubmitBid` instruction should not be called via CPI.                                                |
+| `MissingPermission`           | The transaction is missing a `SubmitBid` instruction with the matching permission key.                   |
+| `MultiplePermissions`         | The transaction should not contain more than one `SubmitBid` instruction.                                |
+| `InsufficientSearcherFunds`   | The searcher lacks the funds to pay the specified amount.                                                |
+| `InsufficientRent`            | The fee splits received by different parties must be sufficient to cover the account rent.               |
+| `InvalidReferralFee`          | The provided referral fee in the swap instruction data is too high to be a valid number of basis points. |
+| `InsufficientUserFunds`       | The user lacks the funds to pay the specified amount in the swap instruction.                            |

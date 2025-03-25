@@ -43,7 +43,7 @@ const quoteRequest = {
 const quote = await client.getQuote(quoteRequest);
 ```
 
-`quote` will contain the full details, including the amount the searcher is quoting and the transaction that the user needs to sign. It will also contain an `expirationTime`; after this time, the transaction will no longer succeed on chain, so you should request a new quote a few seconds before the `expirationTime`.
+`quote` contains the full details, including the amount the searcher is quoting and the transaction that the user needs to sign. It also contains an `expirationTime`; after this time, the transaction will no longer succeed on chain, so you should request a new quote a few seconds before the `expirationTime`.
 
 ### Submit User Signature to the Express Relay Server
 
@@ -61,7 +61,7 @@ const submitQuote = {
 const txSubmitted = await client.submitQuote(submitQuote);
 ```
 
-As can be seen, this will return the fully signed transaction that the server submitted to the RPC node to land on chain.
+`submitQuote` returns the fully signed transaction that the server submitted to the RPC node.
 
 </Steps>
 
@@ -69,9 +69,9 @@ As can be seen, this will return the fully signed transaction that the server su
 
 You may find these additional resources helpful for integrating Express Relay as a frontend.
 
-### Contract Address
+### Contract Addresses
 
-The [SVM](../contract-addresses/svm.mdx) Contract Addresses pages list the relevant addresses for Express Relay integration.
+The [SVM](../contract-addresses/svm.mdx) Contract Addresses page lists the relevant addresses for Express Relay integration.
 
 ### Error Codes
 
