@@ -426,7 +426,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   story: {
     address: "0xdF21D137Aadc95588205586636710ca2890538d5",
     explorer: "https://storyscan.xyz/address/$ADDRESS",
-    delay: "",
+    delay: "0 block",
     gasLimit: "500K",
     network: "mainnet",
     rpc: "https://mainnet.storyrpc.io",
@@ -444,7 +444,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   hyperevm: {
     address: "0xfA25E653b44586dBbe27eE9d252192F0e4956683",
     explorer: "https://hyperliquid.cloud.blockscout.com/address/$ADDRESS",
-    delay: "",
+    delay: "0 block",
     gasLimit: "500K",
     network: "mainnet",
     rpc: "https://rpc.hyperliquid.xyz/evm",
