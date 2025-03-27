@@ -322,6 +322,8 @@ const twapUpdateData = await hermesClient.getLatestTwaps(
 console.log(twapUpdateData.binary.data);
 ```
 
+For a complete example of fetching TWAP updates from Hermes, see the [HermesClient example script](https://github.com/pyth-network/pyth-crosschain/blob/main/apps/hermes/client/js/src/examples/HermesClient.ts) in the Pyth crosschain repository.
+
 #### Post TWAP updates to Solana
 
 Use `PythSolanaReceiver` to post the TWAP updates and consume them in your application:
@@ -358,9 +360,11 @@ await pythSolanaReceiver.provider.sendAll(
   await transactionBuilder.buildVersionedTransactions({
     computeUnitPriceMicroLamports: 50000,
   }),
-  { skipPreflight: true }
+  { skipPreflight: true  }
 );
 ```
+
+For a complete example of posting TWAP updates to Solana, see the [post_twap_update.ts example script](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/solana/sdk/js/pyth_solana_receiver/examples/post_twap_update.ts) in the Pyth crosschain repository.
 
 ### Example Application
 
