@@ -243,21 +243,17 @@ The [SDK documentation](https://github.com/pyth-network/pyth-crosschain/tree/mai
 
 ## Time-Weighted Average Price (TWAP)
 
-Pyth also provides Time-Weighted Average Price (TWAP) for Solana applications. TWAP represents the average price over a specified time window, which can be useful for reducing the impact of short-term price volatility.
-
-<Callout type="warning" emoji="⚠️">
-  The TWAP window is currently limited to a maximum of 10 minutes (600 seconds).
-</Callout>
+Pyth also provides Time-Weighted Average Price (TWAP) for Solana applications. TWAP represents the average price over a specified time window, which can be useful for reducing the impact of short-term price volatility. The TWAP window is currently limited to a maximum of 10 minutes (600 seconds).
 
 ### Using TWAP in Solana Programs
 
-To use TWAP in your Solana program, import the `TwapUpdate` struct from the Pyth Solana receiver SDK:
+To use TWAP in your Solana program, import the `TwapUpdate` struct from the Pyth Solana receiver SDK. The process for fetching and posting TWAP updates is similar to regular price updates from Hermes.
 
 ```rust copy
 use pyth_solana_receiver_sdk::price_update::{TwapUpdate};
 
 #[derive(Accounts)]
-#[instruction(amount_in_usd : u64, twap_window_seconds: u64)]
+#[instruction(twap_window_seconds: u64)]
 pub struct SampleWithTwap<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
@@ -271,7 +267,6 @@ Update your instruction logic to read the TWAP from the update account:
 ```rust copy
 pub fn sample_with_twap(
     ctx: Context<SampleWithTwap>,
-    amount_in_usd: u64,
     twap_window_seconds: u64,
 ) -> Result<()> {
     let twap_update = &mut ctx.accounts.twap_update;
