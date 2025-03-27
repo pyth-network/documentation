@@ -285,7 +285,7 @@ pub fn sample_with_twap(
         twap_window_seconds,
         &feed_id,
     )?;
-    
+
     // Sample output:
     // The TWAP price is (7160106530699 ± 5129162301) * 10^-8
     msg!("The TWAP price is ({} ± {}) * 10^{}", price.price, price.conf, price.exponent);
@@ -308,16 +308,13 @@ import { HermesClient } from "@pythnetwork/hermes-client";
 // The URL below is a public Hermes instance operated by the Pyth Data Association.
 // Hermes is also available from several third-party providers listed here:
 // https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes
-const hermesClient = new HermesClient(
-  "https://hermes.pyth.network/",
-  {}
-);
+const hermesClient = new HermesClient("https://hermes.pyth.network/", {});
 
 // Specify the price feed ID and the TWAP window in seconds (maximum 600 seconds)
 const twapWindowSeconds = 300; // 5 minutes
 const twapUpdateData = await hermesClient.getLatestTwaps(
   ["0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43"], // BTC/USD feed ID
-  twapWindowSeconds, 
+  twapWindowSeconds,
   { encoding: "base64" }
 );
 
