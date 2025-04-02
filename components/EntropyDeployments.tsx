@@ -450,4 +450,13 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://rpc.hyperliquid.xyz/evm",
     nativeCurrency: "HYPE",
   },
+  soneium: {
+    address: "0x0708325268dF9F66270F1401206434524814508b",
+    explorer: "https://soneium.blockscout.com/address/$ADDRESS",
+    delay: "1 block",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://soneium.drpc.org",
+    nativeCurrency: "ETH",
+  },
 };
