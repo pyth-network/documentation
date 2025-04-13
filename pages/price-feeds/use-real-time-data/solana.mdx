@@ -361,20 +361,17 @@ await pythSolanaReceiver.provider.sendAll(
 
 For a complete example of posting TWAP updates to Solana, see the [post_twap_update.ts example script](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/solana/sdk/js/pyth_solana_receiver/examples/post_twap_update.ts) in the Pyth crosschain repository.
 
-### Example Application
-
-See an end-to-end example of using Price Update Accounts for spot prices or TWAP Accounts for time-averaged prices in the [SendUSD Solana Demo App](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/solana/send_usd). It demonstrates how to fetch data from Hermes, post it to Solana, and consume it from a smart contract. The example includes:
-
-- A React frontend for interacting with the contract
-- A Solana program that consumes TWAP updates
-- Complete transaction building for posting and consuming TWAP data
-
-The example allows users to send a USD-denominated amount of SOL using either spot prices or TWAP prices, demonstrating how TWAP can be used to reduce the impact of price volatility.
-
 ## Additional Resources
 
 You may find these additional resources helpful for developing your Solana application.
 
-### Example application
+### Example Application
 
-The [Solana example application](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/solana/send_usd) is an end-to-end application that uses Pyth Network prices on the Solana blockchain and in a frontend.
+See an end-to-end example of using Pyth Network prices in the [SendUSD Solana Demo App](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/solana/send_usd). The app allows users to send a USD-denominated amount of SOL using either spot prices or TWAP prices.
+It demonstrates how to fetch price data from Hermes from a frontend, post it to the Solana blockchain, and consume it from a smart contract.
+
+The example includes:
+
+- A React frontend for interacting with the contract
+- Solana programs that consumes spot price updates (Price Update Accounts) and time-averaged price updates (TWAP Accounts)
+- Complete transaction building for posting and consuming price data
