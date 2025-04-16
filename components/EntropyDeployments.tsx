@@ -459,4 +459,13 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     rpc: "https://soneium.drpc.org",
     nativeCurrency: "ETH",
   },
+  unichain: {
+    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
+    explorer: "https://unichain.blockscout.com/address/$ADDRESS",
+    delay: "0 block",
+    gasLimit: "500K",
+    network: "mainnet",
+    rpc: "https://mainnet.unichain.org",
+    nativeCurrency: "ETH",
+  },
 };
