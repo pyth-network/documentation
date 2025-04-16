@@ -189,15 +189,6 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     gasLimit: "500K",
     nativeCurrency: "ETH",
   },
-  "orange-testnet": {
-    address: "0x98046Bd286715D3B0BC227Dd7a956b83D8978603",
-    explorer: "https://subnets-test.avax.network/orangetest/address/$ADDRESS",
-    delay: "",
-    gasLimit: "500K",
-    network: "testnet",
-    rpc: "https://subnets.avax.network/orangetest/testnet/rpc",
-    nativeCurrency: "JUICE",
-  },
   "sei-evm": {
     address: "0x98046Bd286715D3B0BC227Dd7a956b83D8978603",
     explorer: "https://seitrace.com/address/$ADDRESS?chain=pacific-1",
