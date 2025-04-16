@@ -108,15 +108,6 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     gasLimit: "500K",
     nativeCurrency: "CHZ",
   },
-  "conflux-espace-testnet": {
-    rpc: "https://evmtestnet.confluxrpc.com",
-    network: "testnet",
-    delay: "",
-    address: "0xdF21D137Aadc95588205586636710ca2890538d5",
-    explorer: "https://evmtestnet.confluxscan.io/address/$ADDRESS",
-    gasLimit: "500K",
-    nativeCurrency: "CFX",
-  },
   "mode-sepolia": {
     rpc: "https://sepolia.mode.network/",
     network: "testnet",
@@ -179,15 +170,6 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     explorer: "https://bartio.beratrail.io/address/$ADDRESS",
     gasLimit: "2.5M",
     nativeCurrency: "BERA",
-  },
-  "coredao-testnet": {
-    rpc: "https://rpc.test.btcs.network",
-    network: "testnet",
-    delay: "",
-    address: "0xf0a1b566B55e0A0CB5BeF52Eb2a57142617Bee67",
-    explorer: "https://scan.test.btcs.network/address/$ADDRESS",
-    gasLimit: "500K",
-    nativeCurrency: "tCORE",
   },
   "zetachain-testnet": {
     rpc: "https://zetachain-athens-evm.blockpi.network/v1/rpc/public",
