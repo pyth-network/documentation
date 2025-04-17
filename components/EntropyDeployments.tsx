@@ -162,15 +162,6 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     gasLimit: "500K",
     nativeCurrency: "ETH",
   },
-  "berachain-testnet-v2": {
-    rpc: "https://evm-rpc-bera.rhino-apis.com/",
-    network: "testnet",
-    delay: "",
-    address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
-    explorer: "https://bartio.beratrail.io/address/$ADDRESS",
-    gasLimit: "2.5M",
-    nativeCurrency: "BERA",
-  },
   "zetachain-testnet": {
     rpc: "https://zetachain-athens-evm.blockpi.network/v1/rpc/public",
     network: "testnet",
