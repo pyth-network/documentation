@@ -94,6 +94,8 @@ Hermes offers several other endpoints for retrieving price updates. For more inf
 Hermes also provides a Server-Sent Events (SSE) endpoint to stream price updates.
 The `/v2/updates/price/stream` endpoint continuously streams price updates for the requested feeds to the caller.
 
+The connection will automatically close after 24 hours to prevent resource leaks. Clients should implement reconnection logic to maintain continuous price updates.
+
 For example, to stream price updates for BTC/USD, run:
 
 ```bash copy
