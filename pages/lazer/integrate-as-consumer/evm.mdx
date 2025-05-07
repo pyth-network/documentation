@@ -57,7 +57,7 @@ Add an argument of type `bytes calldata{:solidity}` to the method which will rec
 ```solidity copy
 function updatePrice(bytes calldata priceUpdate) public payable {
   uint256 verification_fee = pythLazer.verification_fee();
-  (bytes calldata payload, ) = verifyUpdate{ value: verification_fee }(update);
+  (bytes calldata payload, ) = verifyUpdate{ value: verification_fee }(priceUpdate);
   //...
 }
 
