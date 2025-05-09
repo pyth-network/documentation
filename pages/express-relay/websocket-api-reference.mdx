@@ -3,7 +3,7 @@ import { Tabs } from "nextra/components";
 # WebSocket API Reference
 
 Searchers can connect to the server via WebSocket to reduce latency and subscribe to various events.
-The WebSocket endpoint lives at `/v1/ws`(e.g `wss://pyth-express-relay-mainnet.asymmetric.re/v1/ws`).
+The WebSocket endpoint lives at `/v1/ws`(e.g `wss://per-mainnet.dourolabs.app/v1/ws`).
 
 ## General format
 
@@ -60,7 +60,7 @@ After a successful subscription, you will receive new opportunities for the sele
 }
 ```
 
-The schema for the opportunity is similar to what’s returned in the [HTTP requests](https://pyth-express-relay-mainnet.asymmetric.re/docs#tag/opportunity/operation/get_opportunities).
+The schema for the opportunity is similar to what’s returned in the [HTTP requests](https://per-mainnet.dourolabs.app/docs#tag/opportunity/operation/get_opportunities).
 
 To unsubscribe from a list of chains, you can send the following message:
 

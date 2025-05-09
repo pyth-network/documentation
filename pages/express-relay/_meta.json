@@ -25,7 +25,7 @@
 
   "api-reference": {
     "title": "HTTP API Reference ↗",
-    "href": "https://pyth-express-relay-mainnet.asymmetric.re/docs",
+    "href": "https://per-mainnet.dourolabs.app/docs",
     "newWindow": true
   },
   "websocket-api-reference": "Websocket API Reference",
