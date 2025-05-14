@@ -36,114 +36,77 @@ Then add the following line to your `remappings.txt` :
 The Solidity SDK exports two interfaces:
 
 - [`IEntropyConsumer`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropyConsumer.sol) - The interface that your contract should implement. It makes sure that your contract is compliant with the Entropy contract.
-- [`IEntropy`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropy.sol) - The interface to interact with the Entropy contract.
+- [`IEntropyV2`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropyV2.sol) - The interface to interact with the Entropy contract.
   You will need the address of an Entropy contract on your blockchain.
   Consult the current [Entropy contract addresses](../contract-addresses) to find the address on your chain.
-  Once you have a contract address, instantiate an `IEntropy` contract in your solidity contract:
+  Once you have a contract address, instantiate an `IEntropyV2` contract in your solidity contract:
 
 ```solidity copy
 import { IEntropyConsumer } from "@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol";
-import { IEntropy } from "@pythnetwork/entropy-sdk-solidity/IEntropy.sol";
+import { IEntropyV2 } from "@pythnetwork/entropy-sdk-solidity/IEntropyV2.sol";
 
 // @param entropyAddress The address of the entropy contract.
 contract YourContract is IEntropyConsumer {
-  IEntropy public entropy;
+  IEntropyV2 public entropy;
 
   constructor(address entropyAddress) {
-    entropy = IEntropy(entropyAddress);
+    entropy = IEntropyV2(entropyAddress);
   }
 }
 
-```
-
-<Callout type="info">
-Entropy also requires selecting a **randomness provider**. The randomness provider is a third-party
-who participates in the generation process. Each provider is identified by an address and hosts
-a keeper service for fullfilling requests.
-
-The simplest way to choose a provider is to use the [default provider](../contract-addresses).
-The default provider for each contract and their corresponding URI is also listed in the
-[Entropy contract addresses](../contract-addresses).
-
-</Callout>
-
-You can also get the default provider's address by calling the [`getDefaultProvider`](https://github.com/pyth-network/pyth-crosschain/blob/f8ebeb6af31d98f94ce73edade6da2ebab7b2456/target_chains/ethereum/entropy_sdk/solidity/IEntropy.sol#L94) method:
-
-```solidity copy
-address provider = entropy.getDefaultProvider();
 ```
 
 ## Usage
 
 To generate a random number, follow these steps.
 
-### 1. Generate a random number
+### 1. Request a number from Entropy
 
-Generate a 32-byte random number on the client side.
+# TODO: fix links and events
 
-<Tabs items={['web3.js', 'ethers.js']}>
-  <Tabs.Tab>
-    ```javascript
-    const userRandomNumber = web3.utils.randomHex(32);
-    ```
-  </Tabs.Tab>
+Invoke the [`requestV2`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropy.sol#L83) method of the `IEntropyV2` contract.
+The `requestV2` method requires paying a fee in native gas tokens which is configured per-provider.
 
-  <Tabs.Tab>
-    ```javascript
-    const userRandomNumber = ethers.utils.randomBytes(32);
-    ```
-  </Tabs.Tab>
-</Tabs>
-
-### 2. Request a number from Entropy
-
-Invoke the [`requestWithCallback`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropy.sol#L83) method of the `IEntropy` contract.
-The `requestWithCallback` method requires paying a fee in native gas tokens which is configured per-provider.
-
-The fees differs for every chain and can be found at the [Current Fees](../current-fees) page. \
-You can use the onchain method [`getFee`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropy.sol#L101) to calculate the fee for the default provider and send it as the value of the `requestWithCallback` call:
+The fees differs for every chain and also varies over time depending on the chain's current gas price.
+The current value for each chain can be found on the [Current Fees](../current-fees) page.
+However, you should use the on-chain method [`getFeeV2`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropy.sol#L101) to compute the required fee and send it as the value of the `requestV2` call:
 
 ```solidity copy
-function requestRandomNumber(bytes32 userRandomNumber) external payable {
-  uint256 fee = entropy.getFee(entropyProvider);
+function requestRandomNumber() external payable {
+  uint256 fee = entropy.getFeeV2();
 
-  uint64 sequenceNumber = entropy.requestWithCallback{ value: fee }(
-    entropyProvider,
-    userRandomNumber
-  );
+  uint64 sequenceNumber = entropy.requestV2{ value: fee }();
 }
 
 ```
 
 This method returns a sequence number and emits a [`RequestedWithCallback`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/EntropyEvents.sol#L10) event. You can store this sequence number to identify the request in next step.
 
-### 3. Implement callback for Entropy
+Note that there are several variants of `requestV2` that allow the caller to configure the provider fulfilling the request and the gas limit for the callback.
+Please see the method documentation in the IEntropyV2 interface. TODO: link
+
+### 2. Implement the Entropy callback
 
 ```solidity {28-42} copy
 pragma solidity ^0.8.0;
 
 import { IEntropyConsumer } from "@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol";
-import { IEntropy } from "@pythnetwork/entropy-sdk-solidity/IEntropy.sol";
+import { IEntropyV2 } from "@pythnetwork/entropy-sdk-solidity/IEntropyV2.sol";
 
 contract YourContract is IEntropyConsumer {
-  IEntropy entropy;
+  IEntropyV2 entropy;
 
   // @param entropyAddress The address of the entropy contract.
   constructor(address entropyAddress) {
-    entropy = IEntropy(entropyAddress);
+    entropy = IEntropyV2(entropyAddress);
   }
 
-  // @param userRandomNumber The random number generated by the user.
-  function requestRandomNumber(bytes32 userRandomNumber) external payable {
-    // Get the default provider and the fee for the request
-    address entropyProvider = entropy.getDefaultProvider();
-    uint256 fee = entropy.getFee(entropyProvider);
+  function requestRandomNumber() external payable {
+    // Get the fee for the request
+    uint256 fee = entropy.getFeeV2();
 
     // Request the random number with the callback
-    uint64 sequenceNumber = entropy.requestWithCallback{ value: fee }(
-      entropyProvider,
-      userRandomNumber
-    );
+    uint64 sequenceNumber = entropy.requestV2{ value: fee }();
     // Store the sequence number to identify the callback request
   }
 
@@ -154,6 +117,7 @@ contract YourContract is IEntropyConsumer {
   // This method **must** be implemented on the same contract that requested the random number.
   // This method should **never** return an error -- if it returns an error, then the keeper will not be able to invoke the callback.
   // If you are having problems receiving the callback, the most likely cause is that the callback is erroring.
+  // TODO: point to debugger
   // See the callback debugging guide here to identify the error https://docs.pyth.network/entropy/debug-callback-failures
   function entropyCallback(
     uint64 sequenceNumber,
@@ -200,3 +164,20 @@ Check the [Current Fees](../current-fees) to find the current fee for each provi
 ### Best Practices
 
 Check out the [Best Practices](../best-practices) guide for tips to limit gas usage, or generate multiple random numbers in a single transaction.
+
+<Callout type="info">
+Entropy also requires selecting a **randomness provider**. The randomness provider is a third-party
+who participates in the generation process. Each provider is identified by an address and hosts
+a keeper service for fullfilling requests.
+
+The simplest way to choose a provider is to use the [default provider](../contract-addresses).
+The default provider for each contract and their corresponding URI is also listed in the
+[Entropy contract addresses](../contract-addresses).
+
+</Callout>
+
+You can also get the default provider's address by calling the [`getDefaultProvider`](https://github.com/pyth-network/pyth-crosschain/blob/f8ebeb6af31d98f94ce73edade6da2ebab7b2456/target_chains/ethereum/entropy_sdk/solidity/IEntropy.sol#L94) method:
+
+```solidity copy
+address provider = entropy.getDefaultProvider();
+```
