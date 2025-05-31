@@ -60,7 +60,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     explorer: "https://optimistic.etherscan.io/address/$ADDRESS",
     delay: "2 blocks",
     gasLimit: "500K",
-    rpc: "https://optimism.llamarpc.com",
+    rpc: "https://optimism.drpc.org",
     nativeCurrency: "ETH",
   },
   mode: {
@@ -145,7 +145,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     nativeCurrency: "ETH",
   },
   "optimism-sepolia": {
-    rpc: "https://api.zan.top/opt-sepolia",
+    rpc: "https://sepolia.optimism.io",
     network: "testnet",
     delay: "",
     address: "0x4821932D0CDd71225A6d914706A621e0389D7061",
@@ -213,7 +213,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
     delay: "1 block",
     gasLimit: "500K",
     network: "mainnet",
-    rpc: "https://rpc.mainnet.taiko.xyz",
+    rpc: "https://rpc.ankr.com/taiko",
     nativeCurrency: "ETH",
   },
   "etherlink-testnet": {
