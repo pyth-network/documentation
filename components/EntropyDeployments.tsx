@@ -381,7 +381,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   abstract: {
     address: "0x5a4a369F4db5df2054994AF031b7b23949b98c0e",
     explorer: "https://abscan.org/address/$ADDRESS",
-    delay: "1 block",
+    delay: "0 block",
     gasLimit: "500K",
     network: "mainnet",
     rpc: "https://api.mainnet.abs.xyz",
@@ -426,7 +426,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   unichain: {
     address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
     explorer: "https://unichain.blockscout.com/address/$ADDRESS",
-    delay: "0 block",
+    delay: "1 block",
     gasLimit: "500K",
     network: "mainnet",
     rpc: "https://mainnet.unichain.org",
