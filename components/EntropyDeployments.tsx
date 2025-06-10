@@ -93,7 +93,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "lightlink-pegasus": {
     rpc: "https://replicator.pegasus.lightlink.io/rpc/v1",
     network: "testnet",
-    delay: "",
+    delay: "1 block",
     address: "0x8250f4aF4B972684F7b336503E2D6dFeDeB1487a",
     explorer: "https://pegasus.lightlink.io/address/$ADDRESS",
     gasLimit: "500K",
@@ -102,7 +102,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "chiliz-spicy": {
     rpc: "https://spicy-rpc.chiliz.com",
     network: "testnet",
-    delay: "",
+    delay: "12 blocks",
     address: "0xD458261E832415CFd3BAE5E416FdF3230ce6F134",
     explorer: "https://spicy-explorer.chiliz.com/address/$ADDRESS",
     gasLimit: "500K",
@@ -111,7 +111,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "mode-sepolia": {
     rpc: "https://sepolia.mode.network/",
     network: "testnet",
-    delay: "",
+    delay: "2 blocks",
     address: "0x98046Bd286715D3B0BC227Dd7a956b83D8978603",
     explorer: "https://sepolia.explorer.mode.network/address/$ADDRESS",
     gasLimit: "500K",
@@ -120,7 +120,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "sei-evm-testnet": {
     rpc: "https://evm-rpc-testnet.sei-apis.com",
     network: "testnet",
-    delay: "",
+    delay: "1 block",
     address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
     explorer: "https://seitrace.com/address/$ADDRESS?chain=atlantic-2",
     gasLimit: "500K",
@@ -129,7 +129,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "arbitrum-sepolia": {
     rpc: "https://sepolia-rollup.arbitrum.io/rpc",
     network: "testnet",
-    delay: "",
+    delay: "6 blocks",
     address: "0x549Ebba8036Ab746611B4fFA1423eb0A4Df61440",
     explorer: "https://sepolia.arbiscan.io/address/$ADDRESS",
     gasLimit: "2.5M",
@@ -138,7 +138,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "blast-testnet": {
     rpc: "https://sepolia.blast.io",
     network: "testnet",
-    delay: "",
+    delay: "1 block",
     address: "0x98046Bd286715D3B0BC227Dd7a956b83D8978603",
     explorer: "https://testnet.blastscan.io/address/$ADDRESS",
     gasLimit: "500K",
@@ -147,7 +147,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "optimism-sepolia": {
     rpc: "https://sepolia.optimism.io",
     network: "testnet",
-    delay: "",
+    delay: "2 blocks",
     address: "0x4821932D0CDd71225A6d914706A621e0389D7061",
     explorer: "https://optimism-sepolia.blockscout.com/address/$ADDRESS",
     gasLimit: "500K",
@@ -156,7 +156,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "base-sepolia": {
     rpc: "https://sepolia.base.org",
     network: "testnet",
-    delay: "",
+    delay: "1 block",
     address: "0x41c9e39574F40Ad34c79f1C99B66A45eFB830d4c",
     explorer: "https://base-sepolia.blockscout.com/address/$ADDRESS",
     gasLimit: "500K",
@@ -165,7 +165,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "zetachain-testnet": {
     rpc: "https://zetachain-athens-evm.blockpi.network/v1/rpc/public",
     network: "testnet",
-    delay: "",
+    delay: "0 block",
     address: "0x4374e5a8b9C22271E9EB878A2AA31DE97DF15DAF",
     explorer: "https://explorer.zetachain.com/address/$ADDRESS",
     gasLimit: "500K",
@@ -174,7 +174,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "taiko-hekla": {
     rpc: "https://rpc.hekla.taiko.xyz/",
     network: "testnet",
-    delay: "",
+    delay: "1 block",
     address: "0x98046Bd286715D3B0BC227Dd7a956b83D8978603",
     explorer: "https://hekla.taikoscan.network/address/$ADDRESS",
     gasLimit: "500K",
@@ -201,7 +201,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "merlin-testnet": {
     address: "0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb",
     explorer: "https://testnet-scan.merlinchain.io/address/$ADDRESS",
-    delay: "",
+    delay: "1 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://testnet-rpc.merlinchain.io/",
@@ -219,7 +219,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "etherlink-testnet": {
     address: "0x23f0e8FAeE7bbb405E7A7C3d60138FCfd43d7509",
     explorer: "https://testnet.explorer.etherlink.com/address/$ADDRESS",
-    delay: "",
+    delay: "1 block",
     gasLimit: "15M",
     network: "testnet",
     rpc: "https://node.ghostnet.etherlink.com",
@@ -246,7 +246,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "kaia-testnet": {
     address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
     explorer: "https://kairos.kaiascan.io/address/$ADDRESS",
-    delay: "",
+    delay: "1 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://rpc.ankr.com/klaytn_testnet",
@@ -255,7 +255,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "tabi-testnet": {
     address: "0xEbe57e8045F2F230872523bbff7374986E45C486",
     explorer: "https://testnetv2.tabiscan.com/address/$ADDRESS",
-    delay: "",
+    delay: "1 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://rpc.testnetv2.tabichain.com",
@@ -264,7 +264,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "b3-testnet": {
     address: "0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb",
     explorer: "https://sepolia.explorer.b3.fun/address/$ADDRESS",
-    delay: "",
+    delay: "1 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://sepolia.b3.fun/http/",
@@ -282,7 +282,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "apechain-testnet": {
     address: "0x23f0e8FAeE7bbb405E7A7C3d60138FCfd43d7509",
     explorer: "https://curtis.explorer.caldera.xyz/address/$ADDRESS",
-    delay: "",
+    delay: "1 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://curtis.rpc.caldera.xyz/http",
@@ -291,7 +291,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "soneium-minato-testnet": {
     address: "0x23f0e8FAeE7bbb405E7A7C3d60138FCfd43d7509",
     explorer: "https://explorer-testnet.soneium.org/address/$ADDRESS",
-    delay: "",
+    delay: "1 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://rpc.minato.soneium.org/",
@@ -309,7 +309,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "sanko-testnet": {
     address: "0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb",
     explorer: "https://sanko-arb-sepolia.explorer.caldera.xyz/address/$ADDRESS",
-    delay: "",
+    delay: "1 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://sanko-arb-sepolia.rpc.caldera.xyz/http",
@@ -327,7 +327,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "abstract-testnet": {
     address: "0x858687fD592112f7046E394A3Bf10D0C11fF9e63",
     explorer: "https://explorer.testnet.abs.xyz/address/$ADDRESS",
-    delay: "",
+    delay: "1 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://api.testnet.abs.xyz",
@@ -336,7 +336,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "sonic-blaze-testnet": {
     address: "0xebe57e8045f2f230872523bbff7374986e45c486",
     explorer: "https://blaze.soniclabs.com/address/$ADDRESS",
-    delay: "",
+    delay: "1 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://rpc.blaze.soniclabs.com",
@@ -345,7 +345,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "unichain-sepolia": {
     address: "0x8D254a21b3C86D32F7179855531CE99164721933",
     explorer: "https://unichain-sepolia.blockscout.com/address/$ADDRESS",
-    delay: "",
+    delay: "1 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://sepolia.unichain.org",
@@ -363,7 +363,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "story-testnet": {
     address: "0x5744Cbf430D99456a0A8771208b674F27f8EF0Fb",
     explorer: "https://aeneid.storyscan.xyz/address/$ADDRESS",
-    delay: "",
+    delay: "0 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://aeneid.storyrpc.io",
@@ -372,7 +372,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "monad-testnet": {
     address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
     explorer: "https://testnet.monadexplorer.com/address/$ADDRESS",
-    delay: "",
+    delay: "2 blocks",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://testnet-rpc.monad.xyz",
@@ -399,7 +399,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "berachain-bepolia": {
     address: "0x36825bf3Fbdf5a29E2d5148bfe7Dcf7B5639e320",
     explorer: "https://bepolia.beratrail.io/address/$ADDRESS",
-    delay: "",
+    delay: "1 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://bepolia.rpc.berachain.com",
