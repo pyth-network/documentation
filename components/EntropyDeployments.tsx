@@ -255,7 +255,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "tabi-testnet": {
     address: "0xEbe57e8045F2F230872523bbff7374986E45C486",
     explorer: "https://testnetv2.tabiscan.com/address/$ADDRESS",
-    delay: "1 block",
+    delay: "0 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://rpc.testnetv2.tabichain.com",
@@ -327,7 +327,7 @@ export const EntropyDeployments: Record<string, EntropyDeployment> = {
   "abstract-testnet": {
     address: "0x858687fD592112f7046E394A3Bf10D0C11fF9e63",
     explorer: "https://explorer.testnet.abs.xyz/address/$ADDRESS",
-    delay: "1 block",
+    delay: "0 block",
     gasLimit: "500K",
     network: "testnet",
     rpc: "https://api.testnet.abs.xyz",
