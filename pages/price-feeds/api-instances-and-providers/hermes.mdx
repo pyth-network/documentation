@@ -22,9 +22,17 @@ URL: https://hermes-beta.pyth.network
 
 </Callout>
 
+### Rate limits
+
+In order to maximize the reliability of the Public Hermes API, a request rate limit is enforced.
+All endpoints limits are set at 30 requests every 10 seconds per IP address.
+Clients issuing request above the limit will receive a 429 (Too Many Requests) response for the subsequent 60-second period.
+
+
 For production deployments, developers integrating with Pyth Network are **strongly encouraged** to use Node Providers
 for maximum resilience and decentralization. Moreover, Hermes is designed to be self-hosted, so developers can run their own
-instance of Hermes to fetch Pyth price updates. Please note it is not recommended to use the public endpoint for production as it has rate limits.
+instance of Hermes to fetch Pyth price updates.
+
 
 ## Node Providers
 
