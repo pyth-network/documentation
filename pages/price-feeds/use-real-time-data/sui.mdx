@@ -106,9 +106,11 @@ public fun get_sui_price(
     assert!(price_id == testnet_sui_price_id, E_INVALID_ID);
 
     // Extract the price, decimal, and timestamp from the price struct and use them.
-    let decimal_i64 = price::get_expo(&price_struct);
+    let _decimal_i64 = price::get_expo(&price_struct);
     let price_i64 = price::get_price(&price_struct);
-    let timestamp_sec = price::get_timestamp(&price_struct);
+    let _timestamp_sec = price::get_timestamp(&price_struct);
+    
+    price_i64
 }
 ```
 
