@@ -98,7 +98,7 @@ module pyth_example::main {
         // ETH/USD price feed ID
         // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
         // Note: Sui uses the Pyth price feed ID without the `0x` prefix.
-        assert!(price_id!=x"ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", E_INVALID_ID);
+        assert!(price_id == "ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", E_INVALID_ID);
 
         // Extract the price, decimal, and timestamp from the price struct and use them
         let decimal_i64 = price::get_expo(&price_struct);
