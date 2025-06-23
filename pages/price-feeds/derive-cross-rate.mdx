@@ -1,6 +1,6 @@
 import { Callout } from "nextra/components";
 
-# Combine Two Price Feeds / Derive a Cross Rate
+# Derive Cross Rate
 
 This guide shows how to combine two price feeds to derive a cross rate. These are also known as "synthetic" price feeds.
 Cross rates or Synthetic Price feeds are useful for trading pairs that are not directly supported by Pyth.
@@ -20,7 +20,7 @@ $$
 
 ## Derive a cross rate
 
-Pyth provides [`deriveCrossRate`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/solidity/PythUtils.sol#L77) function to combine two price feeds.
+The Pyth Solidity SDKprovides [`deriveCrossRate`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/solidity/PythUtils.sol#L77) function to combine two price feeds.
 This method is available in [Pyth solidity SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/solidity).
 
 This method takes the following parameters:
@@ -34,13 +34,6 @@ This method takes the following parameters:
 Returns:
 
 - `crossRate`: The computed cross rate (a / c), scaled to targetExponent.
-
-### ⚠️ Things to Keep in Mind
-
-- The function reverts if either price is **negative**, or if any exponent is **less than -255**.
-- The result is rounded down. If the result is smaller than 1 in the given `targetExponent{:jsx}`, it will return 0.
-- Confidence intervals are not derived in this function. If needed, you have to derive them manually.
-- Reverts with `PythErrors.ExponentOverflow{:jsx}` if `targetExponent + expo1 - expo2{:jsx}` is outside the range **[-58, 58]**.
 
 ## Example
 
@@ -72,7 +65,7 @@ contract ExampleCrossRate {
     PythStructs.Price memory ethUsd = pyth.getPriceNoOlderThan(ethUsdId, 60);
     PythStructs.Price memory eurUsd = pyth.getPriceNoOlderThan(eurUsdId, 60);
 
-    // Derive ETH/EUR = ETH/USD ÷ EUR/USD
+    // Derive ETH/EUR = ETH/USD / EUR/USD
     int32 targetExpo = -8;
     int64 ethPerEur = PythUtils.deriveCrossRate(
       ethUsd.price,
@@ -85,8 +78,16 @@ contract ExampleCrossRate {
     return (ethPerEur, targetExpo);
   }
 }
-
 ```
+
+
+### ⚠️ Things to Keep in Mind
+
+- The function reverts if either price is **negative**, or if any exponent is **less than -255**.
+- The result is rounded down. If the result is smaller than 1 in the given `targetExponent{:jsx}`, it will return 0.
+- Confidence intervals are not derived in this function. If needed, you have to derive them manually.
+- Reverts with `PythErrors.ExponentOverflow{:jsx}` if `targetExponent + expo1 - expo2{:jsx}` is outside the range **[-58, 58]**.
+
 
 ## Additional Resources
 
