@@ -26,6 +26,7 @@
   "use-real-time-data": "Use Real-Time Price Data",
   "fetch-price-updates": "Fetch Price Updates",
   "schedule-price-updates": "Schedule Price Updates",
+  "combine-two-price-feeds": "Combine Two Price Feeds / Derive a Cross Rate",
   "migrate-an-app-to-pyth": "Migrate an App to Pyth",
   "use-pyth-for-morpho": "Use Pyth for Morpho Markets",
   "publish-data": "Publish Data",
