@@ -78,8 +78,8 @@ contract ExampleCrossRate {
     return (ethPerEur, targetExpo);
   }
 }
-```
 
+```
 
 ### ⚠️ Things to Keep in Mind
 
@@ -87,7 +87,6 @@ contract ExampleCrossRate {
 - The result is rounded down. If the result is smaller than 1 in the given `targetExponent{:jsx}`, it will return 0.
 - Confidence intervals are not derived in this function. If needed, you have to derive them manually.
 - Reverts with `PythErrors.ExponentOverflow{:jsx}` if `targetExponent + expo1 - expo2{:jsx}` is outside the range **[-58, 58]**.
-
 
 ## Additional Resources
 
