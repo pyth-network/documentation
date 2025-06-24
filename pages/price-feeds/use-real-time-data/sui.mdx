@@ -72,39 +72,45 @@ Pyth also provides a javascript SDK to construct transaction blocks that update 
 The code snippet below provides a general template for what your contract code should look like:
 
 ```rust {18} copy
-module pyth_example::main {
-    use sui::clock::Clock;
-    use pyth::price_info;
-    use pyth::price_identifier;
-    use pyth::price;
-    use pyth::pyth;
-    use pyth::price_info::PriceInfoObject;
+/// Module: oracle
+module oracle::oracle;
 
-    const E_INVALID_ID: u64 = 1;
+use sui::clock::Clock;
+use pyth::price_info;
+use pyth::price_identifier;
+use pyth::price;
+use pyth::i64::I64;
+use pyth::pyth;
+use pyth::price_info::PriceInfoObject;
 
-    public fun use_pyth_price(
-        // Other arguments
-        clock: &Clock,
-        price_info_object: &PriceInfoObject,
-    ){
-        let max_age = 60;
-        // Make sure the price is not older than max_age seconds
-        let price_struct = pyth::get_price_no_older_than(price_info_object,clock, max_age);
+const E_INVALID_ID: u64 = 1;
 
-        // Check the price feed ID
-        let price_info = price_info::get_price_info_from_price_info_object(price_info_object);
-        let price_id = price_identifier::get_bytes(&price_info::get_price_identifier(&price_info));
+public fun get_sui_price(
+    // Other arguments
+    clock: &Clock,
+    price_info_object: &PriceInfoObject,
+): I64 {
+    let max_age = 60;
 
-        // ETH/USD price feed ID
-        // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
-        // Note: Sui uses the Pyth price feed ID without the `0x` prefix.
-        assert!(price_id!=x"ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", E_INVALID_ID);
+    // Make sure the price is not older than max_age seconds
+    let price_struct = pyth::get_price_no_older_than(price_info_object, clock, max_age);
 
-        // Extract the price, decimal, and timestamp from the price struct and use them
-        let decimal_i64 = price::get_expo(&price_struct);
-        let price_i64 = price::get_price(&price_struct);
-        let timestamp_sec = price::get_timestamp(&price_struct);
-    }
+    // Check the price feed ID
+    let price_info = price_info::get_price_info_from_price_info_object(price_info_object);
+    let price_id = price_identifier::get_bytes(&price_info::get_price_identifier(&price_info));
+
+    // SUI/USD price feed ID
+    // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
+    // Note: Sui uses the Pyth price feed ID without the `0x` prefix.
+    let testnet_sui_price_id = x"50c67b3fd225db8912a424dd4baed60ffdde625ed2feaaf283724f9608fea266";
+    assert!(price_id == testnet_sui_price_id, E_INVALID_ID);
+
+    // Extract the price, decimal, and timestamp from the price struct and use them.
+    let _decimal_i64 = price::get_expo(&price_struct);
+    let price_i64 = price::get_price(&price_struct);
+    let _timestamp_sec = price::get_timestamp(&price_struct);
+
+    price_i64
 }
 ```
 
@@ -113,48 +119,86 @@ One can consume the price by calling `pyth::get_price` abovementioned or other u
 The code snippet below provides an example of how to update the Pyth price feeds:
 
 ```ts copy
-import { SuiPriceServiceConnection, SuiPythClient } from "@pythnetwork/pyth-sui-js";
-import { TransactionBlock } from "@mysten/sui.js";
+import {
+  SuiPythClient,
+  SuiPriceServiceConnection,
+} from "@pythnetwork/pyth-sui-js";
+import { SuiClient } from "@mysten/sui/client";
+import { Transaction } from "@mysten/sui/transactions";
+import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 
-// Get the Stable Hermes service URL from https://docs.pyth.network/price-feeds/api-instances-and-providers/hermes
-const connection = new SuiPriceServiceConnection("https://hermes-beta.pyth.network");
-
+/// Step 1: Get the off-chain data.
+const connection = new SuiPriceServiceConnection(
+  "https://hermes-beta.pyth.network", // [!] Only for Sui Testnet
+  // "https://hermes.pyth.network/", // Use this for Mainnet
+  {
+    // Provide this option to retrieve signed price updates for on-chain contracts!
+    priceFeedRequestConfig: {
+      binary: true,
+    },
+  }
+);
 const priceIDs = [
-  // You can find the IDs of prices at https://pyth.network/developers/price-feed-ids
-  "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", // BTC/USD price ID
-  "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", // ETH/USD price ID
+  // You can find the IDs of prices at:
+  // - https://pyth.network/developers/price-feed-ids for Mainnet
+  // - https://www.pyth.network/developers/price-feed-ids#beta for Testnet
+  "0x50c67b3fd225db8912a424dd4baed60ffdde625ed2feaaf283724f9608fea266", // SUI/USD price ID
 ];
-
 const priceUpdateData = await connection.getPriceFeedsUpdateData(priceIDs);
 
-// It is either injected from the browser or instantiated in the backend via some private key
-const wallet: SignerWithProvider = getWallet();
-// Get the state IDs of the Pyth and Wormhole contracts from
-// https://docs.pyth.network/price-feeds/contract-addresses/sui
-const wormholeStateId = "0x5306f64e312b581766351c07af79c72fcb1cd25147157fdc2f8ad76de9a3fb6a";
-const pythStateId = "0x1f9310238ee9298fb703c3419030b35b22bb1cc37113e3bb5007c99aec79e5b8";
+/// Step 2: Submit the new price on-chain and verify it using the contract.
+const suiClient = new SuiClient({ url: "https://fullnode.testnet.sui.io:443" });
 
-const client = new SuiPythClient(wallet.provider, pythStateId, wormholeStateId);
-const tx = new TransactionBlock();
-const priceInfoObjectIds = await client.updatePriceFeeds(tx, priceFeedUpdateData, priceIDs);
+// Fixed the StateIds using the CLI example extracting them from
+// here: https://docs.pyth.network/price-feeds/contract-addresses/sui
+const pythTestnetStateId =
+  "0x243759059f4c3111179da5878c12f68d612c21a8d54d85edc86164bb18be1c7c"; // Testnet
+const wormholeTestnetStateId =
+  "0x31358d198147da50db32eda2562951d53973a0c0ad5ed738e9b17d88b213d790"; // Testnet
 
-tx.moveCall({
-    target: `pyth_example::main::use_pyth_price`,
-    arguments: [
-        ..., // other arguments needed for your contract
-        tx.object(priceInfoObjectIds[0]),
-    ],
+const pythClient = new SuiPythClient(
+  suiClient,
+  pythTestnetStateId,
+  wormholeTestnetStateId
+);
+
+const transaction = new Transaction();
+
+/// By calling the updatePriceFeeds function, the SuiPythClient adds the necessary
+/// transactions to the transaction block to update the price feeds.
+const priceInfoObjectIds = await pythClient.updatePriceFeeds(
+  transaction,
+  priceUpdateData,
+  priceIDs
+);
+
+let suiPriceObjectId = priceInfoObjectIds[0];
+if (!suiPriceObjectId) {
+  throw new Error("suiPriceObjectId is undefined");
+}
+
+/// This is the package id that we receive after publishing `oracle` contract from the previous step.
+let testnetExampleContractPackageId =
+  "0x42d05111a160febe4144338647e0b7a80daea459c765c1e29a7a6198b235f67c";
+const CLOCK =
+  "0x0000000000000000000000000000000000000000000000000000000000000006";
+transaction.moveCall({
+  target: `${testnetExampleContractPackageId}::oracle::get_sui_price`,
+  arguments: [transaction.object(CLOCK), transaction.object(suiPriceObjectId)],
 });
+transaction.setGasBudget(1000000000);
 
-const txBlock = {
-    transactionBlock: tx,
-    options: {
-        showEffects: true,
-        showEvents: true,
-    },
-};
-
-const result = await wallet.signAndExecuteTransactionBlock(txBlock);
+const keypair = Ed25519Keypair.fromSecretKey(
+  process.env.ADMIN_SECRET_KEY!.toLowerCase()
+);
+const result = await suiClient.signAndExecuteTransaction({
+  transaction,
+  signer: keypair,
+  options: {
+    showEffects: true,
+    showEvents: true,
+  },
+});
 ```
 
 By calling the `updatePriceFeeds` function, the `SuiPythClient` adds the necessary transactions to the transaction block to update the price feeds.
@@ -190,7 +234,7 @@ export SUI_KEY=YOUR_PRIV_KEY;
 npm run example-relay -- --feed-id "5a035d5440f5c163069af66062bac6c79377bf88396fa27e6067bfca8096d280" \
 --hermes "https://hermes-beta.pyth.network" \
 --full-node "https://fullnode.testnet.sui.io:443" \
---pyth-state-id "0xd3e79c2c083b934e78b3bd58a490ec6b092561954da6e7322e1e2b3c8abfddc0" \
+--pyth-state-id "0x243759059f4c3111179da5878c12f68d612c21a8d54d85edc86164bb18be1c7c" \
 --wormhole-state-id "0x31358d198147da50db32eda2562951d53973a0c0ad5ed738e9b17d88b213d790"
 ```
 
