@@ -7,81 +7,133 @@ Unlike limit orders, market orders are created by users and need instant fulfilm
 ### Request Flow
 
 The following diagram illustrates the flow of a market order:
-![Market Orders Flow](./market-orders-flow.webp)
+![Market Orders Flow](images/express_relay/market-orders-flow.webp)
 
 ### Opportunity Structure
 
-Quote requests are broadcasted through the same websocket channel used for receiving other opportunities. Here is a sample payload:
+Quote requests are broadcast through the same WebSocket channel used for receiving other opportunities. To receive market order quote requests, you should subscribe to WebSocket updates; see the [WebSocket API reference](../websocket-api-reference.mdx) for more details.
+
+Here is a sample payload:
 
 ```jsx
 {
-  "opportunity_id": "44382da2-5971-453c-b647-2ba2317c7d56",
-  "creation_time": 1737219684914126,
-  "version": "v1",
-  "program": "swap",
-  "user_wallet_address": "FuBFy9TKJWxQdvramP8WTfvhVSm1h5dPiveTpyjAtwPd",
-  "permission_account": "DExvQJLGprLLHuNcoRgALtn24nqSc99yuuKexza768s8",
-  "router_account": "3hv8L8UeBbyM3M25dF3h2C5p8yA4FptD7FFZu4Z1jCMn",
-  "referral_fee_bps": 0,
-  "platform_fee_bps": 10,
-  "fee_token": "searcher_token",
-  "tokens": {
-    "side_specified": "user",
-    "searcher_token": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-    "user_token": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
-    "user_amount": 1000245,
-    "user_amount_including_fees": 1000245,
-    "token_program_searcher": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
-    "token_program_user": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+  'opportunity_id': '27dc5825-5b7f-4146-b00d-76be08a7139c',
+  'creation_time': 1751077051829889,
+  'version': 'v1',
+  'program': 'swap',
+  'user_wallet_address': '64Z52fmBUqAL6MFdC8garjrbvnV1w8iFGnGLWWbieYhc',
+  'user_mint_user_balance': 99999999979999552,
+  'permission_account': 'Hsto7eviBUvgFNS4KWRtVYRMnCcMHYEYMuq6YmBLkNJL',
+  'router_account': '69ib85nGQS2Hzr4tQ8twbkGh76gKFUfWJFeJfQ37R3hW',
+  'referral_fee_bps': 0,
+  'referral_fee_ppm': 0,
+  'platform_fee_bps': 10,
+  'platform_fee_ppm': 1000,
+  'fee_token': 'user_token',
+  'tokens': {
+    'side_specified': 'user',
+    'searcher_token': 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    'user_token': 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB',
+    'user_amount': 2218,
+    'user_amount_including_fees': 2220,
+    'token_program_searcher': 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+    'token_program_user': 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
   },
-  "token_account_initialization_configs": {
-    "user_ata_mint_searcher": "user_payer",
-    "user_ata_mint_user": "unneeded",
-    "router_fee_receiver_ta": "unneeded",
-    "relayer_fee_receiver_ata": "searcher_payer",
-    "express_relay_fee_receiver_ata": "searcher_payer"
+  'token_account_initialization_configs': {
+    'user_ata_mint_searcher': 'user_payer',
+    'user_ata_mint_user': 'unneeded',
+    'router_fee_receiver_ta': 'unneeded',
+    'relayer_fee_receiver_ata': 'unneeded',
+    'express_relay_fee_receiver_ata': 'unneeded'
   },
-  "chain_id": "solana"
+  'memo': 'memo',
+  'cancellable': True,
+  'minimum_deadline': 1751077057,
+  'profile_id': None,
+  'chain_id': 'solana'
 }
 ```
 
-In this example the user with wallet address `FuBFy9TKJWxQdvramP8WTfvhVSm1h5dPiveTpyjAtwPd` wants to sell 1.000000 USDT (`Es9vMF…`) in exchange for the maximum USDC (`EPjFWdd…`) possible.
+The user token refers to the token that the user puts in to the trade, while the searcher token refers to the token that the searcher contributes to the trade. In this example the user with wallet address `64Z52fmBUqAL6MFdC8garjrbvnV1w8iFGnGLWWbieYhc` wants to sell 1.000000 USDT (`Es9vMF…`) in exchange for the maximum USDC (`EPjFWdd…`) possible.
 
-The `side_specified` field in the opportunity shows whether the user has specified a certain amount for the token they are selling(`side_specified=user`) or the token they are buying(`side_specified=searcher`). Here is a sample payload when `side_specified` is `searcher`:
+The `side_specified` field in the opportunity shows whether the user has specified a certain amount for the token they are selling (`side_specified="user"`) or the token they are buying (`side_specified="searcher"`). Here is a sample payload when `side_specified` is `searcher`:
 
 ```jsx
 "tokens": {
     "side_specified": "searcher",
     "searcher_token": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
     "user_token": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
-    "searcher_amount": 1000000,
+    "searcher_amount": 4023,
     "token_program_searcher": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
     "token_program_user": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
 }
 ```
 
-This means the user wants to the send the least amount of USDT (`Es9vMF…`) to receive exactly 1.000000 USDC (`EPjFWdd…`).
+This means the user wants to receive the best possible quote--i.e. send the least amount of USDT (`Es9vMF…`)--to receive exactly 1.000000 USDC (`EPjFWdd…`).
 
 Other fields necessary for constructing the transaction include:
 
+- `user_wallet_address` The address of the counterparty in the trade. Should be included as a signer in the Express Relay program instruction
 - `fee_token` Whether the fees will be deducted from the searcher token or the user token
-
-  When `fee_token` is set to `user_token` the fees will be deducted from the token users provide. In this case `user_amount_including_fees > user_amount` but searchers will receive the `user_amount` in the end. You need still need to provide `user_amount_including_fees` to the contract as parameters for correct validation (SDK handles this automatically)
-
 - `router_account` The account receiving the referral fees
-- `referral_fee_bps` Amount of fees deduced from the swap in basis points
+- `permission_account` The account to be specified as the permission in the Express Relay program instruction
+- `referral_fee_bps` Amount of referral fees deducted from the swap in basis points
+- `referral_fee_ppm` Amount of referral fees deducted from the swap in parts per million (1 basis point = 100 parts per million)
+- `platform_fee_bps` Amount of platform fees deducted from the swap in basis points
+- `platform_fee_ppm` Amount of platform fees deducted from the swap in parts per million
 - `token_account_initialization_configs` Specifies which token accounts are required to be created in this transaction. Each of the internal fields represent one of the token accounts that potentially needs to be created.
   The value for each field can be one of the following: - `unneeded`: This token account already exists and no creation instructions are needed - `user_payer`: This token account should be created and the account storage can be paid by the user - `searcher_payer`: This token account should be created and the account storage must be paid by the searcher
+- `memo` A field indicating a string that should be included via a memo program instruction in the submitted transaction (SDK handles this automatically)
+- `cancellable` A boolean indicating whether the searcher's quote can be cancelled
+- `minimum_deadline` The minimum acceptable deadline for the quote, in seconds since the Unix epoch. The transaction must have a deadline greater than this value.
+
+#### Fee Token Dynamics
+
+There are four possible combinations of `side_specified` and `fee_token`, and the way searchers should handle each case differs. We cover them here for clarity:
+
+1. **side_specified = "user", fee_token = "user_token"**
+
+- The user specifies the amount of tokens they want to sell.
+- Fees are deducted from the user's token.
+- `user_amount_including_fees` is greater than `user_amount`.
+- The searcher receives `user_amount`.
+- You need still need to provide `user_amount_including_fees` to the contract as parameters for correct validation (SDK handles this automatically).
+
+2. **side_specified = "user", fee_token = "searcher_token"**
+
+- The user specifies the amount of tokens they want to sell.
+- Fees are deducted from the searcher's token.
+- `user_amount_including_fees` equals `user_amount`.
+- The searcher receives `user_amount`.
+
+3. **side_specified = "searcher", fee_token = "user_token"**
+
+- The user specifies the amount of tokens they want to receive.
+- Fees are deducted from the user's token.
+- The searcher provides the exact `searcher_amount`.
+- The searcher's quote should include the fact that fees will be taken from the user's token. For example, if the searcher is willing to receive 1000 tokens but there is a total fee of 10 bps, the searcher should quote 1001 tokens to include the 1 token fee.
+- Here, the searcher needs to specify in the Express Relay contract instruction the total amount that the user should pay inclusive of fees (SDK handles this automatically).
+
+4. **side_specified = "searcher", fee_token = "searcher_token"**
+
+- The user specifies the amount of tokens they want to receive.
+- Fees are deducted from the searcher's token.
+- The opportunity broadcast from the server will already include fees in the `searcher_amount` shown to searchers. So the searcher just needs to provide exactly `searcher_amount`.
+- The user receives the exact requested amount.
+
+Again, the SDK handles all four of these cases; refer to the logic and documentation therein.
+
+### Bid Submission
 
 The transaction containing the bid should include the following instructions:
 
-- A `setComputeUnitPrice` instruction to adjust priority fees (similar to limit order bids)
-- A set of instructions ensuring that the fee token accounts for the `user wallet` , `router`, `searcher` and the `protocol` exist. You can use the `createAssociatedTokenAccountIdempotentInstruction` instruction in the spl-token library to do this.
-- A single `swap` instruction calling the Pyth Express Relay program with the necessary accounts and data. If the input amount is already specified by user, you need to set the output amount and vice versa. This would essentially represent your bid or quote for the request.
+- A `setComputeUnitPrice` instruction to adjust priority fees (similar to limit order bids). Priority fees should be set in line with the [prioritization fee updates](../websocket-api-reference.mdx#prioritization-fees) broadcast from the server via WebSocket.
+- A set of instructions ensuring that the fee token accounts for the `user_wallet_address` , `router`, `searcher` and the `protocol` exist, as needed. You can use the `createAssociatedTokenAccountIdempotentInstruction` instruction in the spl-token library to do this.
+- A single `swap_v2` instruction calling the Pyth Express Relay program with the necessary accounts and data. If the input amount is already specified by user, you need to set the output amount and vice versa. This would essentially represent your bid or quote for the request.
 
-The SDKs provided will help you constructing these instructions. Please note that at the moment, these are the only instructions permitted in an swap transaction; if other types of instructions are included, the bid will not be accepted. This is for security reasons, and if you find that you need to use a different instruction not listed above please inform us. All calculations for fee distribution are done on-chain and nothing should be implemented in the SDKs or in your code.
+The SDKs provided will help you construct these instructions. Please note that at the moment, these are the only instructions permitted in an swap transaction; if other types of instructions are included, the bid will not be accepted. This is for security reasons, and if you find that you need to use a different instruction not listed above please inform us.
 
-The schema for swap bids include a partially signed transaction (with searcher as the fee payer, i.e. the first signature is the searchers) along with the `opportunity_id` received:
+The schema for swap bids includes a partially signed transaction (with searcher as the fee payer, i.e. the first signature is the searchers) along with the `opportunity_id` received:
 
 ```jsx
 {
@@ -92,30 +144,33 @@ The schema for swap bids include a partially signed transaction (with searcher a
 }
 ```
 
-You must include `opportunity_id` and `type` field in bids related to market orders.
+You must include `opportunity_id` and `type` field in bids related to market orders. Once the opportunity is created and broadcast, there is a window of 250 milliseconds that the server waits to receive bids. You must submit your bid within that window for it to be considered in the auction. Otherwise, if your bid arrives too late, the opportunity corresponding to the `opportunity_id` you provide will have expired, and you will receive the error message `No swap opportunity with the given id found`.
 
 The winner bid will be communicated to the users for the final signature and on-chain submission.
 
 ### Status Updates
 
-Bid status notifications will be sent in the same websocket channel. The bid status can have the following values:
+Bid status notifications will be sent in the same WebSocket channel. The bid status can have the following values:
 
 - `lost`: Bid was not high enough and another searcher won the auction.
 - `won` : Bid was submitted on-chain and is now confirmed and successful.
-- `failed`: Bid was submitted on-chain and is now confirmed but the transaction failed.
-- `expired`: Bid couldn’t land on-chain due to congestion.
+- `failed`: Bid was submitted on-chain but the transaction failed.
+- `expired`: Bid didn't land on-chain, either because the user didn't submit their signature or due to congestion.
 - `awaiting_signature`: Bid won the auction and is sent to the user. Waiting for user to sign the transaction.
-- `submitted`: User has signed the transaction and is now being submitted on-chain.
-- `sent_to_user_for_submission`: Waiting for the user to sign the transaction and submit it directly (only or non-cancellable requests).
+- `submitted`: User has signed the transaction, and the transaction is now being submitted on-chain.
+- `sent_to_user_for_submission`: Waiting for the user to sign the transaction and submit it directly (only for non-cancellable requests).
 - `submission_failed_cancelled`: The user submitted the signature but the searcher submitted a cancellation in the meantime, so the transaction will not be submitted on-chain. This will count towards the cancellation ratio of searchers.
 - `submission_failed_deadline_passed`: The user submitted the signature but it already passed the specified deadline, so it will not be submitted on-chain.
 
+Below is a thorough transition diagram that details the interactions among the different statuses.
+
+![B](images/express_relay/bid_status_diagram.png)
+
 ### Cancelling Bids
 
-Searchers are able to cancel their submitted bids for cancellable quotes as long as
-it’s not signed by the user (before step 6). This feature increases flexibility for more competitive pricing without additional risk of adverse selection.
-This functionality is available via the `cancel_bid` api.
-Here is a sample payload that can be sent via websocket:
+Searchers are able to cancel their submitted bids for quotes marked with `'cancellable': True` as long as the transactions are not signed by the user (before step 6 in the flow diagram above). This feature increases flexibility for more competitive pricing without additional risk of adverse selection.
+
+This functionality is available via the `cancel_bid` api. Here is a sample payload that can be sent via WebSocket:
 
 ```jsx
 {

@@ -221,6 +221,21 @@ Refer to the examples below:
 
 </Tabs>
 
+## Prioritization Fees
+
+For SVM chains, you will also receive `svm_chain_update` messages which include recent prioritization fee estimates needed for your transactions to land on chain. These prioritization fees will be specified in microlamports per compute unit; refer to [Solana docs](https://solana.com/developers/guides/advanced/how-to-use-priority-fees) to learn more about prioritization fees. The format for these updates is:
+
+```json
+{
+  "type": "svm_chain_update",
+  "update": {
+    "chain_id": "solana",
+    "blockhash": "PTgMRAF9GXRvYnWnpmDcX9gc1zesYV37kDjrax8kz3o",
+    "latest_prioritization_fee": 1000
+  }
+}
+```
+
 ## Connection Persistence
 
 The WebSocket server responds to ping messages according to WebSocket standards.
