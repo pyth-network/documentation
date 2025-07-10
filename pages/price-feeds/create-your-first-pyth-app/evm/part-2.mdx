@@ -244,7 +244,7 @@ async function run() {
   console.log(priceFeedUpdateData);
 
   const hash = await contract.write.updateAndMint(
-    [priceFeedUpdateData as any],
+    [[`0x${priceFeedUpdateData.binary.data[0]}`]] as any,
     { value: parseEther("0.0005") }
   );
   console.log("Transaction hash:");
