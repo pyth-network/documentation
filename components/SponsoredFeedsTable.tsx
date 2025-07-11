@@ -38,10 +38,13 @@ export const SponsoredFeedsTable = ({
   // Calculate table height based on number of items
   // Each row is approximately 40px (py-2 = 8px top + 8px bottom + content height)
   // Header is approximately 48px (py-2 = 8px top + 8px bottom + font height)
-  // Show 7 rows by default, then scroll
+  // Show 7 rows by default, then scroll - but maintain consistent minimum height
   const maxVisibleRows = 7;
   const shouldScroll = feeds.length > maxVisibleRows;
-  const tableHeight = shouldScroll ? `${48 + maxVisibleRows * 40}px` : "auto";
+  const rowHeight = 56; // Increased row height to account for actual content height
+  const headerHeight = 48; // Header height in pixels
+  const exactTableHeight = `${headerHeight + maxVisibleRows * rowHeight}px`; // Exact height for 7 rows
+  const tableHeight = shouldScroll ? exactTableHeight : "auto"; // Use exact height for scrollable tables
 
   return (
     <div className="my-6">
