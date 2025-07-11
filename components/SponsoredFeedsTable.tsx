@@ -5,22 +5,28 @@ interface SponsoredFeed {
   name: string;
   priceFeedId: string;
   updateParameters: string;
+  accountAddress?: string; // Optional field for Solana
 }
 
 interface SponsoredFeedsTableProps {
   feeds: SponsoredFeed[];
   networkName: string;
+  showAccountAddress?: boolean; // Optional prop to show account address column
 }
 
 export const SponsoredFeedsTable = ({
   feeds,
   networkName,
+  showAccountAddress = false,
 }: SponsoredFeedsTableProps) => {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  const copyToClipboard = (text: string) => {
+  const copyToClipboard = (
+    text: string,
+    type: "priceFeedId" | "accountAddress" = "priceFeedId"
+  ) => {
     navigator.clipboard.writeText(text).then(() => {
-      setCopiedId(text);
+      setCopiedId(`${type}-${text}`);
       setTimeout(() => setCopiedId(null), 2000);
     });
   };
@@ -41,10 +47,17 @@ export const SponsoredFeedsTable = ({
   // Show 7 rows by default, then scroll - but maintain consistent minimum height
   const maxVisibleRows = 7;
   const shouldScroll = feeds.length > maxVisibleRows;
-  const rowHeight = 56; // Increased row height to account for actual content height
+  const rowHeight = showAccountAddress ? 78 : 62; // Match actualRowHeight for consistency
   const headerHeight = 48; // Header height in pixels
   const exactTableHeight = `${headerHeight + maxVisibleRows * rowHeight}px`; // Exact height for 7 rows
   const tableHeight = shouldScroll ? exactTableHeight : "auto"; // Use exact height for scrollable tables
+
+  // Calculate actual visible rows based on table height
+  // Different layouts have different row heights due to content wrapping
+  const actualRowHeight = showAccountAddress ? 78 : 62; // Solana (4 cols) vs EVM (3 cols)
+  const actualVisibleRows = shouldScroll
+    ? Math.floor((parseInt(exactTableHeight) - headerHeight) / actualRowHeight)
+    : Math.min(feeds.length, maxVisibleRows);
 
   return (
     <div className="my-6">
@@ -87,21 +100,38 @@ export const SponsoredFeedsTable = ({
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
+        <div>
           <div
             className={`${shouldScroll ? "overflow-y-auto" : ""}`}
             style={{ height: tableHeight }}
           >
-            <table className="w-full text-sm min-w-full">
+            <table className="w-full text-sm table-fixed">
               <thead className="sticky top-0 bg-gray-50 dark:bg-gray-800 z-30">
                 <tr>
-                  <th className="text-left px-3 py-2 font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-600 min-w-[100px]">
+                  <th className="text-left px-3 py-2 font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-600 w-[15%] min-w-[120px]">
                     Name
                   </th>
-                  <th className="text-left px-3 py-2 font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-600 min-w-[400px]">
+                  {showAccountAddress && (
+                    <th className="text-left px-3 py-2 font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-600 w-[30%] min-w-[280px]">
+                      Account Address
+                    </th>
+                  )}
+                  <th
+                    className={`text-left px-3 py-2 font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-600 ${
+                      showAccountAddress
+                        ? "w-[35%] min-w-[320px]"
+                        : "w-[60%] min-w-[400px]"
+                    }`}
+                  >
                     Price Feed Id
                   </th>
-                  <th className="text-left px-3 py-2 font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-600 min-w-[200px]">
+                  <th
+                    className={`text-left px-3 py-2 font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-600 ${
+                      showAccountAddress
+                        ? "w-[20%] min-w-[180px]"
+                        : "w-[25%] min-w-[200px]"
+                    }`}
+                  >
                     Update Parameters
                   </th>
                 </tr>
@@ -128,6 +158,36 @@ export const SponsoredFeedsTable = ({
                           {feed.name}
                         </span>
                       </td>
+                      {showAccountAddress && (
+                        <td className="px-3 py-2 align-top">
+                          <div className="flex items-start gap-2">
+                            <code className="text-xs font-mono text-gray-600 dark:text-gray-400 flex-1 break-all leading-relaxed">
+                              {feed.accountAddress || "N/A"}
+                            </code>
+                            {feed.accountAddress && (
+                              <button
+                                onClick={() =>
+                                  copyToClipboard(
+                                    feed.accountAddress!,
+                                    "accountAddress"
+                                  )
+                                }
+                                className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded flex-shrink-0 mt-0.5"
+                                title="Copy Account Address"
+                              >
+                                {copiedId ===
+                                `accountAddress-${feed.accountAddress}` ? (
+                                  <span className="text-green-500 text-xs font-bold">
+                                    ✓
+                                  </span>
+                                ) : (
+                                  <CopyIcon className="w-3 h-3 text-gray-400" />
+                                )}
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      )}
                       <td className="px-3 py-2 align-top">
                         <div className="flex items-start gap-2">
                           <code className="text-xs font-mono text-gray-600 dark:text-gray-400 flex-1 break-all leading-relaxed">
@@ -138,7 +198,7 @@ export const SponsoredFeedsTable = ({
                             className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded flex-shrink-0 mt-0.5"
                             title="Copy Price Feed ID"
                           >
-                            {copiedId === feed.priceFeedId ? (
+                            {copiedId === `priceFeedId-${feed.priceFeedId}` ? (
                               <span className="text-green-500 text-xs font-bold">
                                 ✓
                               </span>
@@ -185,7 +245,7 @@ export const SponsoredFeedsTable = ({
         {/* Show count indicator when scrolling is needed */}
         {shouldScroll && (
           <div className="px-3 py-1 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-600 text-xs text-gray-500 text-center">
-            Showing {maxVisibleRows} of {feeds.length} feeds • Scroll to see
+            Showing {actualVisibleRows} of {feeds.length} feeds • Scroll to see
             more
           </div>
         )}
