@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CopyIcon from "./icons/CopyIcon";
+import { mapValues } from "../utils/ObjectHelpers";
 
 interface SponsoredFeed {
   name: string;
@@ -26,25 +27,16 @@ export const SponsoredFeedsTable = ({
   };
 
   // Calculate parameter statistics
-  const paramCounts = feeds.reduce((acc, feed) => {
-    acc[feed.updateParameters] = (acc[feed.updateParameters] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  const paramCounts = mapValues(
+    Object.groupBy(feeds, (feed) => feed.updateParameters),
+    (feeds: SponsoredFeed[]) => feeds.length
+  );
 
   const defaultParams = Object.entries(paramCounts).sort(
     ([, a], [, b]) => b - a
   )[0][0];
 
-  // Calculate table height based on number of items
-  // Each row is approximately 40px (py-2 = 8px top + 8px bottom + content height)
-  // Header is approximately 48px (py-2 = 8px top + 8px bottom + font height)
-  // Show 7 rows by default, then scroll - but maintain consistent minimum height
-  const maxVisibleRows = 7;
-  const shouldScroll = feeds.length > maxVisibleRows;
-  const rowHeight = 56; // Increased row height to account for actual content height
-  const headerHeight = 48; // Header height in pixels
-  const exactTableHeight = `${headerHeight + maxVisibleRows * rowHeight}px`; // Exact height for 7 rows
-  const tableHeight = shouldScroll ? exactTableHeight : "auto"; // Use exact height for scrollable tables
+  // CSS max-h-96 will handle scrolling automatically
 
   return (
     <div className="my-6">
@@ -88,10 +80,7 @@ export const SponsoredFeedsTable = ({
 
         {/* Table */}
         <div className="overflow-x-auto">
-          <div
-            className={`${shouldScroll ? "overflow-y-auto" : ""}`}
-            style={{ height: tableHeight }}
-          >
+          <div className="overflow-y-auto max-h-96">
             <table className="w-full text-sm min-w-full">
               <thead className="sticky top-0 bg-gray-50 dark:bg-gray-800 z-30">
                 <tr>
@@ -181,14 +170,6 @@ export const SponsoredFeedsTable = ({
             </table>
           </div>
         </div>
-
-        {/* Show count indicator when scrolling is needed */}
-        {shouldScroll && (
-          <div className="px-3 py-1 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-600 text-xs text-gray-500 text-center">
-            Showing {maxVisibleRows} of {feeds.length} feeds • Scroll to see
-            more
-          </div>
-        )}
       </div>
     </div>
   );
