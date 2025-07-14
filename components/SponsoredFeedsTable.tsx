@@ -128,20 +128,11 @@ export const SponsoredFeedsTable = ({
                     feed.updateParameters
                   );
                   const isDefault = formattedParams === defaultParams;
-                  const prevFeed = feeds[index - 1];
-                  const isFirstInGroup =
-                    !prevFeed ||
-                    formatUpdateParams(prevFeed.updateParameters) !==
-                      formattedParams;
 
                   return (
                     <tr
                       key={feed.priceFeedId}
-                      className={`border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/30 ${
-                        isFirstInGroup
-                          ? "sticky top-12 bg-white dark:bg-gray-900 z-20 shadow-sm"
-                          : ""
-                      }`}
+                      className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/30"
                     >
                       <td className="px-3 py-2 align-top">
                         <span className="font-medium text-gray-900 dark:text-gray-100">
@@ -169,14 +160,7 @@ export const SponsoredFeedsTable = ({
                         </div>
                       </td>
                       <td className="px-3 py-2 align-top">
-                        {isFirstInGroup ? (
-                          renderUpdateParams(feed.updateParameters, isDefault)
-                        ) : (
-                          <div className="flex items-start gap-1.5 text-gray-400 text-xs">
-                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-1 flex-shrink-0"></div>
-                            <span>Same as above</span>
-                          </div>
-                        )}
+                        {renderUpdateParams(feed.updateParameters, isDefault)}
                       </td>
                     </tr>
                   );
