@@ -143,6 +143,13 @@ const nextConfig = {
   },
   webpack: (config) => {
     config.resolve.fallback = { fs: false, net: false, tls: false };
+
+    // Add YAML loader
+    config.module.rules.push({
+      test: /\.ya?ml$/,
+      use: "yaml-loader",
+    });
+
     return config;
   },
 
