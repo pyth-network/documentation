@@ -38,7 +38,6 @@ const networkImports = {
 };
 
 // SponsoredFeed interface has the same structure as defined in deployment yaml files
-// Refer https://github.com/pyth-network/deployments/blob/main/environments/platform-green/hyperevm-price-pusher-mainnet/price-config.yaml
 interface SponsoredFeed {
   alias: string; // name of the feed
   id: string; // price feed id
