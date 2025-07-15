@@ -114,8 +114,8 @@ export const SponsoredFeedsTable = ({
       const importFn =
         networkImports[networkKey as keyof typeof networkImports];
       if (importFn) {
-        const module = await importFn();
-        setFeeds(module.default || []);
+        const feedsModule = await importFn();
+        setFeeds(feedsModule.default || []);
       }
     };
 
@@ -195,7 +195,7 @@ export const SponsoredFeedsTable = ({
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-900">
-                {feeds.map((feed, index) => {
+                {feeds.map((feed) => {
                   const formattedParams = formatUpdateParams(feed);
                   const isDefault = formattedParams === defaultParams;
 
