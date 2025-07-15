@@ -1,19 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CopyIcon from "./icons/CopyIcon";
 import { mapValues } from "../utils/ObjectHelpers";
-// Direct YAML import with webpack yaml-loader
-import sponsoredFeedsData from "../pages/price-feeds/sponsored-feeds/data/sponsored_feeds_by_network.yaml";
+import { useCopyToClipboard } from "../utils/useCopyToClipboard";
 
+// Import the data for each network. The data is in the form of a yaml file.
+const networkImports = {
+  ethereum_mainnet: () =>
+    import(
+      "../pages/price-feeds/sponsored-feeds/data/evm/ethereum_mainnet.yaml"
+    ),
+  base_mainnet: () =>
+    import("../pages/price-feeds/sponsored-feeds/data/evm/base_mainnet.yaml"),
+  berachain_mainnet: () =>
+    import(
+      "../pages/price-feeds/sponsored-feeds/data/evm/berachain_mainnet.yaml"
+    ),
+  hyperevm_mainnet: () =>
+    import(
+      "../pages/price-feeds/sponsored-feeds/data/evm/hyperevm_mainnet.yaml"
+    ),
+  kraken_mainnet: () =>
+    import("../pages/price-feeds/sponsored-feeds/data/evm/kraken_mainnet.yaml"),
+  unichain_mainnet: () =>
+    import(
+      "../pages/price-feeds/sponsored-feeds/data/evm/unichain_mainnet.yaml"
+    ),
+  sonic_mainnet: () =>
+    import("../pages/price-feeds/sponsored-feeds/data/evm/sonic_mainnet.yaml"),
+  optimism_sepolia: () =>
+    import(
+      "../pages/price-feeds/sponsored-feeds/data/evm/optimism_sepolia.yaml"
+    ),
+  unichain_sepolia: () =>
+    import(
+      "../pages/price-feeds/sponsored-feeds/data/evm/unichain_sepolia.yaml"
+    ),
+};
+
+// SponsoredFeed interface has the same structure as defined in deployment yaml files
+// Refer https://github.com/pyth-network/deployments/blob/main/environments/platform-green/hyperevm-price-pusher-mainnet/price-config.yaml
 interface SponsoredFeed {
   alias: string; // name of the feed
   id: string; // price feed id
   time_difference: number; // in seconds
   price_deviation: number;
   confidence_ratio: number;
-}
-
-interface SponsoredFeedsData {
-  [networkKey: string]: SponsoredFeed[];
 }
 
 interface SponsoredFeedsTableProps {
@@ -76,21 +107,24 @@ export const SponsoredFeedsTable = ({
   networkKey,
   networkName,
 }: SponsoredFeedsTableProps) => {
-  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [feeds, setFeeds] = useState<SponsoredFeed[]>([]);
+  const { copiedText, copyToClipboard } = useCopyToClipboard();
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopiedId(text);
-      setTimeout(() => setCopiedId(null), 2000);
-    });
-  };
+  useEffect(() => {
+    const loadFeeds = async () => {
+      const importFn =
+        networkImports[networkKey as keyof typeof networkImports];
+      if (importFn) {
+        const module = await importFn();
+        setFeeds(module.default || []);
+      }
+    };
 
-  // Load feeds from YAML data
-  const data = sponsoredFeedsData as SponsoredFeedsData;
-  const feeds = data[networkKey] || [];
+    loadFeeds();
+  }, [networkKey]);
 
   // Handle empty feeds
-  if (!feeds || feeds.length === 0) {
+  if (feeds.length === 0) {
     return (
       <div className="my-6">
         <p className="mb-3">
@@ -186,7 +220,7 @@ export const SponsoredFeedsTable = ({
                             className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded flex-shrink-0 mt-0.5"
                             title="Copy Price Feed ID"
                           >
-                            {copiedId === feed.id ? (
+                            {copiedText === feed.id ? (
                               <span className="text-green-500 text-xs font-bold">
                                 ✓
                               </span>
