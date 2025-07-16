@@ -143,13 +143,7 @@ const nextConfig = {
   },
   webpack: (config) => {
     config.resolve.fallback = { fs: false, net: false, tls: false };
-
-    // Add YAML loader
-    config.module.rules.push({
-      test: /\.ya?ml$/,
-      use: "yaml-loader",
-    });
-
+    // Remove YAML loader (no longer needed)
     return config;
   },
 
@@ -178,4 +172,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withNextra(nextConfig);
+module.exports = nextConfig;

@@ -68,7 +68,10 @@ const renderUpdateParams = (feed: SponsoredFeed, isDefault: boolean) => {
   );
 };
 
-export const SponsoredFeedsTable = ({ feeds, networkName }: SponsoredFeedsTableProps) => {
+export const SponsoredFeedsTable = ({
+  feeds,
+  networkName,
+}: SponsoredFeedsTableProps) => {
   const { copiedText, copyToClipboard } = useCopyToClipboard();
 
   // Handle empty feeds
