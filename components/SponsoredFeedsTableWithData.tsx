@@ -3,30 +3,7 @@ import CopyIcon from "./icons/CopyIcon";
 import { mapValues } from "../utils/ObjectHelpers";
 import { useCopyToClipboard } from "../utils/useCopyToClipboard";
 
-import ethereumMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/ethereum_mainnet.json";
-import baseMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/base_mainnet.json";
-import berachainMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/berachain_mainnet.json";
-import hyperevmMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/hyperevm_mainnet.json";
-import krakenMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/kraken_mainnet.json";
-import unichainMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/unichain_mainnet.json";
-import sonicMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/sonic_mainnet.json";
-import optimismSepolia from "../pages/price-feeds/sponsored-feeds/data/evm/optimism_sepolia.json";
-import unichainSepolia from "../pages/price-feeds/sponsored-feeds/data/evm/unichain_sepolia.json";
-
-// Map keys to imported data
-const networkFeeds: Record<string, SponsoredFeed[]> = {
-  ethereum_mainnet: ethereumMainnet,
-  base_mainnet: baseMainnet,
-  berachain_mainnet: berachainMainnet,
-  hyperevm_mainnet: hyperevmMainnet,
-  kraken_mainnet: krakenMainnet,
-  unichain_mainnet: unichainMainnet,
-  sonic_mainnet: sonicMainnet,
-  optimism_sepolia: optimismSepolia,
-  unichain_sepolia: unichainSepolia,
-};
-
-// SponsoredFeed interface has the same structure as defined in deployment yaml files
+// SponsoredFeed interface has the same structure as defined in deployment yaml/json files
 interface SponsoredFeed {
   alias: string; // name of the feed
   id: string; // price feed id
@@ -36,7 +13,7 @@ interface SponsoredFeed {
 }
 
 interface SponsoredFeedsTableProps {
-  networkKey: string;
+  feeds: SponsoredFeed[];
   networkName: string;
 }
 
@@ -91,11 +68,7 @@ const renderUpdateParams = (feed: SponsoredFeed, isDefault: boolean) => {
   );
 };
 
-export const SponsoredFeedsTable = ({
-  networkKey,
-  networkName,
-}: SponsoredFeedsTableProps) => {
-  const feeds = networkFeeds[networkKey] || [];
+export const SponsoredFeedsTable = ({ feeds, networkName }: SponsoredFeedsTableProps) => {
   const { copiedText, copyToClipboard } = useCopyToClipboard();
 
   // Handle empty feeds

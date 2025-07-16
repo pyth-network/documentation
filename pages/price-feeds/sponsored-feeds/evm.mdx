@@ -1,4 +1,13 @@
 import { SponsoredFeedsTable } from "../../../components/SponsoredFeedsTableWithData";
+import ethereumMainnet from "../sponsored-feeds/data/evm/ethereum_mainnet.json";
+import baseMainnet from "../sponsored-feeds/data/evm/base_mainnet.json";
+import berachainMainnet from "../sponsored-feeds/data/evm/berachain_mainnet.json";
+import hyperevmMainnet from "../sponsored-feeds/data/evm/hyperevm_mainnet.json";
+import krakenMainnet from "../sponsored-feeds/data/evm/kraken_mainnet.json";
+import unichainMainnet from "../sponsored-feeds/data/evm/unichain_mainnet.json";
+import sonicMainnet from "../sponsored-feeds/data/evm/sonic_mainnet.json";
+import optimismSepolia from "../sponsored-feeds/data/evm/optimism_sepolia.json";
+import unichainSepolia from "../sponsored-feeds/data/evm/unichain_sepolia.json";
 
 # Sponsored Feeds on EVM
 
@@ -16,54 +25,36 @@ The following EVM chains have sponsored price feeds:
 
 ## Ethereum Mainnet
 
-<SponsoredFeedsTable
-  networkKey="ethereum_mainnet"
-  networkName="Ethereum mainnet"
-/>
+<SponsoredFeedsTable feeds={ethereumMainnet} networkName="Ethereum mainnet" />
 
 ## Base Mainnet
 
-<SponsoredFeedsTable networkKey="base_mainnet" networkName="Base mainnet" />
+<SponsoredFeedsTable feeds={baseMainnet} networkName="Base mainnet" />
 
 ## Berachain Mainnet
 
-<SponsoredFeedsTable
-  networkKey="berachain_mainnet"
-  networkName="Berachain mainnet"
-/>
+<SponsoredFeedsTable feeds={berachainMainnet} networkName="Berachain mainnet" />
 
 ## HyperEVM Mainnet
 
-<SponsoredFeedsTable
-  networkKey="hyperevm_mainnet"
-  networkName="HyperEVM mainnet"
-/>
+<SponsoredFeedsTable feeds={hyperevmMainnet} networkName="HyperEVM mainnet" />
 
 ## Kraken Mainnet
 
-<SponsoredFeedsTable networkKey="kraken_mainnet" networkName="Kraken mainnet" />
+<SponsoredFeedsTable feeds={krakenMainnet} networkName="Kraken mainnet" />
 
 ## Unichain Mainnet
 
-<SponsoredFeedsTable
-  networkKey="unichain_mainnet"
-  networkName="Unichain mainnet"
-/>
+<SponsoredFeedsTable feeds={unichainMainnet} networkName="Unichain mainnet" />
 
 ## Sonic Mainnet
 
-<SponsoredFeedsTable networkKey="sonic_mainnet" networkName="Sonic mainnet" />
+<SponsoredFeedsTable feeds={sonicMainnet} networkName="Sonic mainnet" />
 
 ## Optimism Sepolia
 
-<SponsoredFeedsTable
-  networkKey="optimism_sepolia"
-  networkName="Optimism Sepolia"
-/>
+<SponsoredFeedsTable feeds={optimismSepolia} networkName="Optimism Sepolia" />
 
 ## Unichain Sepolia
 
-<SponsoredFeedsTable
-  networkKey="unichain_sepolia"
-  networkName="Unichain Sepolia"
-/>
+<SponsoredFeedsTable feeds={unichainSepolia} networkName="Unichain Sepolia" />
