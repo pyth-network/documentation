@@ -1,40 +1,29 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import CopyIcon from "./icons/CopyIcon";
 import { mapValues } from "../utils/ObjectHelpers";
 import { useCopyToClipboard } from "../utils/useCopyToClipboard";
 
-// Import the data for each network. The data is in the form of a yaml file.
-const networkImports = {
-  ethereum_mainnet: () =>
-    import(
-      "../pages/price-feeds/sponsored-feeds/data/evm/ethereum_mainnet.yaml"
-    ),
-  base_mainnet: () =>
-    import("../pages/price-feeds/sponsored-feeds/data/evm/base_mainnet.yaml"),
-  berachain_mainnet: () =>
-    import(
-      "../pages/price-feeds/sponsored-feeds/data/evm/berachain_mainnet.yaml"
-    ),
-  hyperevm_mainnet: () =>
-    import(
-      "../pages/price-feeds/sponsored-feeds/data/evm/hyperevm_mainnet.yaml"
-    ),
-  kraken_mainnet: () =>
-    import("../pages/price-feeds/sponsored-feeds/data/evm/kraken_mainnet.yaml"),
-  unichain_mainnet: () =>
-    import(
-      "../pages/price-feeds/sponsored-feeds/data/evm/unichain_mainnet.yaml"
-    ),
-  sonic_mainnet: () =>
-    import("../pages/price-feeds/sponsored-feeds/data/evm/sonic_mainnet.yaml"),
-  optimism_sepolia: () =>
-    import(
-      "../pages/price-feeds/sponsored-feeds/data/evm/optimism_sepolia.yaml"
-    ),
-  unichain_sepolia: () =>
-    import(
-      "../pages/price-feeds/sponsored-feeds/data/evm/unichain_sepolia.yaml"
-    ),
+import ethereumMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/ethereum_mainnet.json";
+import baseMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/base_mainnet.json";
+import berachainMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/berachain_mainnet.json";
+import hyperevmMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/hyperevm_mainnet.json";
+import krakenMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/kraken_mainnet.json";
+import unichainMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/unichain_mainnet.json";
+import sonicMainnet from "../pages/price-feeds/sponsored-feeds/data/evm/sonic_mainnet.json";
+import optimismSepolia from "../pages/price-feeds/sponsored-feeds/data/evm/optimism_sepolia.json";
+import unichainSepolia from "../pages/price-feeds/sponsored-feeds/data/evm/unichain_sepolia.json";
+
+// Map keys to imported data
+const networkFeeds: Record<string, SponsoredFeed[]> = {
+  ethereum_mainnet: ethereumMainnet,
+  base_mainnet: baseMainnet,
+  berachain_mainnet: berachainMainnet,
+  hyperevm_mainnet: hyperevmMainnet,
+  kraken_mainnet: krakenMainnet,
+  unichain_mainnet: unichainMainnet,
+  sonic_mainnet: sonicMainnet,
+  optimism_sepolia: optimismSepolia,
+  unichain_sepolia: unichainSepolia,
 };
 
 // SponsoredFeed interface has the same structure as defined in deployment yaml files
@@ -106,21 +95,8 @@ export const SponsoredFeedsTable = ({
   networkKey,
   networkName,
 }: SponsoredFeedsTableProps) => {
-  const [feeds, setFeeds] = useState<SponsoredFeed[]>([]);
+  const feeds = networkFeeds[networkKey] || [];
   const { copiedText, copyToClipboard } = useCopyToClipboard();
-
-  useEffect(() => {
-    const loadFeeds = async () => {
-      const importFn =
-        networkImports[networkKey as keyof typeof networkImports];
-      if (importFn) {
-        const feedsModule = await importFn();
-        setFeeds(feedsModule.default || []);
-      }
-    };
-
-    loadFeeds();
-  }, [networkKey]);
 
   // Handle empty feeds
   if (feeds.length === 0) {
