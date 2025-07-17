@@ -1,17 +1,15 @@
-import { useState } from "react";
+import React from "react";
 import CopyIcon from "./icons/CopyIcon";
 import { mapValues } from "../utils/ObjectHelpers";
+import { useCopyToClipboard } from "../utils/useCopyToClipboard";
 
-interface UpdateParameters {
-  heartbeatLength: number;
-  heartbeatUnit: "second" | "minute" | "hour";
-  priceDeviation: number;
-}
-
+// SponsoredFeed interface has the same structure as defined in deployment yaml/json files
 interface SponsoredFeed {
-  name: string;
-  priceFeedId: string;
-  updateParameters: UpdateParameters;
+  alias: string; // name of the feed
+  id: string; // price feed id
+  time_difference: number; // in seconds
+  price_deviation: number;
+  confidence_ratio: number;
 }
 
 interface SponsoredFeedsTableProps {
@@ -19,59 +17,105 @@ interface SponsoredFeedsTableProps {
   networkName: string;
 }
 
+interface UpdateParamsProps {
+  feed: SponsoredFeed;
+  isDefault: boolean;
+}
+
 /**
  * Helper functions
  */
+// Convert time_difference (seconds) to human readable format
+const formatTimeUnit = (seconds: number): { value: number; unit: string } => {
+  // @ts-expect-error - Intl.DurationFormat is not a standard type
+  const duration = new Intl.DurationFormat("en", {
+    style: "long",
+    numeric: "auto",
+  });
+  let durationObj: { hours?: number; minutes?: number; seconds?: number };
 
-// Format update parameters as a string for grouping
-const formatUpdateParams = (params: UpdateParameters): string => {
-  return `${params.heartbeatLength} ${params.heartbeatUnit} heartbeat / ${params.priceDeviation}% price deviation`;
+  if (seconds >= 3600) {
+    durationObj = { hours: Math.floor(seconds / 3600) };
+  } else if (seconds >= 60) {
+    durationObj = { minutes: Math.floor(seconds / 60) };
+  } else {
+    durationObj = { seconds };
+  }
+
+  const parts = duration.formatToParts(durationObj);
+  const intPart = parts.find((p: any) => p.type === "integer");
+  if (intPart) {
+    return { value: Number(intPart.value), unit: intPart.unit };
+  } else {
+    // fallback in case formatting fails
+    return { value: seconds, unit: "second" };
+  }
 };
 
-// Render update parameters with proper styling
-const renderUpdateParams = (params: UpdateParameters, isDefault: boolean) => (
-  <div className="flex items-start gap-1.5">
-    <div
-      className={`w-1.5 h-1.5 rounded-full mt-1 flex-shrink-0 ${
-        isDefault ? "bg-green-500" : "bg-orange-500"
-      }`}
-    ></div>
-    <span
-      className={`text-xs leading-relaxed font-medium ${
-        isDefault
-          ? "text-gray-700 dark:text-gray-300"
-          : "text-orange-600 dark:text-orange-400"
-      }`}
-    >
-      <strong>{params.heartbeatLength}</strong> {params.heartbeatUnit} heartbeat
-      <br />
-      <strong>{params.priceDeviation}%</strong> price deviation
-    </span>
-  </div>
-);
+// Format update parameters as a string for grouping
+const formatUpdateParams = (feed: SponsoredFeed): string => {
+  const timeFormat = formatTimeUnit(feed.time_difference);
+  const timeStr = `${timeFormat.value} ${timeFormat.unit}${
+    timeFormat.value !== 1 ? "s" : ""
+  }`;
+  return `${timeStr} heartbeat / ${feed.price_deviation}% price deviation`;
+};
+
+const UpdateParams = ({ feed, isDefault }: UpdateParamsProps) => {
+  const timeFormat = formatTimeUnit(feed.time_difference);
+  const timeStr =
+    timeFormat.value === 1 ? timeFormat.unit : `${timeFormat.unit}s`;
+
+  return (
+    <div className="flex items-start gap-1.5">
+      <div
+        className={`w-1.5 h-1.5 rounded-full mt-1 flex-shrink-0 ${
+          isDefault ? "bg-green-500" : "bg-orange-500"
+        }`}
+      ></div>
+      <span
+        className={`text-xs leading-relaxed font-medium ${
+          isDefault
+            ? "text-gray-700 dark:text-gray-300"
+            : "text-orange-600 dark:text-orange-400"
+        }`}
+      >
+        <strong>{timeFormat.value}</strong> {timeStr} heartbeat
+        <br />
+        <strong>{feed.price_deviation}%</strong> price deviation
+      </span>
+    </div>
+  );
+};
 
 export const SponsoredFeedsTable = ({
   feeds,
   networkName,
 }: SponsoredFeedsTableProps) => {
-  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const { copiedText, copyToClipboard } = useCopyToClipboard();
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopiedId(text);
-      setTimeout(() => setCopiedId(null), 2000);
-    });
-  };
+  // Handle empty feeds
+  if (feeds.length === 0) {
+    return (
+      <div className="my-6">
+        <p className="mb-3">
+          No sponsored price feeds are currently available for{" "}
+          <strong>{networkName}</strong>.
+        </p>
+      </div>
+    );
+  }
 
   // Calculate parameter statistics
   const paramCounts = mapValues(
-    Object.groupBy(feeds, (feed) => formatUpdateParams(feed.updateParameters)),
+    Object.groupBy(feeds, (feed) => formatUpdateParams(feed)),
     (feeds: SponsoredFeed[]) => feeds.length
   );
 
-  const defaultParams = Object.entries(paramCounts).sort(
+  const paramEntries = Object.entries(paramCounts).sort(
     ([, a], [, b]) => b - a
-  )[0][0];
+  );
+  const defaultParams = paramEntries.length > 0 ? paramEntries[0][0] : "";
 
   return (
     <div className="my-6">
@@ -123,33 +167,31 @@ export const SponsoredFeedsTable = ({
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-900">
-                {feeds.map((feed, index) => {
-                  const formattedParams = formatUpdateParams(
-                    feed.updateParameters
-                  );
+                {feeds.map((feed) => {
+                  const formattedParams = formatUpdateParams(feed);
                   const isDefault = formattedParams === defaultParams;
 
                   return (
                     <tr
-                      key={feed.priceFeedId}
+                      key={feed.id}
                       className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/30"
                     >
                       <td className="px-3 py-2 align-top">
                         <span className="font-medium text-gray-900 dark:text-gray-100">
-                          {feed.name}
+                          {feed.alias}
                         </span>
                       </td>
                       <td className="px-3 py-2 align-top">
                         <div className="flex items-start gap-2">
                           <code className="text-xs font-mono text-gray-600 dark:text-gray-400 flex-1 break-all leading-relaxed">
-                            {feed.priceFeedId}
+                            {feed.id}
                           </code>
                           <button
-                            onClick={() => copyToClipboard(feed.priceFeedId)}
+                            onClick={() => copyToClipboard(feed.id)}
                             className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded flex-shrink-0 mt-0.5"
                             title="Copy Price Feed ID"
                           >
-                            {copiedId === feed.priceFeedId ? (
+                            {copiedText === feed.id ? (
                               <span className="text-green-500 text-xs font-bold">
                                 ✓
                               </span>
@@ -160,7 +202,7 @@ export const SponsoredFeedsTable = ({
                         </div>
                       </td>
                       <td className="px-3 py-2 align-top">
-                        {renderUpdateParams(feed.updateParameters, isDefault)}
+                        <UpdateParams feed={feed} isDefault={isDefault} />
                       </td>
                     </tr>
                   );
