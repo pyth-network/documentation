@@ -2,6 +2,7 @@ import React from "react";
 import CopyIcon from "./icons/CopyIcon";
 import { mapValues } from "../utils/ObjectHelpers";
 import { useCopyToClipboard } from "../utils/useCopyToClipboard";
+import "@formatjs/intl-durationformat/polyfill";
 
 // SponsoredFeed interface has the same structure as defined in deployment yaml/json files
 interface SponsoredFeed {
@@ -27,11 +28,29 @@ interface UpdateParamsProps {
  */
 // Convert time_difference (seconds) to human readable format
 const formatTimeUnit = (seconds: number): { value: number; unit: string } => {
+  const duration = new (Intl as any).DurationFormat("en", {
+    style: "long",
+    numeric: "auto",
+  });
+  let durationObj: { hours?: number; minutes?: number; seconds?: number };
+
   if (seconds >= 3600) {
-    return { value: seconds / 3600, unit: "hour" };
+    durationObj = { hours: Math.floor(seconds / 3600) };
   } else if (seconds >= 60) {
-    return { value: seconds / 60, unit: "minute" };
+    durationObj = { minutes: Math.floor(seconds / 60) };
   } else {
+    durationObj = { seconds };
+  }
+
+  const formatted = duration.format(durationObj);
+  const match = formatted.match(/^([0-9]+)\s*(.*)$/);
+  if (match) {
+    return {
+      value: parseInt(match[1], 10),
+      unit: match[2].replace(/[0-9]/g, ""), // Remove any numbers from the unit
+    };
+  } else {
+    // fallback in case formatting fails
     return { value: seconds, unit: "second" };
   }
 };
