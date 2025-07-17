@@ -17,6 +17,11 @@ interface SponsoredFeedsTableProps {
   networkName: string;
 }
 
+interface UpdateParamsProps {
+  feed: SponsoredFeed;
+  isDefault: boolean;
+}
+
 /**
  * Helper functions
  */
@@ -40,8 +45,7 @@ const formatUpdateParams = (feed: SponsoredFeed): string => {
   return `${timeStr} heartbeat / ${feed.price_deviation}% price deviation`;
 };
 
-// Render update parameters with proper styling
-const renderUpdateParams = (feed: SponsoredFeed, isDefault: boolean) => {
+const UpdateParams: React.FC<UpdateParamsProps> = ({ feed, isDefault }) => {
   const timeFormat = formatTimeUnit(feed.time_difference);
   const timeStr =
     timeFormat.value === 1 ? timeFormat.unit : `${timeFormat.unit}s`;
@@ -182,7 +186,7 @@ export const SponsoredFeedsTable = ({
                         </div>
                       </td>
                       <td className="px-3 py-2 align-top">
-                        {renderUpdateParams(feed, isDefault)}
+                        <UpdateParams feed={feed} isDefault={isDefault} />
                       </td>
                     </tr>
                   );
