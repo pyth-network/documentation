@@ -62,7 +62,6 @@ To generate a random number, follow these steps.
 
 ### 1. Request a number from Entropy
 
-# TODO: fix links and events
 
 Invoke the [`requestV2`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropy.sol#L83) method of the `IEntropyV2` contract.
 The `requestV2` method requires paying a fee in native gas tokens which is configured per-provider.
@@ -80,10 +79,10 @@ function requestRandomNumber() external payable {
 
 ```
 
-This method returns a sequence number and emits a [`RequestedWithCallback`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/EntropyEvents.sol#L10) event. You can store this sequence number to identify the request in next step.
+This method returns a sequence number and emits a [`Requested`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/EntropyEventsV2.sol#L30) event. You can store this sequence number to identify the request in next step.
 
 Note that there are several variants of `requestV2` that allow the caller to configure the provider fulfilling the request and the gas limit for the callback.
-Please see the method documentation in the IEntropyV2 interface. TODO: link
+Please see the method documentation in the [IEntropyV2 interface](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropyV2.sol).
 
 ### 2. Implement the Entropy callback
 
@@ -117,7 +116,6 @@ contract YourContract is IEntropyConsumer {
   // This method **must** be implemented on the same contract that requested the random number.
   // This method should **never** return an error -- if it returns an error, then the keeper will not be able to invoke the callback.
   // If you are having problems receiving the callback, the most likely cause is that the callback is erroring.
-  // TODO: point to debugger
   // See the callback debugging guide here to identify the error https://docs.pyth.network/entropy/debug-callback-failures
   function entropyCallback(
     uint64 sequenceNumber,
