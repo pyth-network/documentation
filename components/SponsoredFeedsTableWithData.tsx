@@ -2,7 +2,6 @@ import React from "react";
 import CopyIcon from "./icons/CopyIcon";
 import { mapValues } from "../utils/ObjectHelpers";
 import { useCopyToClipboard } from "../utils/useCopyToClipboard";
-import "@formatjs/intl-durationformat/polyfill";
 
 // SponsoredFeed interface has the same structure as defined in deployment yaml/json files
 interface SponsoredFeed {
@@ -28,7 +27,8 @@ interface UpdateParamsProps {
  */
 // Convert time_difference (seconds) to human readable format
 const formatTimeUnit = (seconds: number): { value: number; unit: string } => {
-  const duration = new (Intl as any).DurationFormat("en", {
+  // @ts-expect-error - Intl.DurationFormat is not a standard type
+  const duration = new Intl.DurationFormat("en", {
     style: "long",
     numeric: "auto",
   });
@@ -61,7 +61,7 @@ const formatUpdateParams = (feed: SponsoredFeed): string => {
   return `${timeStr} heartbeat / ${feed.price_deviation}% price deviation`;
 };
 
-const UpdateParams: React.FC<UpdateParamsProps> = ({ feed, isDefault }) => {
+const UpdateParams = ({ feed, isDefault }: UpdateParamsProps) => {
   const timeFormat = formatTimeUnit(feed.time_difference);
   const timeStr =
     timeFormat.value === 1 ? timeFormat.unit : `${timeFormat.unit}s`;
