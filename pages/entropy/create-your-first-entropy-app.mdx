@@ -40,7 +40,7 @@ Create a new file `CoinFlip.sol` in `contracts/src` directory and add the follow
 ```solidity copy
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
-import "@pythnetwork/entropy-sdk-solidity/IEntropy.sol";
+import "@pythnetwork/entropy-sdk-solidity/IEntropyV2.sol";
 import "@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol";
 
 contract CoinFlip is IEntropyConsumer {
@@ -48,11 +48,9 @@ contract CoinFlip is IEntropyConsumer {
   event FlipResult(uint64 sequenceNumber, bool isHeads);
 
   IEntropy entropy;
-  address provider;
 
-  constructor(address _entropy, address _provider) {
+  constructor(address _entropy) {
     entropy = IEntropy(_entropy);
-    provider = _provider;
   }
 
   // This method is required by the IEntropyConsumer interface
@@ -63,7 +61,7 @@ contract CoinFlip is IEntropyConsumer {
 
 ```
 
-The code implements a`CoinFlip` contract which inherits the `IEntropyConsumer` interface. We have also defined some events, properties and a constructor to instantiate the contract. One of the properties is of type `IEntropy` which is an interface imported from the Entropy SDK. The constructor also takes a `provider` argument. We will see how to populate these later.
+The code implements a`CoinFlip` contract which inherits the `IEntropyConsumer` interface. We have also defined some events, properties and a constructor to instantiate the contract. One of the properties is of type `IEntropy` which is an interface imported from the Entropy SDK.
 
 ### Request a coin flip
 
@@ -73,17 +71,14 @@ Copy the following code into `CoinFlip.sol`.
 contract CoinFlip {
   // ... prior code omitted
 
-  function request(bytes32 userRandomNumber) external payable {
+  function request() external payable {
     // get the required fee
-    uint128 requestFee = entropy.getFee(provider);
+    uint128 requestFee = entropy.getFeeV2();
     // check if the user has sent enough fees
     if (msg.value < requestFee) revert("not enough fees");
 
     // pay the fees and request a random number from entropy
-    uint64 sequenceNumber = entropy.requestWithCallback{ value: requestFee }(
-      provider,
-      userRandomNumber
-    );
+    uint64 sequenceNumber = entropy.requestV2{ value: requestFee }();
 
     // emit event
     emit FlipRequested(sequenceNumber);
@@ -92,7 +87,7 @@ contract CoinFlip {
 
 ```
 
-Users will invoke the `request` method to initiate a coin flip with a request fee and passes in a `userRandomNumber` argument — we’ll see how to generate this later. The method first retrieves the fee required to request a random number from Entropy. It then include the fee in the `requestWithCallback` method call to entropy. Finally, the method emits a `FlipRequested` event with a `sequenceNumber`. This event is also defined in the code snippet above.
+Users will invoke the `request` method to initiate a coin flip, paying a fee in the process. The method first retrieves the fee required to request a random number from Entropy. It then includes the fee in the `requestV2` method call to Entropy. Finally, the method emits a `FlipRequested` event with a `sequenceNumber`. This event is also defined in the code snippet above.
 
 ### Handle the callback
 
@@ -119,7 +114,7 @@ contract CoinFlip {
 ```
 
 Implement `entropyCallback` method which is required by the `IEntropyConsumer` Interface. Entropy calls back this method to fulfill a request. Entropy will call back this
-method with the `sequenceNumber` of the request, the `providerAddress` from which the random number was requested and the generated `randomNumber`.
+method with the `sequenceNumber` of the request, the `_providerAddress` from which the random number was requested and the generated `randomNumber`.
 Finally, the method emits a `FlipResult` event with the result of the flip.
 
 Yay! you have successfully implemented a coin flip contract.
@@ -158,7 +153,6 @@ The final step before deploying is to get the arguments for the contract's const
 
 ```bash copy
 export ENTROPY_ADDRESS=0x4821932D0CDd71225A6d914706A621e0389D7061
-export PROVIDER_ADDRESS=0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344
 ```
 
 Finally, let's deploy the contracts. Run the following command:
@@ -167,7 +161,7 @@ Finally, let's deploy the contracts. Run the following command:
 forge create src/CoinFlip.sol:CoinFlip \
 --private-key $PRIVATE_KEY \
 --rpc-url $RPC_URL \
---constructor-args $ENTROPY_ADDRESS $PROVIDER_ADDRESS
+--constructor-args $ENTROPY_ADDRESS
 ```
 
 You should see an output similar to:
@@ -206,7 +200,7 @@ Create a `script.js` file in `app` and add the following code to the script.
 ```javascript copy
 const { Web3 } = require("web3");
 const CoinFlipAbi = require("../contracts/out/CoinFlip.sol/CoinFlip.json");
-const EntropyAbi = require("@pythnetwork/entropy-sdk-solidity/abis/IEntropy.json");
+const EntropyAbi = require("@pythnetwork/entropy-sdk-solidity/abis/IEntropyV2.json");
 
 async function main() {
   const web3 = new Web3(process.env["RPC_URL"]);
@@ -240,14 +234,11 @@ async main() {
 
   // Request a random number
 
-  // Generate user random number
-  const userRandomNumber = web3.utils.randomHex(32);
-
-  const fee = await entropyContract.methods.getFee(process.env["PROVIDER_ADDRESS"]).call()
+  const fee = await entropyContract.methods.getFeeV2().call()
   console.log(`fee         : ${fee}`);
 
   const requestReceipt = await coinFlipContract.methods
-    .request(userRandomNumber)
+    .request()
     .send({
       value: fee,
       from: address,
@@ -309,7 +300,7 @@ sequence    : 42
 result      : Tails
 ```
 
-Note that: the script can fail due to some rpc issues. You can run the script again to get the expected result.
+Note that: the script can fail due to transient RPC issues. You can run the script again to get the expected result.
 
 ## Next Steps
 
