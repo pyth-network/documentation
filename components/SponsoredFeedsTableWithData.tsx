@@ -42,13 +42,10 @@ const formatTimeUnit = (seconds: number): { value: number; unit: string } => {
     durationObj = { seconds };
   }
 
-  const formatted = duration.format(durationObj);
-  const match = formatted.match(/^([0-9]+)\s*(.*)$/);
-  if (match) {
-    return {
-      value: parseInt(match[1], 10),
-      unit: match[2].replace(/[0-9]/g, ""), // Remove any numbers from the unit
-    };
+  const parts = duration.formatToParts(durationObj);
+  const intPart = parts.find((p: any) => p.type === "integer");
+  if (intPart) {
+    return { value: Number(intPart.value), unit: intPart.unit };
   } else {
     // fallback in case formatting fails
     return { value: seconds, unit: "second" };
