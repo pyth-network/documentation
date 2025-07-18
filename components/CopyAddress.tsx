@@ -31,7 +31,7 @@ const CopyAddress = ({ address, url }: { address: string; url?: string }) => {
         )}
       </span>
       {isCopied ? (
-        <span className="text-green-500 text-xs font-bold ml-1">✓</span>
+        <span className="text-green-500 text-xs font-bold">✓</span>
       ) : (
         <CopyIcon className="shrink-0" />
       )}
