@@ -1,11 +1,12 @@
 import { SponsoredFeedsTable } from "../../../components/SponsoredFeedsTableWithData";
-import ethereumMainnet from "../sponsored-feeds/data/evm/ethereum_mainnet.json";
+import arbitrumMainnet from "../sponsored-feeds/data/evm/arbitrum_mainnet.json";
 import baseMainnet from "../sponsored-feeds/data/evm/base_mainnet.json";
 import berachainMainnet from "../sponsored-feeds/data/evm/berachain_mainnet.json";
+import ethereumMainnet from "../sponsored-feeds/data/evm/ethereum_mainnet.json";
 import hyperevmMainnet from "../sponsored-feeds/data/evm/hyperevm_mainnet.json";
 import krakenMainnet from "../sponsored-feeds/data/evm/kraken_mainnet.json";
-import unichainMainnet from "../sponsored-feeds/data/evm/unichain_mainnet.json";
 import sonicMainnet from "../sponsored-feeds/data/evm/sonic_mainnet.json";
+import unichainMainnet from "../sponsored-feeds/data/evm/unichain_mainnet.json";
 import optimismSepolia from "../sponsored-feeds/data/evm/optimism_sepolia.json";
 import unichainSepolia from "../sponsored-feeds/data/evm/unichain_sepolia.json";
 
@@ -13,19 +14,20 @@ import unichainSepolia from "../sponsored-feeds/data/evm/unichain_sepolia.json";
 
 The following EVM chains have sponsored price feeds:
 
-- [Ethereum Mainnet](#ethereum-mainnet)
+- [Arbitrum Mainnet](#arbitrum-mainnet)
 - [Base Mainnet](#base-mainnet)
 - [Berachain Mainnet](#berachain-mainnet)
+- [Ethereum Mainnet](#ethereum-mainnet)
 - [HyperEVM Mainnet](#hyperevm-mainnet)
 - [Kraken Mainnet](#kraken-mainnet)
-- [Unichain Mainnet](#unichain-mainnet)
 - [Sonic Mainnet](#sonic-mainnet)
+- [Unichain Mainnet](#unichain-mainnet)
 - [Optimism Sepolia](#optimism-sepolia)
 - [Unichain Sepolia](#unichain-sepolia)
 
-## Ethereum Mainnet
+## Arbitrum Mainnet
 
-<SponsoredFeedsTable feeds={ethereumMainnet} networkName="Ethereum mainnet" />
+<SponsoredFeedsTable feeds={arbitrumMainnet} networkName="Arbitrum mainnet" />
 
 ## Base Mainnet
 
@@ -35,6 +37,10 @@ The following EVM chains have sponsored price feeds:
 
 <SponsoredFeedsTable feeds={berachainMainnet} networkName="Berachain mainnet" />
 
+## Ethereum Mainnet
+
+<SponsoredFeedsTable feeds={ethereumMainnet} networkName="Ethereum mainnet" />
+
 ## HyperEVM Mainnet
 
 <SponsoredFeedsTable feeds={hyperevmMainnet} networkName="HyperEVM mainnet" />
@@ -43,13 +49,13 @@ The following EVM chains have sponsored price feeds:
 
 <SponsoredFeedsTable feeds={krakenMainnet} networkName="Kraken mainnet" />
 
-## Unichain Mainnet
-
-<SponsoredFeedsTable feeds={unichainMainnet} networkName="Unichain mainnet" />
-
 ## Sonic Mainnet
 
 <SponsoredFeedsTable feeds={sonicMainnet} networkName="Sonic mainnet" />
+
+## Unichain Mainnet
+
+<SponsoredFeedsTable feeds={unichainMainnet} networkName="Unichain mainnet" />
 
 ## Optimism Sepolia
 
