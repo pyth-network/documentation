@@ -1,17 +1,8 @@
-import CopyIcon from "./icons/CopyIcon";
-import { useCopyToClipboard } from "../utils/useCopyToClipboard";
+import CopyButton from "./CopyButton";
 
 const CopyAddress = ({ address, url }: { address: string; url?: string }) => {
-  const { copiedText, copyToClipboard } = useCopyToClipboard();
-  const isCopied = copiedText === address;
-
   return (
-    <div
-      className="-ml-1 inline-flex cursor-pointer items-center px-1 font-mono hover:bg-light hover:text-dark dark:hover:bg-dark dark:hover:text-light"
-      onClick={() => {
-        copyToClipboard(address);
-      }}
-    >
+    <CopyButton value={address} className="-ml-1">
       <span className="mr-2 hidden lg:block">
         {url ? (
           <a href={url} target="_blank" rel="noopener noreferrer">
@@ -30,12 +21,7 @@ const CopyAddress = ({ address, url }: { address: string; url?: string }) => {
           address.slice(0, 6) + "..." + address.slice(-6)
         )}
       </span>
-      {isCopied ? (
-        <span className="text-green-500 text-xs font-bold">✓</span>
-      ) : (
-        <CopyIcon className="shrink-0" />
-      )}
-    </div>
+    </CopyButton>
   );
 };
 

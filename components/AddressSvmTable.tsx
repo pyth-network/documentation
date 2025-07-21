@@ -1,5 +1,4 @@
-import copy from "copy-to-clipboard";
-import CopyIcon from "./icons/CopyIcon";
+import CopyButton from "./CopyButton";
 import { StyledTd } from "./Table";
 
 const AddressSvmTable = ({
@@ -34,13 +33,7 @@ const AddressSvmTable = ({
                     {value}
                   </code>
                 )}
-
-                <button
-                  onClick={() => copy(value)}
-                  className="p-1 hover:bg-light dark:hover:bg-dark rounded"
-                >
-                  <CopyIcon className="shrink-0" />
-                </button>
+                <CopyButton value={value} className="ml-2" />
               </StyledTd>
             </tr>
           );
