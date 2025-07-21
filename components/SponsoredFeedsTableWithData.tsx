@@ -193,7 +193,7 @@ export const SponsoredFeedsTable = ({
                         <td className="px-3 py-2 align-top">
                           {feed.account_address ? (
                             <div className="flex items-start gap-2">
-                              <code className="text-xs font-mono text-gray-600 dark:text-gray-400 flex-1 break-all leading-relaxed">
+                              <code className="text-xs font-mono text-gray-600 dark:text-gray-400 break-all leading-relaxed">
                                 {feed.account_address}
                               </code>
                               <button
