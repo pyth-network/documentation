@@ -1,12 +1,12 @@
 import { Callout, Tabs, Steps } from "nextra/components";
 
-# Integrate Pyth Lazer as a Consumer on Solana
+# Integrate Pyth Lazer as a Consumer on Solana and Fogo
 
-This guide is intended to serve users who wants to consume prices from the Pyth Lazer on **Solana**.
+This guide is intended to serve users who wants to consume prices from the Pyth Lazer on **Solana and Fogo**.
 
 Integrating with Pyth Lazer in smart contracts as a consumer is a three-step process:
 
-1. **Use** Pyth Lazer SDK into Solana smart contracts to parse the price updates.
+1. **Use** Pyth Lazer SDK into SVM smart contracts to parse the price updates.
 2. **Subscribe** to Pyth Lazer websocket to receive price updates on backend or frontend.
 3. **Include** the price updates into the smart contract transactions.
 
@@ -14,7 +14,8 @@ Integrating with Pyth Lazer in smart contracts as a consumer is a three-step pro
 
 ### Use Pyth Lazer SDK in smart contracts
 
-Pyth Lazer provides a [Solana SDK](https://docs.rs/pyth-lazer-solana-contract/latest/pyth_lazer_solana_contract/), which allows consumers to parse and verify the price updates on Solana-compatible chains.
+Pyth Lazer provides a [Solana SDK](https://docs.rs/pyth-lazer-solana-contract/latest/pyth_lazer_solana_contract/),
+which allows consumers to parse and verify the price updates on Solana-compatible chains (such as Fogo).
 
 To start, add the following to your `Cargo.toml` file (please check the current latest version at [crates.io](https://crates.io/crates/pyth-lazer-solana-contract)):
 
@@ -43,7 +44,7 @@ You may also add any other accounts your contract needs.
   Github](https://github.com/pyth-network/pyth-examples/tree/main/lazer/solana).
 </Callout>
 
-The following code can be used to set up a new instruction within a Solana contract:
+The following code can be used to set up a new instruction within a SVM contract:
 
 ```rust copy
 use num_derive::FromPrimitive;
@@ -153,12 +154,12 @@ invoke(
 ```
 
 <Callout type="info" icon="💡">
-  Note: When using native ed25519 signatures on Solana, we must use the built-in
-  ed25519 program provided by the Solana runtime. This program can't be invoked
+  Note: When using native ed25519 signatures on SVM, we must use the built-in
+  ed25519 program provided by the SVM runtime. This program can't be invoked
   from another contract. Instead, it must be called in an explicit instruction
   within the submitted transaction. This means that the sender of the
   transaction must include that instruction in the transaction. Our SDK
-  leverages Solana runtime capabilities to ensure the ed25519 program has been
+  leverages SVM runtime capabilities to ensure the ed25519 program has been
   correctly called in the transaction.
 </Callout>
 
@@ -267,7 +268,7 @@ let mut tx = Transaction::new_with_payer(
 
 ## Additional Resources
 
-You may find these additional resources helpful for integrating Pyth Lazer into your Solana smart contracts.
+You may find these additional resources helpful for integrating Pyth Lazer into your SVM smart contracts.
 
 ### Price Feed IDs
 
