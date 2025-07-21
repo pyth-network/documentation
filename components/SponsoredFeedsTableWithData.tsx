@@ -198,6 +198,7 @@ export const SponsoredFeedsTable = ({
                               </code>
                               <button
                                 onClick={() =>
+                                  feed.account_address &&
                                   copyToClipboard(feed.account_address)
                                 }
                                 className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded flex-shrink-0 mt-0.5"
