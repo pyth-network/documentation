@@ -193,22 +193,10 @@ export const SponsoredFeedsTable = ({
                               <code className="text-xs font-mono text-gray-600 dark:text-gray-400 break-all leading-relaxed">
                                 {feed.account_address}
                               </code>
-                              <button
-                                onClick={() =>
-                                  feed.account_address &&
-                                  copyToClipboard(feed.account_address)
-                                }
-                                className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded flex-shrink-0 mt-0.5"
-                                title="Copy Account Address"
-                              >
-                                {copiedText === feed.account_address ? (
-                                  <span className="text-green-500 text-xs font-bold">
-                                    ✓
-                                  </span>
-                                ) : (
-                                  <CopyIcon className="w-3 h-3 text-gray-400" />
-                                )}
-                              </button>
+                              <CopyButton
+                                value={feed.account_address}
+                                className="ml-2"
+                              />
                             </div>
                           ) : null}
                         </td>
