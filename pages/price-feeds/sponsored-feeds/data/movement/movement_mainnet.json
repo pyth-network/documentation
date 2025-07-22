@@ -77,13 +77,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "LBTC/BTC.RR",
-    "id": "bade5c63f281d36a13dbb64ed0ae1c532a434b6771b11885f396a41f56cc3bd0",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "ETH/USD",
     "id": "ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
     "time_difference": 3600,
