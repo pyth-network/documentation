@@ -91,13 +91,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "LBTC/BTC.RR",
-    "id": "bade5c63f281d36a13dbb64ed0ae1c532a434b6771b11885f396a41f56cc3bd0",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "CBBTC/USD",
     "id": "2817d7bfe5c64b8ea956e9a26f573ef64e72e4d7891f2d6af9bcc93f7aff9a97",
     "time_difference": 3600,
