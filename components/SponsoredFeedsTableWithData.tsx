@@ -1,7 +1,6 @@
 import React from "react";
-import CopyIcon from "./icons/CopyIcon";
+import CopyButton from "./CopyButton";
 import { mapValues } from "../utils/ObjectHelpers";
-import { useCopyToClipboard } from "../utils/useCopyToClipboard";
 
 // SponsoredFeed interface has the same structure as defined in deployment yaml/json files
 interface SponsoredFeed {
@@ -93,8 +92,6 @@ export const SponsoredFeedsTable = ({
   feeds,
   networkName,
 }: SponsoredFeedsTableProps) => {
-  const { copiedText, copyToClipboard } = useCopyToClipboard();
-
   // Handle empty feeds
   if (feeds.length === 0) {
     return (
@@ -221,19 +218,7 @@ export const SponsoredFeedsTable = ({
                           <code className="text-xs font-mono text-gray-600 dark:text-gray-400 flex-1 break-all leading-relaxed">
                             {feed.id}
                           </code>
-                          <button
-                            onClick={() => copyToClipboard(feed.id)}
-                            className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded flex-shrink-0 mt-0.5"
-                            title="Copy Price Feed ID"
-                          >
-                            {copiedText === feed.id ? (
-                              <span className="text-green-500 text-xs font-bold">
-                                ✓
-                              </span>
-                            ) : (
-                              <CopyIcon className="w-3 h-3 text-gray-400" />
-                            )}
-                          </button>
+                          <CopyButton value={feed.id} className="ml-2" />
                         </div>
                       </td>
                       <td className="px-3 py-2 align-top">
