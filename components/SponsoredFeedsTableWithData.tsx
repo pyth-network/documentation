@@ -6,6 +6,7 @@ import { useCopyToClipboard } from "../utils/useCopyToClipboard";
 // SponsoredFeed interface has the same structure as defined in deployment yaml/json files
 interface SponsoredFeed {
   alias: string; // name of the feed
+  account_address?: string; // optional, needed only for solana.
   id: string; // price feed id
   time_difference: number; // in seconds
   price_deviation: number;
@@ -117,6 +118,8 @@ export const SponsoredFeedsTable = ({
   );
   const defaultParams = paramEntries.length > 0 ? paramEntries[0][0] : "";
 
+  const hasAccountAddress = feeds.some((feed) => !!feed.account_address);
+
   return (
     <div className="my-6">
       <p className="mb-3">
@@ -158,6 +161,11 @@ export const SponsoredFeedsTable = ({
                   <th className="text-left px-3 py-2 font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-600 min-w-[100px]">
                     Name
                   </th>
+                  {hasAccountAddress && (
+                    <th className="text-left px-3 py-2 font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-600 min-w-[400px]">
+                      Account Address
+                    </th>
+                  )}
                   <th className="text-left px-3 py-2 font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-600 min-w-[400px]">
                     Price Feed Id
                   </th>
@@ -181,6 +189,33 @@ export const SponsoredFeedsTable = ({
                           {feed.alias}
                         </span>
                       </td>
+                      {hasAccountAddress && (
+                        <td className="px-3 py-2 align-top">
+                          {feed.account_address ? (
+                            <div className="flex items-start gap-2">
+                              <code className="text-xs font-mono text-gray-600 dark:text-gray-400 break-all leading-relaxed">
+                                {feed.account_address}
+                              </code>
+                              <button
+                                onClick={() =>
+                                  feed.account_address &&
+                                  copyToClipboard(feed.account_address)
+                                }
+                                className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded flex-shrink-0 mt-0.5"
+                                title="Copy Account Address"
+                              >
+                                {copiedText === feed.account_address ? (
+                                  <span className="text-green-500 text-xs font-bold">
+                                    ✓
+                                  </span>
+                                ) : (
+                                  <CopyIcon className="w-3 h-3 text-gray-400" />
+                                )}
+                              </button>
+                            </div>
+                          ) : null}
+                        </td>
+                      )}
                       <td className="px-3 py-2 align-top">
                         <div className="flex items-start gap-2">
                           <code className="text-xs font-mono text-gray-600 dark:text-gray-400 flex-1 break-all leading-relaxed">
