@@ -1,6 +1,5 @@
 import { EntropyDeployments } from "../../components/EntropyDeployments";
 import EntropyDeploymentTable from "../../components/EntropyDeploymentTable";
-import EntropyGasLimitTable from "../../components/EntropyGasLimitTable";
 
 # Entropy Contract Addresses on EVM
 
@@ -13,18 +12,6 @@ import EntropyGasLimitTable from "../../components/EntropyGasLimitTable";
     )
   )}
   showReveal={true}
-/>
-
-### Gas Limits (Dynamic)
-
-The following table shows the current gas limits fetched directly from the blockchain:
-
-<EntropyGasLimitTable
-  deployments={Object.fromEntries(
-    Object.entries(EntropyDeployments).filter(
-      ([k, v]) => v.network === "mainnet" && v.rpc !== undefined
-    )
-  )}
 />
 
 **The default provider for above mainnet chains is `0x52DeaA1c84233F7bb8C8A45baeDE41091c616506`.**
@@ -43,16 +30,6 @@ The default provider fulfills the request by sending a transaction with a gas li
     )
   )}
   showReveal={true}
-/>
-
-### Gas Limits (Dynamic)
-
-<EntropyGasLimitTable
-  deployments={Object.fromEntries(
-    Object.entries(EntropyDeployments).filter(
-      ([k, v]) => v.network === "testnet" && v.rpc !== undefined
-    )
-  )}
 />
 
 **The default provider for above testnet chains is `0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344`.**
