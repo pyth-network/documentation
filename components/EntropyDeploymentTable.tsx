@@ -5,104 +5,104 @@ import { StyledTd } from "./Table";
 
 const ENTROPY_V2_ABI = [
   {
-    "inputs": [],
-    "name": "getDefaultProvider",
-    "outputs": [
+    inputs: [],
+    name: "getDefaultProvider",
+    outputs: [
       {
-        "internalType": "address",
-        "name": "provider",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "provider",
+        type: "address",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "provider",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "provider",
+        type: "address",
+      },
     ],
-    "name": "getProviderInfoV2",
-    "outputs": [
+    name: "getProviderInfoV2",
+    outputs: [
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint128",
-            "name": "feeInWei",
-            "type": "uint128"
+            internalType: "uint128",
+            name: "feeInWei",
+            type: "uint128",
           },
           {
-            "internalType": "uint128",
-            "name": "accruedFeesInWei",
-            "type": "uint128"
+            internalType: "uint128",
+            name: "accruedFeesInWei",
+            type: "uint128",
           },
           {
-            "internalType": "bytes32",
-            "name": "originalCommitment",
-            "type": "bytes32"
+            internalType: "bytes32",
+            name: "originalCommitment",
+            type: "bytes32",
           },
           {
-            "internalType": "uint64",
-            "name": "originalCommitmentSequenceNumber",
-            "type": "uint64"
+            internalType: "uint64",
+            name: "originalCommitmentSequenceNumber",
+            type: "uint64",
           },
           {
-            "internalType": "bytes",
-            "name": "commitmentMetadata",
-            "type": "bytes"
+            internalType: "bytes",
+            name: "commitmentMetadata",
+            type: "bytes",
           },
           {
-            "internalType": "bytes",
-            "name": "uri",
-            "type": "bytes"
+            internalType: "bytes",
+            name: "uri",
+            type: "bytes",
           },
           {
-            "internalType": "uint64",
-            "name": "endSequenceNumber",
-            "type": "uint64"
+            internalType: "uint64",
+            name: "endSequenceNumber",
+            type: "uint64",
           },
           {
-            "internalType": "uint64",
-            "name": "sequenceNumber",
-            "type": "uint64"
+            internalType: "uint64",
+            name: "sequenceNumber",
+            type: "uint64",
           },
           {
-            "internalType": "bytes32",
-            "name": "currentCommitment",
-            "type": "bytes32"
+            internalType: "bytes32",
+            name: "currentCommitment",
+            type: "bytes32",
           },
           {
-            "internalType": "uint64",
-            "name": "currentCommitmentSequenceNumber",
-            "type": "uint64"
+            internalType: "uint64",
+            name: "currentCommitmentSequenceNumber",
+            type: "uint64",
           },
           {
-            "internalType": "address",
-            "name": "feeManager",
-            "type": "address"
+            internalType: "address",
+            name: "feeManager",
+            type: "address",
           },
           {
-            "internalType": "bool",
-            "name": "withCallback",
-            "type": "bool"
+            internalType: "bool",
+            name: "withCallback",
+            type: "bool",
           },
           {
-            "internalType": "uint32",
-            "name": "defaultGasLimit",
-            "type": "uint32"
-          }
+            internalType: "uint32",
+            name: "defaultGasLimit",
+            type: "uint32",
+          },
         ],
-        "internalType": "struct EntropyStructsV2.ProviderInfo",
-        "name": "info",
-        "type": "tuple"
-      }
+        internalType: "struct EntropyStructsV2.ProviderInfo",
+        name: "info",
+        type: "tuple",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
-  }
+    stateMutability: "view",
+    type: "function",
+  },
 ];
 
 const EntropyDeploymentTable = ({
@@ -123,20 +123,32 @@ const EntropyDeploymentTable = ({
             ENTROPY_V2_ABI,
             ethers.getDefaultProvider(deployment.rpc)
           );
-          contract.getDefaultProvider().then((defaultProvider: string) => {
-            contract
-              .getProviderInfoV2(defaultProvider)
-              .then((providerInfo: any) => {
-                const gasLimit = providerInfo.defaultGasLimit;
-                const formattedGasLimit = gasLimit.toString();
-                setGasLimits((prev) => ({ ...prev, [name]: formattedGasLimit }));
-              })
-              .catch(() => {
-                setGasLimits((prev) => ({ ...prev, [name]: deployment.gasLimit }));
-              });
-          }).catch(() => {
-            setGasLimits((prev) => ({ ...prev, [name]: deployment.gasLimit }));
-          });
+          contract
+            .getDefaultProvider()
+            .then((defaultProvider: string) => {
+              contract
+                .getProviderInfoV2(defaultProvider)
+                .then((providerInfo: any) => {
+                  const gasLimit = providerInfo.defaultGasLimit;
+                  const formattedGasLimit = gasLimit.toString();
+                  setGasLimits((prev) => ({
+                    ...prev,
+                    [name]: formattedGasLimit,
+                  }));
+                })
+                .catch(() => {
+                  setGasLimits((prev) => ({
+                    ...prev,
+                    [name]: deployment.gasLimit,
+                  }));
+                });
+            })
+            .catch(() => {
+              setGasLimits((prev) => ({
+                ...prev,
+                [name]: deployment.gasLimit,
+              }));
+            });
         } catch {
           setGasLimits((prev) => ({ ...prev, [name]: deployment.gasLimit }));
         }
