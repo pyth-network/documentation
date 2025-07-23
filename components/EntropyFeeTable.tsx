@@ -1,7 +1,7 @@
 import { EntropyDeployment } from "./EntropyDeployments";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import EntropyAbi from "../abis/IEntropy.json";
+import EntropyAbi from "@pythnetwork/entropy-sdk-solidity/abis/IEntropyV2.json";
 import { StyledTd } from "./Table";
 
 const FeeTable = ({
@@ -18,11 +18,9 @@ const FeeTable = ({
         EntropyAbi,
         ethers.getDefaultProvider(deployment.rpc)
       );
-      contract.getDefaultProvider().then((defaultProvider: string) => {
-        contract.getFee(defaultProvider).then((fee: bigint) => {
-          const formattedFee = ethers.formatEther(fee);
-          setFees((prev) => ({ ...prev, [name]: formattedFee }));
-        });
+      contract.getFeeV2().then((fee: bigint) => {
+        const formattedFee = ethers.formatEther(fee);
+        setFees((prev) => ({ ...prev, [name]: formattedFee }));
       });
     }
   }, [deployments]);
