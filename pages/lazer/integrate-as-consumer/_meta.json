@@ -1,4 +1,4 @@
 {
-  "evm": "on EVM chains",
-  "svm": "on Solana"
+  "svm": "on Solana and Fogo",
+  "evm": "on EVM chains"
 }
