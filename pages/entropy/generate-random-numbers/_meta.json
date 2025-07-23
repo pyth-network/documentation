@@ -1,3 +1,4 @@
 {
-  "evm": "in EVM contracts"
+  "evm": "in EVM contracts",
+  "set-custom-gas-limits": "Set Custom Gas Limits"
 }
