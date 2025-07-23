@@ -19,11 +19,13 @@ const EntropyGasLimitTable = ({
         ethers.getDefaultProvider(deployment.rpc)
       );
       contract.getDefaultProvider().then((defaultProvider: string) => {
-        contract.getProviderInfoV2(defaultProvider).then((providerInfo: any) => {
-          const gasLimit = providerInfo.defaultGasLimit;
-          const formattedGasLimit = gasLimit.toString();
-          setGasLimits((prev) => ({ ...prev, [name]: formattedGasLimit }));
-        });
+        contract
+          .getProviderInfoV2(defaultProvider)
+          .then((providerInfo: any) => {
+            const gasLimit = providerInfo.defaultGasLimit;
+            const formattedGasLimit = gasLimit.toString();
+            setGasLimits((prev) => ({ ...prev, [name]: formattedGasLimit }));
+          });
       });
     }
   }, [deployments]);
@@ -52,11 +54,7 @@ const EntropyGasLimitTable = ({
               </a>
             </StyledTd>
             <StyledTd>
-              {gasLimits[name] === undefined ? (
-                "Loading..."
-              ) : (
-                gasLimits[name]
-              )}
+              {gasLimits[name] === undefined ? "Loading..." : gasLimits[name]}
             </StyledTd>
           </tr>
         ))}
