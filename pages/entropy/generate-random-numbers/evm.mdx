@@ -69,7 +69,7 @@ The fee differs for every chain and also varies over time depending on the chain
 The current value for each chain can be found on the [Current Fees](../current-fees) page.
 However, you should use the on-chain method [`getFeeV2`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropy.sol#L101) to compute the required fee and send it as the value of the `requestV2` call.
 
-These methods use the default randomness provider ([see here](#randomness-providers) for more info on providers). 
+These methods use the default randomness provider ([see here](#randomness-providers) for more info on providers).
 
 ```solidity copy
 function requestRandomNumber() external payable {
@@ -165,6 +165,7 @@ Check the [Current Fees](../current-fees) to find the current fee for each provi
 Check out the [Best Practices](../best-practices) guide for tips to limit gas usage, or generate multiple random numbers in a single transaction.
 
 ### Randomness providers
+
 Some methods on Entropy require selecting a **randomness provider**. The randomness provider is a third-party
 who participates in the generation process. Each provider is identified by an address and hosts
 a keeper service for fullfilling requests.
