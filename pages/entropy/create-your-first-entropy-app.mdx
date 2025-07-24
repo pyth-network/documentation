@@ -13,8 +13,10 @@ Before we start, please make sure you have the following tools installed:
 ## Getting Started
 
 Create a directory named `coin-flip{:bash}` in your filesystem.
-Open a terminal with `coin-flip` as the working directory and run `forge init contracts` to create a new Solidity project.
-You will see a new directory in `coin-flip` named `contracts`. `contracts/src` is where all your contract code will be.
+We will use this directory as the working directory for the rest of the tutorial.
+Let's initialize a new project in `coin-flip{:bash}` by running `forge init contracts{:bash}`.
+
+This will create a new directory in `coin-flip{:bash}` named `contracts/src`, which will contain the smart contract code.
 
 ```bash copy
 mkdir coin-flip
@@ -22,8 +24,7 @@ cd coin-flip
 forge init contracts
 ```
 
-Run `cd contracts` to make it your terminal's working directory — the following commands will need to be run from here.
-Next, install the Pyth Entropy SDK by running the following commands.
+Now we will install the Pyth Entropy SDK in the `contracts` directory.
 
 ```bash copy
 cd contracts
@@ -31,7 +32,7 @@ npm init -y
 npm install @pythnetwork/entropy-sdk-solidity
 ```
 
-Add a `remappings.txt` file to `contracts` directory with the following content.
+Add a `remappings.txt` file to `contracts` directory with the following content to tell Foundry where to find the Pyth Entropy SDK.
 
 ```text copy
 @pythnetwork/entropy-sdk-solidity/=node_modules/@pythnetwork/entropy-sdk-solidity
@@ -97,8 +98,8 @@ contract CoinFlip {
 
 Users will invoke the `request` method to initiate a coin flip, paying a fee in the process.
 The method first retrieves the fee required to request a random number from Entropy.
-It then includes the fee in the `requestV2` method call to Entropy.
-Finally, the method emits a `FlipRequested` event with a `sequenceNumber`. This event is also defined in the code snippet above.
+It then includes the fee in the `requestV2{:bash}` method call to Entropy.
+Finally, the method emits a `FlipRequested{:bash}` event with a `sequenceNumber`. This event is also defined in the code snippet above.
 
 ### Handle the callback
 
@@ -187,7 +188,7 @@ Deployed to: 0x8676ba0Dd492AB9813BC21D5Dce318427d1d73ae
 Transaction hash: 0x2178aa6d402c94166a93e81822248d00dd003827675ebd49b3c542970f5a0189
 ```
 
-Let’s export the coin flip contract address as environment variable for later use:
+Let's export the coin flip contract address as environment variable for later use:
 
 ```bash copy
 export COINFLIP_ADDRESS=<Deployed to address from above>
