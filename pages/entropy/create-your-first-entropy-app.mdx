@@ -47,10 +47,10 @@ contract CoinFlip is IEntropyConsumer {
   event FlipRequested(uint64 sequenceNumber);
   event FlipResult(uint64 sequenceNumber, bool isHeads);
 
-  IEntropy entropy;
+  IEntropyV2 entropy;
 
   constructor(address _entropy) {
-    entropy = IEntropy(_entropy);
+    entropy = IEntropyV2(_entropy);
   }
 
   // This method is required by the IEntropyConsumer interface
@@ -61,7 +61,7 @@ contract CoinFlip is IEntropyConsumer {
 
 ```
 
-The code implements a`CoinFlip` contract which inherits the `IEntropyConsumer` interface. We have also defined some events, properties and a constructor to instantiate the contract. One of the properties is of type `IEntropy` which is an interface imported from the Entropy SDK.
+The code implements a`CoinFlip` contract which inherits the `IEntropyConsumer` interface. We have also defined some events, properties and a constructor to instantiate the contract. One of the properties is of type `IEntropyV2` which is an interface imported from the Entropy SDK.
 
 ### Request a coin flip
 
