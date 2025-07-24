@@ -18,6 +18,7 @@
     "@cosmjs/cosmwasm-stargate": "^0.31.0",
     "@headlessui/react": "^1.7.14",
     "@metamask/detect-provider": "^2.0.0",
+    "@pythnetwork/entropy-sdk-solidity": "2.0.0",
     "connectkit": "^1.4.0",
     "copy-to-clipboard": "^3.3.3",
     "ethers": "^6.3.0",
