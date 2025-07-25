@@ -24,6 +24,7 @@
   },
 
   "generate-random-numbers": "Generate Random Numbers",
+  "set-custom-gas-limits": "Set Custom Gas Limits",
   "debug-callback-failures": "Debug Callback Failures",
 
   "-- Reference Material": {

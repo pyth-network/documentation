@@ -2,7 +2,9 @@ import { Tab, Tabs, Callout } from "nextra/components";
 
 # Set Custom Gas Limits
 
-This guide shows how to set custom gas limits when requesting random numbers from Pyth Entropy. Custom gas limits are useful when your callback function requires more gas than the default provider limit, or when you want to optimize gas costs for simpler callbacks.
+This guide shows how to set custom gas limits when requesting random numbers from Pyth Entropy.
+Custom gas limits are useful when your callback function requires more gas than the default provider limit,
+or when you want to optimize gas costs for your application.
 
 ## Prerequisites
 
@@ -16,16 +18,15 @@ Before following this guide, you should first complete the basic setup from the 
 
 You might need custom gas limits in these scenarios:
 
-- **Complex callback logic**: Your `entropyCallback` function performs computationally expensive operations
-- **Gas optimization**: You want to use less gas for simple callbacks to reduce fees
-- **Multiple operations**: Your callback needs to perform multiple state changes or external calls
-- **Integration requirements**: Your application has specific gas requirements for reliability
+- **Complex callback logic**: Your `entropyCallback` function performs computationally expensive operations like complex state changes or external calls.
+- **Gas optimization**: You want to use less gas for simple callbacks to reduce fees.
+- **Integration requirements**: Your application has specific gas requirements for reliability.
 
 ## Implementation
 
 ### 1. Use requestV2 with Gas Limit Parameter
 
-Instead of the basic `requestV2()` method, use the variant that accepts a `gasLimit` parameter:
+EntropyV2 introduces a new `requestV2` method that accepts a `gasLimit` parameter.
 
 ```solidity copy
 function requestRandomNumberWithCustomGas(
@@ -37,25 +38,23 @@ function requestRandomNumberWithCustomGas(
   // Request random number with custom gas limit
   uint64 sequenceNumber = entropy.requestV2{ value: fee }(customGasLimit);
 
-  // Store the sequence number for tracking if needed
+  // Store the sequence number for tracking
 }
 
 ```
 
 ### 2. Calculate Fees with Custom Gas Limit
 
-When using custom gas limits, you must use the `getFeeV2` variant that accepts a `gasLimit` parameter:
+When using custom gas limits, you must use the `getFeeV2` variant that accepts a `gasLimit` parameter.
 
 ```solidity copy
 // Get fee for custom gas limit
 uint256 fee = entropy.getFeeV2(customGasLimit);
-
-// NOT: uint256 fee = entropy.getFeeV2(); // This uses default gas limit
 ```
 
 ### 3. Complete Example
 
-Here's a complete example showing how to implement custom gas limits:
+Here's a complete example showing how to implement custom gas limits.
 
 ```solidity copy
 pragma solidity ^0.8.0;
@@ -79,7 +78,7 @@ contract CustomGasLimitExample is IEntropyConsumer {
     require(msg.value >= fee, "Insufficient fee");
 
     uint64 sequenceNumber = entropy.requestV2{ value: fee }(customGasLimit);
-    // Store sequence number if needed for tracking
+    // Store sequence number for tracking
   }
 
   // Request with lower gas limit for simple callback
@@ -91,33 +90,6 @@ contract CustomGasLimitExample is IEntropyConsumer {
 
     uint64 sequenceNumber = entropy.requestV2{ value: fee }(customGasLimit);
   }
-
-  // Complex callback that requires more gas
-  function entropyCallback(
-    uint64 sequenceNumber,
-    address provider,
-    bytes32 randomNumber
-  ) internal override {
-    // Prevent duplicate processing
-    require(!processedRequests[sequenceNumber], "Already processed");
-    processedRequests[sequenceNumber] = true;
-
-    // Complex operations that require more gas
-    for (uint i = 0; i < 10; i++) {
-      // Simulate complex state changes
-      // This would require more gas than the default limit
-    }
-
-    // Use the random number for your application logic
-    uint256 randomValue = uint256(randomNumber);
-    // Your application logic here...
-  }
-
-  function getEntropy() internal view override returns (address) {
-    return address(entropy);
-  }
-}
-
 ```
 
 ## Gas Limit Constraints
@@ -125,22 +97,13 @@ contract CustomGasLimitExample is IEntropyConsumer {
 When setting custom gas limits, be aware of these constraints:
 
 <Callout type="info" emoji="ℹ️">
-  **Gas Limit Rules:** - Gas limits are automatically rounded up to the nearest
-  multiple of 10,000 - Example: 19,000 becomes 20,000, 25,500 becomes 30,000 -
-  The minimum gas limit is the provider's configured default limit - The maximum
-  gas limit is 655,350,000 (uint16.max × 10,000)
+  **Gas Limit Rules:** Gas limits are automatically rounded up to the nearest
+  multiple of 10,000. Example: 19,000 becomes 20,000, 25,500 becomes 30,000.
 </Callout>
-
-### Recommended Gas Limits
-
-- **Simple callbacks**: 50,000 - 100,000 gas
-- **Moderate complexity**: 100,000 - 200,000 gas
-- **Complex operations**: 200,000 - 500,000 gas
-- **Very complex logic**: 500,000+ gas (use with caution)
 
 ## Best Practices
 
-### 1. Estimate Gas Usage
+### 1. Estimate Gas Usage and Add Safety Buffer
 
 Test your callback function to determine the actual gas usage:
 
