@@ -9,7 +9,7 @@
   },
   {
     "alias": "fUSD/USD",
-    "account_address": "",
+    "account_address": "9BZ6ozhtcTRYYMCBDLfePaoNTdEzpgZR3p4pHdM3CrVf",
     "id": "8d940f7b53df8dd4b3c33a84c3ba043214c3cdcd5243c03b7cb4b0b22746efd8",
     "time_difference": 60,
     "price_deviation": 0.5,
@@ -25,7 +25,7 @@
   },
   {
     "alias": "USDT/USD",
-    "account_address": "",
+    "account_address": "86rHPbbzG8rnh4cQownzRHj9kLM9xY3YsSQM5xddtBZ6",
     "id": "1fc18861232290221461220bd4e2acd1dcdfbc89c84092c93c18bdc7756c1588",
     "time_difference": 60,
     "price_deviation": 0.5,
