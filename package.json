@@ -20,6 +20,7 @@
     "@metamask/detect-provider": "^2.0.0",
     "@pythnetwork/pyth-solana-receiver": "^0.10.2",
     "clsx": "^2.1.1",
+    "@pythnetwork/entropy-sdk-solidity": "^2.0.0",
     "connectkit": "^1.4.0",
     "copy-to-clipboard": "^3.3.3",
     "ethers": "^6.3.0",

@@ -1,7 +1,7 @@
 import { EntropyDeployment } from "./EntropyApiDataFetcher";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import EntropyAbi from "../abis/IEntropyV2.json";
+import EntropyAbi from "@pythnetwork/entropy-sdk-solidity/abis/IEntropyV2.json";
 import { StyledTd } from "./Table";
 
 const FeeTable = ({
