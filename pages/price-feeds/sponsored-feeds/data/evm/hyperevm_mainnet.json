@@ -314,4 +314,18 @@
     "price_deviation": 1,
     "confidence_ratio": 100
   }
+    {
+    "alias": "KHYPE/USD",
+    "id": "2837a61ae8165c018b0e406ac32b1527270e57b81f0069260afbef71b9cf8ffe",
+    "time_difference": 3600,
+    "price_deviation": 1,
+    "confidence_ratio": 100
+  },
+  {
+    "alias": "USR/USD.RR",
+    "id": "512a79cc65f49531f0bbb72956353e79ecdc1e4a6e5241847196c1f9a11d8a52",
+    "time_difference": 3600,
+    "price_deviation": 1,
+    "confidence_ratio": 100
+  }
 ]
