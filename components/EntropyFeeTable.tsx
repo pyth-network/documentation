@@ -1,29 +1,44 @@
-import { EntropyDeployment } from "./EntropyDeployments";
+import { EntropyDeployment } from "./EntropyApiDataFetcher";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import EntropyAbi from "../abis/IEntropy.json";
+import EntropyAbi from "../abis/IEntropyV2.json";
 import { StyledTd } from "./Table";
 
 const FeeTable = ({
   deployments,
 }: {
-  deployments: Record<string, Required<EntropyDeployment>>;
+  deployments: Record<string, EntropyDeployment>;
 }) => {
   const [fees, setFees] = useState<Record<string, string>>({});
 
   useEffect(() => {
     for (const [name, deployment] of Object.entries(deployments)) {
-      const contract = new ethers.Contract(
-        deployment.address,
-        EntropyAbi,
-        ethers.getDefaultProvider(deployment.rpc)
-      );
-      contract.getDefaultProvider().then((defaultProvider: string) => {
-        contract.getFee(defaultProvider).then((fee: bigint) => {
-          const formattedFee = ethers.formatEther(fee);
-          setFees((prev) => ({ ...prev, [name]: formattedFee }));
-        });
-      });
+      if (deployment.rpc) {
+        const contract = new ethers.Contract(
+          deployment.address,
+          EntropyAbi,
+          ethers.getDefaultProvider(deployment.rpc)
+        );
+        contract
+          .getFeeV2()
+          .then((fee: bigint) => {
+            const formattedFee = ethers.formatEther(fee);
+            setFees((prev) => ({ ...prev, [name]: formattedFee }));
+          })
+          .catch((error: any) => {
+            console.error(`Error fetching fee for ${name}:`, error);
+            if (deployment.default_fee) {
+              const fallbackFee = (deployment.default_fee / 1e18).toFixed(9);
+              setFees((prev) => ({ ...prev, [name]: fallbackFee }));
+            }
+          });
+      } else {
+        // No RPC available, use default_fee
+        if (deployment.default_fee) {
+          const fallbackFee = (deployment.default_fee / 1e18).toFixed(9);
+          setFees((prev) => ({ ...prev, [name]: fallbackFee }));
+        }
+      }
     }
   }, [deployments]);
 
@@ -40,22 +55,23 @@ const FeeTable = ({
         {sortedDeployments.map(([name, deployment]) => (
           <tr key={name}>
             <StyledTd>
-              <a
-                href={deployment.explorer.replace(
-                  "$ADDRESS",
-                  deployment.address
-                )}
-                target={"_blank"}
-              >
-                {name}
-              </a>
+              {deployment.explorer ? (
+                <a
+                  href={deployment.explorer + "/address/" + deployment.address}
+                  target={"_blank"}
+                >
+                  {name}
+                </a>
+              ) : (
+                name
+              )}
             </StyledTd>
             <StyledTd>
               {fees[name] === undefined ? (
                 "Loading..."
               ) : (
                 <>
-                  {fees[name]} <b>{deployment.nativeCurrency}</b>
+                  {fees[name]} <b>{deployment.nativeCurrency || "ETH"}</b>
                 </>
               )}
             </StyledTd>

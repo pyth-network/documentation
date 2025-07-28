@@ -1,18 +1,22 @@
-import { EntropyDeployments } from "../../components/EntropyDeployments";
+import { EntropyApiDataFetcher } from "../../components/EntropyApiDataFetcher";
 import EntropyDeploymentTable from "../../components/EntropyDeploymentTable";
+import { FORTUNA_API_URLS } from "../../components/constants";
 
 # Entropy Contract Addresses on EVM
 
 ## Mainnets
 
-<EntropyDeploymentTable
-  deployments={Object.fromEntries(
-    Object.entries(EntropyDeployments).filter(
-      ([k, v]) => v.network === "mainnet"
+<EntropyApiDataFetcher url={FORTUNA_API_URLS.MAINNET}>
+  {(data, isLoading, error) =>
+    isLoading ? (
+      <p>Loading mainnet data...</p>
+    ) : error ? (
+      <p>Error loading mainnet data: {error}</p>
+    ) : (
+      <EntropyDeploymentTable deployments={data} showReveal={true} />
     )
-  )}
-  showReveal={true}
-/>
+  }
+</EntropyApiDataFetcher>
 
 **The default provider for above mainnet chains is `0x52DeaA1c84233F7bb8C8A45baeDE41091c616506`.**
 
@@ -23,14 +27,17 @@ The default provider fulfills the request by sending a transaction with a gas li
 
 ## Testnets
 
-<EntropyDeploymentTable
-  deployments={Object.fromEntries(
-    Object.entries(EntropyDeployments).filter(
-      ([k, v]) => v.network === "testnet"
+<EntropyApiDataFetcher url={FORTUNA_API_URLS.TESTNET}>
+  {(data, isLoading, error) =>
+    isLoading ? (
+      <p>Loading testnet data...</p>
+    ) : error ? (
+      <p>Error loading testnet data: {error}</p>
+    ) : (
+      <EntropyDeploymentTable deployments={data} showReveal={true} />
     )
-  )}
-  showReveal={true}
-/>
+  }
+</EntropyApiDataFetcher>
 
 **The default provider for above testnet chains is `0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344`.**
 

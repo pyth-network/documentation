@@ -35,7 +35,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "sharp": "^0.33.2",
     "toml": "^3.0.0",
-    "viem": "^0.3.50",
+    "viem": "^2.32.1",
     "wagmi": "^1.2.0"
   },
   "devDependencies": {
