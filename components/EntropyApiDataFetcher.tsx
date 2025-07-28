@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import * as chains from "viem/chains";
+import * as chains from "viem-chains/chains";
 import { EntropyDeploymentsConfig } from "./EntropyDeploymentsConfig";
 
 interface ApiChainConfig {
