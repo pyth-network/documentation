@@ -49,7 +49,7 @@ module example::example {
 
         // Read the current price from a price feed.
         // Each price feed (e.g., BTC/USD) is identified by a price feed ID.
-        // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
+        // The complete list of feed IDs is available at https://docs.pyth.network/price-feeds/price-feeds
         // Note: Aptos uses the Pyth price feed ID without the `0x` prefix.
         let btc_price_identifier = x"e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43";
         let btc_usd_price_id = price_identifier::from_byte_vec(btc_price_identifier);
@@ -71,7 +71,7 @@ The code snippet above does the following things:
 
 1. Call `pyth::get_update_fee` to get the fee required to update the Pyth price feeds.
 1. Call `pyth::update_price_feeds` and pass `pyth_price_update` to update the Pyth price feeds.
-1. Call `pyth::get_price` to read the current price, providing the [price feed ID](https://pyth.network/developers/price-feed-ids) you wish to read.
+1. Call `pyth::get_price` to read the current price, providing the [price feed ID](../price-feeds.mdx) you wish to read.
 
 ## Additional Resources
 

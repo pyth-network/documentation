@@ -95,7 +95,7 @@ module pyth_example::main {
         let price_id = price_identifier::get_bytes(&price_info::get_price_identifier(&price_info));
 
         // ETH/USD price feed ID
-        // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
+        // The complete list of feed IDs is available at https://docs.pyth.network/price-feeds/price-feeds
         // Note: IOTA uses the Pyth price feed ID without the `0x` prefix.
         assert!(price_id!=x"ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", E_INVALID_ID);
 
@@ -119,7 +119,7 @@ import { Transaction } from "@iota/iota-sdk/transactions";
 const connection = new IotaPriceServiceConnection("https://hermes-beta.pyth.network");
 
 const priceIDs = [
-  // You can find the IDs of prices at https://pyth.network/developers/price-feed-ids
+  // You can find the IDs of prices at https://docs.pyth.network/price-feeds/price-feeds
   "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", // BTC/USD price ID
   "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", // ETH/USD price ID
 ];
@@ -201,4 +201,4 @@ Consult [IOTA Contract Addresses](../contract-addresses/iota) to find the packag
 
 ### Pyth Price Feed IDs
 
-Consult [Pyth Price Feed IDs](https://pyth.network/developers/price-feed-ids) to find Pyth price feed IDs for various assets.
+Consult [Pyth Price Feed IDs](../price-feeds.mdx) to find Pyth price feed IDs for various assets.
