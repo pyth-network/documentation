@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest",
-    "postinstall": "bash scripts/fetchGrazChains.sh"
+    "test": "jest"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.8.1",
@@ -18,13 +17,13 @@
     "@cosmjs/cosmwasm-stargate": "^0.31.0",
     "@headlessui/react": "^1.7.14",
     "@metamask/detect-provider": "^2.0.0",
+    "@pythnetwork/entropy-sdk-solidity": "^2.0.0",
     "@pythnetwork/pyth-solana-receiver": "^0.10.2",
     "clsx": "^2.1.1",
-    "@pythnetwork/entropy-sdk-solidity": "^2.0.0",
     "connectkit": "^1.4.0",
     "copy-to-clipboard": "^3.3.3",
     "ethers": "^6.3.0",
-    "graz": "^0.1.3",
+    "graz": "^0.1.31",
     "next": "^13.0.6",
     "next-mdx-remote": "^4.4.1",
     "nextra": "latest",
