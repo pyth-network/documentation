@@ -38,7 +38,8 @@
     "toml": "^3.0.0",
     "viem": "^0.3.50",
     "viem-chains": "npm:viem@^2.32.1",
-    "wagmi": "^1.2.0"
+    "wagmi": "^1.2.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@pythnetwork/pyth-sdk-solidity": "^2.3.0",

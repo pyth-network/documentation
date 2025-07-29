@@ -1,5 +1,4 @@
-import EntropyFeeTable from "../../components/EntropyFeeTable";
-import { EntropyApiDataFetcher } from "../../components/EntropyApiDataFetcher";
+import EntropyFees from "../../components/EntropyFees";
 import { FORTUNA_API_URLS } from "../../components/constants";
 import { Callout } from "nextra/components";
 
@@ -12,17 +11,7 @@ Note that the fees shown below will vary over time with prevailing gas prices on
   The fees for mainnet are dynamically set. Always use the on-chain method `entropy.getFeeV2(){:solidity}` to get the current fee.
 </Callout>
 
-<EntropyApiDataFetcher url={FORTUNA_API_URLS.MAINNET}>
-  {(data, isLoading, error) =>
-    isLoading ? (
-      <p>Loading mainnet fees...</p>
-    ) : error ? (
-      <p>Error loading mainnet fees: {error}</p>
-    ) : (
-      <EntropyFeeTable deployments={data} />
-    )
-  }
-</EntropyApiDataFetcher>
+<EntropyFees networkName="mainnet" url={FORTUNA_API_URLS.MAINNET} />
 
 ## Testnet
 
@@ -31,14 +20,4 @@ Note that the fees shown below will vary over time with prevailing gas prices on
   fees.
 </Callout>
 
-<EntropyApiDataFetcher url={FORTUNA_API_URLS.TESTNET}>
-  {(data, isLoading, error) =>
-    isLoading ? (
-      <p>Loading testnet fees...</p>
-    ) : error ? (
-      <p>Error loading testnet fees: {error}</p>
-    ) : (
-      <EntropyFeeTable deployments={data} />
-    )
-  }
-</EntropyApiDataFetcher>
+<EntropyFees networkName="testnet" url={FORTUNA_API_URLS.TESTNET} />

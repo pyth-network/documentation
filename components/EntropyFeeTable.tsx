@@ -71,7 +71,7 @@ const FeeTable = ({
                 "Loading..."
               ) : (
                 <>
-                  {fees[name]} <b>{deployment.nativeCurrency || "ETH"}</b>
+                  {fees[name]} <b>{deployment.nativeCurrency ?? "ETH"}</b>
                 </>
               )}
             </StyledTd>
