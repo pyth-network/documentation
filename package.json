@@ -18,6 +18,8 @@
     "@cosmjs/cosmwasm-stargate": "^0.31.0",
     "@headlessui/react": "^1.7.14",
     "@metamask/detect-provider": "^2.0.0",
+    "@pythnetwork/pyth-solana-receiver": "^0.10.2",
+    "clsx": "^2.1.1",
     "connectkit": "^1.4.0",
     "copy-to-clipboard": "^3.3.3",
     "ethers": "^6.3.0",
@@ -57,5 +59,10 @@
     "tailwindcss": "^3.4.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.8.3"
+  },
+  "overrides": {
+    "@solana/web3.js@1.77.4": {
+      "rpc-websockets": "7.11.0"
+    }
   }
 }

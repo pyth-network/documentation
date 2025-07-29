@@ -74,7 +74,7 @@ contract SomeContract {
 
     // Read the current price from a price feed if it is less than 60 seconds old.
     // Each price feed (e.g., ETH/USD) is identified by a price feed ID.
-    // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
+    // The complete list of feed IDs is available at https://docs.pyth.network/price-feeds/price-feeds
     bytes32 priceFeedId = 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace; // ETH/USD
     PythStructs.Price memory price = pyth.getPriceNoOlderThan(priceFeedId, 60);
   }
@@ -85,10 +85,10 @@ contract SomeContract {
 The code snippet above does the following things:
 
 1. Instantiate the `IPyth` interface from the Solidity SDK using the price feeds [contract address](../contract-addresses/evm).
-2. Select the [Price Feed IDs](https://pyth.network/developers/price-feed-ids) for the assets you want to fetch prices for. Price feeds come in two varieties, Stable and Beta. You should select Stable feed ids
+2. Select the [Price Feed IDs](../price-feeds.mdx) for the assets you want to fetch prices for. Price feeds come in two varieties, Stable and Beta. You should select Stable feed ids
 3. Call `IPyth.getUpdateFee` to calculate the fee charged by Pyth to update the price.
 4. Call `IPyth.updatePriceFeeds` to update the price, paying the fee calculated in the previous step.
-5. Call `IPyth.getPriceNoOlderThan` to read the current price, providing the [price feed ID](https://pyth.network/developers/price-feed-ids) that you wish to read and your acceptable staleness threshold for
+5. Call `IPyth.getPriceNoOlderThan` to read the current price, providing the [price feed ID](../price-feeds.mdx) that you wish to read and your acceptable staleness threshold for
    the price.
 
 ## Additional Resources

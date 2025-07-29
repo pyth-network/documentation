@@ -36,10 +36,10 @@ To get started with Pyth oracle you will need to gather the following informatio
 - HermesAPI Endpoint
 - Smart contract address
 
-| Network   | Price Feed IDs                                                                                             | Hermes API Address         | Contract Address                                                                 |
-| --------- | ---------------------------------------------------------------------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------- |
-| `testnet` | [NEAR `testnet` Price Feed IDs](https://legacy.pyth.network/developers/price-feed-ids#stable#near-testnet) | `hermes-beta.pyth.network` | [pyth-oracle.testnet](https://testnet.nearblocks.io/address/pyth-oracle.testnet) |
-| `mainnet` | [NEAR `mainnet` Price Feed IDs](https://legacy.pyth.network/developers/price-feed-ids#stable#near-mainnet) | `hermes.pyth.network`      | [pyth-oracle.near](https://nearblocks.io/address/pyth-oracle.near)               |
+| Network   | Price Feed IDs                                      | Hermes API Address         | Contract Address                                                                 |
+| --------- | --------------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------- |
+| `testnet` | [NEAR `testnet` Price Feed IDs](../price-feeds.mdx) | `hermes-beta.pyth.network` | [pyth-oracle.testnet](https://testnet.nearblocks.io/address/pyth-oracle.testnet) |
+| `mainnet` | [NEAR `mainnet` Price Feed IDs](../price-feeds.mdx) | `hermes.pyth.network`      | [pyth-oracle.near](https://nearblocks.io/address/pyth-oracle.near)               |
 
 Note: When using Price Feed IDs, you will need to remove the `0x` prefix.
 
@@ -212,7 +212,7 @@ const receiver = "pyth-oracle.testnet";
 const network = "testnet";
 
 const PRICE_IDS = [
-  // Price ids can be found at https://legacy.pyth.network/developers/price-feed-ids#stable#near-testnet
+  // Price ids can be found at https://docs.pyth.network/price-feeds/price-feeds
   // NOTE: Ensure you are using NEAR specific price ids & remove the '0x' prefix before using them
   "f9c0172ba10dfa4d19088d94f5bf61d3b54d5bd7483a322a982e1373ee8ea31b", // BTC/USD price id
   "ca80ba6dc32e08d06f1aa886011eed1d77c77be9eb761cc10d72b7d0a2fd57a6", // ETH/USD price id
@@ -292,7 +292,7 @@ Create a `get-price.js` file that will perform the view call from the Pyth Oracl
 const { getTestnetRpcProvider, view } = require("@near-js/client");
 
 const PRICE_IDS = [
-  // Price ids can be found at https://legacy.pyth.network/developers/price-feed-ids#stable#near-testnet
+  // Price ids can be found at https://docs.pyth.network/price-feeds/price-feeds
   // NOTE: Ensure you are using NEAR specific price ids & remove the '0x' prefix before using them
   "f9c0172ba10dfa4d19088d94f5bf61d3b54d5bd7483a322a982e1373ee8ea31b", // BTC/USD price id
   "ca80ba6dc32e08d06f1aa886011eed1d77c77be9eb761cc10d72b7d0a2fd57a6", // ETH/USD price id
