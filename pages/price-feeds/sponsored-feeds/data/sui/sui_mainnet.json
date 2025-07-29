@@ -180,5 +180,12 @@
     "time_difference": 15,
     "price_deviation": 0.5,
     "confidence_ratio": 100
+  },
+  {
+    "alias": "IKA/USD",
+    "id": "2b529621fa6e2c8429f623ba705572aa64175d7768365ef829df6a12c9f365f4",
+    "time_difference": 15,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
   }
 ]
