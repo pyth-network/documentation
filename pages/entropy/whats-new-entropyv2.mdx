@@ -1,8 +1,8 @@
 # What's New in Entropy V2
 
-Entropy V2 is a major update to the Pyth Randomness Protocol. 
+Entropy V2 is a major update to the Pyth Randomness Protocol.
 
-It introduces a series of developer experience improvements, shaped directly by the feedback of teams using it in production: 
+It introduces a series of developer experience improvements, shaped directly by the feedback of teams using it in production:
 configurable & customizable gas limits for callbacks, adding callback statuses, and an upcoming public Entropy Explorer.
 
 ## What's New
@@ -13,15 +13,16 @@ configurable & customizable gas limits for callbacks, adding callback statuses, 
 
 ### Configurable Gas Limits for Callbacks
 
-Entropy V2 introduces configurable gas limits for callbacks. 
+Entropy V2 introduces configurable gas limits for callbacks.
 This allows teams to set the gas limit for their callbacks, which can be useful for:
+
 - Computing expensive operations in the callback like minting an NFT collection.
 - Save money on gas fees by setting a lower gas limit.
 
 ```solidity copy
 // Calculate the fee for the custom gas limit
 uint256 fee = entropy.getFeeV2(customGasLimit);
- 
+
 // Request random number with custom gas limit
 uint64 sequenceNumber = entropy.requestV2{ value: fee }(customGasLimit);
 ```
@@ -30,7 +31,6 @@ uint64 sequenceNumber = entropy.requestV2{ value: fee }(customGasLimit);
 
 Entropy V2 introduces callback statuses, which allow teams to track the status of their callbacks.
 These callback statuses are emitted in the `Revealed` event.
-
 
 Previous version of Entropy use to emit the following `RevealedWithCallback` event:
 
@@ -60,7 +60,8 @@ event Revealed(
 );
 ```
 
-This updated `Revealed` event 
+This updated `Revealed` event
+
 - abstracted away the information from `EntropyStructs.Request` to the `Revealed` event for easier consumption.
 - added a `callbackFailed` boolean to indicate if the callback failed.
 
@@ -71,7 +72,6 @@ This will help teams to easily track the status of their callbacks and re-reques
 Entropy V2 introduces an upcoming public Entropy Explorer, which will allow teams to easily track the status of their callbacks and re-request them if they fail on-chain.
 
 This will help teams to easily track the status of their callbacks and re-request them if they fail on-chain.
-
 
 ## Additional Resources
 
