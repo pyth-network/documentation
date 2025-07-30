@@ -7,7 +7,11 @@ interface EntropyDeploymentsProps {
   showReveal?: boolean;
 }
 
-export function EntropyDeployments({ networkName, url, showReveal = false }: EntropyDeploymentsProps) {
+export function EntropyDeployments({
+  networkName,
+  url,
+  showReveal = false,
+}: EntropyDeploymentsProps) {
   const { isLoading, error, data } = useEntropyApiData(url);
 
   if (isLoading) {
@@ -15,8 +19,12 @@ export function EntropyDeployments({ networkName, url, showReveal = false }: Ent
   }
 
   if (error) {
-    return <p>Error loading {networkName} data: {error}</p>;
+    return (
+      <p>
+        Error loading {networkName} data: {error}
+      </p>
+    );
   }
 
   return <EntropyDeploymentTable deployments={data} showReveal={showReveal} />;
-} 
+}

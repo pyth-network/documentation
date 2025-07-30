@@ -30,7 +30,9 @@ const getChainData = (network_id: number) => {
   return Object.values(chains).find((chain) => chain.id === network_id);
 };
 
-const transformChainData = (chain: ApiChainConfig): [string, EntropyDeployment] => {
+const transformChainData = (
+  chain: ApiChainConfig
+): [string, EntropyDeployment] => {
   const chainData = getChainData(chain.network_id);
   const configOverride = EntropyDeploymentsConfig[chain.network_id];
 
@@ -58,7 +60,7 @@ const fetchEntropyDeployments = async (
   try {
     const response = await fetch(url);
     const apiData = entropyDeploymentsSchema.parse(await response.json());
-    
+
     return Object.fromEntries(apiData.map(transformChainData));
   } catch (error) {
     console.error("Error fetching entropy deployments:", error);

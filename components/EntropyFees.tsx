@@ -14,8 +14,12 @@ export function EntropyFees({ networkName, url }: EntropyFeesProps) {
   }
 
   if (error) {
-    return <p>Error loading {networkName} fees: {error}</p>;
+    return (
+      <p>
+        Error loading {networkName} fees: {error}
+      </p>
+    );
   }
 
   return <EntropyFeeTable deployments={data} />;
-} 
+}
