@@ -1,16 +1,13 @@
-import { EntropyDeployments } from "../../components/EntropyDeployments";
-import EntropyDeploymentTable from "../../components/EntropyDeploymentTable";
+import EntropyDeployments from "../../components/EntropyDeployments";
+import { FORTUNA_API_URLS } from "../../components/constants";
 
 # Entropy Contract Addresses on EVM
 
 ## Mainnets
 
-<EntropyDeploymentTable
-  deployments={Object.fromEntries(
-    Object.entries(EntropyDeployments).filter(
-      ([k, v]) => v.network === "mainnet"
-    )
-  )}
+<EntropyDeployments
+  networkName="mainnet"
+  url={FORTUNA_API_URLS.MAINNET}
   showReveal={true}
 />
 
@@ -23,12 +20,9 @@ The default provider fulfills the request by sending a transaction with a gas li
 
 ## Testnets
 
-<EntropyDeploymentTable
-  deployments={Object.fromEntries(
-    Object.entries(EntropyDeployments).filter(
-      ([k, v]) => v.network === "testnet"
-    )
-  )}
+<EntropyDeployments
+  networkName="testnet"
+  url={FORTUNA_API_URLS.TESTNET}
   showReveal={true}
 />
 
