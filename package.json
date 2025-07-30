@@ -60,8 +60,7 @@
     "solc": "^0.8.20",
     "tailwindcss": "^3.4.3",
     "ts-node": "^10.9.1",
-    "typescript": "^5.8.3",
-    "viem": "^2.32.1"
+    "typescript": "^5.8.3"
   },
   "overrides": {
     "@solana/web3.js@1.77.4": {
