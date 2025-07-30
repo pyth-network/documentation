@@ -391,4 +391,12 @@
     "price_deviation": 0.5,
     "confidence_ratio": 100
   }
+  {
+    "alias": "JUPSOL/SOL.RR",
+    "account_address": "D7UqeBmCEmhGXGYfi2y9RfoCa7t1Xw5iZLBeYZ3sxFSe",
+    "id": "f8d8d6b6c866c8b2624fb5b679ae846738725e5fc887fa8e927c8d8645018a2b",
+    "time_difference": 60,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  }
 ]
