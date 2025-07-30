@@ -1,0 +1,83 @@
+# What's New in Entropy V2
+
+Entropy V2 is a major update to the Pyth Randomness Protocol.
+
+It introduces a series of developer experience improvements, shaped directly by the feedback of teams using it in production:
+configurable & customizable gas limits for callbacks, adding callback statuses, and an upcoming public Entropy Explorer.
+
+## What's New
+
+- [Configurable Gas Limits for Callbacks](#configurable-gas-limits-for-callbacks)
+- [Enhanced Callback Statuses](#enhanced-callback-statuses)
+- [Upcoming Public Entropy Explorer](#upcoming-public-entropy-explorer)
+
+### Configurable Gas Limits for Callbacks
+
+Entropy V2 introduces configurable gas limits for callbacks.
+This allows teams to set the gas limit for their callbacks, which can be useful for:
+
+- Computing expensive operations in the callback like minting an NFT collection.
+- Save money on gas fees by setting a lower gas limit.
+
+```solidity copy
+// Calculate the fee for the custom gas limit
+uint256 fee = entropy.getFeeV2(customGasLimit);
+
+// Request random number with custom gas limit
+uint64 sequenceNumber = entropy.requestV2{ value: fee }(customGasLimit);
+```
+
+### Enhanced Callback Statuses
+
+Entropy V2 introduces callback statuses, which allow teams to track the status of their callbacks.
+These callback statuses are emitted in the `Revealed` event.
+
+Previous version of Entropy use to emit the following `RevealedWithCallback` event:
+
+```solidity copy
+event RevealedWithCallback(
+    EntropyStructs.Request request,
+    bytes32 userRandomNumber,
+    bytes32 providerRevelation,
+    bytes32 randomNumber
+);
+```
+
+Based on the feedback from teams, we have added the following statuses to the `Revealed` event:
+
+```solidity copy
+event Revealed(
+    address indexed provider,
+    address indexed caller,
+    uint64 indexed sequenceNumber,
+    bytes32 randomNumber,
+    bytes32 userContribution,
+    bytes32 providerContribution,
+    bool callbackFailed,
+    bytes callbackReturnValue,
+    uint32 callbackGasUsed,
+    bytes extraArgs
+);
+```
+
+This updated `Revealed` event
+
+- denormalizes fields from `EntropyStructs.Request` to a flat representation in the `Revealed` event for easier consumption.
+- adds a `callbackFailed` boolean to indicate if the callback failed.
+
+This will help teams to easily track the status of their callbacks and re-request them if they fail on-chain.
+
+### Upcoming Public Entropy Explorer
+
+Entropy V2 introduces an upcoming public Entropy Explorer, which will allow teams to easily track the status of their callbacks and re-request them if they fail on-chain.
+
+This will help teams to easily track the status of their callbacks and re-request them if they fail on-chain.
+
+## Additional Resources
+
+These following resources will help you get started with Entropy V2:
+
+- [Entropy V2 Guide](./generate-random-numbers/evm.mdx)
+- [Entropy V2 Contracts](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/contracts/contracts/entropy)
+- [Entropy V2 SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/entropy_sdk/solidity)
+- [Entropy V2 Examples](https://github.com/pyth-network/pyth-examples/tree/main/entropy)
