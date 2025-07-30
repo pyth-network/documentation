@@ -62,8 +62,8 @@ event Revealed(
 
 This updated `Revealed` event
 
-- abstracted away the information from `EntropyStructs.Request` to the `Revealed` event for easier consumption.
-- added a `callbackFailed` boolean to indicate if the callback failed.
+- denormalizes fields from `EntropyStructs.Request` to a flat representation in the `Revealed` event for easier consumption.
+- adds a `callbackFailed` boolean to indicate if the callback failed.
 
 This will help teams to easily track the status of their callbacks and re-request them if they fail on-chain.
 
