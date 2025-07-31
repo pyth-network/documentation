@@ -152,12 +152,12 @@
     "time_difference": 3600,
     "price_deviation": 1,
     "confidence_ratio": 100
-  }
+  },
   {
     "alias": "USDE/USD",
     "id": "6ec879b1e9963de5ee97e9c8710b742d6228252a5e2ca12d4ae81d7fe5ee8c5d",
     "time_difference": 3600,
     "price_deviation": 1,
     "confidence_ratio": 100
-  },
+  }
 ]
