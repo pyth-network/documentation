@@ -51,9 +51,15 @@ const LoadedResults = ({
   }, []);
   const filteredFeeds = useMemo(
     () =>
-      feeds.filter((feed) =>
-        feed.symbol.toLowerCase().includes(search.toLowerCase())
-      ),
+      feeds.filter((feed) => {
+        const searchLower = search.toLowerCase();
+        return (
+          feed.symbol.toLowerCase().includes(searchLower) ||
+          feed.stableFeedId?.toLowerCase().includes(searchLower) ||
+          feed.betaFeedId?.toLowerCase().includes(searchLower) ||
+          feed.solanaPriceFeedAccount?.toLowerCase().includes(searchLower)
+        );
+      }),
     [feeds, search]
   );
 
