@@ -91,6 +91,13 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "FUD/USD",
+    "id": "6a4090703da959247727f2b490eb21aea95c8684ecfac675f432008830890c75",
+    "time_difference": 60,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "HAEDAL/USD",
     "id": "e67d98cc1fbd94f569d5ba6c3c3c759eb3ffc5d2b28e64538a53ae13efad8fd1",
     "time_difference": 60,
