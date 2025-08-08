@@ -1,16 +1,13 @@
-import { Callout } from "nextra/components";
+import { Callout, Tabs } from "nextra/components";
 
 # Derive Cross Rate
 
 This guide shows how to combine two price feeds to derive a cross rate. These are also known as "synthetic" price feeds.
 Cross rates or Synthetic Price feeds are useful for trading pairs that are not directly supported by Pyth.
 
-<Callout type="info" emoji="ℹ️">
-  This guide is for developers who are building applications on **EVM
-  blockchains** using **solidity only**.
-</Callout>
-
-## Example
+<Tabs items={["EVM", "SVM"]}>
+<Tabs.Tab>
+### EVM
 
 For example, if you want to trade the price of **`ETH/EUR{:jsx}`**, which is not directly supported by Pyth, you can combine the price of **`ETH/USD{:jsx}`** and **`EUR/USD{:jsx}`** to derive the price of **`ETH/EUR{:jsx}`**.
 
@@ -18,9 +15,9 @@ $$
 \large{\text{ETH/EUR} = \text{ETH/USD} \div \text{EUR/USD}}
 $$
 
-## Derive a cross rate
+### Derive a cross rate
 
-The Pyth Solidity SDKprovides [`deriveCrossRate`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/solidity/PythUtils.sol#L77) function to combine two price feeds.
+The Pyth Solidity SDK provides [`deriveCrossRate`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/sdk/solidity/PythUtils.sol#L77) function to combine two price feeds.
 This method is available in [Pyth solidity SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/solidity).
 
 This method takes the following parameters:
@@ -35,7 +32,7 @@ Returns:
 
 - `crossRate`: The computed cross rate (a / c), scaled to targetExponent.
 
-## Example
+### Example
 
 ```solidity copy
 pragma solidity ^0.8.0;
@@ -81,21 +78,43 @@ contract ExampleCrossRate {
 
 ```
 
-### ⚠️ Things to Keep in Mind
+#### ⚠️ Things to Keep in Mind
 
 - The function reverts if either price is **negative**, or if any exponent is **less than -255**.
 - The result is rounded down. If the result is smaller than 1 in the given `targetExponent{:jsx}`, it will return 0.
 - Confidence intervals are not derived in this function. If needed, you have to derive them manually.
 - Reverts with `PythErrors.ExponentOverflow{:jsx}` if `targetExponent + expo1 - expo2{:jsx}` is outside the range **[-58, 58]**.
 
-## Additional Resources
+### Additional Resources
 
 You may find these additional resources helpful.
 
-### How to use real-time data in EVM contracts
+#### How to use real-time data in EVM contracts
 
 The [How to use real-time data in EVM contracts](./use-real-time-data/evm) guide provides a step-by-step guide on how to use real-time data in EVM contracts.
 
-### Price Feed IDs
+#### Price Feed IDs
 
 The [Price Feed IDs](./price-feeds.mdx) page lists the price feed IDs for each asset supported by Pyth.
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+### SVM
+
+The Pyth Rust SDK provides [`get_price_in_quote`](https://github.com/pyth-network/pyth-sdk-rs/blob/d6598dcf8b556cd97bb597661cdc012398371be1/pyth-sdk/src/price.rs#L90) function to combine two price feeds.
+This method is available in [Pyth Rust SDK](https://github.com/pyth-network/pyth-sdk-rs/tree/main/pyth-sdk).
+
+### Example
+
+```rust copy
+let btc_usd: Price = ...;
+let eth_usd: Price = ...;
+// -8 is the desired exponent for the result
+let btc_eth: Price = btc_usd.get_price_in_quote(&eth_usd, -8);
+println!("BTC/ETH price: ({} +- {}) x 10^{}", price.price, price.conf, price.expo);
+```
+
+</Tabs.Tab>
+
+</Tabs>
