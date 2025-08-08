@@ -16,7 +16,10 @@ The Pyth protocol integration for Stacks is available as a Beta on both testnet 
 Unlike other smart contract languages, there is no importing modules into Clarity smart contracts for certain security reasons. So the Pyth integration on Stacks is implemented as its own set of Clarity contracts where developers will invoke a `contract-call?` to the main Pyth Clarity [contract](https://explorer.hiro.so/txid/SP3R4F6C1J3JQWWCVZ3S7FRRYPMYG6ZW6RZK31FXY.pyth-oracle-v3?chain=mainnet).
 
 <Callout type="info" emoji="ℹ️">
-Currently, the Pyth protocol integration is currently maintained by Trust Machines. It currently supports real-time price feeds for BTC, STX, ETH, and USDC. To request more price feeds, open an issue in Trust Machine's Pyth maintained repo [here](https://github.com/Trust-Machines/stacks-pyth-bridge).
+  Currently, the Pyth protocol integration is currently maintained by Trust
+  Machines. It currently supports real-time price feeds for BTC, STX, ETH, and
+  USDC. To request more price feeds, open an issue in Trust Machine's Pyth
+  maintained repo [here](https://github.com/Trust-Machines/stacks-pyth-bridge).
 </Callout>
 
 ### Read BTC prices from a Clarity smart contract
@@ -24,7 +27,10 @@ Currently, the Pyth protocol integration is currently maintained by Trust Machin
 For our example, we will imagine a contract that mints an NFT in exchange for $100 of sBTC. In order to determine the USD value of a user's sBTC amount, we'll need to use Pyth. Since market pricing for sBTC isn't supported currently, we'll use the price data from the BTC/USD price feed.
 
 <Callout type="info" emoji="ℹ️">
-The maintained Pyth integration contract for Stacks is called [`.pyth-oracle-v3`](https://explorer.hiro.so/txid/0x745a0e07ef9487ebb2190da515bda60f1531299553420750b33b3ba4a97729e1?chain=mainnet). This contract serves as the main entry point for updating and getting price feed data.
+  The maintained Pyth integration contract for Stacks is called
+  [`.pyth-oracle-v3`](https://explorer.hiro.so/txid/0x745a0e07ef9487ebb2190da515bda60f1531299553420750b33b3ba4a97729e1?chain=mainnet).
+  This contract serves as the main entry point for updating and getting price
+  feed data.
 </Callout>
 
 You'll notice in the Clarity snippet below we open up `let` bindings of our function to:
@@ -108,47 +114,45 @@ We can then determine the USD amount of sBTC the user owns and decide if it is e
 ```
 
 <Callout type="warning" emoji="⚠️">
-The `verify-and-update-price-feeds` of the `.pyth-oracle-v3` contract applies a fee of 1 uSTX, or 1 micro-stx, which is 0.000001 STX.
+  The `verify-and-update-price-feeds` of the `.pyth-oracle-v3` contract applies
+  a fee of 1 uSTX, or 1 micro-stx, which is 0.000001 STX.
 </Callout>
 
 Alternatively, developers can just invoke the `read-price-feed` public function of the `pyth-oracle-v3.clar` contract. This will simply return the price feed from the last updated feed. But it's always encouraged to determine if a staleness check is viable for your application.
 
 ## Write Front-End Code
 
-In your front-end application code, you can install and use the methods brought by Pyth Network's Javascript SDK to fetch the latest price update, known as a VAA (Verified Action Approvals) message.
+In your front-end application code, you can install and use the methods brought by Pyth Network's `hermes-client` Javascript SDK to fetch the latest price update, known as a VAA (Verified Action Approvals) message.
 
 ```javascript copy
-import { PriceServiceConnection } from "@pythnetwork/price-service-client"
-import { Buffer } from "buffer"
+import { HermesClient } from "@pythnetwork/hermes-client";
 
 // --snip--
 async function handleFetchLatestVaa() {
-  const connection = new PriceServiceConnection("https://hermes.pyth.network", {
-    priceFeedRequestConfig: {
-      binary: true
-    }
-  })
+  const connection = new HermesClient("https://hermes.pyth.network", {});
 
-  const btcPriceId = ["0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43"]
+  const priceIds = [
+    "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
+  ];
 
-  const response = await connection.getLatestVaas(btcPriceId)
-  let messageBuffer = Buffer.from(response[0], "base64")
-  const hexString = messageBuffer.toString("hex")
-  let latestVaaHex = `0x${hexString}`
+  const priceUpdates = await connection.getLatestPriceUpdates(priceIds);
+  let latestVaaHex = `0x${priceUpdates.binary.data[0]}`;
 
-  return latestVaaHex
+  return latestVaaHex;
 }
 // --snip--
 ```
 
-The binary data returned from the Pyth SDK will be in base64 format which we'll need to convert to hexadecimal in order for the Pyth contract to properly ingest it. We'll then take this hexadecimal VAA message and pass it into our Clarity function as an argument.
+The binary data returned from the Pyth SDK will already be in hexadecimal format. We'll then take this hexadecimal VAA message and pass it into our Clarity function as an argument.
 
 Using Stacks Connect of the [stacks.js](https://github.com/hirosystems/stacks.js) monorepo, we'll open up a stx_callContract request and invoke our public function while passing in the latestVaaHex as the function argument.
 
 ```javascript copy
-let latestVaaHex = await handleFetchLatestVaa()
+let latestVaaHex = await handleFetchLatestVaa();
 
-let postCond1 = Pc.principal("SP1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRCBGD7R").willSendLte(1).ustx()
+let postCond1 = Pc.principal("SP1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRCBGD7R")
+  .willSendLte(1)
+  .ustx();
 
 const response = await request("stx_callContract", {
   contract: `SP1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRCBGD7R.benjamin-club`,
@@ -156,8 +160,8 @@ const response = await request("stx_callContract", {
   functionArgs: [Cl.bufferFromHex(latestVaaHex)],
   network: "mainnet",
   postConditions: [postCond1],
-  postConditionMode: "deny"
-})
+  postConditionMode: "deny",
+});
 ```
 
 If you noticed, we set a post-condition statement of our user transferring less than or equal to 1 uSTX, which is 0.000001 STX. This is because the `verify-and-update-price-feeds` of the `.pyth-oracle-v3` contract applies a fee for this. Setting a separate post-condition statement on the actual sbtc token transfer in our example will also be needed. Beforehand, you could invoke the `decode-price-feeds` function with the `latestVaaHex` to simply have the contained price data decoded and returned. From there you could pre-determine the estimated amount of sbtc tokens to be transferred and set in a separate post-condition.
