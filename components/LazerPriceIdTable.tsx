@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { StyledTd } from "./Table";
 import { Spinner } from "./Spinner";
 const fetchLazerPriceIdMetadata = async () => {
@@ -59,6 +59,24 @@ const useLazerPriceIdState = () => {
 
 export function LazerPriceIdTable() {
   const lazerPriceIdState = useLazerPriceIdState();
+  const [search, setSearch] = useState("");
+
+  const updateSearch = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  }, []);
+
+  const filteredFeeds = useMemo(() => {
+    if (lazerPriceIdState.type !== LazerPriceIdStateType.Loaded) return [];
+    return lazerPriceIdState.priceFeeds.filter((feed) => {
+      const searchLower = search.toLowerCase();
+      return (
+        feed.symbol.toLowerCase().includes(searchLower) ||
+        feed.name.toLowerCase().includes(searchLower) ||
+        feed.description.toLowerCase().includes(searchLower) ||
+        feed.pyth_lazer_id.toString().includes(searchLower)
+      );
+    });
+  }, [lazerPriceIdState, search]);
 
   switch (lazerPriceIdState.type) {
     case LazerPriceIdStateType.NotLoaded:
@@ -67,30 +85,39 @@ export function LazerPriceIdTable() {
       return <Spinner />;
     case LazerPriceIdStateType.Loaded:
       return (
-        <table>
-          <thead>
-            <tr>
-              <th>Asset Type</th>
-              <th>Description</th>
-              <th>Name</th>
-              <th>Symbol</th>
-              <th>Pyth Lazer Id</th>
-              <th>Exponent</th>
-            </tr>
-          </thead>
-          <tbody>
-            {lazerPriceIdState.priceFeeds.map((priceFeed) => (
-              <tr key={priceFeed.symbol}>
-                <StyledTd>{priceFeed.asset_type}</StyledTd>
-                <StyledTd>{priceFeed.description}</StyledTd>
-                <StyledTd>{priceFeed.name}</StyledTd>
-                <StyledTd>{priceFeed.symbol}</StyledTd>
-                <StyledTd>{priceFeed.pyth_lazer_id}</StyledTd>
-                <StyledTd>{priceFeed.exponent}</StyledTd>
+        <div>
+          <input
+            type="text"
+            placeholder="Search by symbol, name, description, or pyth lazer id..."
+            value={search}
+            onChange={updateSearch}
+            className="w-full p-2 mb-4 border border-gray-300 rounded-md"
+          />
+          <table>
+            <thead>
+              <tr>
+                <th>Asset Type</th>
+                <th>Description</th>
+                <th>Name</th>
+                <th>Symbol</th>
+                <th>Pyth Lazer Id</th>
+                <th>Exponent</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredFeeds.map((priceFeed) => (
+                <tr key={priceFeed.symbol}>
+                  <StyledTd>{priceFeed.asset_type}</StyledTd>
+                  <StyledTd>{priceFeed.description}</StyledTd>
+                  <StyledTd>{priceFeed.name}</StyledTd>
+                  <StyledTd>{priceFeed.symbol}</StyledTd>
+                  <StyledTd>{priceFeed.pyth_lazer_id}</StyledTd>
+                  <StyledTd>{priceFeed.exponent}</StyledTd>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       );
     case LazerPriceIdStateType.Error:
       return <div>Error</div>;
