@@ -16,7 +16,7 @@ const EntropyDeploymentTable = ({
           <th>Chain Id</th>
           <th>Entropy Contract Address</th>
           {showReveal && <th>Reveal Delay</th>}
-          <th>Gas Limit</th>
+          <th>Default Gas Limit</th>
         </tr>
       </thead>
       <tbody>
