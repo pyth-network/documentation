@@ -55,6 +55,7 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
          gtag('config', 'G-7TVVW3MEK7');
        `}
         </Script>
+        <Component {...pageProps} />
         <AskCookbook />
       </>
     )
