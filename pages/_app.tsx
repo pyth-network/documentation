@@ -1,14 +1,9 @@
-import { ConnectKitProvider, getDefaultConfig } from "connectkit";
-import { GrazProvider } from "graz";
 import { AppProps } from "next/app";
 import Script from "next/script";
 import "nextra-theme-docs/style.css";
 import { ReactNode, useEffect, useState, useRef } from "react";
-import { WagmiConfig, createConfig } from "wagmi";
-import { arbitrum, avalanche, mainnet, sepolia } from "wagmi/chains";
 import * as amplitude from "@amplitude/analytics-browser";
 import { autocapturePlugin } from "@amplitude/plugin-autocapture-browser";
-import { CosmosChains, GlobalContextProvider } from "../contexts/GlobalContext";
 import "../styles/styles.css";
 import TagManager from "react-gtm-module";
 import { AskCookbook } from "../components/AskCookbook";
@@ -18,23 +13,11 @@ const tagManagerArgs = {
 };
 const AMPLITUDE_API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
 
-const chains = [arbitrum, mainnet, avalanche, sepolia];
-
 type NextraAppProps = AppProps & {
   Component: AppProps["Component"] & {
     getLayout: (page: ReactNode) => ReactNode;
   };
 };
-
-const config = createConfig(
-  getDefaultConfig({
-    alchemyId: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
-    appName: "Pyth Network",
-    chains,
-  })
-);
 
 export default function Nextra({ Component, pageProps }: NextraAppProps) {
   const [mounted, setMounted] = useState(false);
@@ -73,24 +56,6 @@ export default function Nextra({ Component, pageProps }: NextraAppProps) {
        `}
         </Script>
         <AskCookbook />
-        <GrazProvider grazOptions={{ chains: CosmosChains }}>
-          <WagmiConfig config={config}>
-            <ConnectKitProvider
-              theme="midnight"
-              customTheme={{
-                "--ck-connectbutton-background": "#E6DAFE",
-                "--ck-connectbutton-hover-background": "#F2ECFF",
-                "--ck-connectbutton-color": "#141227",
-                "--ck-font-family": "Red Hat Text, sans-serif",
-                "--ck-connectbutton-font-size": "14px",
-              }}
-            >
-              <GlobalContextProvider>
-                <Component {...pageProps} />
-              </GlobalContextProvider>
-            </ConnectKitProvider>
-          </WagmiConfig>
-        </GrazProvider>
       </>
     )
   );

@@ -30,9 +30,6 @@ const permanentRedirectArray = [
   // First version of docs site -> third version
 
   ["/evm", "/price-feeds/use-real-time-data/evm"],
-  ["/aptos", "/price-feeds/use-real-time-data/aptos"],
-  ["/cosmwasm", "/price-feeds/use-real-time-data/cosmwasm"],
-
   // Second version of docs site -> third version
   ["/documentation/metrics/:path*", "/home/metrics/:path*"],
   [
@@ -90,22 +87,6 @@ const permanentRedirectArray = [
   [
     "/documentation/pythnet-price-feeds/scheduler",
     "/price-feeds/schedule-price-updates/using-scheduler",
-  ],
-  [
-    "/documentation/pythnet-price-feeds/aptos",
-    "/price-feeds/use-real-time-data/aptos",
-  ],
-  [
-    "/documentation/pythnet-price-feeds/cosmwasm",
-    "/price-feeds/use-real-time-data/cosmwasm",
-  ],
-  [
-    "/documentation/pythnet-price-feeds/sui",
-    "/price-feeds/use-real-time-data/sui",
-  ],
-  [
-    "/documentation/pythnet-price-feeds/near",
-    "/price-feeds/use-real-time-data/near",
   ],
   [
     "/documentation/pythnet-price-feeds/off-chain",
