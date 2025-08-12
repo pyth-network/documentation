@@ -368,14 +368,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "WTI1M/USD",
-    "account_address": "nt1JuGVRBJNrvMpdZt9RJnxVSxRuoeVx5LRq3R1bS16",
-    "id": "eca3fb7e6be5be55a01678ee00f6405b9e4986e32d539ccd2a06a57e0c615880",
-    "time_difference": 60,
-    "price_deviation": 0.5,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "PUMP/USD",
     "account_address": "HMm3GPbdnqGwbkTnUUqCFsH8AMHDdEC3Lg8gcPD3HJSH",
     "id": "7a01fca212788bba7c5bf8c9efd576a8a722f070d2c17596ff7bb609b8d5c3b9",
