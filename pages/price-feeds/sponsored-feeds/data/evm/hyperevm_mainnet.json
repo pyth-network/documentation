@@ -320,5 +320,12 @@
     "time_difference": 3600,
     "price_deviation": 1,
     "confidence_ratio": 100
+  },
+  {
+    "alias": "HAHYPE/HYPE.RR",
+    "id": "19aec77cb70be18c66df7afd33da651d7b376fd26f7c06f2e8b77536c820a281",
+    "time_difference": 3600,
+    "price_deviation": 1,
+    "confidence_ratio": 100
   }
 ]
