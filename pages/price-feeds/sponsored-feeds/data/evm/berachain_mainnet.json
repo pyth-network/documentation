@@ -112,13 +112,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "HENLO/USD",
-    "id": "d90813d7fc7f4f5d786f3a6a35701aff4f628db0ecd998de66be0ff8264c67a2",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "IBERA/USD",
     "id": "eb943c0b5c9e02a529f799ac91070c3b7046f9412f3e5b0a90ba00267b838f34",
     "time_difference": 3600,
