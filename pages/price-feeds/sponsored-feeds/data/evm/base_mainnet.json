@@ -21,8 +21,8 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "PUFETH/USD",
-    "id": "e5801530292c348f322b7b4a48c1c0d59ab629846cce1c816fc27aee2054b560",
+    "alias": ~PUFETH/USD~,
+    "id": ~e5801530292c348f322b7b4a48c1c0d59ab629846cce1c816fc27aee2054b560~,
     "time_difference": 3600,
     "price_deviation": 1,
     "confidence_ratio": 100
