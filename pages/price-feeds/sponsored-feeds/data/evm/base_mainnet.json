@@ -21,13 +21,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "PUFETH/USD",
-    "id": "e5801530292c348f322b7b4a48c1c0d59ab629846cce1c816fc27aee2054b560",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "WEETH/USD",
     "id": "9ee4e7c60b940440a261eb54b6d8149c23b580ed7da3139f7f08f4ea29dad395",
     "time_difference": 3600,

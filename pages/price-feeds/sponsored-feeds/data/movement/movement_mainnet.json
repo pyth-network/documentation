@@ -98,13 +98,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "AVALON.USDA/USD",
-    "id": "37c307959acbb353e1451bcf7da9d305c8cb8d54c64353588aaf900ffcffdd7d",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "WSTETH/USD",
     "id": "6df640f3b8963d8f8358f791f352b8364513f6ab1cca5ed3f1f7b5448980e784",
     "time_difference": 3600,
@@ -114,6 +107,13 @@
   {
     "alias": "SOLVBTC/USD",
     "id": "f253cf87dc7d5ed5aa14cba5a6e79aee8bcfaef885a0e1b807035a0bbecc36fa",
+    "time_difference": 3600,
+    "price_deviation": 1,
+    "confidence_ratio": 100
+  },
+  {
+    "alias": "AVALON.USDA/USD",
+    "id": "37c307959acbb353e1451bcf7da9d305c8cb8d54c64353588aaf900ffcffdd7d",
     "time_difference": 3600,
     "price_deviation": 1,
     "confidence_ratio": 100
