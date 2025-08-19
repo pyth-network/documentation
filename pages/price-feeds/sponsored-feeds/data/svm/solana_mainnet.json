@@ -392,6 +392,14 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "WTIV5/USD",
+    "account_address": "79Qk7eiaFDTPdny4ha6vG3SYtRSdJ9tCqSpYPvxmq3WW",
+    "id": "1fd93efedb8b2db34465b5dbad8beca7288ad8bbcd47213ab1fdfe57ac86a240",
+    "time_difference": 60,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "SYRUPUSDC/USDC.RR",
     "account_address": "GWdwWDhYFUc8ZD6uCTtEAAwx97V1ZCsxPWGL7vhSha6w",
     "id": "2ad31d1c4a85fbf2156ce57fab4104124c5ef76a6386375ecfc8da1ed5ce1486",
