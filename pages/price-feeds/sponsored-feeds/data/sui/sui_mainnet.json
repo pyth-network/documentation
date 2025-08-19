@@ -252,6 +252,13 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "UP/USD",
+    "id": "c591a547856b091560b120ee14b165a84ca58eca23b2ab635df641340bde1f10",
+    "time_difference": 60,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "XRP/USD",
     "id": "ec5d399846a9209f3fe5881d70aae9268c94339ff9817e8d18ff19fa05eea1c8",
     "time_difference": 60,
