@@ -392,6 +392,22 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "NAV.USTB/USD",
+    "account_address": "EqggHKbjePzmXAX6MW3EsgjiJ4mhkbb8j5s5KfGs1gLq",
+    "id": "dea78edd10cd7ae4524cc1744216788746306623bc3553014eeab6062860795d",
+    "time_difference": 60,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
+    "alias": "NAV.USCC/USD",
+    "account_address": "823Y4cV7XH2TzkB9NdHfTRoCKLrqXv8EgQP5nzEG43Hp",
+    "id": "5d73a5953dc86c4773adc778c30e8a6dfc94c5c3a74d7ebb56dd5e70350f044a",
+    "time_difference": 60,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "WTIV5/USD",
     "account_address": "79Qk7eiaFDTPdny4ha6vG3SYtRSdJ9tCqSpYPvxmq3WW",
     "id": "1fd93efedb8b2db34465b5dbad8beca7288ad8bbcd47213ab1fdfe57ac86a240",
