@@ -27,6 +27,7 @@
   "use-historic-price-data": "Use Historic Price Data",
   "fetch-price-updates": "Fetch Price Updates",
   "schedule-price-updates": "Schedule Price Updates",
+  "create-tradingview-charts": "Create TradingView Charts",
   "derive-cross-rate": "Derive Cross Rate",
   "migrate-an-app-to-pyth": "Migrate an App to Pyth",
   "use-pyth-for-morpho": "Use Pyth for Morpho Markets",
