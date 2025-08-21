@@ -6,7 +6,8 @@ This guide shows you how to integrate **Pyth Benchmarks to access historical pri
 The Pyth Benchmarks API is available on all Pythnet chains.
 
 <Callout type="info" emoji="ℹ️">
-This guide uses the term **Benchmarks** to refer to the historical price data service.
+  This guide uses the term **Benchmarks** to refer to the historical price data
+  service.
 </Callout>
 
 ## Overview
@@ -37,11 +38,10 @@ Benchmarks APIs expose two endpoints to fetch historical prices:
 
 <Callout type="info" emoji="ℹ️">
 
-Time interval in seconds added to the provided timestamp for the requested price updates. 
+Time interval in seconds added to the provided timestamp for the requested price updates.
 For example, if the timestamp is 1716400000 and the **interval is 60,** this function will return price updates from time 1716400000 to 1716400060, inclusive of both. **The time interval should not exceed 60 seconds.**
 
 </Callout>
-
 
 ### Verifying Historical Prices on-chain
 
@@ -57,11 +57,11 @@ import "@pythnetwork/pyth-sdk-solidity/PythStructs.sol";
 
 contract HistoricalPriceConsumer {
     IPyth public pyth;
-    
+
     constructor(address _pyth) {
         pyth = IPyth(_pyth);
     }
-    
+
     function settleWithHistoricalPrice(
         bytes[] calldata priceUpdate,
         uint256 priceId,
@@ -77,7 +77,7 @@ contract HistoricalPriceConsumer {
             minPublishTime,
             maxPublishTime,
         );
-        
+
         // Use the historical price for settlement
         uint256 settlementPrice = uint256(price.price);
         // ... settlement logic
@@ -95,16 +95,12 @@ Refer to the [parsePriceFeedUpdates](https://api-reference.pyth.network/price-fe
 
 </Steps>
 
-
-
-
 ## Additional Resources
 
 ### API Reference
 
 - [Benchmark API Documentation](https://benchmarks.pyth.network/docs)
 - Explore the [Pyth on-chain API documentation](https://api-reference.pyth.network/price-feeds/evm/parsePriceFeedUpdates) to learn more about parsing price updates on EVM chains.
-
 
 ### TradingView Integration
 
