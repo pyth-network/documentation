@@ -376,14 +376,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "WTIU5/USD",
-    "account_address": "Y3XuRL2ZrRnYSxY1vZWpG7k5SWPhbxcsoBZVodS4gUp",
-    "id": "ecd49a99bb0a0f772de2a4b5ce93fdb5b7b83ae7dd7d99c68dadf9cc40ee8fbe",
-    "time_difference": 60,
-    "price_deviation": 0.5,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "JUPSOL/SOL.RR",
     "account_address": "D7UqeBmCEmhGXGYfi2y9RfoCa7t1Xw5iZLBeYZ3sxFSe",
     "id": "f8d8d6b6c866c8b2624fb5b679ae846738725e5fc887fa8e927c8d8645018a2b",
