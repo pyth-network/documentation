@@ -408,6 +408,14 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "ZBTC/USD",
+    "account_address": "7qFJxM2GefbY2td7cXb6bmXmwVqkeF7kYjaypgZWLBng",
+    "id": "3d824c7f7c26ed1c85421ecec8c754e6b52d66a4e45de20a9c9ea91de8b396f9",
+    "time_difference": 60,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "SYRUPUSDC/USDC.RR",
     "account_address": "GWdwWDhYFUc8ZD6uCTtEAAwx97V1ZCsxPWGL7vhSha6w",
     "id": "2ad31d1c4a85fbf2156ce57fab4104124c5ef76a6386375ecfc8da1ed5ce1486",
