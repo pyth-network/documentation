@@ -114,9 +114,6 @@ const permanentRedirectArray = [
     "/home/oracle-integrity-staking/reward-examples",
   ],
   ["/guides", "/price-feeds"],
-];
-
-const benchmarkRedirects = [
   ["/benchmarks", "/price-feeds/use-historic-price-data"],
   [
     "/benchmarks/how-to-create-tradingview-charts",
@@ -148,7 +145,6 @@ const nextConfig = {
 
     return [
       ...permanentRedirects,
-      ...benchmarkRedirects,
       {
         source: "/price-feeds/api-reference/evm/:slug",
         destination: "https://api-reference.pyth.network/price-feeds/evm/:slug",
