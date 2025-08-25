@@ -36,7 +36,7 @@ const permanentRedirectArray = [
     "/documentation/how-pyth-works/:slug*",
     "/price-feeds/how-pyth-works/:slug*",
   ],
-  ["/documentation/benchmarks", "/benchmarks"],
+  ["/documentation/benchmarks", "/price-feeds/use-historic-price-data"],
   ["/pyth-token/:path*", "/home/pyth-token/:path*"],
   ["/documentation/publish-data/:slug*", "/price-feeds/publish-data/:slug*"],
   [
@@ -107,13 +107,23 @@ const permanentRedirectArray = [
   ],
   [
     "/guides/how-to-create-tradingview-charts",
-    "/benchmarks/how-to-create-tradingview-charts",
+    "/price-feeds/create-tradingview-charts",
   ],
   [
     "/home/oracle-integrity-staking/examples",
     "/home/oracle-integrity-staking/reward-examples",
   ],
   ["/guides", "/price-feeds"],
+];
+
+const benchmarkRedirects = [
+  ["/benchmarks", "/price-feeds/use-historic-price-data"],
+  [
+    "/benchmarks/how-to-create-tradingview-charts",
+    "/price-feeds/create-tradingview-charts",
+  ],
+  ["/benchmarks/api-instances", "/price-feeds/api-reference/"],
+  ["/benchmarks/rate-limits", "/price-feeds/rate-limits/"],
 ];
 
 /** @type {import('next').NextConfig} */
@@ -138,6 +148,7 @@ const nextConfig = {
 
     return [
       ...permanentRedirects,
+      ...benchmarkRedirects,
       {
         source: "/price-feeds/api-reference/evm/:slug",
         destination: "https://api-reference.pyth.network/price-feeds/evm/:slug",
