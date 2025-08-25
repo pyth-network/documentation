@@ -77,7 +77,7 @@ const LoadedResults = ({
       ) : (
         <div className="mt-4 max-h-[1200px] overflow-auto">
           <Table>
-            <thead>
+            <thead className="sticky top-0 bg-white dark:bg-gray-900 z-10">
               <tr>
                 <Th className="!font-semibold !text-right">Symbol</Th>
                 <Th>Stable Price Feed ID</Th>
