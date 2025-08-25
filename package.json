@@ -15,6 +15,7 @@
     "@cookbookdev/docsbot": "^4.21.5",
     "@headlessui/react": "^1.7.14",
     "@metamask/detect-provider": "^2.0.0",
+    "@phosphor-icons/react": "^2.1.10",
     "@pythnetwork/entropy-sdk-solidity": "^2.0.0",
     "@pythnetwork/pyth-solana-receiver": "^0.10.2",
     "clsx": "^2.1.1",
