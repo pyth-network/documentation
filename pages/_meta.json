@@ -14,11 +14,6 @@
     "type": "page"
   },
 
-  "benchmarks": {
-    "title": "Benchmarks",
-    "type": "page"
-  },
-
   "express-relay": {
     "title": "Express Relay",
     "type": "page"
