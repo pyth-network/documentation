@@ -35,12 +35,17 @@
   "best-practices": "Best Practices",
   "contract-addresses": "Contract & Provider Addresses",
   "current-fees": "Current Fees",
+  "error-codes": "Error Codes",
+  "entropy-explorer": {
+    "title": "Entropy Explorer ↗",
+    "href": "https://entropy-explorer.pyth.network/",
+    "newWindow": true
+  },
   "fortuna-api-explorer": {
-    "title": "Fortuna API Explorer ↗",
+    "title": "Fortuna API Reference ↗",
     "href": "https://fortuna.dourolabs.app/docs/",
     "newWindow": true
   },
-  "error-codes": "Error Codes",
   "examples": "Example Applications",
 
   "-- Understanding Entropy": {
