@@ -416,6 +416,14 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "LBTC/USD",
+    "account_address": "HENev4WeM2VhJ2b9tFCQsWdHGU6fTvgW68MsvBeYpxYn",
+    "id": "8f257aab6e7698bb92b15511915e593d6f8eae914452f781874754b03d0c612b",
+    "time_difference": 60,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "SYRUPUSDC/USDC.RR",
     "account_address": "GWdwWDhYFUc8ZD6uCTtEAAwx97V1ZCsxPWGL7vhSha6w",
     "id": "2ad31d1c4a85fbf2156ce57fab4104124c5ef76a6386375ecfc8da1ed5ce1486",
