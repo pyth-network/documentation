@@ -8,6 +8,7 @@ import {
   FileText,
   Clock,
   ArrowsOutCardinal,
+  DiceSixIcon,
 } from "@phosphor-icons/react";
 
 export function BarChartIcon() {
@@ -40,4 +41,8 @@ export function ClockIcon() {
 
 export function MultiChainIcon() {
   return <ArrowsOutCardinal className="w-5 h-5" weight="regular" />;
+}
+
+export function DiceIcon() {
+  return <DiceSixIcon className="w-5 h-5" weight="regular" />;
 }

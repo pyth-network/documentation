@@ -1,20 +1,125 @@
-# Introduction
+import { ProductCard } from "../../components/ProductCard";
+import {
+  BarChartIcon,
+  ClockIcon,
+  LightningIcon,
+  MultiChainIcon,
+  ShieldIcon,
+  CodeIcon,
+  GlobeIcon,
+  DiceIcon,
+} from "../../components/icons/ProductIcons";
 
-Pyth Network is an oracle protocol that connects the owners of market data to applications on multiple blockchains.
-Pyth's market data is contributed by over [120+ first-party publishers](https://insights.pyth.network/publishers?utm_source=docs), including some of the biggest exchanges and market making firms in the world.
-[Over 550 protocols](https://defillama.com/oracles/Pyth) trust Pyth to secure their applications.
+# Welcome to Pyth Network
 
-Pyth Network offers several products for developers:
+Pyth Network is the leading oracle protocol that connects the owners of market data to applications on multiple blockchains. Our market data is contributed by over [120+ first-party publishers](https://insights.pyth.network/publishers?utm_source=docs), including some of the biggest exchanges and market making firms in the world. [Over 250 protocols](https://defillama.com/oracles/Pyth) trust Pyth to secure their applications.
 
-- [Price Feeds](../price-feeds) provide **real-time and historical prices** for [2000+ assets](https://insights.pyth.network/price-feeds?utm_source=docs) on [100+ blockchain ecosystems](../price-feeds/contract-addresses), including Solana, many EVM chains,
-  Aptos, Sui, NEAR, and several Cosmos chains.
-- [Lazer](../lazer) provides low-latency, highly customizable price feeds on Solana and EVM chains.
-- [Express Relay](../express-relay/) enables protocols to eliminate their MEV while gaining access to active searchers and liquidators.
-- [Entropy](../entropy) allows developers to generate secure random numbers on the blockchain.
+## Our Products
 
-Please follow the links above to learn about each product and how to integrate them into your application.
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
+  <ProductCard
+    badge="Core"
+    icon={<BarChartIcon />}
+    title="Price Feeds"
+    description="Real-time, high-fidelity market data for smart contracts with sub-second latency."
+    features={[
+      { icon: <ClockIcon />, text: "Real-time price feeds" },
+      { icon: <BarChartIcon />, text: "2000+ assets" },
+      { icon: <MultiChainIcon />, text: "100+ blockchains" }
+    ]}
+    ctaText="Explore Price Feeds"
+    href="../price-feeds"
+  />
 
-Other useful links may be:
+{" "}
 
-- [Pyth Token](home/pyth-token) -- Learn more about the Pyth governance token PYTH.
-- [Pyth Metrics](home/metrics) -- See metrics of the network's adoption and growth.
+<ProductCard
+  badge="Lazer"
+  icon={<LightningIcon />}
+  title="Lazer"
+  description="High-performance, low-latency price feeds for institutional applications."
+  features={[
+    { icon: <LightningIcon />, text: "Ultra-low latency" },
+    { icon: <ShieldIcon />, text: "Institutional grade" },
+    { icon: <BarChartIcon />, text: "High-frequency data" },
+  ]}
+  ctaText="Learn About Lazer"
+  href="../lazer"
+/>
+
+{" "}
+
+<ProductCard
+  badge="MEV Protection"
+  icon={<GlobeIcon />}
+  title="Express Relay"
+  description="Eliminate MEV while gaining access to active searchers and liquidators."
+  features={[
+    { icon: <ShieldIcon />, text: "MEV protection" },
+    { icon: <CodeIcon />, text: "Active searchers" },
+    { icon: <MultiChainIcon />, text: "Multi-chain support" },
+  ]}
+  ctaText="Explore Express Relay"
+  href="../express-relay"
+/>
+
+  <ProductCard
+    badge="Randomness"
+    icon={<DiceIcon />}
+    title="Entropy"
+    description="Generate secure random numbers on the blockchain for your applications."
+    features={[
+      { icon: <ShieldIcon />, text: "Cryptographically secure" },
+      { icon: <ClockIcon />, text: "Real-time generation" },
+      { icon: <MultiChainIcon />, text: "Multi-chain support" }
+    ]}
+    ctaText="Learn About Entropy"
+    href="../entropy"
+  />
+</div>
+
+## Quick Start
+
+Get started with Pyth Network by exploring our comprehensive documentation:
+
+- **[Price Feeds Getting Started](../price-feeds/getting-started)** - Integrate real-time price data
+- **[Lazer Documentation](../lazer)** - High-performance price feeds
+- **[Express Relay Integration](../express-relay)** - Better orderflow mechanism to eliminate MEV
+- **[Entropy Implementation](../entropy)** - Secure randomness generation
+
+## Additional Resources
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+  <div className="p-6 bg-gray-50 rounded-lg">
+    <h3 className="text-lg font-semibold mb-2">PYTH Token</h3>
+    <p className="text-gray-600 mb-4">Learn about the Pyth governance token and its role in the network.</p>
+    <a href="./pyth-token" className="text-blue-600 hover:text-blue-800 font-medium">Learn More →</a>
+  </div>
+
+{" "}
+
+<div className="p-6 bg-gray-50 rounded-lg">
+  <h3 className="text-lg font-semibold mb-2">Oracle Integrity Staking</h3>
+  <p className="text-gray-600 mb-4">
+    Understand how staking ensures data quality and network security.
+  </p>
+  <a
+    href="./home/oracle-integrity-staking"
+    className="text-blue-600 hover:text-blue-800 font-medium"
+  >
+    Learn More →
+  </a>
+</div>
+
+  <div className="p-6 bg-gray-50 rounded-lg">
+    <h3 className="text-lg font-semibold mb-2">Network Metrics</h3>
+    <p className="text-gray-600 mb-4">Track the network's adoption, growth, and performance metrics.</p>
+    <a href="./home/metrics" className="text-blue-600 hover:text-blue-800 font-medium">Learn More →</a>
+  </div>
+</div>
+
+## Developer Resources
+
+- **[Contract Addresses](../price-feeds/contract-addresses)** - Find deployment addresses across all supported chains
+- **[Whitepaper](./whitepaper)** - Deep dive into Pyth Network's technical architecture
+- **[Security](./security)** - Learn about Pyth's security model and best practices
