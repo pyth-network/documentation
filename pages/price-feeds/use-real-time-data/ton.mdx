@@ -34,7 +34,7 @@ The code snippet below provides an example sending a message to the Pyth price f
 ```func copy
     ;; Create message to Pyth contract according to schema
     cell msg = begin_cell()
-        .store_uint(0x18, 6)                              ;; nobounce
+        .store_uint(0x18, 6)                              ;; Bounceable — 0x18 sets int_msg_info with bounce bit (messages return on failure)
         .store_slice(ctx_pyth_address)                    ;; pyth contract address
         .store_coins(forward_amount)                      ;; forward amount minus fees
         .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)       ;; default message headers
