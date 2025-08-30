@@ -47,7 +47,7 @@
     "newWindow": true
   },
   "examples": "Example Applications",
-  "request-variants": "Request Variants",
+  "request-callback-variants": "Request Callback Variants",
 
   "-- Understanding Entropy": {
     "title": "Understanding Entropy",
