@@ -7,20 +7,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "BERASTONE/USD",
-    "id": "950fe827fa92b73e81cd49043673e9132a8424b24e35989156606073f2385e21",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "BERASTONE/ETH.RR",
-    "id": "b8004b055f64f9e13468e0bff616bb87232c241a962cdf87c7a781ec31194803",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "BTC/USD",
     "id": "e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
     "time_difference": 3600,
@@ -30,20 +16,6 @@
   {
     "alias": "ETH/USD",
     "id": "ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "LIQUIDBERABTC/WBTC.RR",
-    "id": "c869104c9feab6b6b303add2d48fa7443fc119493f8d8cafd4df23890659ed78",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "LIQUIDBERAETH/ETH.RR",
-    "id": "bedaf537ab909117259282b9463b0f54d67dd575d64dcd564bfbdbfc0f57f99d",
     "time_difference": 3600,
     "price_deviation": 1,
     "confidence_ratio": 100
@@ -79,48 +51,6 @@
   {
     "alias": "HONEY/USD",
     "id": "f67b033925d73d43ba4401e00308d9b0f26ab4fbd1250e8b5407b9eaade7e1f4",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "RSETH/USD",
-    "id": "0caec284d34d836ca325cf7b3256c078c597bc052fbd3c0283d52b581d68d71f",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "RSETH/ETH.RR",
-    "id": "56e9b5eb08e62dd4b445f29e4ec7d3b3d49617d64f2d331d36a2101d4904e3c4",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "IBGT/USD",
-    "id": "c929105a1af143cbfc887c4573947f54422a9ca88a9e622d151b8abdf5c2962f",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "STBGT/USD",
-    "id": "ffd5448b844f5e7eeafbf36c47c7d4791a3cb86f5cefe02a7ba7864b22d81137",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "IBERA/USD",
-    "id": "eb943c0b5c9e02a529f799ac91070c3b7046f9412f3e5b0a90ba00267b838f34",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "NECT/USD",
-    "id": "ddf0dd319060db4561b5aa8f84a94816d33579f8dc2af2d8f74583bce20cd260",
     "time_difference": 3600,
     "price_deviation": 1,
     "confidence_ratio": 100

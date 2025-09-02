@@ -35,27 +35,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "HFUN/USD",
-    "id": "61db931fcfd322223fb84dc4bfc9c6481bd5610a31403782bc396df213e3ce12",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "PURR/USD",
-    "id": "e0154bf4dfbcf835fad3428c0d8c1078b83f687e4d6afafb827f7f9af70ec326",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "SOL/USD",
-    "id": "ef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "WSTETH/USD",
     "id": "6df640f3b8963d8f8358f791f352b8364513f6ab1cca5ed3f1f7b5448980e784",
     "time_difference": 3600,
@@ -65,34 +44,6 @@
   {
     "alias": "WSTETH/STETH.RR",
     "id": "f59ead01ed0faba85332a1e2feae8ddb14a1c94ebac259f1c982c92fc7ce333e",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "WEETH/USD",
-    "id": "9ee4e7c60b940440a261eb54b6d8149c23b580ed7da3139f7f08f4ea29dad395",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "WEETH/EETH.RR",
-    "id": "343558e79f587e098c321218ecb34d031ba709ab3e84133126f3c98511b91f64",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "LBTC/USD",
-    "id": "8f257aab6e7698bb92b15511915e593d6f8eae914452f781874754b03d0c612b",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "CBBTC/USD",
-    "id": "2817d7bfe5c64b8ea956e9a26f573ef64e72e4d7891f2d6af9bcc93f7aff9a97",
     "time_difference": 3600,
     "price_deviation": 1,
     "confidence_ratio": 100

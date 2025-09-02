@@ -7,20 +7,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "UNI/USD",
-    "id": "78d185a741d07edb3412b09008b7c5cfb9bbbd7d568bf00ba737b456ba171501",
-    "time_difference": 3600,
-    "price_deviation": 2,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "PYTH/USD",
-    "id": "0bbf28e9a841a1cc788f6a361b17ca072d0ea3098a1e5df1c3922d06719579ff",
-    "time_difference": 3600,
-    "price_deviation": 2,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "USR/USD",
     "id": "10b013adec14c0fe839ca0fe54cec9e4d0b6c1585ac6d7e70010dac015e57f9c",
     "time_difference": 3600,

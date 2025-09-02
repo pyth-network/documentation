@@ -49,20 +49,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "SCUSD/USD",
-    "id": "316b1536978bee10c47b3c74c0b3995aabae973a3351621680a2aa383aca77b8",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "SCETH/USD",
-    "id": "8bb5e69ed1ab19642a0e7e851b1ed7b3579d0548bc8ddd1077b0d9476bb1dabc",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "WSTKSCETH/SCETH.RR",
     "id": "b680422b70915df562e4802bd8679112ff0f6b0a29ec2c3762ae2720eda01e58",
     "time_difference": 3600,
@@ -91,13 +77,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "OS/USD",
-    "id": "2bcd65e3c1b4580a5f59755ef30e11077238217dd418d301dd7ee4d252987675",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "GOGLZ/USD",
     "id": "82465d1155ddbb2c73bf3491457163000f8e8d02dea90c548b1b7e56ae9fe4b1",
     "time_difference": 3600,
@@ -107,13 +86,6 @@
   {
     "alias": "SHADOW/USD",
     "id": "6f02ad2b8a307411fc3baedb9876e83efe9fa9f5b752aab8c99f4742c9e5f5d5",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "WANS/ANS.RR",
-    "id": "940b0948d828c46bff5fc3a3204fc032092b5b4239ef9364f33e01d37437ba65",
     "time_difference": 3600,
     "price_deviation": 1,
     "confidence_ratio": 100

@@ -21,20 +21,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "WEETH/USD",
-    "id": "9ee4e7c60b940440a261eb54b6d8149c23b580ed7da3139f7f08f4ea29dad395",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "EZETH/USD",
-    "id": "06c217a791f5c4f988b36629af4cb88fad827b2485400a358f3b02886b54de92",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "CBETH/USD",
     "id": "15ecddd26d49e1a8f1de9376ebebc03916ede873447c1255d2d5891b92ce5717",
     "time_difference": 3600,
@@ -44,20 +30,6 @@
   {
     "alias": "WSTETH/USD",
     "id": "6df640f3b8963d8f8358f791f352b8364513f6ab1cca5ed3f1f7b5448980e784",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "RSETH/USD",
-    "id": "0caec284d34d836ca325cf7b3256c078c597bc052fbd3c0283d52b581d68d71f",
-    "time_difference": 3600,
-    "price_deviation": 1,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "PYTH/USD",
-    "id": "0bbf28e9a841a1cc788f6a361b17ca072d0ea3098a1e5df1c3922d06719579ff",
     "time_difference": 3600,
     "price_deviation": 1,
     "confidence_ratio": 100
