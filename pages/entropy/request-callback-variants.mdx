@@ -1,0 +1,131 @@
+# Request Callback Variants
+
+The [`IEntropyV2`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropyV2.sol) interface provides multiple variants of the `requestV2` function:
+
+## 1. Basic Request
+
+```solidity copy
+function requestV2() external payable returns (uint64 assignedSequenceNumber);
+
+```
+
+This is the simplest variant that requests entropy using the default randomness provider and default gas settings. Uses in-contract PRNG for the user contribution to randomness.
+
+Use this when you want the most straightforward implementation and don't need to customize provider or gas parameters.
+
+### Example
+
+```solidity copy
+function requestBasicRandomNumber() external payable {
+  // Get the fee for the default provider and gas limit
+  uint256 fee = entropy.getFeeV2();
+
+  require(msg.value >= fee, "Insufficient fee");
+
+  // Request randomness with default settings
+  uint64 sequenceNumber = entropy.requestV2{ value: fee }();
+}
+
+```
+
+## 2. Request with Gas Limit
+
+```solidity copy
+function requestV2(
+  uint32 gasLimit
+) external payable returns (uint64 assignedSequenceNumber);
+
+```
+
+This variant allows you to specify a custom gas limit for the callback function execution. Uses in-contract PRNG for the user contribution.
+
+Use this when your `entropyCallback` function has complex logic that requires more gas than the default amount, or when you want to optimize gas usage by setting a lower limit for simple callbacks.
+
+### Example
+
+```solidity copy
+function requestWithCustomGas() external payable {
+  uint32 customGasLimit = 150000; // Custom gas limit for callback
+
+  // Get fee for the custom gas limit
+  uint256 fee = entropy.getFeeV2(customGasLimit);
+
+  require(msg.value >= fee, "Insufficient fee");
+
+  // Request with custom gas limit
+  uint64 sequenceNumber = entropy.requestV2{ value: fee }(customGasLimit);
+}
+
+```
+
+## 3. Request with Provider and Gas Limit
+
+```solidity copy
+function requestV2(
+  address provider,
+  uint32 gasLimit
+) external payable returns (uint64 assignedSequenceNumber);
+
+```
+
+This variant allows you to specify both a custom randomness provider and a custom gas limit for the callback. Uses in-contract PRNG for the user contribution.
+
+Use this when you need full control over both the randomness source and the gas allocation for your callback execution.
+
+### Example
+
+```solidity copy
+function requestWithProviderAndGas() external payable {
+  address preferredProvider = 0x1234567890123456789012345678901234567890; // Your chosen provider
+  uint32 customGasLimit = 100000;
+
+  // Get fee for the specific provider and gas limit
+  uint256 fee = entropy.getFeeV2(preferredProvider, customGasLimit);
+
+  require(msg.value >= fee, "Insufficient fee");
+
+  // Request with specific provider and gas limit
+  uint64 sequenceNumber = entropy.requestV2{ value: fee }(
+    preferredProvider,
+    customGasLimit
+  );
+}
+
+```
+
+## 4. Request with Provider, User Randomness and Gas Limit
+
+```solidity copy
+function requestV2(
+  address provider,
+  bytes32 userRandomNumber,
+  uint32 gasLimit
+) external payable returns (uint64 assignedSequenceNumber);
+
+```
+
+This is the most complete variant that allows you to specify a custom randomness provider, a custom gas limit for the callback, and provide your own user contribution to the randomness. The `userRandomNumber` parameter allows you to contribute your own randomness to the entropy generation process instead of relying on the in-contract PRNG.
+
+Use this when you need maximum control over all aspects of the randomness generation, including providing your own source of entropy for the user contribution.
+
+### Example
+
+```solidity copy
+function requestWithFullControl(bytes32 userContribution) external payable {
+  address preferredProvider = 0x1234567890123456789012345678901234567890;
+  uint32 customGasLimit = 120000;
+
+  // Get fee for the specific provider and gas limit
+  uint256 fee = entropy.getFeeV2(preferredProvider, customGasLimit);
+
+  require(msg.value >= fee, "Insufficient fee");
+
+  // Request with full customization
+  uint64 sequenceNumber = entropy.requestV2{ value: fee }(
+    preferredProvider,
+    userContribution, // Your own randomness contribution
+    customGasLimit
+  );
+}
+
+```
