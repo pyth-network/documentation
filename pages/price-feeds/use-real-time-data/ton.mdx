@@ -126,15 +126,21 @@ This code snippet does the following:
 
 When providing Pyth data to your contract, there are typically two main scenarios: either you call a method supplying TON, or you transfer jettons.
 
-They both are demonstrated in the [Pyth Connector example](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/ton/pyth_connector). 
-These same patterns are also used in the [EVAA Protocol code](https://github.com/evaafi/contracts).
+They both are demonstrated in the [Pyth Connector example](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/ton/pyth-connector). 
+
+These same patterns are also used in the  
+[EVAA Protocol code](https://github.com/evaafi/contracts/tree/v8).
 
 1. **Pyth Proxy Call Pattern**  
    **Flow:** *User → Pyth → Your-Contract*  
+
    Use this method if you only need to send TON to your contract or simply call a contract method, without involving jettons.
 
 2. **Onchain Getter Pattern**  
-   **Flow:** *User → User-Jetton-Wallet → Your-Contract → Pyth → Your-Contract*  
+   **Flow:** *User → User-JW → Your-Contract-JW → Your-Contract → Pyth → Your-Contract* 
+   
+   > JW = Jetton Wallet
+
    In this pattern, your contract first receives the Pyth data, then forwards it to the Pyth contract for validation, and finally gets the validated prices back. 
    This approach is useful when you want to transfer jettons to your contract while also providing price data.
 
@@ -150,5 +156,5 @@ You may find these additional resources helpful for developing your TON applicat
 - [Pyth TON SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ton/sdk)
 - [Pyth TON SDK Example](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/ton/sdk_js_usage)
 - [Pyth TON Send USD Example](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/ton/send_usd)
-- [Pyth Connector Example](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/ton/pyth_connector)
-- [EVAA Protocol Code](https://github.com/evaafi/contracts)
+- [Pyth Connector Example](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/ton/pyth-connector)
+- [EVAA Protocol Code](https://github.com/evaafi/contracts/tree/v8)
