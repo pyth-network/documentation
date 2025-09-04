@@ -124,27 +124,109 @@ This code snippet does the following:
 4. Prepares the update data and calculates the update fee.
 5. Updates the price feeds on the TON contract.
 
-When providing Pyth data to your contract, there are typically two main scenarios: either you call a method supplying TON, or you transfer jettons.
+
+# Patterns for Providing Pyth Data to Your Contract
+
+There are typically two main scenarios: either you call a method supplying TON, or you transfer jettons.
+
+- **TON proxy**: `User → Pyth → EVAA Master → ... (further processing)`
+Use this method if you only need to send TON to your contract or simply call a contract method, without involving jettons.
+
+- **Jetton on-chain getter**: `User → Jetton Wallet → EVAA Master → Pyth → EVAA Master → ... (further processing)`  
+In this pattern, your contract first receives the Pyth data, then forwards it to the Pyth contract for validation, and finally gets the validated prices back. 
+This approach is useful when you want to transfer jettons to your contract while also providing price data.
+  *Note: This diagram is simplified. In reality, the "Jetton Wallet" step consists of a sequence of transactions: User's jetton wallet → EVAA jetton wallet → EVAA master. These internal details are omitted here to highlight the main flow and the interaction with Pyth.*
 
 They both are demonstrated in the [Pyth Connector example](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/ton/pyth-connector). 
-
-These same patterns are also used in the  
-[EVAA Protocol code](https://github.com/evaafi/contracts/tree/v8).
-
-1. **Pyth Proxy Call Pattern**  
-   **Flow:** *User → Pyth → Your-Contract*  
-
-   Use this method if you only need to send TON to your contract or simply call a contract method, without involving jettons.
-
-2. **Onchain Getter Pattern**  
-   **Flow:** *User → User-JW → Your-Contract-JW → Your-Contract → Pyth → Your-Contract* 
-   
-   > JW = Jetton Wallet
-
-   In this pattern, your contract first receives the Pyth data, then forwards it to the Pyth contract for validation, and finally gets the validated prices back. 
-   This approach is useful when you want to transfer jettons to your contract while also providing price data.
+These same patterns are also used in the  [EVAA Protocol code](https://github.com/evaafi/contracts/tree/v8).
 
 Choose the pattern that best fits your use case and how you want to handle assets and price updates in your application.
+
+Each operation described above can result in either a successful outcome or an error. It is important to consider and handle both scenarios for every pattern.
+
+## Pyth proxy: Success
+In the EVAA protocol, the operations that implement the Pyth proxy pattern are <b>`liquidate (TON)`</b> and <b>`supply_withdraw (TON)`</b>. In these cases, the user sends a request to the Pyth contract using the native TON asset. As a result of the operation, the user may receive either TON or JETTON tokens back, depending on the outcome of the transaction.
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant "U" as "User"
+  participant "P" as "Pyth Contract"
+  participant "M" as "EVAA Master"
+
+  note over "M": master.fc:121 — received from Pyth (op 5)
+  "U"->>"P": request (0x3 liquidate_master or 0x4 supply_withdraw_master)
+  "P"-->>"M": op 5 parse_price_feed_updates (prices)
+  note over "M": Master accepts and processes the transaction
+```
+
+- Related code (GitHub):
+  - [master.fc: entry for Pyth message](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/master.fc#L121)
+  - [Pyth proxy: supply_withdraw (TON) in master.fc](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/master.fc#L192-L211)
+  - [Pyth proxy: liquidate (TON) in master.fc](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/master.fc#L171-L190)
+
+
+## Pyth proxy: Error handling
+In the Pyth proxy pattern, when an error occurs (i.e., Pyth cannot process the request and sends a `response_error` with op 0x10002), the error report is sent directly back to the user who initiated the transaction, not to a contract. This is different from the on-chain getter pattern, where the error is returned to the EVAA Master contract for further handling and potential refund logic. In the proxy case, the user receives the error response from the Pyth contract, including the error code and the original query ID, allowing the user to identify and handle the failure on their side.
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant "U" as "User"
+  participant "P" as "Pyth Contract"
+
+  "U"->>"P": request
+  "P"-->>"U": response_error (op 0x10002) with error_code and query_id
+```
+
+
+## Pyth onchain-getter: Success
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant "U" as "User"
+  participant "JW" as "Jetton Wallet"
+  participant "M" as "EVAA Master"
+  participant "P" as "Pyth Contract"
+
+  "U"->>"JW": transfer with forward_payload
+  note right of "U": op: liquidate_master or supply_withdraw_master_jetton
+  "JW"->>"M": transfer_notification
+  "M"->>"P": op 5 parse_price_feed_updates<br/>+ update_data + target_feeds<br/>+ op_payload(liquidate_master_jetton_process / supply_withdraw_master_jetton)
+  "P"-->>"M": op 5 parse_price_feed_updates<br/>(prices, pyth_sender = M)
+  note over "M": Master accepts and processes the transaction
+```
+
+- Related code (GitHub):
+  - [Entry: master.fc (pyth_parse_price_feed_updates)](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/master.fc#L121)
+  - [Onchain-getter branches: liquidate jetton and supply_withdraw jetton](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/master.fc#L131-L167)
+  - [Request to Pyth (liquidate jetton)](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/core/master-liquidate.fc#L728-L742)
+  - [Request to Pyth (supply_withdraw jetton)](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/core/master-supply-withdrawal.fc#L446-L461)
+
+## Pyth onchain-getter: Pyth error
+Pyth sends an error response (`response_error`, op 0x10002) when it cannot process the price feed update request. This can happen if the request is malformed, contains invalid or outdated feed data, or if the requested feeds are unavailable. In such cases, the error response includes an error code and the original operation payload, allowing the original sender (EVAA Master contract) to handle the failure and refund the user if necessary.
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant "U" as "User"
+  participant "JW" as "Jetton Wallet"
+  participant "M" as "EVAA Master"
+  participant "P" as "Pyth Contract"
+
+  "U"->>"JW": transfer with forward_payload
+  "JW"->>"M": transfer_notification
+  "M"->>"P": request (op 5 parse_price_feed_updates)
+  "P"-->>"M": response_error (op 0x10002)
+  "M"-->>"U": refund with error code
+```
+
+- Related code (GitHub):
+  - [Error entry: master.fc (pyth_response_error)](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/master.fc#L92-L119)
+  - [Refund (liquidate jetton)](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/core/master-liquidate.fc#L753-L786)
+  - [Refund (supply_withdraw jetton)](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/core/master-supply-withdrawal.fc#L899-L935)
+
 
 ## Additional Resources
 
