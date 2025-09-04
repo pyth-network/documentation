@@ -137,8 +137,10 @@ In this pattern, your contract first receives the Pyth data, then forwards it to
 This approach is useful when you want to transfer jettons to your contract while also providing price data.
   *Note: This diagram is simplified. In reality, the "Jetton Wallet" step consists of a sequence of transactions: User's jetton wallet → EVAA jetton wallet → EVAA master. These internal details are omitted here to highlight the main flow and the interaction with Pyth.*
 
-They both are demonstrated in the [Pyth Connector example](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/ton/pyth-connector). 
-These same patterns are also used in the  [EVAA Protocol code](https://github.com/evaafi/contracts/tree/v8).
+They both are demonstrated in the [Pyth Connector example](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/ton/pyth-connector). <br/>
+These same patterns are also used in the  [EVAA Protocol code](https://github.com/evaafi/contracts/tree/v8) for implementing following operations:
+- Pyth proxy pattern: liquidate TON / supply_withdraw TON.
+- Onchain-getter pattern: liquidate jetton / supply_withdraw jetton.
 
 Choose the pattern that best fits your use case and how you want to handle assets and price updates in your application.
 
