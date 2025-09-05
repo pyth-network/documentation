@@ -8,7 +8,7 @@ This tutorial will cover the following topics:
 - Create a contract that reads the ETH/USD price from Pyth using [pyth-sdk-solidity](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/solidity)
 - Learn how to update Pyth prices to avoid Stale data.
 - Deploy the contract to OP-sepolia testnet.
-- Update and Fetch price using [pyth-evm-js](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ethereum/sdk/js).
+- Update and Fetch price using [hermes-client](https://github.com/pyth-network/pyth-crosschain/tree/main/apps/hermes/client/js).
 
 This tutorial is divided into two parts: \
 [Part 1:](./part-1) Create a contract and fetch prices from Pyth oracles. \
@@ -62,7 +62,7 @@ The Foundry project has been successfully initialized!
 At this point, delete the sample code from `src` and the test file from `test` -- we won't need them anymore.
 
 ```bash copy
-rm -r src/* test/*
+rm -r src/* test/* scripts/*
 ```
 
 ### Install the Pyth SDK
@@ -535,4 +535,4 @@ contract MyFirstPythContractTest is Test {
 
 ```
 
-Check out [Part 2](./part-2) to learn how to deploy our contract to OP-sepolia testnet and fetch prices using pyth-evm-js.
+Check out [Part 2](./part-2) to learn how to deploy our contract to OP-sepolia testnet and fetch prices using hermes-client.

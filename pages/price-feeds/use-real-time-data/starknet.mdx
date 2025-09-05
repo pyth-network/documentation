@@ -104,7 +104,7 @@ mod example_contract {
 
             // Read the current price from a price feed.
             // STRK/USD price feed ID
-            // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
+            // The complete list of feed IDs is available at https://docs.pyth.network/price-feeds/price-feeds
             let strk_usd_price_id =
                 0x6a182399ff70ccf3e06024898942028204125a819e519a335ffa4579e66cd870;
             let price = pyth
@@ -135,7 +135,7 @@ The code snippet above does the following things:
 
 1. Call `pyth.get_update_fee` to get the fee required to update the Pyth price feeds.
 1. Call `pyth.update_price_feeds` and pass `pyth_price_update` to update the Pyth price feeds.
-1. Call `pyth.get_price_no_older_than` to read the price, providing the [price feed ID](https://pyth.network/developers/price-feed-ids) you wish to read.
+1. Call `pyth.get_price_no_older_than` to read the price, providing the [price feed ID](../price-feeds.mdx) you wish to read.
 
 ### Write Client Code
 

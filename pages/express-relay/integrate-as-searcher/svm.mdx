@@ -2,13 +2,13 @@ import { Callout, Tabs, Steps } from "nextra/components";
 
 # SVM Searcher Integration
 
-SVM Express Relay searchers fulfill opportunities representing limit orders on the [Limo](https://solscan.io/account/LiMoM9rMhrdYrfzUCxQppvxCSG1FcrUK9G8uLq4A1GF) program.
+SVM Express Relay searchers fulfill market order opportunities as well as limit orders on the [Limo](https://solscan.io/account/LiMoM9rMhrdYrfzUCxQppvxCSG1FcrUK9G8uLq4A1GF) program.
 
 <Steps>
 
 ### Subscribe to New Opportunities
 
-Express Relay provides searchers with [Typescript](https://github.com/pyth-network/per/tree/4be711525948cf24c0ebd4ebab007dc7f51b7069/sdk/js) and [Python](https://github.com/pyth-network/per/tree/4be711525948cf24c0ebd4ebab007dc7f51b7069/sdk/python) SDKs to interact with Express Relay.
+Express Relay provides searchers with [Typescript](https://github.com/pyth-network/per/tree/358eedc1f9072cdfc3418fba309697580f2474f9/sdk/js) and [Python](https://github.com/pyth-network/per/tree/358eedc1f9072cdfc3418fba309697580f2474f9/sdk/python) SDKs to interact with Express Relay.
 Searchers can also directly fetch available opportunities via HTTP or subscribe to them via WebSocket.
 
 <Tabs items={['Typescript', 'Python', 'HTTP', 'Websocket']}>
@@ -25,7 +25,7 @@ const handleOpportunity = async (opportunity: Opportunity) => {
 };
 
 const client = new Client(
-  { baseUrl: "https://pyth-express-relay-mainnet.asymmetric.re" },
+  { baseUrl: "https://per-mainnet.dourolabs.app" },
   undefined, // Default WebSocket options
   handleOpportunity
 );
@@ -53,7 +53,7 @@ async def opportunity_callback(opportunity: Opportunity):
     # Implement your opportunity handler here
 
 client = ExpressRelayClient(
-    "https://pyth-express-relay-mainnet.asymmetric.re",
+    "https://per-mainnet.dourolabs.app",
     None,
     opportunity_callback,
     None,
@@ -70,18 +70,18 @@ if __name__ == "__main__":
 
 </Tabs.Tab>
 <Tabs.Tab>
-Searchers can request opportunities through an HTTP **GET** call to the [`/v1/opportunities`](https://pyth-express-relay-mainnet.asymmetric.re/docs#tag/opportunity/operation/get_opportunities) endpoint.
+Searchers can request opportunities through an HTTP **GET** call to the [`/v1/opportunities`](https://per-mainnet.dourolabs.app/docs#tag/opportunity/operation/get_opportunities) endpoint.
 
 ```bash copy
 curl -X 'GET' \
-  'https://pyth-express-relay-mainnet.asymmetric.re/v1/opportunities?chain_id=solana&mode=live'
+  'https://per-mainnet.dourolabs.app/v1/opportunities?chain_id=solana&mode=live'
 ```
 
 Opportunities are short-lived and could be executed in a matter of seconds. So, the above endpoint could return an empty response.
 
 </Tabs.Tab>
 <Tabs.Tab>
-Searchers can connect to the server via WebSocket to reduce latency and subscribe to various events. The WebSocket endpoint lives at `/v1/ws`(e.g `wss://pyth-express-relay-mainnet.asymmetric.re/v1/ws`).
+Searchers can connect to the server via WebSocket to reduce latency and subscribe to various events. The WebSocket endpoint lives at `/v1/ws`(e.g `wss://per-mainnet.dourolabs.app/v1/ws`).
 Here is a sample JSON payload to subscribe to opportunities:
 
 ```bash copy
@@ -289,10 +289,10 @@ def opportunity_callback(opportunity: Opportunity):
 
 </Tabs.Tab>
 <Tabs.Tab>
-Searchers can submit bids through an HTTP POST call to the [`/v1/bids`](https://pyth-express-relay-mainnet.asymmetric.re/docs#tag/bid/operation/bid) endpoint. This endpoint accepts a JSON payload containing the details of the bid.
+Searchers can submit bids through an HTTP POST call to the [`/v1/bids`](https://per-mainnet.dourolabs.app/docs#tag/bid/operation/bid) endpoint. This endpoint accepts a JSON payload containing the details of the bid.
 
 ```bash copy
-curl -X POST https://pyth-express-relay-mainnet.asymmetric.re/v1/bids \
+curl -X POST https://per-mainnet.dourolabs.app/v1/bids \
     -H "Content-Type: application/json" \
     -d '{
     "chain_id": "solana",

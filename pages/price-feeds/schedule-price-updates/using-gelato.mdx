@@ -7,22 +7,21 @@ update the on-chain price after either a fixed time interval or if the price has
 
 [Gelato](https://www.gelato.network/) is web3’s decentralized backend empowering developers to create augmented smart contracts that are automated,
 gasless and off-chain aware on all major EVM-compatible blockchains. Gelato offers Web3 Functions (W3F) that connect your
-smart contracts to off-chain data and computation by running decentralized cloud functions
+smart contracts to off-chain data and computation by running decentralized cloud functions.
 
 ### Gelato W3F Pyth Task
 
 The Gelato W3F Pyth Task is a Gelato task that updates Pyth price feeds on a schedule.
 The task is deployed to IPFS and can be used by anyone to schedule price updates for any Pyth price feed.
-The task is configured via a yaml file that is hosted on GitHub gist which contains various parameters such as the price
-feeds to update, the update frequency, price deviation threshold. Once the task is deployed, these configuration
-parameters can be updated by editing the GitHub gist and without needing to redeploy the task.
+The task is configured via file called `config.yaml` which contains various parameters such as the price
+feeds to update, the update frequency, price deviation threshold.
 
 ## Steps
 
 #### 1. Join Gelato Web3 Functions whitelist
 
-Web3 Functions are currently in private beta. In order to use them, you must be added to the whitelist. Apply to the
-whitelist by reaching out to the Gelato team [here](https://form.typeform.com/to/RrEiARiI).
+Web3 functions like Solidity functions and automated transactions can be used directly. However, to use TypeScript-based Web3 Functions, you must be added to the whitelist.
+To apply, please reach out to the Gelato team for access [here](https://discord.com/invite/ApbA39BKyJ).
 
 #### 2. Configure your task
 
@@ -32,7 +31,7 @@ The Gelato task reads a yaml configuration file from a GitHub gist.
 Create a GitHub gist by logging into GitHub and navigating to [here](https://gist.github.com/). Add a file called `config.yaml`.
 Copy the [example gist](https://gist.github.com/swimricky/18b2a5ad9c1a605f1cf5c19ac1d2f1d9) and edit the parameters for
 the environment you're deploying to and configure your price feeds and update thresholds. See
-[directory](https://github.com/pyth-network/w3f-pyth-poc-v2/tree/master/web3-functions/pyth-oracle-w3f-priceIds) for
+[directory](https://github.com/pyth-network/pyth-gelato-price-pusher) for
 some example configuration files. These parameters can be updated at any time by editing the gist even if the task has
 already been deployed. The task will automatically pick up these configuration changes and use them for subsequent executions.
 
@@ -40,32 +39,26 @@ already been deployed. The task will automatically pick up these configuration c
 
 Use the link below to auto-populate the task parameters with the Pyth web3 function code:
 
-https://beta.app.gelato.network/new-task?cid=QmTFQHpiThqkVKvuW2KU8cETNBdyXHB9uP34woL6Vc5w6g
+https://app.gelato.network/new-task?cid=QmbNPFa3ixUpphUzKJwq3F9bjC9w63FBYQ4iV3s2LpiftN
 
 The pyth web3 function code is deployed to IPFS, so you can use it via the cid/link above.
-You can find a copy of the web3 function code [here](https://github.com/pyth-network/w3f-pyth-poc-v2/tree/master/web3-functions/pyth-oracle-w3f-priceIds)
-
+You can find a copy of the web3 function code [here](https://github.com/pyth-network/pyth-gelato-price-pusher/tree/main/web3-functions/pyth-oracle-w3f-priceIds)
 Choose network, and then in the "Task secrets" section, set `GIST_ID` to the gistId of the gist you created in step 2.
 ![](../../../images/guides/gelato/task-creation-gist-id.png)
 
-**Note that the beta currently only supports triggering the task every minute. Once other time intervals are available,
-you will need to ensure that your current subscription plan with Gelato supports the desired number of monthly runs.
-See [Subscription Plans](https://beta.app.gelato.network/subscriptions)**.
+**Note that the free tier have certain limits, Checkout all subscription plans and choose the one that best fits your needs [here](https://app.gelato.network/1balance/subscriptions/functions?networkGroup=mainnets&type=monthly)**.
 
 #### 4. Fund the task
 
-There are two sets of fees that must be paid before the task can execute successfully
+There are two sets of fees that must be paid before the task can execute successfully :
 
 **Gelato Fees**
 
-Gelato's fees are paid through [1Balance](https://docs.gelato.network/developer-services/1balance). Once you are
-whitelisted, visit the [1Balance app](https://beta.app.gelato.network/balance) and deposit USDC on Polygon to top up
+Gelato's fees are paid through [1Balance](https://docs.gelato.network/web3-services/1balance). Once you are
+whitelisted, visit the 1Balance section on [Gelato app](https://app.gelato.network/1balance) and deposit USDC on Polygon to top up
 your Gelato balance which will be used to pay the Gelato fees on all supported chains. These include computational costs
-and transaction gas fees. Testnet executions are subsidized by Gelato and free. Make sure to create your 1Balance account
-using the same wallet address that you used to create the Gelato task.
-
-Switch network to Polygon
-![](../../../images/guides/gelato/switch-to-polygon.png)
+and transaction gas fees. Testnet executions are subsidized by Gelato and free.
+Note : You can deposit USDC from any chain supported by Circle CCTP.
 
 Deposit USDC
 ![](../../../images/guides/gelato/deposit-usdc.png)
@@ -82,8 +75,7 @@ and will be deployed the first time a task is created for a given wallet address
 
 Pyth fees are paid by the `dedicatedMsgSender` and transaction fees as well as computational costs by 1Balance.
 You will need to transfer over the native tokens to `dedicatedMsgSender` on every chain where you want to run
-the task using a standard transfer. The `dedicatedMsgSender` address can be found in the Gelato task details
-under `Target smart contract` as the `Your msg.sender` field
+the task using a standard transfer. The `dedicatedMsgSender` address can be found in the Gelato App settings and on the Task dashboard as well.
 
 ![](../../../images/guides/gelato/dedicated-msg-sender.png)
 
@@ -92,8 +84,8 @@ task.
 
 #### 5. Check task execution
 
-Once your task has been successfully created, you can check the task execution details in the Gelato app.
-[Example Pyth Web3 Function on Mumbai](https://beta.app.gelato.network/task/0x2c64539daaeb86addd6f556b68251a2fdf0df5c09ec07b8a30a2fbf76f4fe907?chainId=80001)
+Once your task has been successfully created, you can check the task execution details on the Task dashboard in the Gelato app.
+
 ![](../../../images/guides/gelato/task-execution.png)
 
 ## Managing your Gelato Task
@@ -107,8 +99,8 @@ Telegram or Discord.
 
 See the following links for more information:
 
-- [1Balance Alerts](https://docs.gelato.network/developer-services/1balance/1balance-alerts)
-- [Balance Alerts](https://docs.gelato.network/developer-services/automate/execution-and-balance-alerts)
+- [1Balance Alerts](https://docs.gelato.network/web3-services/1balance/1balance-alerts)
+- [Balance Alerts](https://docs.gelato.network/web3-services/web3-functions/analytics-and-monitoring)
 
 #### Updating configuration
 
@@ -124,6 +116,6 @@ rate-limited by GitHub. To verify that your most recent task execution used the 
 ## Notes
 
 If you want to customize the behavior of the web3 function beyond what is supported by updating the config.yaml, you can
-clone this [repo](https://github.com/pyth-network/w3f-pyth-poc-v2) and deploy your own version of the web3 function.
-You can then use the cid of your deployed web3 function to create a new task. See [README.md](https://github.com/pyth-network/w3f-pyth-poc-v2/tree/master/web3-functions/pyth-oracle-w3f-priceIds/README.md) and
-[Gelato Web3 Function Documentation](https://docs.gelato.network/developer-services/web3-functions) for more details.
+clone this [repo](https://github.com/pyth-network/pyth-gelato-price-pusher) and deploy your own version of the web3 function.
+You can then use the cid of your deployed web3 function to create a new task. See [README.md](https://github.com/pyth-network/pyth-gelato-price-pusher/blob/main/README.md) and
+[Gelato Web3 Function Documentation](https://docs.gelato.network/web3-services/web3-functions) for more details.

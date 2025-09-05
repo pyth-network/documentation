@@ -64,7 +64,7 @@ contract PythAggregatorV3Deployment is Script {
     // https://docs.pyth.network/price-feeds/contract-addresses/evm
     address pythPriceFeedsContract = 0xff1a0f4744e8582DF1aE09D5611b887B6a12925C;
     // Get the price feed ids from:
-    // https://docs.pyth.network/price-feeds/price-feed-ids
+    // https://docs.pyth.network/price-feeds/price-feeds
     bytes32 ethFeedId = 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace;
     bytes32 solFeedId = 0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d;
 

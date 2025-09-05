@@ -30,16 +30,13 @@ const permanentRedirectArray = [
   // First version of docs site -> third version
 
   ["/evm", "/price-feeds/use-real-time-data/evm"],
-  ["/aptos", "/price-feeds/use-real-time-data/aptos"],
-  ["/cosmwasm", "/price-feeds/use-real-time-data/cosmwasm"],
-
   // Second version of docs site -> third version
   ["/documentation/metrics/:path*", "/home/metrics/:path*"],
   [
     "/documentation/how-pyth-works/:slug*",
     "/price-feeds/how-pyth-works/:slug*",
   ],
-  ["/documentation/benchmarks", "/benchmarks"],
+  ["/documentation/benchmarks", "/price-feeds/use-historic-price-data"],
   ["/pyth-token/:path*", "/home/pyth-token/:path*"],
   ["/documentation/publish-data/:slug*", "/price-feeds/publish-data/:slug*"],
   [
@@ -92,22 +89,6 @@ const permanentRedirectArray = [
     "/price-feeds/schedule-price-updates/using-scheduler",
   ],
   [
-    "/documentation/pythnet-price-feeds/aptos",
-    "/price-feeds/use-real-time-data/aptos",
-  ],
-  [
-    "/documentation/pythnet-price-feeds/cosmwasm",
-    "/price-feeds/use-real-time-data/cosmwasm",
-  ],
-  [
-    "/documentation/pythnet-price-feeds/sui",
-    "/price-feeds/use-real-time-data/sui",
-  ],
-  [
-    "/documentation/pythnet-price-feeds/near",
-    "/price-feeds/use-real-time-data/near",
-  ],
-  [
     "/documentation/pythnet-price-feeds/off-chain",
     "/price-feeds/use-real-time-data/off-chain",
   ],
@@ -126,13 +107,20 @@ const permanentRedirectArray = [
   ],
   [
     "/guides/how-to-create-tradingview-charts",
-    "/benchmarks/how-to-create-tradingview-charts",
+    "/price-feeds/create-tradingview-charts",
   ],
   [
     "/home/oracle-integrity-staking/examples",
     "/home/oracle-integrity-staking/reward-examples",
   ],
   ["/guides", "/price-feeds"],
+  ["/benchmarks", "/price-feeds/use-historic-price-data"],
+  [
+    "/benchmarks/how-to-create-tradingview-charts",
+    "/price-feeds/create-tradingview-charts",
+  ],
+  ["/benchmarks/api-instances", "/price-feeds/api-reference/"],
+  ["/benchmarks/rate-limits", "/price-feeds/rate-limits/"],
 ];
 
 /** @type {import('next').NextConfig} */

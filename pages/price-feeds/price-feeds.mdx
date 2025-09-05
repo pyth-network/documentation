@@ -1,3 +1,6 @@
+import { PriceFeedIds } from "../../components/PriceFeedIds";
+import { Callout } from "nextra/components";
+
 # Price Feeds
 
 Pyth Price Feeds provide real-time, first-party, market data for a wide range of assets.
@@ -22,10 +25,25 @@ Applications need to store the IDs of the feeds they wish to read.
 However, the IDs may be represented in different formats (e.g. hex or base58) depending on the blockchain.
 Price feeds also have different IDs in the Stable and Beta channels.
 
-Refer to the [Price Feed ID reference catalog](https://www.pyth.network/developers/price-feed-ids) to identify a feed's ID in your chosen ecosystem.
-
 ### Solana Price Feed Accounts
 
 On Solana, each feed additionally has a collection of **price feed accounts** containing the feed's data.
 The addresses of these accounts are programmatically derived from the feed id and a shard id, which is simply a 16-bit number.
 See [How to Use Real-Time Data on Solana](./use-real-time-data/solana#price-feed-accounts) for more information on price feed accounts.
+
+## Feed Ids
+
+<Callout type="info">
+  Important Note for **Testnet** Users
+
+Developers using any of these testnets:
+
+- Aptos Testnet
+- Sui Testnet
+- Near Testnet
+
+Please use the **Beta** price feed IDs instead of the stable ones.
+
+</Callout>
+
+<PriceFeedIds />

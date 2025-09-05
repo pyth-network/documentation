@@ -1,24 +1,27 @@
-import copy from "copy-to-clipboard";
-import CopyIcon from "./icons/CopyIcon";
+import CopyButton from "./CopyButton";
+import clsx from "clsx";
 
-const CopyAddress = ({ address, url }: { address: string; url?: string }) => {
+type Props = {
+  address: string;
+  url?: string;
+  alwaysTruncate?: boolean | undefined;
+};
+
+const CopyAddress = ({ address, url, alwaysTruncate }: Props) => {
   return (
-    <div
-      className="-ml-1 inline-flex cursor-pointer items-center px-1 font-mono hover:bg-light hover:text-dark dark:hover:bg-dark dark:hover:text-light"
-      onClick={() => {
-        copy(address);
-      }}
-    >
-      <span className="mr-2 hidden lg:block">
-        {url ? (
-          <a href={url} target="_blank" rel="noopener noreferrer">
-            {address}
-          </a>
-        ) : (
-          address
-        )}
-      </span>
-      <span className="mr-2 lg:hidden">
+    <CopyButton value={address} className="-ml-1">
+      {!alwaysTruncate && (
+        <span className="mr-2 hidden lg:block">
+          {url ? (
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              {address}
+            </a>
+          ) : (
+            address
+          )}
+        </span>
+      )}
+      <span className={clsx("mr-2", { "lg:hidden": !alwaysTruncate })}>
         {url ? (
           <a href={url} target="_blank" rel="noopener noreferrer">
             {address.slice(0, 6) + "..." + address.slice(-6)}
@@ -26,9 +29,8 @@ const CopyAddress = ({ address, url }: { address: string; url?: string }) => {
         ) : (
           address.slice(0, 6) + "..." + address.slice(-6)
         )}
-      </span>{" "}
-      <CopyIcon className="shrink-0" />
-    </div>
+      </span>
+    </CopyButton>
   );
 };
 

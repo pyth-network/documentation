@@ -1,25 +1,25 @@
-import FeeTable from "../../components/FeeTable";
-import { EntropyDeployments } from "../../components/EntropyDeployments";
+import { EntropyFees } from "../../components/EntropyFees";
+import { FORTUNA_API_URLS } from "../../components/constants";
+import { Callout } from "nextra/components";
 
-The following tables shows the total fees payable when using the default provider.
+# Current Fees
+
+The following tables shows the total fees payable when using the **default provider**.
 Note that the fees shown below will vary over time with prevailing gas prices on each chain.
 
 ## Mainnet
 
-<FeeTable
-  deployments={Object.fromEntries(
-    Object.entries(EntropyDeployments).filter(
-      ([k, v]) => v.network === "mainnet"
-    )
-  )}
-/>
+<Callout emoji="⚠️">
+  The fees for mainnet are dynamically set. Always use the on-chain method `entropy.getFeeV2(){:solidity}` to get the current fee.
+</Callout>
+
+<EntropyFees networkName="mainnet" url={FORTUNA_API_URLS.MAINNET} />
 
 ## Testnet
 
-<FeeTable
-  deployments={Object.fromEntries(
-    Object.entries(EntropyDeployments).filter(
-      ([k, v]) => v.network === "testnet"
-    )
-  )}
-/>
+<Callout type="info" emoji="ℹ️">
+  The fees for testnets kept deliberately low and different from the mainnet
+  fees.
+</Callout>
+
+<EntropyFees networkName="testnet" url={FORTUNA_API_URLS.TESTNET} />

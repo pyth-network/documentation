@@ -1,0 +1,46 @@
+{
+  "documentation-home": {
+    "title": "← Documentation Home",
+    "href": "/home"
+  },
+
+  "-- Lazer": {
+    "title": "Lazer",
+    "type": "separator"
+  },
+  "index": "Introduction",
+  "getting-started": "Getting Started",
+
+  "-- How-to Guides": {
+    "title": "How-To Guides",
+    "type": "separator"
+  },
+
+  "subscribe-price-updates": "Subscribe to Price Updates",
+  "integrate-as-consumer": "Integrate as a Consumer",
+  "integrate-as-publisher": "Integrate as a Publisher",
+
+  "-- Reference Material": {
+    "title": "Reference Material",
+    "type": "separator"
+  },
+  "price-feed-ids": "Price Feed IDs",
+
+  "websocket-api-reference": {
+    "title": "Websocket API Reference ↗",
+    "href": "https://pyth-lazer.dourolabs.app/docs",
+    "newWindow": true
+  },
+
+  "examples": {
+    "title": "Example Applications ↗",
+    "href": "https://github.com/pyth-network/pyth-examples/tree/main/lazer",
+    "newWindow": true
+  },
+  "-- Understand Lazer": {
+    "title": "Understanding Lazer",
+    "type": "separator"
+  },
+
+  "how-lazer-works": "How Lazer Works"
+}

@@ -1,236 +1,82 @@
-import { Callout, Tabs, Steps } from "nextra/components";
+import { Steps } from "nextra/components";
 
-# How to Integrate Express Relay as a Protocol
+# How to Integrate Express Relay Swaps
 
-This guide will explain how DeFi protocols can integrate Express Relay.
-
-Integrating with Express Relay involves two main steps:
-
-- **Update** your DeFi protocol's contract.
-- **Expose** opportunities to searchers for auction.
-
-## Update your DeFi Protocol's Contract
-
-To integrate with Express Relay, your protocol's contract must check if Express Relay has permissioned the current transaction.
+This guide will explain how frontends can integrate Express Relay to empower swapping.
 
 <Steps>
-### Install the Express Relay SDK
+    ### Install the Express Relay SDK
 
-Pyth provides a [Solidity SDK](https://www.npmjs.com/package/@pythnetwork/express-relay-sdk-solidity) to help developers integrate Express Relay into their DeFi protocol.
-The SDK exposes [`IExpressRelay`](https://github.com/pyth-network/per/blob/8e311d3dce7a54865ff98b25e57c6af2dd984d1f/sdk/solidity/IExpressRelay.sol) and [`IExpressRelayFeeReceiver`](https://github.com/pyth-network/per/blob/8e311d3dce7a54865ff98b25e57c6af2dd984d1f/sdk/solidity/IExpressRelayFeeReceiver.sol) interfaces to interact with Express Relay.
+    Pyth provides a [Typescript SDK](https://www.npmjs.com/package/@pythnetwork/express-relay-js) to help developers integrate Express Relay into their frontends.
 
-<Tabs items={['Hardhat', 'Foundry']}>
-  <Tabs.Tab>
-  If you are using Hardhat, you can install the SDK using npm:
+    You can install the SDK via npm or yarn. You can invoke the SDK client as below:
 
-```bash copy
-npm install @pythnetwork/express-relay-sdk-solidity
-```
+    ```typescript
+    import { Client } from "@pythnetwork/express-relay-js";
 
-  </Tabs.Tab>
-  <Tabs.Tab>
-  If you are using Foundry, you must create an NPM project if you don't already have one. From the root directory of your project, run:
+    const client = new Client(
+    { baseUrl: "https://per-mainnet.dourolabs.app" },
+    undefined // Default WebSocket options
+    );
+    ```
 
-```bash copy
-npm init -y
-npm install @pythnetwork/express-relay-sdk-solidity
-```
+    ### Request a Quote
 
-Then add the following line to `remappings.txt` file:
+    You can request a quote by calling the [`getQuote`](https://github.com/pyth-network/per/blob/281de989db887aaf568fed39315a76acc16548fa/sdk/js/src/index.ts#L501-L506) SDK method.
 
-```text copy
-@pythnetwork/express-relay-sdk-solidity/=node_modules/@pythnetwork/express-relay-sdk-solidity
-```
+    The example below shows how you can construct a quote request for a USDC -> WSOL swap, with 100 USDC provided as input by the user:
 
-  </Tabs.Tab>
-</Tabs>
+    ```typescript
+    const userWallet = new PublicKey("<INPUT USER PUBKEY>");
 
-### Modify the Protocol's Contract
+    const quoteRequest = {
+        chainId: "solana",
+        inputTokenMint: new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"), // USDC mint
+        outputTokenMint: new PublicKey("So11111111111111111111111111111111111111112"), // WSOL mint
+        specifiedTokenAmount: {
+        side: "input",
+        amount: 100_000_000,
+    },
+        userWallet,
+    };
 
-The following steps show how to modify your protocol's contract to verify if the current transaction is permissioned by Express Relay and to receive the auction proceeds.
+    const quote = await client.getQuote(quoteRequest);
+    ```
 
-1. Call the [`isPermissioned`](https://github.com/pyth-network/per/blob/8e311d3dce7a54865ff98b25e57c6af2dd984d1f/sdk/solidity/IExpressRelay.sol#L10C14-L10C28) method from `IExpressRelay` interface to make sure the current transaction is permissioned by Express Relay.
-1. Implement the [`IExpressRelayFeeReceiver`](https://github.com/pyth-network/per/blob/8e311d3dce7a54865ff98b25e57c6af2dd984d1f/sdk/solidity/IExpressRelayFeeReceiver.sol#L4) interface to **receive** auction proceeds.
+    `quote` contains the full details, including the amount the searcher is quoting and the transaction that the user needs to sign. It also contains an `expirationTime`; after this time, the transaction will no longer succeed on chain, so you should request a new quote a few seconds before the `expirationTime`.
 
-#### 1. Verify Permissioning
+    ### Submit User Signature to the Express Relay Server
 
-The `isPermissioned` function takes two arguments:
+    Once you show the quote to the user, the user should sign the transaction if they wish to engage in the swap. The frontend can pass this signature along to the Express Relay server, which will handle aggregating all the required signatures for the transaction and submitting it to the RPC node.
 
-1. `protocolFeeReceiver`: The address to receive the protocol's share of auction proceeds.
-1. `permissionId`: A unique identifier for the opportunity.
+    Below is an example showing how the frontend can submit the signed quote transaction to the server using the [`submitQuote`](https://github.com/pyth-network/per/blob/358eedc1f9072cdfc3418fba309697580f2474f9/sdk/js/src/index.ts#L537-L542) method. The response from the `getQuote` method includes a field called `referenceId`, which the frontend should use in its submission of the user signature.
 
-```solidity copy
-import "@pythnetwork/express-relay-sdk-solidity/IExpressRelay.sol";
+    ```typescript
+    const submitQuote = {
+        chainId: "solana",
+        referenceId: quote.referenceId,
+        userSignature: signature,
+    };
 
-// Express Relay contract address on Optimism Sepolia
-//
-// Check https://docs.pyth.network/express-relay/contract-addresses/evm
-// for the address deployed on other networks
-address expressRelay = 0xD6e417287b875A3932c1Ff5dcB26D4D2C8b90B40;
+    const txSubmitted = await client.submitQuote(submitQuote);
+    ```
 
-require(
-		IExpressRelay(expressRelay).isPermissioned(
-        protocolFeeReceiver,
-        permissionId
-    ),
-		"not permissioned"
-);
-```
-
-<Callout type="info" emoji="ℹ️">
-  The `permissionId` represents a unique identifier of an opportunity. For a
-  liquidation opportunity, the vault address or ID could be concatenated into
-  `bytes` format. Consult
-  [`Permissioning`](./how-express-relay-works/permissioning.mdx) for more
-  information on generating permission IDs.
-</Callout>
-
-#### 2. Set up Fee Receiver
-
-Express Relay will call the `receiveAuctionProceedings` method present in `IExpressRelayFeeReceiver`. The call will transfer the protocol's share of the auction proceeds to the `protocolFeeReceiver` address.
-
-```solidity copy
-interface IExpressRelayFeeReceiver {
-  function receiveAuctionProceedings(
-    bytes calldata permissionKey
-  ) external payable;
-}
-
-```
-
-The following code snippet shows a sample Express Relay-integrated contract that performs liquidation.
-_Note: The highlighted lines show the contract's relevant additions for Express Relay integration._
-
-```solidity showLineNumbers {1,2,12,14,21,45-50,65-69} copy
-import "@pythnetwork/express-relay-sdk-solidity/IExpressRelay.sol";
-import "@pythnetwork/express-relay-sdk-solidity/IExpressRelayFeeReceiver.sol";
-
-struct Vault {
-    address tokenCollateral;
-    address tokenDebt;
-    uint256 amountCollateral;
-    uint256 amountDebt;
-    uint256 minHealthRatio;
-}
-
-contract EasyLend is IExpressRelayFeeReceiver {
-
-    address public immutable expressRelay;
-
-    constructor(
-      address expressRelayAddress,
-    bool allowUndercollateralized
-    ){
-      _nVaults = 0;
-      expressRelay = expressRelayAddress;
-      _allowUndercollateralized = allowUndercollateralized;
-    }
-
-    /**
-    * @notice createVault function - creates a vault
-    * @param vaultParams: params of the vault to be created
-    */
-    function createVault(VaultParams memory vaultParams) public {
-      ..
-    }
-
-    /**
-    * @notice liquidate function - liquidates a vault
-    * @param vaultID: ID of the vault to be liquidated
-    */
-    function liquidate(uint256 vaultID) public {
-        Vault memory vault = _vaults[vaultID];
-        uint256 vaultHealth = _getVaultHealth(vault);
-        // Proceed only if the vault health is below the minimum health ratio
-        if (vaultHealth >= vault.minHealthRatio) {
-            revert InvalidLiquidation();
-        }
-
-        // Check if the liquidation is permissioned
-        bool permissioned = IExpressRelay(payable(expressRelay)).isPermissioned(
-            address(this),
-            abi.encode(vaultID) // permissionId generated from the unique vault ID
-            );
-        require(permissioned, "invalid liquidation");
-
-        IERC20(vault.tokenDebt).transferFrom(msg.sender,address(this),vault.amountDebt);
-        IERC20(vault.tokenCollateral).transfer(msg.sender,vault.amountCollateral);
-
-        _vaults[vaultID].amountCollateral = 0;
-        _vaults[vaultID].amountDebt = 0;
-    }
-
-    /**
-     * @notice receiveAuctionProceedings function - receives the native token from express relay
-     * You can use the permission key to distribute the received funds to users who got liquidated, LPs, etc...
-     *
-     * @param permissionKey: permission key that was used for the auction
-     */
-    function receiveAuctionProceedings(
-        bytes calldata permissionKey
-    ) external payable {
-        emit VaultReceivedETH(msg.sender, msg.value, permissionKey);
-    }
-
-}
-```
+    `submitQuote` returns the fully signed transaction that the server submitted to the RPC node.
 
 </Steps>
 
-## Expose Opportunities to Searchers
-
-DeFi protocols should fetch opportunities and expose them to Express Relay for auction.
-
-Express Relay provides a **POST** method, [`/v1/opportunities`](https://per-staging.dourolabs.app/docs#tag/opportunity/operation/post_opportunity), which accepts a JSON payload containing the details of the opportunity.
-
-The JSON payload should contain opportunities in the following format:
-
-```bash copy
-{
-  "target_calldata": "0xdeadbeef",                                      // Calldata to execute the opportunity
-  "chain_id": "op_sepolia",
-  "target_contract": "0xcA11bde05977b3631167028862bE2a173976CA11",      // Protocol contract address to call
-  "permission_key": "0xcafebabe",                                       // Unique identifier for the opportunity
-  "target_call_value": "1",                                             // Value (in Wei) to send to the protocol contract.
-  "sell_tokens": [                                                      // Tokens the protocol expects to receive
-    {
-      "amount": "900",
-      "token": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
-    }
-  ],
-  "buy_tokens": [                                                       // Tokens the protocol will send in return
-    {
-      "amount": "1000",
-      "token": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
-    }
-  ],
-  "version": "v1"                                                       // Opportunity format version
-}
-```
-
-Each protocol integrated with Express Relay must actively monitor for new opportunities.
-Protocols can do this by indexing the chain, listening to protocol events, or querying protocol state through an RPC provider.
-
-Check the [`monitor.ts`](https://github.com/pyth-network/per/blob/8e311d3dce7a54865ff98b25e57c6af2dd984d1f/examples/easy_lend/src/monitor.ts) script,
-which fetches opportunities for the below-mentioned [Easy Lend](https://github.com/pyth-network/per/tree/8e311d3dce7a54865ff98b25e57c6af2dd984d1f/examples/easy_lend) example and exposes them to Express Relay for auction.
-
 ## Additional Resources
 
-You may find these additional resources helpful for integrating Express Relay as a protocol.
+You may find these additional resources helpful for integrating Express Relay as a frontend.
 
-### Example Application
+### Contract Addresses
 
-[Easy Lend](https://github.com/pyth-network/per/tree/8e311d3dce7a54865ff98b25e57c6af2dd984d1f/examples/easy_lend) is a dummy lending protocol contract that allows users to borrow and lend assets.
-This lending protocol contract is updated to use Express Relay.
-
-### Contract Address
-
-The [EVM](./contract-addresses/evm.mdx) and [SVM](./contract-addresses/svm.mdx) Contract Addresses pages list the addresses of Express Relay deployed on various networks.
+The [SVM](./contract-addresses.mdx) Contract Addresses page lists the relevant addresses for Express Relay integration.
 
 ### Error Codes
 
-The [EVM](./errors/evm.mdx) and [SVM](./errors/svm.mdx) Error Codes pages list the error codes returned by Express Relay.
+The [SVM](./errors.mdx) Error Codes page lists the error codes returned by Express Relay.
 
 ### API Reference
 
-The [API Reference](https://per-staging.dourolabs.app/docs) provides detailed information on Express Relay APIs for submitting opportunities.
+The [API Reference](https://per-mainnet.dourolabs.app/docs) provides detailed information on Express Relay APIs.
