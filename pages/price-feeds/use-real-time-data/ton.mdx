@@ -132,8 +132,8 @@ There are typically two main scenarios: either you call a method supplying TON, 
 - **TON proxy**: `User → Pyth → EVAA Master → ... (further processing)`
 Use this method if you only need to send TON to your contract or simply call a contract method, without involving jettons.
 
-- **Jetton on-chain getter**: `User → Jetton Wallet → EVAA Master → Pyth → EVAA Master → ... (further processing)`  
-In this pattern, your contract first receives the Pyth data, then forwards it to the Pyth contract for validation, and finally gets the validated prices back. 
+- **Jetton on-chain getter**: `User → Jetton Wallet → EVAA Master → Pyth → EVAA Master → ... (further processing)`
+In this pattern, your contract first receives the Pyth data, then forwards it to the Pyth contract for validation, and finally gets the validated prices back.
 This approach is useful when you want to transfer jettons to your contract while also providing price data.
 <Callout type="info" emoji="ℹ️">
 This data flow is simplified. In reality, the "Jetton Wallet" step consists of a sequence of transactions: User's jetton wallet → EVAA jetton wallet → EVAA master. These internal details are omitted here to highlight the main flow and the interaction with Pyth.
