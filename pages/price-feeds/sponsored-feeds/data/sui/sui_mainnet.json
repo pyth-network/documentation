@@ -17,7 +17,7 @@
     "alias": "BLUB/USD",
     "id": "5fc11ffe4975b624be495be038da30e30bee2004d8ae6282b5364577ef4ca92c",
     "time_difference": 60,
-    "price_deviation": 0.5,
+    "price_deviation": 3,
     "confidence_ratio": 100
   },
   {
@@ -122,7 +122,7 @@
     "alias": "IKA/USD",
     "id": "2b529621fa6e2c8429f623ba705572aa64175d7768365ef829df6a12c9f365f4",
     "time_difference": 60,
-    "price_deviation": 0.5,
+    "price_deviation": 3,
     "confidence_ratio": 100
   },
   {
