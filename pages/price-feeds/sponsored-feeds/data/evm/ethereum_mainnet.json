@@ -28,6 +28,13 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "LINEA/USD",
+    "id": "49e50653755fbf8018ab65a07be2f208ac8c4bdfc43200934304ca17ee663cab",
+    "time_difference": 3600,
+    "price_deviation": 1,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "BOLD/USD",
     "id": "d6134dbb0427240f901e3e596d6e63f7d85088f96cd4cd4ae2f89c0819b5d623",
     "time_difference": 3600,
