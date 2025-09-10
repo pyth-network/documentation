@@ -8,7 +8,9 @@ const EntropyDeploymentTable = ({
   deployments: Record<string, EntropyDeployment>;
   showReveal: boolean;
 }) => {
-  const sortedDeployments = Object.entries(deployments).sort();
+  const sortedDeployments = Object.entries(deployments)
+    .filter(([name]) => name !== "monad")
+    .sort();
   return (
     <table>
       <thead>
