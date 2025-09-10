@@ -312,6 +312,14 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "INF/SOL",
+    "account_address": "GqZtfAobziY23GJwb1QDUHW266C7q7Y3DhMRZgMRcqCb",
+    "id": "49e50653755fbf8018ab65a07be2f208ac8c4bdfc43200934304ca17ee663cab",
+    "time_difference": 60,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "SYRUPUSDC/USDC.RR",
     "account_address": "GWdwWDhYFUc8ZD6uCTtEAAwx97V1ZCsxPWGL7vhSha6w",
     "id": "2ad31d1c4a85fbf2156ce57fab4104124c5ef76a6386375ecfc8da1ed5ce1486",
