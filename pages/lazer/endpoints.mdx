@@ -1,0 +1,27 @@
+# Endpoints
+
+Pyth Lazer provides real-time price data through WebSocket connections. This page lists the available endpoints for connecting to the Lazer service.
+
+## WebSocket Endpoint
+
+The main WebSocket endpoint for Pyth Lazer is:
+
+```
+wss://pyth-lazer.dourolabs.app/
+```
+
+### Stream Endpoint
+
+Most users will want to connect to the `v1/stream` endpoint:
+
+```
+wss://pyth-lazer.dourolabs.app/v1/stream
+```
+
+This endpoint provides real-time price updates and is used for subscribing to price feeds. You'll need an access token to authenticate your connection.
+
+## Next Steps
+
+- [Acquire an Access Token](./acquire-access-token.mdx) to authenticate your WebSocket connection
+- [Subscribe to Price Updates](./subscribe-price-updates.mdx) to start receiving real-time data
+- View the [WebSocket API Reference](https://pyth-lazer.dourolabs.app/docs) for detailed API documentation

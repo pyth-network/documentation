@@ -25,6 +25,7 @@
     "title": "Reference Material",
     "type": "separator"
   },
+  "endpoints": "Endpoints",
   "price-feed-ids": "Price Feed IDs",
 
   "websocket-api-reference": {
