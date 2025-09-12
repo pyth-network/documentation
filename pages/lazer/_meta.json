@@ -16,6 +16,7 @@
     "type": "separator"
   },
 
+  "acquire-access-token": "Acquire an Access Token",
   "subscribe-price-updates": "Subscribe to Price Updates",
   "integrate-as-consumer": "Integrate as a Consumer",
   "integrate-as-publisher": "Integrate as a Publisher",
