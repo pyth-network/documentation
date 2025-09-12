@@ -1,3 +1,133 @@
+import { Callout, Steps } from "nextra/components";
+
 # Getting Started with Pyth Lazer
 
-Please refer to the how-to guides to get started.
+Pyth Lazer is a high-performance, low-latency price feed service that provides real-time financial market data to blockchain applications. This guide will walk you through setting up and running a basic JavaScript example to subscribe to Lazer price feeds.
+
+## What You'll Learn
+
+In this guide, you'll learn how to:
+- Set up the Pyth Lazer JavaScript SDK
+- Connect to the Lazer WebSocket stream
+- Subscribe to real-time price feeds
+- Handle both JSON and binary message formats
+
+## Prerequisites
+
+Before getting started, make sure you have the following installed:
+
+- **Node.js** (version 18 or higher)
+- **pnpm** package manager
+- **Git** for cloning the examples repository
+- A **Lazer Access Token** - see [How to Acquire an Access Token](./acquire-access-token) if you don't have one
+
+<Steps>
+
+### Clone the Examples Repository
+
+First, clone the Pyth examples repository which contains the JavaScript SDK example:
+
+```bash copy
+git clone https://github.com/pyth-network/pyth-examples.git
+cd pyth-examples/lazer/js
+```
+
+### Install Dependencies
+
+Install the required dependencies using pnpm:
+
+```bash copy
+pnpm install
+```
+
+This will install the following key packages:
+- `@pythnetwork/pyth-lazer-sdk` - The main Lazer SDK
+- `@solana/web3.js` - For Solana blockchain interactions
+- Other supporting dependencies
+
+### Configure Your Access Token
+
+Set your Lazer access token as an environment variable:
+
+```bash copy
+export ACCESS_TOKEN=your_actual_token_here
+```
+
+<Callout type="warning" emoji="⚠️">
+  Replace `your_actual_token_here` with your actual Lazer access token. If you don't have one, follow the [access token guide](./acquire-access-token) to obtain it.
+</Callout>
+
+### Run the Basic WebSocket Example
+
+Now you can run the basic example that demonstrates connecting to Lazer and receiving price updates:
+
+```bash copy
+pnpm run start
+```
+
+This will execute the main example script that:
+- Connects to the Pyth Lazer WebSocket server
+- Subscribes to price feeds (IDs 1 and 2)
+- Listens for both JSON and binary messages
+- Displays received price data and connection status
+- Automatically shuts down after 10 seconds
+
+### Understanding the Code
+
+The main example code in `src/index.ts` demonstrates the core Lazer integration pattern:
+
+```typescript
+import { PythLazerClient } from "@pythnetwork/pyth-lazer-sdk";
+
+const client = await PythLazerClient.create({
+  urls: ["wss://pyth-lazer.dourolabs.app/v1/stream"],
+  token: process.env.ACCESS_TOKEN!,
+});
+
+// Subscribe to price feeds
+client.subscribe({
+  type: "subscribe",
+  subscriptionId: 1,
+  priceFeedIds: [1, 2],
+  properties: ["price"],
+  formats: ["solana"],
+  deliveryFormat: "json",
+  channel: "fixed_rate@200ms",
+  jsonBinaryEncoding: "hex",
+});
+```
+
+Key concepts:
+- **PythLazerClient**: The main client for connecting to Lazer
+- **Subscription**: Defines which price feeds and properties you want to receive
+- **Message Listeners**: Handle incoming price updates and connection events
+- **Channels**: Control update frequency (e.g., "fixed_rate@200ms")
+
+</Steps>
+
+## What's Next?
+
+Now that you've successfully run the basic Lazer example, you can explore more advanced integration patterns:
+
+### Blockchain Integration
+
+Learn how to integrate Lazer price feeds into your smart contracts:
+
+- **[Solana Integration](./integrate-as-consumer/svm)** - Build SVM smart contracts that consume Lazer price feeds with cryptographic verification
+- **[EVM Integration](./integrate-as-consumer/evm)** - Integrate Lazer into Ethereum and other EVM-compatible chains
+
+### Advanced Features
+
+Explore additional Lazer capabilities:
+
+- **[Subscribe to Price Updates](./subscribe-price-updates)** - Detailed guide on WebSocket subscriptions and message handling
+- **[Price Feed IDs](./price-feed-ids)** - Complete list of available price feeds and their identifiers
+- **[Acquire Access Token](./acquire-access-token)** - How to obtain and manage your Lazer access credentials
+
+### Example Applications
+
+Check out more comprehensive examples in the [pyth-examples repository](https://github.com/pyth-network/pyth-examples/tree/main/lazer):
+
+- **Solana Examples** - Post price data to Solana smart contracts with Ed25519 and ECDSA verification
+- **EVM Examples** - Smart contract integration for Ethereum-compatible chains
+- **Publisher Examples** - Learn how to publish your own price data to Lazer
