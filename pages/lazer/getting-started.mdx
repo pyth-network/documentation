@@ -7,6 +7,7 @@ Pyth Lazer is a high-performance, low-latency price feed service that provides r
 ## What You'll Learn
 
 In this guide, you'll learn how to:
+
 - Set up the Pyth Lazer JavaScript SDK
 - Connect to the Lazer WebSocket stream
 - Subscribe to real-time price feeds
@@ -41,6 +42,7 @@ pnpm install
 ```
 
 This will install the following key packages:
+
 - `@pythnetwork/pyth-lazer-sdk` - The main Lazer SDK
 - `@solana/web3.js` - For Solana blockchain interactions
 - Other supporting dependencies
@@ -54,7 +56,9 @@ export ACCESS_TOKEN=your_actual_token_here
 ```
 
 <Callout type="warning" emoji="⚠️">
-  Replace `your_actual_token_here` with your actual Lazer access token. If you don't have one, follow the [access token guide](./acquire-access-token) to obtain it.
+  Replace `your_actual_token_here` with your actual Lazer access token. If you
+  don't have one, follow the [access token guide](./acquire-access-token) to
+  obtain it.
 </Callout>
 
 ### Run the Basic WebSocket Example
@@ -66,6 +70,7 @@ pnpm run start
 ```
 
 This will execute the main example script that:
+
 - Connects to the Pyth Lazer WebSocket server
 - Subscribes to price feeds (IDs 1 and 2)
 - Listens for both JSON and binary messages
@@ -98,6 +103,7 @@ client.subscribe({
 ```
 
 Key concepts:
+
 - **PythLazerClient**: The main client for connecting to Lazer
 - **Subscription**: Defines which price feeds and properties you want to receive
 - **Message Listeners**: Handle incoming price updates and connection events
