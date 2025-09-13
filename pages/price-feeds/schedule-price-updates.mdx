@@ -1,3 +1,5 @@
+import { Callout } from "nextra/components";
+
 # How To Schedule Price Updates
 
 The following guides explain how to schedule Pyth price updates to occur at regular intervals.
@@ -15,3 +17,9 @@ There are also three different tools to schedule price updates:
 - [Scheduler](schedule-price-updates/using-scheduler) is a service that developers can run to trigger price updates when certain time or price change conditions are met.
 
 For developers comparing these three options, Adrastia and Gelato are simpler, in that they do not require you to operate a service.
+
+<Callout type="info" emoji="ℹ️">
+  Deviation thresholds are fully configurable, limited only by Pythnet’s update
+  speed. Please be aware: Lower thresholds and more frequent updates increase
+  on-chain transactions, which raises costs.
+</Callout>
