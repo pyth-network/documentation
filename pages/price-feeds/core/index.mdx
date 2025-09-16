@@ -1,0 +1,73 @@
+import { ProductCard } from "../../../components/ProductCard";
+import {
+  BarChartIcon,
+  ClockIcon,
+  LightningIcon,
+  MultiChainIcon,
+  ShieldIcon,
+  ListIcon,
+} from "../../../components/icons/ProductIcons";
+import { Cards, Card } from "nextra/components";
+
+# Introduction to Pyth Core
+
+Pyth Core is the decentralized Pyth oracle delivering financial market data to smart contracts across 100+ blockchains.
+Data is contributed directly by 120+ first-party publishers, including leading exchanges and trading firms.
+
+## Key Features
+
+- **2000+ price feeds** across all major asset classes
+- **400ms update frequency** with high-frequency updates
+- **Cryptographically signed** and verifiable on-chain
+- **Decentralized** access across **100+ blockchains** including EVM, Cosmos, Solana, Aptos, and more
+
+## Our Products
+
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
+  <ProductCard
+    badge="Core"
+    icon={<BarChartIcon />}
+    title="Real-Time Price Feeds"
+    description="Real-time, high-fidelity market data for smart contracts."
+    features={[
+      { icon: <ClockIcon />, text: "400ms update frequency" },
+      { icon: <BarChartIcon />, text: "Pull and Push updates" },
+      { icon: <MultiChainIcon />, text: "Multi-chain support" }
+    ]}
+    ctaText="Explore Price Feeds"
+    href="./price-feeds/use-real-time-data"
+  />
+
+{" "}
+
+<ProductCard
+  badge="Benchmarks"
+  badgeColor="bg-green-600"
+  icon={<ClockIcon />}
+  title="Historical Data"
+  description="Access to historical price data for settlement and backtesting."
+  features={[
+    { icon: <BarChartIcon />, text: "Signed data" },
+    { icon: <ShieldIcon />, text: "Verifiable prices" },
+    { icon: <ClockIcon />, text: "Time-stamped prices" },
+  ]}
+  ctaText="Access Historical Data"
+  href="./price-feeds/use-historic-price-data"
+/>
+</div>
+
+## Quick Start
+
+<Cards>
+  <Card icon={<ListIcon />} title="Price Feed IDs" href="./price-feeds" />
+  <Card
+    icon={<LightningIcon />}
+    title="Contract Addresses"
+    href="./contract-addresses"
+  />
+  <Card
+    icon={<BarChartIcon />}
+    title="Sponsored Feeds(Push Updates)"
+    href="./sponsored-feeds"
+  />
+</Cards>

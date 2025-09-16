@@ -14,6 +14,11 @@ interface ProductCardProps {
   ctaText: string;
   href: string;
   className?: string;
+  quickActions?: Array<{
+    title: string;
+    href: string;
+    icon: React.ReactNode;
+  }>;
 }
 
 export function ProductCard({
@@ -26,6 +31,7 @@ export function ProductCard({
   ctaText,
   href,
   className = "",
+  quickActions = [],
 }: ProductCardProps) {
   return (
     <div
@@ -64,6 +70,39 @@ export function ProductCard({
           </div>
         ))}
       </div>
+
+      {/* Quick Actions */}
+      {quickActions.length > 0 && (
+        <div className="grid grid-cols-1 gap-2 mb-6">
+          {quickActions.map((action, index) => (
+            <Link
+              key={index}
+              href={action.href}
+              className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-sm"
+            >
+              <div className="text-blue-600 dark:text-blue-400 text-sm flex-shrink-0">
+                {action.icon}
+              </div>
+              <span className="text-gray-700 dark:text-gray-300 font-medium">
+                {action.title}
+              </span>
+              <svg
+                className="w-3 h-3 ml-auto text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </Link>
+          ))}
+        </div>
+      )}
 
       {/* Call to action button - pushed to bottom */}
       <div className="mt-auto">
