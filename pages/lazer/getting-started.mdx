@@ -2,16 +2,8 @@ import { Callout, Steps } from "nextra/components";
 
 # Getting Started with Pyth Lazer
 
-Pyth Lazer is a high-performance, low-latency price feed service that provides real-time financial market data to blockchain applications. This guide will walk you through setting up and running a basic JavaScript example to subscribe to Lazer price feeds.
-
-## What You'll Learn
-
-In this guide, you'll learn how to:
-
-- Set up the Pyth Lazer JavaScript SDK
-- Connect to the Lazer WebSocket stream
-- Subscribe to real-time price feeds
-- Handle both JSON and binary message formats
+Pyth Lazer is a high-performance, low-latency service that provides real-time financial market data.
+This guide will walk you through setting up and running a basic JavaScript example to subscribe to Lazer price feeds.
 
 ## Prerequisites
 
@@ -41,11 +33,7 @@ Install the required dependencies using pnpm:
 pnpm install
 ```
 
-This will install the following key packages:
-
-- `@pythnetwork/pyth-lazer-sdk` - The main Lazer SDK
-- `@solana/web3.js` - For Solana blockchain interactions
-- Other supporting dependencies
+This will install `@pythnetwork/pyth-lazer-sdk`, which is the main Lazer SDK.
 
 ### Configure Your Access Token
 
@@ -69,13 +57,44 @@ Now you can run the basic example that demonstrates connecting to Lazer and rece
 pnpm run start
 ```
 
-This will execute the main example script that:
+This command will subscribe to Pyth Lazer updates for two price feeds, receiving streaming updates.
+Each update is then printed to the terminal on receipt.
+You should see output similar to the following:
 
-- Connects to the Pyth Lazer WebSocket server
-- Subscribes to price feeds (IDs 1 and 2)
-- Listens for both JSON and binary messages
-- Displays received price data and connection status
-- Automatically shuts down after 10 seconds
+```
+got message: {
+  type: 'json',
+  value: {
+    type: 'streamUpdated',
+    subscriptionId: 1,
+    parsed: { timestampUs: '1758034015200000', priceFeeds: [Array] },
+    solana: {
+      encoding: 'hex',
+      data: 'b9011a82036df6ced259a33949ab9b2c48a61a2d3b0b9436cba24c3ef8a600b72767927d14a459fcc3abce280b3f8194e16e8b32f9322ac0b84a9c0b792e19857962a60180efc1f480c5615af3fb673d42287e993da9fbc3506b6e41dfa32950820c2e6c2a0075d3c79300a3fa30ec3e060003020100000001009053802f790a00000200000001004234106d67000000'
+    }
+  }
+}
+stream updated for subscription 1 : [
+  { priceFeedId: 1, price: '11515604259728' },
+  { priceFeedId: 2, price: '444211409986' }
+]
+got message: {
+  type: 'json',
+  value: {
+    type: 'streamUpdated',
+    subscriptionId: 1,
+    parsed: { timestampUs: '1758034015400000', priceFeeds: [Array] },
+    solana: {
+      encoding: 'hex',
+      data: 'b9011a826f5ff7e25ac4056c4ec3a08c428baf38e7b78c46014296ccbcfd5395c38c9f7bc23865a048401c66788e791f0edc3a6701b0ea4a5399f50ec8b1795757854f0180efc1f480c5615af3fb673d42287e993da9fbc3506b6e41dfa32950820c2e6c2a0075d3c79340b0fd30ec3e060003020100000001005821a32f790a00000200000001004334106d67000000'
+    }
+  }
+}
+stream updated for subscription 1 : [
+  { priceFeedId: 1, price: '11515606540632' },
+  { priceFeedId: 2, price: '444211409987' }
+]
+```
 
 ### Understanding the Code
 
@@ -87,6 +106,12 @@ import { PythLazerClient } from "@pythnetwork/pyth-lazer-sdk";
 const client = await PythLazerClient.create({
   urls: ["wss://pyth-lazer.dourolabs.app/v1/stream"],
   token: process.env.ACCESS_TOKEN!,
+});
+
+// The message listener is called every time a new message is received.
+client.addMessageListener((message) => {
+  // Add your logic to consume messages here
+  console.log("got message:", message);
 });
 
 // Subscribe to price feeds
@@ -102,18 +127,18 @@ client.subscribe({
 });
 ```
 
-Key concepts:
-
-- **PythLazerClient**: The main client for connecting to Lazer
-- **Subscription**: Defines which price feeds and properties you want to receive
-- **Message Listeners**: Handle incoming price updates and connection events
-- **Channels**: Control update frequency (e.g., "fixed_rate@200ms")
-
 </Steps>
 
 ## What's Next?
 
 Now that you've successfully run the basic Lazer example, you can explore more advanced integration patterns:
+
+### More Information
+
+Explore additional Lazer capabilities:
+
+- **[Subscribe to Price Updates](./subscribe-price-updates)** - Detailed guide on WebSocket subscriptions and message handling
+- **[Price Feed IDs](./price-feed-ids)** - Complete list of available price feeds and their identifiers
 
 ### Blockchain Integration
 
@@ -122,18 +147,9 @@ Learn how to integrate Lazer price feeds into your smart contracts:
 - **[Solana Integration](./integrate-as-consumer/svm)** - Build SVM smart contracts that consume Lazer price feeds with cryptographic verification
 - **[EVM Integration](./integrate-as-consumer/evm)** - Integrate Lazer into Ethereum and other EVM-compatible chains
 
-### Advanced Features
-
-Explore additional Lazer capabilities:
-
-- **[Subscribe to Price Updates](./subscribe-price-updates)** - Detailed guide on WebSocket subscriptions and message handling
-- **[Price Feed IDs](./price-feed-ids)** - Complete list of available price feeds and their identifiers
-- **[Acquire Access Token](./acquire-access-token)** - How to obtain and manage your Lazer access credentials
-
 ### Example Applications
 
 Check out more comprehensive examples in the [pyth-examples repository](https://github.com/pyth-network/pyth-examples/tree/main/lazer):
 
 - **Solana Examples** - Post price data to Solana smart contracts with Ed25519 and ECDSA verification
 - **EVM Examples** - Smart contract integration for Ethereum-compatible chains
-- **Publisher Examples** - Learn how to publish your own price data to Lazer
