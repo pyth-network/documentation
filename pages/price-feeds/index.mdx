@@ -18,10 +18,10 @@ Pyth offers two main versions of price feeds, each optimized for different use c
 
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
 <ProductCard
-    badge="V3"
+    badge="Pro"
     badgeColor="bg-blue-600"
     icon={<LightningIcon />}
-    title="Pyth Price Feeds V3"
+    title="Pyth Price Feeds Pro"
     description="Next-generation price feeds with ultra-low latency, equities and more."
     features={[
       { icon: <LightningIcon />, text: "Ultra-low latency" },
@@ -29,8 +29,8 @@ Pyth offers two main versions of price feeds, each optimized for different use c
       { icon: <MultiChainIcon />, text: "100+ blockchains" },
       { icon: <ShieldIcon />, text: "Real-time" }
     ]}
-    ctaText="Explore V3 Documentation"
-    href="./price-feeds/v3"
+    ctaText="Explore Pro Documentation"
+    href="./price-feeds/pro"
   />
 
 {" "}
@@ -38,10 +38,10 @@ Pyth offers two main versions of price feeds, each optimized for different use c
 {" "}
 
 <ProductCard
-  badge="V2"
+  badge="Core"
   badgeColor="bg-green-600"
   icon={<BarChartIcon />}
-  title="Pyth Price Feeds V2"
+  title="Pyth Price Feeds Core"
   description="The original Pyth price feeds - stable, secure, and decentralized price data for broad DeFi applications."
   features={[
     { icon: <ClockIcon />, text: "400ms update frequency" },
@@ -49,15 +49,15 @@ Pyth offers two main versions of price feeds, each optimized for different use c
     { icon: <MultiChainIcon />, text: "100+ blockchains" },
     { icon: <ShieldIcon />, text: "Decentralized & secure" },
   ]}
-  ctaText="Explore V2 Documentation"
-  href="./price-feeds/v2"
+  ctaText="Explore Core Documentation"
+  href="./price-feeds/core"
 />
 
 </div>
 
 ## Key Differences
 
-|                         | **V3**                                                                                                                              | **V2**                                                                                                   |
+|                         | **Pro**                                                                                                                             | **Core**                                                                                                 |
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Solution Type**       | **Permissioned** service focused on **ultra-low-latency** price and market data for highly latency-sensitive users.                 | Stable, secure, and decentralized price data source for a broad spectrum of DeFi or TradFi applications. |
 | **Frequency**           | **1ms** (**real-time**), 50ms, and 200ms channels, **customizable** frequencies, and throttling support to address different needs. | 400ms on Pythnet appchain with support for risk mitigation via Benchmarks and confidence intervals.      |
@@ -70,18 +70,18 @@ Pyth offers two main versions of price feeds, each optimized for different use c
 
 Get started with Pyth Price Feeds by choosing your version:
 
-- **[V2 Getting Started](./price-feeds/v2/getting-started)** - For stable, production-ready applications
-- **[V3 Getting Started](./price-feeds/v3/getting-started)** - For next-generation applications with enhanced features
+- **[Pyth Pro Getting Started](./pro/getting-started)** - For next-generation applications with enhanced features
+- **[Pyth Core Getting Started](./core/getting-started)** - For stable, production-ready applications
 
 ## Additional Resources
 
 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
   <div className="p-6 bg-gray-50 dark:bg-darkGray rounded-lg border border-gray-200 dark:border-gray-700">
     <h3 className="text-lg font-semibold mb-2 text-lightForeground dark:text-white">Price Feed IDs</h3>
-    <p className="text-gray-700 dark:text-light mb-4">Complete list of price feed IDs for both V2 and V3.</p>
-    <a href="./price-feeds/v2/price-feeds" className="text-lightLinks dark:text-darkLinks hover:text-blue-800 dark:hover:text-blue-300 font-medium">V2 IDs →</a>
+    <p className="text-gray-700 dark:text-light mb-4">Complete list of price feed IDs for both Pro and Core.</p>
+    <a href="./price-feeds/core/price-feeds" className="text-lightLinks dark:text-darkLinks hover:text-blue-800 dark:hover:text-blue-300 font-medium">Pyth Core IDs →</a>
     <span className="mx-2 text-gray-400">|</span>
-    <a href="./price-feeds/v3/price-feed-ids" className="text-lightLinks dark:text-darkLinks hover:text-blue-800 dark:hover:text-blue-300 font-medium">V3 IDs →</a>
+    <a href="./price-feeds/pro/price-feed-ids" className="text-lightLinks dark:text-darkLinks hover:text-blue-800 dark:hover:text-blue-300 font-medium">Pyth Pro IDs →</a>
   </div>
 
 {" "}
@@ -91,20 +91,20 @@ Get started with Pyth Price Feeds by choosing your version:
     API Reference
   </h3>
   <p className="text-gray-700 dark:text-light mb-4">
-    Complete API documentation for both V2 and V3.
+    Complete API documentation for both Pro and Core.
   </p>
   <a
-    href="./price-feeds/v2/api-reference"
+    href="./price-feeds/core/api-reference"
     className="text-lightLinks dark:text-darkLinks hover:text-blue-800 dark:hover:text-blue-300 font-medium"
   >
-    V2 API →
+    Core API →
   </a>
   <span className="mx-2 text-gray-400">|</span>
   <a
-    href="./price-feeds/v3/api-reference"
+    href="./price-feeds/pro/api-reference"
     className="text-lightLinks dark:text-darkLinks hover:text-blue-800 dark:hover:text-blue-300 font-medium"
   >
-    V3 API →
+    Pro API →
   </a>
 </div>
 
