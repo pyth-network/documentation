@@ -7,11 +7,11 @@
     "title": "Introduction"
   },
   "v3": {
-    "title": "v3 Documentation →",
-    "href": "/price-feeds/v3"
+    "title": "Pro Documentation →",
+    "href": "/price-feeds/pro"
   },
   "v2": {
-    "title": "v2 Documentation →",
-    "href": "/price-feeds/v2"
+    "title": "Core Documentation →",
+    "href": "/price-feeds/core"
   }
 }

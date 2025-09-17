@@ -120,5 +120,53 @@
     .response p {
       @apply text-light !important;
     }
+
+    /* Custom Banner Styling */
+    .nextra-banner,
+    .nextra-banner-container,
+    .nextra-banner-container > div {
+      @apply relative overflow-hidden;
+      background: #764ba2 !important;
+    }
+
+    .nextra-banner::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+
+    .nextra-banner button[aria-label="Close banner"] {
+      @apply text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 rounded-md p-1;
+    }
+
+    .nextra-banner button[aria-label="Close banner"]:hover {
+      @apply scale-110;
+    }
+
+    /* Ensure banner works in both light and dark modes */
+    html[class~="dark"] .nextra-banner,
+    html[class~="dark"] .nextra-banner-container,
+    html[class~="dark"] .nextra-banner-container > div {
+      background: #764ba2 !important;
+    }
   }
 }
