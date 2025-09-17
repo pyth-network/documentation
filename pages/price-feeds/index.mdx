@@ -6,13 +6,16 @@ import {
   MultiChainIcon,
   ShieldIcon,
   CodeIcon,
+  ListIcon,
+  KeyIcon,
+  PlayIcon,
 } from "../../components/icons/ProductIcons";
 
-# Pyth Price Feeds
+# Price Feeds
 
-Pyth Network provides real-time financial market data to smart contract applications on 100+ blockchains. Data is sourced from 120+ first-party providers including major exchanges and market makers.
+Pyth Price Feeds provides real-time financial market data to smart contract applications on 100+ blockchains. Data is sourced from 120+ first-party providers including major exchanges and market makers.
 
-## Choose Your Version
+## Product Options
 
 Pyth offers two main versions of price feeds, each optimized for different use cases:
 
@@ -21,13 +24,18 @@ Pyth offers two main versions of price feeds, each optimized for different use c
     badge="Pro"
     badgeColor="bg-blue-600"
     icon={<LightningIcon />}
-    title="Pyth Price Feeds Pro"
-    description="Next-generation price feeds with ultra-low latency, equities and more."
+    title="Price Feeds Pro"
+    description={<>Next-generation price feeds with ultra-low latency, equities and more. <br /><strong>Previously known as Lazer.</strong></>}
     features={[
       { icon: <LightningIcon />, text: "Ultra-low latency" },
       { icon: <BarChartIcon />, text: "Equities & Indexes" },
       { icon: <MultiChainIcon />, text: "100+ blockchains" },
       { icon: <ShieldIcon />, text: "Real-time" }
+    ]}
+    quickActions={[
+      { icon: <ListIcon />, title: "Available Feeds", href: "./price-feeds/pro/price-feed-ids" },
+      { icon: <KeyIcon />, title: "Get API Token", href: "./price-feeds/pro/getting-started" },
+      { icon: <PlayIcon />, title: "Quick Start", href: "./price-feeds/pro/getting-started" }
     ]}
     ctaText="Explore Pro Documentation"
     href="./price-feeds/pro"
@@ -35,19 +43,34 @@ Pyth offers two main versions of price feeds, each optimized for different use c
 
 {" "}
 
-{" "}
-
 <ProductCard
   badge="Core"
   badgeColor="bg-green-600"
   icon={<BarChartIcon />}
-  title="Pyth Price Feeds Core"
+  title="Price Feeds Core"
   description="The original Pyth price feeds - stable, secure, and decentralized price data for broad DeFi applications."
   features={[
     { icon: <ClockIcon />, text: "400ms update frequency" },
     { icon: <BarChartIcon />, text: "2000+ price feeds" },
     { icon: <MultiChainIcon />, text: "100+ blockchains" },
     { icon: <ShieldIcon />, text: "Decentralized & secure" },
+  ]}
+  quickActions={[
+    {
+      icon: <ListIcon />,
+      title: "Available Feeds",
+      href: "./price-feeds/core/price-feeds",
+    },
+    {
+      icon: <PlayIcon />,
+      title: "Quick Start",
+      href: "./price-feeds/core/getting-started",
+    },
+    {
+      icon: <CodeIcon />,
+      title: "Integration Guide",
+      href: "./price-feeds/core/getting-started",
+    },
   ]}
   ctaText="Explore Core Documentation"
   href="./price-feeds/core"

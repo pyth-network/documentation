@@ -6,12 +6,12 @@
   "index": {
     "title": "Introduction"
   },
-  "v3": {
-    "title": "Pro Documentation →",
+  "pro": {
+    "title": "Price Feeds Pro →",
     "href": "/price-feeds/pro"
   },
-  "v2": {
-    "title": "Core Documentation →",
+  "core": {
+    "title": "Price Feeds Core →",
     "href": "/price-feeds/core"
   }
 }
