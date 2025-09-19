@@ -1,0 +1,60 @@
+import { ProductCard } from "../../../components/ProductCard";
+import {
+  BarChartIcon,
+  ClockIcon,
+  LightningIcon,
+  MultiChainIcon,
+  ShieldIcon,
+} from "../../../components/icons/ProductIcons";
+
+# Introduction to Pyth Core
+
+Pyth Network provides real-time financial market data to smart contract applications on 100+ blockchains.
+Data is sourced from 120+ first-party providers including major exchanges and market makers.
+
+## Key Features
+
+- **1600+ price feeds** across all major asset classes
+- **Sub-second latency** with high-frequency updates
+- **Cryptographically signed** and verifiable on-chain
+- **Multi-chain support** including EVM, Cosmos, Solana, Aptos, and more
+
+## Our Products
+
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
+  <ProductCard
+    badge="Core"
+    icon={<BarChartIcon />}
+    title="Real-Time Price Feeds"
+    description="Real-time, high-fidelity market data for smart contracts."
+    features={[
+      { icon: <ClockIcon />, text: "400ms update frequency" },
+      { icon: <BarChartIcon />, text: "High-frequency data" },
+      { icon: <MultiChainIcon />, text: "Multi-chain support" }
+    ]}
+    ctaText="Explore Price Feeds"
+    href="./price-feeds/use-real-time-data"
+  />
+
+{" "}
+
+<ProductCard
+  badge="Benchmarks"
+  icon={<ClockIcon />}
+  title="Historical Data"
+  description="Access to historical price data for settlement and backtesting."
+  features={[
+    { icon: <BarChartIcon />, text: "Signed data" },
+    { icon: <ShieldIcon />, text: "Verifiable prices" },
+    { icon: <ClockIcon />, text: "Time-stamped prices" },
+  ]}
+  ctaText="Access Historical Data"
+  href="./price-feeds/use-historic-price-data"
+/>
+</div>
+
+## Quick Start
+
+Follow the [Getting Started](price-feeds/getting-started.mdx) guide to integrate Pyth Price Feeds into your application.
+
+For contract addresses and deployment details, see [Contract Addresses](./price-feeds/contract-addresses).

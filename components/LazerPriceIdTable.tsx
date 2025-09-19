@@ -84,7 +84,7 @@ const LoadedLazerPriceIdTable = ({
     <div>
       <input
         type="text"
-        placeholder="Search by symbol, name, description, or pyth lazer id..."
+        placeholder="Search by symbol, name, description, or pyth pro id..."
         value={search}
         onChange={updateSearch}
         className="w-full p-2 mb-4 border border-gray-300 rounded-md"
@@ -96,7 +96,7 @@ const LoadedLazerPriceIdTable = ({
             <th>Description</th>
             <th>Name</th>
             <th>Symbol</th>
-            <th>Pyth Lazer Id</th>
+            <th>Pyth Pro Id</th>
             <th>Exponent</th>
           </tr>
         </thead>

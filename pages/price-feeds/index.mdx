@@ -5,70 +5,135 @@ import {
   LightningIcon,
   MultiChainIcon,
   ShieldIcon,
+  CodeIcon,
+  ListIcon,
+  KeyIcon,
+  PlayIcon,
 } from "../../components/icons/ProductIcons";
 
-# Introduction to Pyth Price Feeds
+# Price Feeds
 
-Pyth Network provides real-time financial market data to smart contract applications on 100+ blockchains.
-Data is sourced from 120+ first-party providers including major exchanges and market makers.
+Pyth Price Feeds provides real-time financial market data to smart contract applications on 100+ blockchains. Data is sourced from 120+ first-party providers including major exchanges and market makers.
 
-## Key Features
+## Product Options
 
-- **1600+ price feeds** across all major asset classes
-- **Sub-second latency** with high-frequency updates
-- **Cryptographically signed** and verifiable on-chain
-- **Multi-chain support** including EVM, Cosmos, Solana, Aptos, and more
-
-## Our Products
+Pyth offers two main versions of price feeds, each optimized for different use cases:
 
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
-  <ProductCard
-    badge="Core"
-    icon={<BarChartIcon />}
-    title="Real-Time Price Feeds"
-    description="Real-time, high-fidelity market data for smart contracts."
+<ProductCard
+    badge="Pro"
+    badgeColor="bg-blue-600"
+    icon={<LightningIcon />}
+    title="Pyth Pro"
+    description={<>Next-generation price feeds with ultra-low latency, equities and more. <br /><strong>Previously known as Lazer.</strong></>}
     features={[
-      { icon: <ClockIcon />, text: "Real-time price feeds" },
-      { icon: <BarChartIcon />, text: "High-frequency data" },
-      { icon: <MultiChainIcon />, text: "Multi-chain support" }
+      { icon: <LightningIcon />, text: "Ultra-low latency" },
+      { icon: <BarChartIcon />, text: "Equities & Indexes" },
+      { icon: <MultiChainIcon />, text: "100+ blockchains" },
+      { icon: <ShieldIcon />, text: "Real-time" }
     ]}
-    ctaText="Explore Price Feeds"
-    href="./price-feeds/use-real-time-data"
+    quickActions={[
+      { icon: <ListIcon />, title: "Available Feeds", href: "./price-feeds/pro/price-feed-ids" },
+      { icon: <KeyIcon />, title: "Get API Token", href: "./price-feeds/pro/getting-started" },
+      { icon: <PlayIcon />, title: "Quick Start", href: "./price-feeds/pro/getting-started" }
+    ]}
+    ctaText="Explore Pro Documentation"
+    href="./price-feeds/pro"
   />
 
 {" "}
 
 <ProductCard
-  badge="Benchmarks"
-  icon={<ClockIcon />}
-  title="Historical Data"
-  description="Access to historical price data for settlement and backtesting."
+  badge="Core"
+  badgeColor="bg-green-600"
+  icon={<BarChartIcon />}
+  title="Pyth Core"
+  description="The original Pyth price feeds - stable, secure, and decentralized price data for broad DeFi applications."
   features={[
-    { icon: <BarChartIcon />, text: "Signed data" },
-    { icon: <ShieldIcon />, text: "Verifiable prices" },
-    { icon: <ClockIcon />, text: "Time-stamped prices" },
+    { icon: <ClockIcon />, text: "400ms update frequency" },
+    { icon: <BarChartIcon />, text: "2000+ price feeds" },
+    { icon: <MultiChainIcon />, text: "100+ blockchains" },
+    { icon: <ShieldIcon />, text: "Decentralized & secure" },
   ]}
-  ctaText="Access Historical Data"
-  href="./price-feeds/use-historic-price-data"
+  quickActions={[
+    {
+      icon: <ListIcon />,
+      title: "Available Feeds",
+      href: "./price-feeds/core/price-feeds",
+    },
+    {
+      icon: <PlayIcon />,
+      title: "Quick Start",
+      href: "./price-feeds/core/getting-started",
+    },
+    {
+      icon: <CodeIcon />,
+      title: "Integration Guide",
+      href: "./price-feeds/core/getting-started",
+    },
+  ]}
+  ctaText="Explore Core Documentation"
+  href="./price-feeds/core"
 />
 
-  <ProductCard
-    badge="Lazer"
-    icon={<LightningIcon />}
-    title="Lazer"
-    description="High-performance, low-latency price feeds for institutional applications."
-    features={[
-      { icon: <LightningIcon />, text: "Ultra-low latency" },
-      { icon: <ShieldIcon />, text: "Institutional grade" },
-      { icon: <BarChartIcon />, text: "High-frequency data" }
-    ]}
-    ctaText="Learn About Lazer"
-    href="../lazer"
-  />
 </div>
+
+## Key Differences
+
+|                         | **Pro**                                                                                                                             | **Core**                                                                                                 |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Solution Type**       | **Permissioned** service focused on **ultra-low-latency** price and market data for highly latency-sensitive users.                 | Stable, secure, and decentralized price data source for a broad spectrum of DeFi or TradFi applications. |
+| **Frequency**           | **1ms** (**real-time**), 50ms, and 200ms channels, **customizable** frequencies, and throttling support to address different needs. | 400ms on Pythnet appchain with support for risk mitigation via Benchmarks and confidence intervals.      |
+| **Data Types**          | Aggregate price, bid/ask price, and **customizable** market data (market depth and more).                                           | Aggregate price and confidence intervals.                                                                |
+| **Fees**                | On-chain fee per signed cross-chain price update.                                                                                   | On-chain fee per signed cross-chain price update.                                                        |
+| **Update Costs**        | **100-byte proofs** and simple signature verification.                                                                              | >1,000-byte proofs and complex signature verification.                                                   |
+| **Integration Process** | **Specialized** and **permissioned** solution for protocols prioritizing performance over some elements of decentralization.        | Open and permissionless integration for any Web3 or Web2 protocol.                                       |
 
 ## Quick Start
 
-Follow the [Getting Started](price-feeds/getting-started.mdx) guide to integrate Pyth Price Feeds into your application.
+Get started with Pyth Price Feeds by choosing your version:
 
-For contract addresses and deployment details, see [Contract Addresses](./price-feeds/contract-addresses).
+- **[Pyth Pro Getting Started](./pro/getting-started)** - For next-generation applications with enhanced features
+- **[Pyth Core Getting Started](./core/getting-started)** - For stable, production-ready applications
+
+## Additional Resources
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+  <div className="p-6 bg-gray-50 dark:bg-darkGray rounded-lg border border-gray-200 dark:border-gray-700">
+    <h3 className="text-lg font-semibold mb-2 text-lightForeground dark:text-white">Price Feed IDs</h3>
+    <p className="text-gray-700 dark:text-light mb-4">Complete list of price feed IDs for both Pro and Core.</p>
+    <a href="./price-feeds/core/price-feeds" className="text-lightLinks dark:text-darkLinks hover:text-blue-800 dark:hover:text-blue-300 font-medium">Pyth Core IDs →</a>
+    <span className="mx-2 text-gray-400">|</span>
+    <a href="./price-feeds/pro/price-feed-ids" className="text-lightLinks dark:text-darkLinks hover:text-blue-800 dark:hover:text-blue-300 font-medium">Pyth Pro IDs →</a>
+  </div>
+
+{" "}
+
+<div className="p-6 bg-gray-50 dark:bg-darkGray rounded-lg border border-gray-200 dark:border-gray-700">
+  <h3 className="text-lg font-semibold mb-2 text-lightForeground dark:text-white">
+    API Reference
+  </h3>
+  <p className="text-gray-700 dark:text-light mb-4">
+    Complete API documentation for both Pro and Core.
+  </p>
+  <a
+    href="./price-feeds/core/api-reference"
+    className="text-lightLinks dark:text-darkLinks hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+  >
+    Core API →
+  </a>
+  <span className="mx-2 text-gray-400">|</span>
+  <a
+    href="./price-feeds/pro/api-reference"
+    className="text-lightLinks dark:text-darkLinks hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+  >
+    Pro API →
+  </a>
+</div>
+
+  <div className="p-6 bg-gray-50 dark:bg-darkGray rounded-lg border border-gray-200 dark:border-gray-700">
+    <h3 className="text-lg font-semibold mb-2 text-lightForeground dark:text-white">Examples</h3>
+    <p className="text-gray-700 dark:text-light mb-4">Sample applications and integration examples.</p>
+    <a href="https://github.com/pyth-network/pyth-examples" className="text-lightLinks dark:text-darkLinks hover:text-blue-800 dark:hover:text-blue-300 font-medium">View Examples →</a>
+  </div>
+</div>
