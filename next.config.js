@@ -121,6 +121,13 @@ const permanentRedirectArray = [
   ],
   ["/benchmarks/api-instances", "/price-feeds/api-reference/"],
   ["/benchmarks/rate-limits", "/price-feeds/rate-limits/"],
+  // Lazer to Pyth Pro Redirects
+  ["/lazer", "/price-feeds/pro"],
+  ["/lazer/:path*", "/price-feeds/pro/:path*"],
+
+  // Price Feeds to Core Redirects
+  ["/price-feeds", "/price-feeds/core"],
+  ["/price-feeds/:path*", "/price-feeds/core/:path*"],
 ];
 
 /** @type {import('next').NextConfig} */
