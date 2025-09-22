@@ -13,6 +13,7 @@ import {
   Key,
   Play,
   BookOpen,
+  MoneyWavy,
 } from "@phosphor-icons/react";
 
 export function BarChartIcon() {
@@ -65,4 +66,8 @@ export function PlayIcon() {
 
 export function BookIcon() {
   return <BookOpen className="w-5 h-5" weight="regular" />;
+}
+
+export function MoneyWavyIcon() {
+  return <MoneyWavy className="w-5 h-5" weight="regular" />;
 }

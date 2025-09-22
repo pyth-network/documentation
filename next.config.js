@@ -126,8 +126,8 @@ const permanentRedirectArray = [
   ["/lazer/:path*", "/price-feeds/pro/:path*"],
 
   // Price Feeds to Core Redirects
-  ["/price-feeds", "/price-feeds/core"],
-  ["/price-feeds/:path*", "/price-feeds/core/:path*"],
+  // ["/price-feeds", "/price-feeds/core"],
+  // ["/price-feeds/:path*", "/price-feeds/core/:path*"],
 ];
 
 /** @type {import('next').NextConfig} */
