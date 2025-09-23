@@ -1,21 +1,31 @@
 import { Callout } from "nextra/components";
-import { Cards, Card } from 'nextra/components';
-import { KeyIcon, LightningIcon, BarChartIcon } from "../../../components/icons/ProductIcons";
+import { Cards, Card } from "nextra/components";
+import {
+  KeyIcon,
+  LightningIcon,
+  BarChartIcon,
+} from "../../../components/icons/ProductIcons";
 
 # Pyth Pro
 
-<Callout type="info">
-  Pyth Pro was previously known as Pyth Lazer.
-</Callout>
+<Callout type="info">Pyth Pro was previously known as Pyth Lazer.</Callout>
 
-Pyth Pro is a low latency, highly customizable price service directly sourced from first-party providers.
-It offers a customizable set of price feeds, target chains (EVM or Solana) and channels (real time or fixed rate):
+Pyth Pro delivers customizable, enterprise-grade price data directly from first-party publishers.
+Subscribers can configure their price feeds, update schedules, and usage rights for display or redistribution.
+The service is delivered through standard APIs for seamless integration.
 
 ---
 
-
 <Cards>
-<Card icon={<KeyIcon />} title="Get your access token" href="./getting-started" />
-<Card icon={<LightningIcon />} title="Subscribe to prices" href="./subscribe-price-updates" />
-<Card icon={<BarChartIcon />} title="Pricing" href="./pricing" />
+  <Card
+    icon={<KeyIcon />}
+    title="Get your access token"
+    href="./acquire-access-token"
+  />
+  <Card
+    icon={<LightningIcon />}
+    title="Subscribe to prices"
+    href="./subscribe-price-updates"
+  />
+  <Card icon={<BarChartIcon />} title="Pricing" href="./pricing" />
 </Cards>

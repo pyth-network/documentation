@@ -5,19 +5,21 @@ import {
   LightningIcon,
   MultiChainIcon,
   ShieldIcon,
+  ListIcon,
 } from "../../../components/icons/ProductIcons";
+import { Cards, Card } from "nextra/components";
 
 # Introduction to Pyth Core
 
-Pyth Network provides real-time financial market data to smart contract applications on 100+ blockchains.
-Data is sourced from 120+ first-party providers including major exchanges and market makers.
+Pyth Core is the decentralized Pyth oracle delivering real-time financial market data to smart contracts across 100+ blockchains.
+Data is contributed directly by 120+ first-party publishers, including leading exchanges and trading firms.
 
 ## Key Features
 
-- **1600+ price feeds** across all major asset classes
-- **Sub-second latency** with high-frequency updates
+- **2000+ price feeds** across all major asset classes
+- **400ms update frequency** with high-frequency updates
 - **Cryptographically signed** and verifiable on-chain
-- **Multi-chain support** including EVM, Cosmos, Solana, Aptos, and more
+- **Decentralized** access across **100+ blockchains** including EVM, Cosmos, Solana, Aptos, and more
 
 ## Our Products
 
@@ -29,7 +31,7 @@ Data is sourced from 120+ first-party providers including major exchanges and ma
     description="Real-time, high-fidelity market data for smart contracts."
     features={[
       { icon: <ClockIcon />, text: "400ms update frequency" },
-      { icon: <BarChartIcon />, text: "High-frequency data" },
+      { icon: <BarChartIcon />, text: "Pull and Push updates" },
       { icon: <MultiChainIcon />, text: "Multi-chain support" }
     ]}
     ctaText="Explore Price Feeds"
@@ -40,6 +42,7 @@ Data is sourced from 120+ first-party providers including major exchanges and ma
 
 <ProductCard
   badge="Benchmarks"
+  badgeColor="bg-green-600"
   icon={<ClockIcon />}
   title="Historical Data"
   description="Access to historical price data for settlement and backtesting."
@@ -55,6 +58,16 @@ Data is sourced from 120+ first-party providers including major exchanges and ma
 
 ## Quick Start
 
-Follow the [Getting Started](price-feeds/getting-started.mdx) guide to integrate Pyth Price Feeds into your application.
-
-For contract addresses and deployment details, see [Contract Addresses](./price-feeds/contract-addresses).
+<Cards>
+  <Card icon={<ListIcon />} title="Price Feed IDs" href="./price-feeds" />
+  <Card
+    icon={<LightningIcon />}
+    title="Contract Addresses"
+    href="./contract-addresses"
+  />
+  <Card
+    icon={<BarChartIcon />}
+    title="Sponsored Feeds(Push Updates)"
+    href="./sponsored-feeds"
+  />
+</Cards>
