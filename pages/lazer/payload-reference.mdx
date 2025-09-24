@@ -80,9 +80,9 @@ Each price feed object contains the following fields:
 | --------------------- | -------- | ------------------------------------------- | -------------------- |
 | `priceFeedId`         | `number` | Unique identifier for the price feed        | `1` (BTC/USD)        |
 | `price`               | `string` | Main aggregate price (mantissa format)      | `"1006900000000"`    |
-| `exponent`            | `string` | Decimal exponent for price conversion       | `"-8"`               |
+| `exponent`            | `string` | Decimal exponent for price conversion       | `-8`                 |
 | `confidence`          | `string` | Price confidence interval (mantissa format) | `"5000000"`          |
-| `publisherCount`      | `string` | Number of data publishers contributing      | `"15"`               |
+| `publisherCount`      | `string` | Number of data publishers contributing      | `9`                  |
 | `bestBidPrice`        | `string` | Highest bid price across all publishers     | `"1006800000000"`    |
 | `bestAskPrice`        | `string` | Lowest ask price across all publishers      | `"1007000000000"`    |
 | `fundingRate`         | `string` | Current funding rate for perpetual futures  | `"125000"`           |
@@ -247,17 +247,6 @@ Lazer offers multiple delivery channels to match your latency and frequency requ
 
 Lazer provides multiple cryptographic formats to support different blockchain ecosystems. When you subscribe, you can request specific binary formats in the `chains` parameter:
 
-### Available Formats
-
-| Format       | Algorithm                    | Use Cases                  | Blockchains                       |
-| ------------ | ---------------------------- | -------------------------- | --------------------------------- |
-| `evm`        | secp256k1 ECDSA + Keccak-256 | Smart contract integration | Ethereum, BSC, Polygon, Avalanche |
-| `solana`     | Ed25519 EdDSA                | Solana program integration | Solana                            |
-| `leEcdsa`    | Little-endian ECDSA          | Specialized applications   | Custom implementations            |
-| `leUnsigned` | No signature (testing only)  | Off-chain analytics        | Testing, development              |
-
-### Technical Specifications
-
 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
 
 <div className="p-6 bg-gray-50 dark:bg-darkGray rounded-lg border border-gray-200 dark:border-gray-700">
@@ -268,8 +257,6 @@ Lazer provides multiple cryptographic formats to support different blockchain ec
 - **Signature Size**: 65 bytes
 - **Verification**: Recoverable ECDSA with Ethereum address derivation
 
-**Perfect for**: Ethereum smart contracts, DeFi protocols, multi-chain applications
-
 </div>
 
 <div className="p-6 bg-gray-50 dark:bg-darkGray rounded-lg border border-gray-200 dark:border-gray-700">
@@ -279,8 +266,6 @@ Lazer provides multiple cryptographic formats to support different blockchain ec
 - **Signature Size**: 64 bytes
 - **Public Key Size**: 32 bytes
 - **Verification**: Direct Ed25519 signature verification
-
-**Perfect for**: Solana programs, high-performance applications
 
 </div>
 
@@ -302,7 +287,7 @@ Lazer provides multiple cryptographic formats to support different blockchain ec
 - **Use Cases**: Testing, development, trusted environments
 
         <Callout type="warning">
-        **Security Warning**: Never use in production
+        **Security**: Never use in production
 
       </Callout>
 
