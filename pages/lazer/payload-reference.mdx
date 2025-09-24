@@ -114,7 +114,6 @@ Main aggregate price calculated from all contributing publishers
 - **Availability**: Only included if requested in subscription properties
 - **Algorithm**: Robust statistical aggregation using median-based methods with outlier detection
 - **Invariants**: Non-zero when present (null values filtered out)
-- **Usage**: Primary price for trading decisions and portfolio valuation
 
 #### Data Publisher Count - `publisher_count`
 
@@ -125,6 +124,17 @@ Number of data publishers contributing to this price feed
 - **Algorithm**: Count of publishers whose data passed validation and quality checks
 - **Invariants**: Always positive for valid price feeds
 - **Business Value**: Higher count indicates more robust price discovery and reduced manipulation risk
+
+#### Decimal Exponent - `exponent`
+
+Power of 10 to apply for decimal representation
+
+- **Type**: `i16`
+- **Availability**: Always included when price properties are present
+- **Algorithm**: Determines decimal placement for all price values in the feed
+- **Invariants**: Typically negative (e.g., -8 for USD prices, -18 for token prices)
+- **Usage**: Convert mantissa to actual price: `actual_price = mantissa × 10^exponent`
+- **Example**: With exponent `-8`, mantissa `1006900000000` becomes `$10,069.00`
 
 #### Price Confidence Interval - `confidence`
 
@@ -296,7 +306,7 @@ Lazer provides multiple cryptographic formats to support different blockchain ec
 
       </Callout>
 
-  </div>
+</div>
 
 </div>
 
