@@ -43,8 +43,6 @@ The `parsed` object contains human-readable price data:
 
 Each price feed in the `priceFeeds` array represents real-time market data for a specific trading pair (e.g., BTC/USD, ETH/USD). Think of a price feed as a comprehensive snapshot of market conditions for that asset.
 
-### Example Price Feed Response
-
 Here's what a typical price feed looks like in a Lazer response:
 
 ```json
@@ -71,23 +69,6 @@ Here's what a typical price feed looks like in a Lazer response:
   }
 }
 ```
-
-### Price Feed Structure
-
-Each price feed object contains the following fields:
-
-| Field                 | Type     | Description                                 | Example              |
-| --------------------- | -------- | ------------------------------------------- | -------------------- |
-| `priceFeedId`         | `number` | Unique identifier for the price feed        | `1` (BTC/USD)        |
-| `price`               | `string` | Main aggregate price (mantissa format)      | `"1006900000000"`    |
-| `exponent`            | `string` | Decimal exponent for price conversion       | `-8`                 |
-| `confidence`          | `string` | Price confidence interval (mantissa format) | `"5000000"`          |
-| `publisherCount`      | `string` | Number of data publishers contributing      | `9`                  |
-| `bestBidPrice`        | `string` | Highest bid price across all publishers     | `"1006800000000"`    |
-| `bestAskPrice`        | `string` | Lowest ask price across all publishers      | `"1007000000000"`    |
-| `fundingRate`         | `string` | Current funding rate for perpetual futures  | `"125000"`           |
-| `fundingTimestamp`    | `string` | Timestamp of last funding rate update       | `"1730986152000000"` |
-| `fundingRateInterval` | `string` | Funding rate update interval (microseconds) | `"28800000000"`      |
 
 <Callout type="warning">
   **Important**: Price values are in mantissa format. To get the actual price,
@@ -123,11 +104,10 @@ Number of data publishers contributing to this price feed
 - **Availability**: Always included when any price properties are present
 - **Algorithm**: Count of publishers whose data passed validation and quality checks
 - **Invariants**: Always positive for valid price feeds
-- **Business Value**: Higher count indicates more robust price discovery and reduced manipulation risk
 
 #### Decimal Exponent - `exponent`
 
-Power of 10 to apply for decimal representation
+Decimal exponent for price conversion
 
 - **Type**: `i16`
 - **Availability**: Always included when price properties are present
@@ -156,7 +136,6 @@ Highest bid price across all contributing publishers
 - **Availability**: Only included if requested in subscription properties
 - **Algorithm**: Maximum bid price from all publishers with active order book data
 - **Invariants**: Non-zero when present, typically ≤ current price
-- **Business Value**: Essential for market makers and algorithmic trading strategies
 
 #### Lowest Market Ask - `best_ask_price`
 
@@ -166,7 +145,6 @@ Lowest ask price across all contributing publishers
 - **Availability**: Only included if requested in subscription properties
 - **Algorithm**: Minimum ask price from all publishers with active order book data
 - **Invariants**: Non-zero when present, typically ≥ current price
-- **Business Value**: Critical for understanding market liquidity and bid-ask spreads
 
 ### Derivatives Properties (FundingRate Feed Type Only)
 
@@ -178,7 +156,6 @@ Current funding rate for perpetual futures contracts
 - **Availability**: Only for FeedKind::FundingRate feeds, only if requested in subscription
 - **Algorithm**: Interest rate differential: `(PerpetualsPrice - IndexPrice) / IndexPrice`
 - **Invariants**: Can be positive (longs pay shorts) or negative (shorts pay longs)
-- **Business Value**: Essential for perpetual futures trading and funding arbitrage
 
 #### Funding Payment Timestamp - `funding_timestamp`
 
@@ -187,7 +164,6 @@ Timestamp when funding rate was last calculated or applied
 - **Type**: `optional u64` (microseconds)
 - **Availability**: Only for FeedKind::FundingRate feeds, only if requested in subscription
 - **Invariants**: Valid Unix timestamp in microseconds when present
-- **Business Value**: Critical for funding payment timing and schedule management
 
 #### Funding Update Interval - `funding_interval`
 
@@ -197,9 +173,8 @@ Duration between consecutive funding rate calculations
 - **Availability**: Only for FeedKind::FundingRate feeds, only if requested in subscription
 - **Invariants**: Positive value when present
 - **Typical Values**: 28,800,000,000 microseconds (8 hours) for major exchanges
-- **Business Value**: Used for funding cost calculations and payment scheduling
 
-## Available Properties by Use Case
+## Available Properties by Feed Types
 
 Based on the [API documentation](https://pyth-lazer.dourolabs.app/docs), you can request specific properties when subscribing:
 
@@ -236,12 +211,6 @@ Lazer offers multiple delivery channels to match your latency and frequency requ
 | `fixed_rate@1ms`   | Updates every 1 millisecond             | Ultra-low latency applications              |
 | `fixed_rate@50ms`  | Updates every 50 milliseconds           | Low-latency trading systems                 |
 | `fixed_rate@200ms` | Updates every 200 milliseconds          | Standard trading applications               |
-
-<Callout type="default">
-  **Channel Selection**: Most production applications use `real_time` for
-  maximum freshness. Fixed-rate channels provide predictable update timing for
-  applications requiring consistent intervals.
-</Callout>
 
 ## Signature Schemes and Binary Formats
 
