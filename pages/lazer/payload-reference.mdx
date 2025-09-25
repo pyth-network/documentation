@@ -253,12 +253,7 @@ Lazer provides multiple cryptographic formats to support different blockchain ec
   #### Unsigned Format (`leUnsigned`)
 
 - **Signature**: None (raw payload)
-- **Use Cases**: Testing, development, trusted environments
-
-        <Callout type="warning">
-        **Security**: Never use in production
-
-      </Callout>
+- **Use Cases**: Off-chain use, testing and development
 
 </div>
 
@@ -266,6 +261,5 @@ Lazer provides multiple cryptographic formats to support different blockchain ec
 
 <Callout type="info">
   **How to Choose**: Use `evm` for Ethereum-compatible chains, `solana` for
-  Solana, `leEcdsa` for custom implementations, and `leUnsigned` only for
-  testing.
+  Solana, `leEcdsa` for custom implementations, and `leUnsigned` for off-chain.
 </Callout>
