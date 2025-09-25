@@ -56,6 +56,27 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "STAPT/APT.RR",
+    "id": "2f218a73fb0c46ae8f9f7bb70ffbb232dd0dd65169b6401bfdc9bfb340a66b1a",
+    "time_difference": 15,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
+    "alias": "AMI/USD",
+    "id": "9074ab34363ea1aada15db169f4678c10117e48f1ad1a8ba9f69c2a939c3a377",
+    "time_difference": 15,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
+    "alias": "SUSDE/USDE.RR",
+    "id": "271c64ce459937abf721d42552035713b6c58f80eeceab716a624607fda4b10f",
+    "time_difference": 15,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "CETUS/USD",
     "id": "e5b274b2611143df055d6e7cd8d93fe1961716bcd4dca1cad87a83bc1e78c1ef",
     "time_difference": 15,
