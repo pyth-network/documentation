@@ -43,7 +43,9 @@ const config: DocsThemeConfig = {
         className="flex items-center justify-center gap-2 text-white hover:text-white/90 transition-colors"
       >
         <span className="text-lg">⚡</span>
-        <span className="font-semibold">Now get 1ms latency on Pyth Pro!</span>
+        <span className="font-semibold">
+          Trade in real time: Pyth Pro introduces 1 ms updates
+        </span>
         <span className="text-sm opacity-90">→</span>
       </a>
     ),
