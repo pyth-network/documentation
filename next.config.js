@@ -121,6 +121,20 @@ const permanentRedirectArray = [
   ],
   ["/benchmarks/api-instances", "/price-feeds/api-reference/"],
   ["/benchmarks/rate-limits", "/price-feeds/rate-limits/"],
+
+  // Lazer (top-level) to Pyth Pro Redirects - MUST come before general price-feeds redirects
+  ["/lazer", "/price-feeds/pro"],
+  ["/lazer/:path*", "/price-feeds/pro/:path*"],
+
+  // Explicitly map legacy lazer paths under /price-feeds to Pro - MUST come before general price-feeds redirects
+  ["/price-feeds/lazer", "/price-feeds/pro"],
+  ["/price-feeds/lazer/:path*", "/price-feeds/pro/:path*"],
+
+  ["/price-feeds/:path((?!core|pro).*?)", "/price-feeds/core/:path*"],
+
+  // // Price Feeds to Core Redirects - general catch-all (comes last)
+  // ["/price-feeds", "/price-feeds/core"],
+  // ["/price-feeds/:path*", "/price-feeds/core/:path*"],
 ];
 
 /** @type {import('next').NextConfig} */
