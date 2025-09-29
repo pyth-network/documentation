@@ -42,6 +42,13 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "USD1/USD",
+    "id": "0a2425d43486780990d8b63543029e20556be51fd756cca584212f4d539611d4",
+    "time_difference": 15,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "CAKE/USD",
     "id": "2356af9529a1064d41e32d617e2ce1dca5733afa901daba9e2b68dee5d53ecf9",
     "time_difference": 15,
