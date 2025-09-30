@@ -93,7 +93,7 @@ Main aggregate price calculated from all contributing publishers
 
 - **Type**: `optional non-zero i64` (mantissa representation)
 - **Availability**: Only included if requested in subscription properties
-- **Algorithm**: Robust statistical aggregation using median-based methods with outlier detection
+- **Algorithm**: Refer to [price aggregation](../../price-feeds/how-pyth-works/price-aggregation) for the current algorithm
 - **Invariants**: Non-zero when present (null values filtered out)
 
 #### Data Publisher Count - `publisher_count`
@@ -102,7 +102,6 @@ Number of data publishers contributing to this price feed
 
 - **Type**: `u16`
 - **Availability**: Always included when any price properties are present
-- **Algorithm**: Count of publishers whose data passed validation and quality checks
 - **Invariants**: Always positive for valid price feeds
 
 #### Decimal Exponent - `exponent`
@@ -111,7 +110,6 @@ Decimal exponent for price conversion
 
 - **Type**: `i16`
 - **Availability**: Always included when price properties are present
-- **Algorithm**: Determines decimal placement for all price values in the feed
 - **Invariants**: Typically negative (e.g., -8 for USD prices, -18 for token prices)
 - **Usage**: Convert mantissa to actual price: `actual_price = mantissa × 10^exponent`
 - **Example**: With exponent `-8`, mantissa `1006900000000` becomes `$10,069.00`
@@ -122,7 +120,7 @@ Confidence interval representing price uncertainty
 
 - **Type**: `optional i64` (mantissa representation)
 - **Availability**: Only included if requested in subscription properties
-- **Algorithm**: Statistical measure derived from publisher price variance and market volatility
+- **Algorithm**: Refer to [price aggregation](../../price-feeds/how-pyth-works/price-aggregation) for the current algorithm
 - **Invariants**: Positive when present
 - **Usage**: Risk management and price quality assessment
 
@@ -134,7 +132,7 @@ Highest bid price across all contributing publishers
 
 - **Type**: `optional non-zero i64` (mantissa representation)
 - **Availability**: Only included if requested in subscription properties
-- **Algorithm**: Maximum bid price from all publishers with active order book data
+- **Algorithm**: Refer to [price aggregation](../../price-feeds/how-pyth-works/price-aggregation) for the current algorithm
 - **Invariants**: Non-zero when present, typically ≤ current price
 
 #### Lowest Market Ask - `best_ask_price`
@@ -143,7 +141,7 @@ Lowest ask price across all contributing publishers
 
 - **Type**: `optional non-zero i64` (mantissa representation)
 - **Availability**: Only included if requested in subscription properties
-- **Algorithm**: Minimum ask price from all publishers with active order book data
+- **Algorithm**: Refer to [price aggregation](../../price-feeds/how-pyth-works/price-aggregation) for the current algorithm
 - **Invariants**: Non-zero when present, typically ≥ current price
 
 ### Derivatives Properties (FundingRate Feed Type Only)
@@ -154,7 +152,6 @@ Current funding rate for perpetual futures contracts
 
 - **Type**: `optional i64` (mantissa representation)
 - **Availability**: Only for FeedKind::FundingRate feeds, only if requested in subscription
-- **Algorithm**: Interest rate differential: `(PerpetualsPrice - IndexPrice) / IndexPrice`
 - **Invariants**: Can be positive (longs pay shorts) or negative (shorts pay longs)
 
 #### Funding Payment Timestamp - `funding_timestamp`
