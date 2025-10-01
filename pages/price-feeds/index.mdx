@@ -5,7 +5,11 @@ import {
   LightningIcon,
   MultiChainIcon,
   ShieldIcon,
+  CodeIcon,
 } from "../../components/icons/ProductIcons";
+import ContractIcon from "../../components/icons/ContractIcon";
+import SearchIcon from "../../components/icons/SearchIcon";
+import { Cards, Card } from "nextra/components";
 
 # Introduction to Pyth Price Feeds
 
@@ -14,43 +18,144 @@ Data is sourced from 120+ first-party providers including major exchanges and ma
 
 ## Key Features
 
-- **1600+ price feeds** across all major asset classes
+- **2000+ price feeds** across all major asset classes
 - **Sub-second latency** with high-frequency updates
 - **Cryptographically signed** and verifiable on-chain
 - **Multi-chain support** including EVM, Cosmos, Solana, Aptos, and more
 
 ## Our Products
 
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
+{/* Real-Time Price Feeds - Two Column Layout */}
+
+<div className="mb-12 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+    {/* Left Column - Product Information */}
+    <div className="p-6 border-r border-gray-200 dark:border-gray-700">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+          Core
+        </div>
+        <div className="text-gray-600 dark:text-gray-400"><BarChartIcon /></div>
+      </div>
+
+      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 leading-tight">
+        Real-Time Price Feeds
+      </h3>
+
+      <p className="text-gray-700 dark:text-gray-300 text-sm mb-6 leading-relaxed">
+        Real-time, high-fidelity market data for smart contracts.
+      </p>
+
+      {/* Features */}
+      <div className="space-y-3 mb-6">
+        <div className="flex items-center gap-3">
+          <div className="text-blue-600 dark:text-blue-400 text-sm flex-shrink-0">
+            <ClockIcon />
+          </div>
+          <span className="text-gray-600 dark:text-gray-400 text-sm font-medium">
+            Real-time price feeds
+          </span>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="text-blue-600 dark:text-blue-400 text-sm flex-shrink-0">
+            <BarChartIcon />
+          </div>
+          <span className="text-gray-600 dark:text-gray-400 text-sm font-medium">
+            High-frequency data
+          </span>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="text-blue-600 dark:text-blue-400 text-sm flex-shrink-0">
+            <MultiChainIcon />
+          </div>
+          <span className="text-gray-600 dark:text-gray-400 text-sm font-medium">
+            Multi-chain support
+          </span>
+        </div>
+      </div>
+
+      <div className="flex">
+        <a
+          href="./price-feeds/use-real-time-data"
+          className="inline-flex items-center gap-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-sm font-semibold"
+        >
+          Explore Price Feeds
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    {/* Right Column - Integration Methods */}
+    <div className="p-6 bg-gray-50 dark:bg-gray-900">
+      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Integration Methods</h4>
+      <div className="space-y-6">
+        {/* Pull Architecture */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            <h5 className="font-medium text-gray-900 dark:text-white">Pull Architecture</h5>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400 ml-5">
+            Update prices on-demand, permissionlessly every 400ms.
+          </p>
+          <div className="ml-5">
+            <a
+              href="./price-feeds/use-real-time-data"
+              className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors text-sm font-medium"
+            >
+              Integrate Pull Method
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        {/* Push Architecture */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+            <h5 className="font-medium text-gray-900 dark:text-white">Push Architecture</h5>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400 ml-5">
+            Pyth Data Association sponsored updates to make prices available directly from smart contracts.
+          </p>
+          <div className="ml-5">
+            <a
+              href="./price-feeds/pushed-feeds"
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors text-sm font-medium"
+            >
+              Explore Push Feeds
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{/* Other Products Grid */}
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
   <ProductCard
-    badge="Core"
-    icon={<BarChartIcon />}
-    title="Real-Time Price Feeds"
-    description="Real-time, high-fidelity market data for smart contracts."
+    badge="Benchmarks"
+    icon={<ClockIcon />}
+    title="Historical Data"
+    description="Access to historical price data for settlement and backtesting."
     features={[
-      { icon: <ClockIcon />, text: "Real-time price feeds" },
-      { icon: <BarChartIcon />, text: "High-frequency data" },
-      { icon: <MultiChainIcon />, text: "Multi-chain support" }
+      { icon: <BarChartIcon />, text: "Signed data" },
+      { icon: <ShieldIcon />, text: "Verifiable prices" },
+      { icon: <ClockIcon />, text: "Time-stamped prices" },
     ]}
-    ctaText="Explore Price Feeds"
-    href="./price-feeds/use-real-time-data"
+    ctaText="Access Historical Data"
+    href="./price-feeds/use-historic-price-data"
   />
-
-{" "}
-
-<ProductCard
-  badge="Benchmarks"
-  icon={<ClockIcon />}
-  title="Historical Data"
-  description="Access to historical price data for settlement and backtesting."
-  features={[
-    { icon: <BarChartIcon />, text: "Signed data" },
-    { icon: <ShieldIcon />, text: "Verifiable prices" },
-    { icon: <ClockIcon />, text: "Time-stamped prices" },
-  ]}
-  ctaText="Access Historical Data"
-  href="./price-feeds/use-historic-price-data"
-/>
 
   <ProductCard
     badge="Lazer"
@@ -69,6 +174,30 @@ Data is sourced from 120+ first-party providers including major exchanges and ma
 
 ## Quick Start
 
-Follow the [Getting Started](price-feeds/getting-started.mdx) guide to integrate Pyth Price Feeds into your application.
-
-For contract addresses and deployment details, see [Contract Addresses](./price-feeds/contract-addresses).
+<Cards>
+  <Card
+    icon={<ClockIcon />}
+    title="Getting Started"
+    href="./price-feeds/getting-started"
+  />
+  <Card
+    icon={<ContractIcon />}
+    title="Contract Addresses"
+    href="./price-feeds/contract-addresses"
+  />
+  <Card
+    icon={<LightningIcon />}
+    title="Push Feeds"
+    href="./price-feeds/pushed-feeds"
+  />
+  <Card
+    icon={<CodeIcon />}
+    title="API Reference"
+    href="./price-feeds/api-reference"
+  />
+  <Card
+    icon={<SearchIcon />}
+    title="Price Feed IDs"
+    href="./price-feeds/price-feed-ids"
+  />
+</Cards>
