@@ -23,7 +23,7 @@
     "type": "separator"
   },
 
-  "use-real-time-data": "Use Real-Time Price Data",
+  "use-real-time-data": "Pull Real-Time Price Data",
   "use-historic-price-data": "Use Historic Price Data",
   "fetch-price-updates": "Fetch Price Updates",
   "schedule-price-updates": "Schedule Price Updates",

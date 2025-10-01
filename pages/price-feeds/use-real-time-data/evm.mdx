@@ -1,10 +1,16 @@
----
-description: Consume Pyth Network prices in EVM applications
----
+import { Callout } from "nextra/components";
 
-# How to Use Real-Time Data in EVM Contracts
+# How to Pull Real-Time Data in EVM Contracts
 
-This guide explains how to use real-time Pyth data in EVM contracts. For an interactive playground to explore the methods supported by the Pyth contract, see the [EVM API reference](../api-reference/evm/).
+This guide explains how to **Pull real-time Pyth** data in EVM contracts. For an interactive playground to explore the methods supported by the Pyth contract, see the [EVM API reference](../api-reference/evm/).
+
+<Callout type="info" emoji="ℹ️">
+  The following guides **show how to pull real-time** price data. If you want to
+  read prices from smart contracts, see [Push Feeds](../pushed-feeds). If you
+  want to use pushed feeds, one can just the following code from the smart
+  contract to read the price: ```solidity copy PythStructs.Price memory price =
+  pyth.getPriceNoOlderThan(priceFeedId, 60); ```
+</Callout>
 
 ## Install Pyth SDK
 
