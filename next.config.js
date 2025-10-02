@@ -123,6 +123,11 @@ const permanentRedirectArray = [
   ["/benchmarks/rate-limits", "/price-feeds/rate-limits/"],
 
   ["/price-feeds/sponsored-feeds", "/price-feeds/pushed-feeds"],
+
+  [
+    "/price-feeds/use-real-time-data/:path*",
+    "/price-feeds/use-real-time-data/pull-integration/:path*",
+  ],
 ];
 
 /** @type {import('next').NextConfig} */
