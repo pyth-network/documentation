@@ -1,5 +1,4 @@
 {
   "pull-integration": "using Pull Integration",
-  "push-integration": "using Push Integration",
-  "off-chain": "in Off-Chain Applications"
+  "push-integration": "using Push Integration"
 }
