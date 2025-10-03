@@ -16,6 +16,14 @@ A Lazer payload is a real-time data update containing financial market informati
 
 ## Stream Response Structure
 
+<Callout type="info">
+  **Customizable Payload**: The payload structure is customizable based on the
+  properties you request in your subscription. Only the fields you specify will
+  be included in the response. See [Available Properties by Feed
+  Types](#available-properties-by-feed-types) for details on what you can
+  request.
+</Callout>
+
 When you receive a `StreamUpdated` message from Lazer, it contains the following structure:
 
 ### Top-Level Response Fields
@@ -23,7 +31,7 @@ When you receive a `StreamUpdated` message from Lazer, it contains the following
 | Field            | Type            | Description                                            |
 | ---------------- | --------------- | ------------------------------------------------------ |
 | `type`           | `string`        | Always `"streamUpdated"` for price updates             |
-| `subscriptionId` | `number`        | Your subscription identifier                           |
+| `subscriptionId` | `number`        | Your subscription identifier, provided by the user     |
 | `parsed`         | `ParsedPayload` | Human-readable price data (when `parsed: true`)        |
 | `evm`            | `BinaryData`    | EVM-compatible binary payload (when requested)         |
 | `solana`         | `BinaryData`    | Solana-compatible binary payload (when requested)      |
@@ -32,18 +40,18 @@ When you receive a `StreamUpdated` message from Lazer, it contains the following
 
 ### Parsed Payload Structure
 
-The `parsed` object contains human-readable price data:
+The `parsed` object contains human-readable price data (if `parsed` is requested):
 
 | Field         | Type               | Description                                                |
 | ------------- | ------------------ | ---------------------------------------------------------- |
 | `timestampUs` | `string`           | Unix timestamp in microseconds when the data was generated |
 | `priceFeeds`  | `Array<PriceFeed>` | Array of price feed data objects                           |
 
-## How Does a Price Feed Look?
+## What does a price feed update look like?
 
 Each price feed in the `priceFeeds` array represents real-time market data for a specific trading pair (e.g., BTC/USD, ETH/USD). Think of a price feed as a comprehensive snapshot of market conditions for that asset.
 
-Here's what a typical price feed looks like in a Lazer response:
+Here's what a typical StreamUpdated response that contains a PriceFeed looks like::
 
 ```json
 {
@@ -60,6 +68,15 @@ Here's what a typical price feed looks like in a Lazer response:
         "publisherCount": 9,
         "exponent": -8,
         "confidence": 1373488286
+      },
+      {
+        "priceFeedId": 2,
+        "price": "448480908040",
+        "bestBidPrice": "448475995765",
+        "bestAskPrice": "448508987987",
+        "publisherCount": 12,
+        "exponent": -8,
+        "confidence": 106965585
       }
     ]
   },
@@ -71,9 +88,10 @@ Here's what a typical price feed looks like in a Lazer response:
 ```
 
 <Callout type="warning">
-  **Important**: Price values are in mantissa format. To get the actual price,
-  use: `actual_price = mantissa × 10^exponent`. For example: `1006900000000 ×
-  10^(-8) = $10,069.00`
+  **Important**: The price is stored in two parts: an integer mantissa value
+  (the price field) and a power-of-ten exponent. The actual decimal
+  representation of the price is given by: `decimal_price = price ×
+  10^exponent`. For example: `1006900000000 × 10^(-8) = $10,069.00`
 </Callout>
 
 ## Property Specifications
@@ -193,21 +211,17 @@ Based on the [API documentation](https://pyth-lazer.dourolabs.app/docs), you can
 - `fundingTimestamp` - Most recent funding rate timestamp
 - `fundingRateInterval` - Duration between funding updates
 
-<Callout type="info">
-  **Subscription Flexibility**: You only receive the properties you request in
-  your subscription, optimizing bandwidth and processing.
-</Callout>
-
 ## Subscription Channels
 
 Lazer offers multiple delivery channels to match your latency and frequency requirements:
 
-| Channel            | Description                             | Use Cases                                   |
-| ------------------ | --------------------------------------- | ------------------------------------------- |
-| `real_time`        | Updates sent immediately when available | High-frequency trading, real-time analytics |
-| `fixed_rate@1ms`   | Updates every 1 millisecond             | Ultra-low latency applications              |
-| `fixed_rate@50ms`  | Updates every 50 milliseconds           | Low-latency trading systems                 |
-| `fixed_rate@200ms` | Updates every 200 milliseconds          | Standard trading applications               |
+| Channel            | Description                                                                                    | Use Cases                                   |
+| ------------------ | ---------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `real_time`        | Updates sent immediately when new price is available (no faster than 1ms, no slower than 50ms) | High-frequency trading, real-time analytics |
+| `fixed_rate@1ms`   | Updates every 1 millisecond                                                                    | Ultra-low latency applications              |
+| `fixed_rate@50ms`  | Updates every 50 milliseconds                                                                  | Low-latency trading systems                 |
+| `fixed_rate@200ms` | Updates every 200 milliseconds                                                                 | Standard trading applications               |
+| `fixed_rate@1s`    | Updates every 1 second                                                                         | General applications, dashboards            |
 
 ## Signature Schemes and Binary Formats
 
@@ -257,6 +271,10 @@ Lazer provides multiple cryptographic formats to support different blockchain ec
 </div>
 
 <Callout type="info">
-  **How to Choose**: Use `evm` for Ethereum-compatible chains, `solana` for
-  Solana, `leEcdsa` for custom implementations, and `leUnsigned` for off-chain.
+  **How to Choose**: Select the optimal signing algorithm for your use case.
+  These formats are not blockchain-specific - for example, the `solana` format
+  (Ed25519) has been used on non-SVM blockchains when Ed25519 was the most
+  efficient algorithm for that specific chain. Choose `evm` for secp256k1 ECDSA,
+  `solana` for Ed25519, `leEcdsa` for little-endian secp256k1, and `leUnsigned`
+  for off-chain use.
 </Callout>
