@@ -89,9 +89,10 @@ Here's what a typical StreamUpdated response that contains a PriceFeed looks lik
 
 <Callout type="warning">
   **Important**: The price is stored in two parts: an integer mantissa value
-  (the price field) and a power-of-ten exponent. The actual decimal
-  representation of the price is given by: `decimal_price = price ×
-  10^exponent`. For example: `1006900000000 × 10^(-8) = $10,069.00`
+  (the `price` field) and a power-of-ten `exponent`.
+  <br /> The actual decimal representation of the price is given by: `decimal_price
+  = price × 10^exponent`.
+  <br /> For example: `1006900000000 × 10^(-8) = $10,069.00`
 </Callout>
 
 ## Property Specifications
