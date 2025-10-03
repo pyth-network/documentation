@@ -25,6 +25,7 @@
     "title": "Reference Material",
     "type": "separator"
   },
+  "payload-reference": "Payload Reference",
   "price-feed-ids": "Price Feed IDs",
 
   "websocket-api-reference": {
