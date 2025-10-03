@@ -14,13 +14,14 @@ If your blockchain is not supported, please [ask in the dev-forum](https://dev-f
 
 **Pull integration** is the default choice for most applications. You manually pull the latest price data in your smart contract when needed.
 
-**Push integration** is for applications that don't want to manually update prices in every transaction and prefer to rely on [Price Pushers](/price-feeds/schedule-price-updates) or [push-feeds](/price-feeds/push-feeds) that automatically maintain up-to-date prices on-chain.
+**Push integration** is for applications that don't want to manually pull prices in every transaction and prefer to rely on [Price Pushers](/price-feeds/schedule-price-updates) or [Push-Feeds](/price-feeds/push-feeds) that automatically maintain up-to-date prices on-chain.
 
 <Callout type="info">
   Pyth is fundamentally a pull oracle, and all feeds are available through both
-  integration methods. If you don't see specific feeds in push-feeds, you can
-  run a price pusher yourself or ask the team by filling out [this
-  form](https://tally.so/r/nGz2jj).
+  integration methods. If you want to use push integration, you can push the
+  prices for the feeds you need. You can run a [Price
+  Pusher](/price-feeds/schedule-price-updates) or ask the team to add the feeds
+  you need by filling out [this form](https://tally.so/r/nGz2jj).
 </Callout>
 
 ## Pull Integration
