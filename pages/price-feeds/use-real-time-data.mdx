@@ -3,20 +3,33 @@ import { Callout } from "nextra/components";
 # How to Use Real-Time Price Data
 
 The following guides demonstrate how to consume Pyth real-time prices on various blockchains.
-These guides are intended for developers building on-chain applications that need latest price data, i.e., the price data must
+These guides are intended for developers building on-chain applications that need the latest price data, i.e., the price data must
 be on the blockchain.
 
 Pyth price feeds are available on 100+ blockchain ecosystems.
 Check out the complete list of chains and implementation contract addresses at [Contract Addresses](contract-addresses).
-
 If your blockchain is not supported, please [ask in the dev-forum](https://dev-forum.pyth.network/latest).
+
+## Choosing Your Integration Method
+
+**Pull integration** is the default choice for most applications. You manually pull the latest price data in your smart contract when needed.
+
+**Push integration** is for applications that don't want to manually update prices in every transaction and prefer to rely on [Price Pushers](/price-feeds/schedule-price-updates) or [push-feeds](/price-feeds/push-feeds) that automatically maintain up-to-date prices on-chain.
+
+<Callout type="info">
+  Pyth is fundamentally a pull oracle, and all feeds are available through both
+  integration methods. If you don't see specific feeds in push-feeds, you can
+  run a price pusher yourself or ask the team by filling out [this
+  form](https://tally.so/r/nGz2jj).
+</Callout>
 
 ## Pull Integration
 
-Consult the relevant ecosystem guide to get started using Pyth **Pull Integration:**
+Consult the relevant ecosystem guide to get started using **pull integration**:
 
 - [EVM](use-real-time-data/pull-integration/evm)
 - [Solana](use-real-time-data/pull-integration/solana)
+- [Starknet](use-real-time-data/pull-integration/starknet)
 - [Aptos](use-real-time-data/pull-integration/aptos.md)
 - [CosmWasm](use-real-time-data/pull-integration/cosmwasm.md)
 - [Sui](use-real-time-data/pull-integration/sui.md)
@@ -29,7 +42,7 @@ To consume real-time price data using **push** integration, check out the follow
 
 - [Using Push Integration](use-real-time-data/push-integration)
 
-This guide will walk you through the steps to use real-time price data using Push Integration in every ecosystem.
+This guide will walk you through the steps to use real-time price data using push integration in every ecosystem.
 
 ## Off-Chain Applications
 
