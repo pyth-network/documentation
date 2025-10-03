@@ -17,7 +17,7 @@ To use real-time price data using push feeds, developers can use the following c
 
 ### EVM
 
-Developers building on EVM chains can use Push Feeds to consume real-time price data by reading the price from the Pyth Oracle smart contract.
+Developers building on EVM chains can use push feeds to consume real-time price data by reading the price from the Pyth oracle smart contract.
 
 ```solidity copy
 PythStructs.Price memory price = pyth.getPriceNoOlderThan(priceFeedId, 60);
@@ -61,12 +61,12 @@ contract SomeContract {
 
 ### SVM
 
-Developers building on SVM chains can use Price Feed Accounts to consume real-time price data.
+Developers building on SVM chains can use Price Feed Accounts to integrate Pyth using push integration.
 The [SVM guide](../use-real-time-data/solana#price-feed-accounts) explains in detail how to integrate Pyth using Price Feed Accounts.
 
 ### Aptos
 
-Developers building on Aptos can use Push Feeds to consume real-time price data by reading the price from the Pyth Oracle smart contract on Aptos.
+Developers building on Aptos can use push feeds to consume real-time price data by reading the price from the Pyth Oracle smart contract on Aptos.
 
 ```rust copy
 let btc_price_identifier = x"e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43";
