@@ -122,11 +122,11 @@ const permanentRedirectArray = [
   ["/benchmarks/api-instances", "/price-feeds/api-reference/"],
   ["/benchmarks/rate-limits", "/price-feeds/rate-limits/"],
 
-  ["/price-feeds/sponsored-feeds", "/price-feeds/pushed-feeds"],
+  ["/price-feeds/sponsored-feeds", "/price-feeds/push-feeds"],
 
   [
-    "/price-feeds/use-real-time-data/:path*",
-    "/price-feeds/use-real-time-data/pull-integration/:path*",
+    "/price-feeds/use-real-time-data/:path((?!pull-integration(?:/|$)).*)",
+    "/price-feeds/use-real-time-data/pull-integration/:path",
   ],
 ];
 
