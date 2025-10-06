@@ -86,7 +86,11 @@ const permanentRedirectArray = [
   ["/pythnet-price-feeds/hermes", "/price-feeds/how-pyth-works/hermes"],
   [
     "/documentation/pythnet-price-feeds/scheduler",
+    "/price-feeds/schedule-price-updates/using-price-pusher",
+  ],
+  [
     "/price-feeds/schedule-price-updates/using-scheduler",
+    "/price-feeds/schedule-price-updates/using-price-pusher",
   ],
   [
     "/documentation/pythnet-price-feeds/off-chain",

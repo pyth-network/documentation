@@ -8,12 +8,12 @@ Pyth provides a wrapper which implements Morpho's `IOracle` interface called [`p
 
 There are two steps to use Pyth price feeds for Morpho markets:
 
-1. Run the price pusher or scheduler.
+1. Run the [Price Pusher](https://github.com/pyth-network/pyth-crosschain/tree/main/apps/price_pusher).
 2. Deploy the [`MorphoPythOracle.sol`](https://github.com/pyth-network/pyth-morpho-wrapper/blob/main/src/morpho-pyth/MorphoPythOracle.sol) contract for the respective price feed pair.
 
 <Steps>
 
-### Run the price pusher or scheduler
+### Run the Price Pusher
 
 As a pull oracle, Pyth's users are typically responsible for updating the state of on-chain feeds.
 Please see [What is a Pull Oracle?](/price-feeds/pull-updates) to learn more about pull updates.
@@ -21,11 +21,11 @@ Please see [What is a Pull Oracle?](/price-feeds/pull-updates) to learn more abo
 The Pyth Data Association sponsors regular on-chain updates for some price feeds.
 See [Sponsored Feeds](./sponsored-feeds.mdx) for the current list of feeds and their update parameters.
 
-If you don't find relevant price IDs in the [Sponsored Feeds](./sponsored-feeds.mdx) list, please contact the Pyth team [here](https://tally.so/r/nGz2jj) to run the scheduler/price pusher for the price feed you need.
+If you don't find relevant price IDs in the [Sponsored Feeds](./sponsored-feeds.mdx) list, please contact the Pyth team [here](https://tally.so/r/nGz2jj) to run the Price Pusher for the price feed you need.
 
 ### Deploy the Morpho oracle contract
 
-After running the price pusher or scheduler, you can deploy the Morpho oracle contract using the MorphoPythOracle.sol contract.
+After running the [Price Pusher](https://github.com/pyth-network/pyth-crosschain/tree/main/apps/price_pusher), you can deploy the Morpho oracle contract using the MorphoPythOracle.sol contract.
 
 To deploy a MorphoPythOracle on an EVM chain, we highly recommend using the factory MorphoPythOracleFactory. Please refer to the factory addresses [here](https://github.com/pyth-network/pyth-morpho-wrapper?tab=readme-ov-file#factory-addresses).
 
