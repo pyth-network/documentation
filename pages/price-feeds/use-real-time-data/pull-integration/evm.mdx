@@ -2,10 +2,12 @@ import { Callout } from "nextra/components";
 
 # How to Use Real-Time Data in EVM Contracts
 
-This guide explains how to use real-time Pyth data in EVM contracts. For an interactive playground to explore the methods supported by the Pyth contract, see the [EVM API reference](../api-reference/evm/).
+This guide explains how to use real-time Pyth data in EVM contracts using the pull integration.
+
+For an interactive playground to explore the methods supported by the Pyth contract, see the [EVM API reference](../api-reference/evm/).
 
 <Callout type="info" emoji="ℹ️">
-  If you want to use real-time price data using push integration instead, you can use the following code snippet:
+  If you want to use real-time price data using the push integration instead, you can use the following code snippet:
   ```solidity copy
   PythStructs.Price memory price = pyth.getPriceNoOlderThan(priceFeedId, 60);
   ```
