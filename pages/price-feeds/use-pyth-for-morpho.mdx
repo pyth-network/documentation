@@ -8,15 +8,17 @@ Pyth provides a wrapper which implements Morpho's `IOracle` interface called [`p
 
 There are two steps to use Pyth price feeds for Morpho markets:
 
-1. Run the [Price Pusher](https://github.com/pyth-network/pyth-crosschain/tree/main/apps/price_pusher).
+1. Schedule Price Updates.
 2. Deploy the [`MorphoPythOracle.sol`](https://github.com/pyth-network/pyth-morpho-wrapper/blob/main/src/morpho-pyth/MorphoPythOracle.sol) contract for the respective price feed pair.
 
 <Steps>
 
-### Run the Price Pusher
+### Schedule Price Updates
 
 As a pull oracle, Pyth's users are typically responsible for updating the state of on-chain feeds.
 Please see [What is a Pull Oracle?](/price-feeds/pull-updates) to learn more about pull updates.
+
+Consult [Schedule Price Updates](/price-feeds/schedule-price-updates) guide for more information.
 
 The Pyth Data Association sponsors regular on-chain updates for some price feeds.
 See [Sponsored Feeds](./sponsored-feeds.mdx) for the current list of feeds and their update parameters.
