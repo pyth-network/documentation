@@ -95,7 +95,7 @@ contract SomeContract {
 
 The code snippet above does the following things:
 
-1. Instantiate the `IPyth` interface from the Solidity SDK using the price feeds [contract address](../contract-addresses/evm).
+1. Instantiate the `IPyth` interface from the Solidity SDK using the price feeds [contract address](../../contract-addresses/evm).
 2. Select the [Price Feed IDs](../../price-feeds) for the assets you want to fetch prices for. Price feeds come in two varieties, Stable and Beta. You should select Stable feed ids
 3. Call `IPyth.getUpdateFee` to calculate the fee charged by Pyth to update the price.
 4. Call `IPyth.updatePriceFeeds` to update the price, paying the fee calculated in the previous step.
