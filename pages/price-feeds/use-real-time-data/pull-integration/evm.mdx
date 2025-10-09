@@ -4,14 +4,14 @@ import { Callout } from "nextra/components";
 
 This guide explains how to use real-time Pyth data in EVM contracts using the pull integration.
 
-For an interactive playground to explore the methods supported by the Pyth contract, see the [EVM API reference](../api-reference/evm/).
+For an interactive playground to explore the methods supported by the Pyth contract, see the [EVM API reference](../../api-reference).
 
 <Callout type="info" emoji="ℹ️">
   If you want to use real-time price data using the push integration instead, you can use the following code snippet:
   ```solidity copy
   PythStructs.Price memory price = pyth.getPriceNoOlderThan(priceFeedId, 60);
   ```
-Developers only need to pass the price feed ID to the above method from the [Push Feeds list](../push-feeds).
+Developers only need to pass the price feed ID to the above method from the [Push Feeds list](../../push-feeds/evm).
 
 For complete example, refer to the [Push Integration guide](../push-integration).
 
@@ -95,11 +95,11 @@ contract SomeContract {
 
 The code snippet above does the following things:
 
-1. Instantiate the `IPyth` interface from the Solidity SDK using the price feeds [contract address](../contract-addresses/evm).
-2. Select the [Price Feed IDs](../price-feeds.mdx) for the assets you want to fetch prices for. Price feeds come in two varieties, Stable and Beta. You should select Stable feed ids
+1. Instantiate the `IPyth` interface from the Solidity SDK using the price feeds [contract address](../../contract-addresses/evm).
+2. Select the [Price Feed IDs](../../price-feeds) for the assets you want to fetch prices for. Price feeds come in two varieties, Stable and Beta. You should select Stable feed ids
 3. Call `IPyth.getUpdateFee` to calculate the fee charged by Pyth to update the price.
 4. Call `IPyth.updatePriceFeeds` to update the price, paying the fee calculated in the previous step.
-5. Call `IPyth.getPriceNoOlderThan` to read the current price, providing the [price feed ID](../price-feeds.mdx) that you wish to read and your acceptable staleness threshold for
+5. Call `IPyth.getPriceNoOlderThan` to read the current price, providing the [price feed ID](../../price-feeds) that you wish to read and your acceptable staleness threshold for
    the price.
 
 ## Additional Resources
@@ -108,15 +108,15 @@ You may find these additional resources helpful for developing your EVM applicat
 
 ### API Reference
 
-The [EVM API reference](../api-reference/evm/) lets you interactively explore the complete API of the Pyth contract.
+The [EVM API reference](../../api-reference) lets you interactively explore the complete API of the Pyth contract.
 
 ### Current Fees
 
-The [Current Fees](../current-fees/) page lists the current fees for each network.
+The [Current Fees](../../current-fees) page lists the current fees for each network.
 
 ### Error Codes
 
-The [EVM error codes](../error-codes/evm/) page lists the error codes that the Pyth contract may return.
+The [EVM error codes](../../error-codes/evm) page lists the error codes that the Pyth contract may return.
 
 ### Example Applications
 
