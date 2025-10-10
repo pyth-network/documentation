@@ -1,5 +1,6 @@
 {
   "hermes": "Hermes",
+  "mcp-server": "MCP Server (AI Agents)",
   "benchmarks": "Benchmarks / Historical Prices",
   "pythnet-rpc": "Pythnet RPC"
 }
