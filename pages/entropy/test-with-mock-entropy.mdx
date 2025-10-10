@@ -46,27 +46,29 @@ For Foundry projects, add this line to your `remappings.txt`:
 import "forge-std/Test.sol";
 import "@pythnetwork/entropy-sdk-solidity/MockEntropy.sol";
 import "@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol";
+
 ```
 
 ### 2. Set Up MockEntropy in Your Test
 
 ```solidity copy
 contract MyEntropyTest is Test {
-    MockEntropy public entropy;
-    MyEntropyConsumer public consumer;
-    address public provider;
+  MockEntropy public entropy;
+  MyEntropyConsumer public consumer;
+  address public provider;
 
-    function setUp() public {
-        // Use any address as the provider
-        provider = address(0x1234);
-        
-        // Deploy MockEntropy with the provider address
-        entropy = new MockEntropy(provider);
-        
-        // Deploy your consumer contract
-        consumer = new MyEntropyConsumer(address(entropy));
-    }
+  function setUp() public {
+    // Use any address as the provider
+    provider = address(0x1234);
+
+    // Deploy MockEntropy with the provider address
+    entropy = new MockEntropy(provider);
+
+    // Deploy your consumer contract
+    consumer = new MyEntropyConsumer(address(entropy));
+  }
 }
+
 ```
 
 ### 3. Request and Reveal Pattern
@@ -75,17 +77,18 @@ The basic testing pattern involves requesting a random number, then manually rev
 
 ```solidity copy
 function testBasicRandomNumber() public {
-    // Request a random number
-    uint64 sequenceNumber = consumer.requestRandomNumber();
-    
-    // Manually reveal with your chosen random value
-    bytes32 randomNumber = bytes32(uint256(42));
-    entropy.mockReveal(provider, sequenceNumber, randomNumber);
-    
-    // Verify the callback was triggered with the correct value
-    assertEq(consumer.lastRandomNumber(), randomNumber);
-    assertEq(consumer.lastSequenceNumber(), sequenceNumber);
+  // Request a random number
+  uint64 sequenceNumber = consumer.requestRandomNumber();
+
+  // Manually reveal with your chosen random value
+  bytes32 randomNumber = bytes32(uint256(42));
+  entropy.mockReveal(provider, sequenceNumber, randomNumber);
+
+  // Verify the callback was triggered with the correct value
+  assertEq(consumer.lastRandomNumber(), randomNumber);
+  assertEq(consumer.lastSequenceNumber(), sequenceNumber);
 }
+
 ```
 
 The `mockReveal()` method signature is:
@@ -108,25 +111,26 @@ Test that your contract handles asynchronous callbacks correctly by revealing re
 
 ```solidity copy
 function testOutOfOrderReveals() public {
-    // Request multiple random numbers
-    uint64 seq1 = consumer.requestRandomNumber();
-    uint64 seq2 = consumer.requestRandomNumber();
-    uint64 seq3 = consumer.requestRandomNumber();
-    
-    // Reveal in different order: 2, 3, then 1
-    bytes32 random2 = bytes32(uint256(200));
-    bytes32 random3 = bytes32(uint256(300));
-    bytes32 random1 = bytes32(uint256(100));
-    
-    entropy.mockReveal(provider, seq2, random2);
-    assertEq(consumer.lastRandomNumber(), random2);
-    
-    entropy.mockReveal(provider, seq3, random3);
-    assertEq(consumer.lastRandomNumber(), random3);
-    
-    entropy.mockReveal(provider, seq1, random1);
-    assertEq(consumer.lastRandomNumber(), random1);
+  // Request multiple random numbers
+  uint64 seq1 = consumer.requestRandomNumber();
+  uint64 seq2 = consumer.requestRandomNumber();
+  uint64 seq3 = consumer.requestRandomNumber();
+
+  // Reveal in different order: 2, 3, then 1
+  bytes32 random2 = bytes32(uint256(200));
+  bytes32 random3 = bytes32(uint256(300));
+  bytes32 random1 = bytes32(uint256(100));
+
+  entropy.mockReveal(provider, seq2, random2);
+  assertEq(consumer.lastRandomNumber(), random2);
+
+  entropy.mockReveal(provider, seq3, random3);
+  assertEq(consumer.lastRandomNumber(), random3);
+
+  entropy.mockReveal(provider, seq1, random1);
+  assertEq(consumer.lastRandomNumber(), random1);
 }
+
 ```
 
 This pattern ensures your contract correctly handles callbacks arriving in any order.
@@ -137,29 +141,30 @@ Test your contract with different providers to ensure provider-specific logic wo
 
 ```solidity copy
 function testMultipleProviders() public {
-    address provider1 = address(0x1111);
-    address provider2 = address(0x2222);
-    
-    // Request from different providers
-    uint64 seq1 = consumer.requestFromProvider(provider1, 100000);
-    uint64 seq2 = consumer.requestFromProvider(provider2, 100000);
-    
-    // Each provider has independent sequence numbers
-    assertEq(seq1, 1);
-    assertEq(seq2, 1);
-    
-    // Reveal from each provider
-    bytes32 random1 = bytes32(uint256(111));
-    bytes32 random2 = bytes32(uint256(222));
-    
-    entropy.mockReveal(provider1, seq1, random1);
-    assertEq(consumer.lastRandomNumber(), random1);
-    assertEq(consumer.lastProvider(), provider1);
-    
-    entropy.mockReveal(provider2, seq2, random2);
-    assertEq(consumer.lastRandomNumber(), random2);
-    assertEq(consumer.lastProvider(), provider2);
+  address provider1 = address(0x1111);
+  address provider2 = address(0x2222);
+
+  // Request from different providers
+  uint64 seq1 = consumer.requestFromProvider(provider1, 100000);
+  uint64 seq2 = consumer.requestFromProvider(provider2, 100000);
+
+  // Each provider has independent sequence numbers
+  assertEq(seq1, 1);
+  assertEq(seq2, 1);
+
+  // Reveal from each provider
+  bytes32 random1 = bytes32(uint256(111));
+  bytes32 random2 = bytes32(uint256(222));
+
+  entropy.mockReveal(provider1, seq1, random1);
+  assertEq(consumer.lastRandomNumber(), random1);
+  assertEq(consumer.lastProvider(), provider1);
+
+  entropy.mockReveal(provider2, seq2, random2);
+  assertEq(consumer.lastRandomNumber(), random2);
+  assertEq(consumer.lastProvider(), provider2);
 }
+
 ```
 
 ### Pattern 3: Testing Gas Limit Configuration
@@ -168,24 +173,27 @@ While MockEntropy doesn't enforce gas limits, you can verify that your contract 
 
 ```solidity copy
 function testGasLimitStorage() public {
-    uint32 customGasLimit = 200000;
-    
-    // Request with custom gas limit
-    uint64 seq = consumer.requestWithGasLimit(customGasLimit);
-    
-    // Verify gas limit was stored correctly
-    EntropyStructsV2.Request memory req = entropy.getRequestV2(provider, seq);
-    assertEq(req.gasLimit10k, 20); // 200000 / 10000 = 20
-    
-    // Reveal works normally
-    bytes32 randomNumber = bytes32(uint256(999));
-    entropy.mockReveal(provider, seq, randomNumber);
-    assertEq(consumer.lastRandomNumber(), randomNumber);
+  uint32 customGasLimit = 200000;
+
+  // Request with custom gas limit
+  uint64 seq = consumer.requestWithGasLimit(customGasLimit);
+
+  // Verify gas limit was stored correctly
+  EntropyStructsV2.Request memory req = entropy.getRequestV2(provider, seq);
+  assertEq(req.gasLimit10k, 20); // 200000 / 10000 = 20
+
+  // Reveal works normally
+  bytes32 randomNumber = bytes32(uint256(999));
+  entropy.mockReveal(provider, seq, randomNumber);
+  assertEq(consumer.lastRandomNumber(), randomNumber);
 }
+
 ```
 
 <Callout type="warning" emoji="⚠️">
-  MockEntropy does not enforce gas limits on callbacks. Make sure to test with the real Entropy contract on a testnet before deploying to production to verify your callback stays within gas limits.
+  MockEntropy does not enforce gas limits on callbacks. Make sure to test with
+  the real Entropy contract on a testnet before deploying to production to
+  verify your callback stays within gas limits.
 </Callout>
 
 ### Pattern 4: Deterministic Testing with Specific Values
@@ -194,22 +202,23 @@ Use deterministic random values to create reproducible tests and cover edge case
 
 ```solidity copy
 function testEdgeCaseRandomValues() public {
-    // Test with zero
-    uint64 seq1 = consumer.requestRandomNumber();
-    entropy.mockReveal(provider, seq1, bytes32(0));
-    assertEq(consumer.lastRandomNumber(), bytes32(0));
-    
-    // Test with maximum value
-    uint64 seq2 = consumer.requestRandomNumber();
-    entropy.mockReveal(provider, seq2, bytes32(type(uint256).max));
-    assertEq(consumer.lastRandomNumber(), bytes32(type(uint256).max));
-    
-    // Test with hash-based values
-    uint64 seq3 = consumer.requestRandomNumber();
-    bytes32 hashValue = keccak256("deterministic test value");
-    entropy.mockReveal(provider, seq3, hashValue);
-    assertEq(consumer.lastRandomNumber(), hashValue);
+  // Test with zero
+  uint64 seq1 = consumer.requestRandomNumber();
+  entropy.mockReveal(provider, seq1, bytes32(0));
+  assertEq(consumer.lastRandomNumber(), bytes32(0));
+
+  // Test with maximum value
+  uint64 seq2 = consumer.requestRandomNumber();
+  entropy.mockReveal(provider, seq2, bytes32(type(uint256).max));
+  assertEq(consumer.lastRandomNumber(), bytes32(type(uint256).max));
+
+  // Test with hash-based values
+  uint64 seq3 = consumer.requestRandomNumber();
+  bytes32 hashValue = keccak256("deterministic test value");
+  entropy.mockReveal(provider, seq3, hashValue);
+  assertEq(consumer.lastRandomNumber(), hashValue);
 }
+
 ```
 
 This approach ensures your contract handles all possible random values correctly.
@@ -235,7 +244,9 @@ You don't need to send native tokens with your requests during testing.
 MockEntropy stores gas limits but does **not** enforce them on callbacks. Your callback can use any amount of gas during testing.
 
 <Callout type="warning" emoji="⚠️">
-  Always test on a testnet with the real Entropy contract to verify your callback respects gas limits. A callback that works in MockEntropy tests may fail in production if it exceeds the gas limit.
+  Always test on a testnet with the real Entropy contract to verify your
+  callback respects gas limits. A callback that works in MockEntropy tests may
+  fail in production if it exceeds the gas limit.
 </Callout>
 
 ### 3. Synchronous Callbacks
@@ -249,6 +260,7 @@ You decide exactly what random number is revealed and when. The real Entropy con
 ### 5. Simplified Provider Setup
 
 Providers in MockEntropy are just addresses with default configuration:
+
 - Default fee: 1 wei (not enforced)
 - Default gas limit: 100,000
 - Sequence numbers start at 1
@@ -281,17 +293,18 @@ Even though MockEntropy doesn't enforce limits, measure your callback's gas usag
 
 ```solidity copy
 function testCallbackGasUsage() public {
-    uint64 seq = consumer.requestRandomNumber();
-    
-    uint256 gasBefore = gasleft();
-    entropy.mockReveal(provider, seq, bytes32(uint256(42)));
-    uint256 gasUsed = gasBefore - gasleft();
-    
-    console.log("Callback gas used:", gasUsed);
-    
-    // Ensure it's within your target gas limit
-    assertTrue(gasUsed < 100000, "Callback uses too much gas");
+  uint64 seq = consumer.requestRandomNumber();
+
+  uint256 gasBefore = gasleft();
+  entropy.mockReveal(provider, seq, bytes32(uint256(42)));
+  uint256 gasUsed = gasBefore - gasleft();
+
+  console.log("Callback gas used:", gasUsed);
+
+  // Ensure it's within your target gas limit
+  assertTrue(gasUsed < 100000, "Callback uses too much gas");
 }
+
 ```
 
 ### 3. Always Test on Testnet
