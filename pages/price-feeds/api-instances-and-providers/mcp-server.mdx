@@ -1,0 +1,361 @@
+import { Callout } from "nextra/components";
+
+# Model Context Protocol (MCP) Server
+
+The Pyth Network MCP Server provides AI agents and autonomous systems with seamless access to Pyth Network's decentralized oracle price feeds through the Model Context Protocol (MCP).
+
+## What is MCP?
+
+Model Context Protocol (MCP) is an open protocol that enables AI applications, including Large Language Models (LLMs) and autonomous agents, to securely connect to external data sources and tools. Developed by Anthropic, MCP provides a standardized way for AI systems to access real-time data, execute functions, and interact with various services.
+
+**Key Benefits of MCP:**
+- **Standardized Integration**: Single protocol for connecting AI agents to multiple data sources
+- **Real-Time Data Access**: AI systems can fetch live data during conversations or decision-making
+- **Natural Language Interface**: Use conversational queries with tools like Claude Desktop
+- **Secure & Controlled**: Fine-grained control over what data AI agents can access
+
+Learn more: [Model Context Protocol Documentation](https://modelcontextprotocol.io)
+
+## Pyth Network MCP Server
+
+The Pyth Network MCP Server is an open-source implementation that provides AI agents with access to all Pyth price feeds through a clean, optimized interface.
+
+### Features
+
+- **1,930+ Price Feeds**: Access to crypto, equities, FX, metals, and rates across 107+ blockchains
+- **Universal Price Feed IDs**: Same ID works across all supported chains
+- **Real-Time & Historical Data**: Current prices, historical data, and TWAP calculations
+- **AI-Optimized Output**: Clean, parsed JSON data without binary clutter
+- **Natural Language Queries**: Use with Claude Desktop for conversational price queries
+- **No Authentication Required**: Permissionless access to all Pyth data
+
+### Available Tools
+
+The MCP server exposes five tools for accessing Pyth data:
+
+1. **`get_price_feeds`**: Search and filter price feeds by symbol or asset type
+2. **`get_latest_price_updates`**: Fetch current prices for specific feed IDs
+3. **`get_price_updates_at_time`**: Query historical prices at specific timestamps
+4. **`get_publisher_stake_caps`**: Access publisher staking information
+5. **`get_twap_latest`**: Calculate time-weighted average prices (1-600 second windows)
+
+## Installation
+
+### Prerequisites
+
+- Python 3.10 or higher
+- `pip` or `uv` package manager
+
+### Quick Setup
+
+1. **Clone the repository:**
+```bash
+git clone https://github.com/itsomsarraf/pyth-network-mcp.git
+cd pyth-network-mcp
+```
+
+2. **Install dependencies:**
+```bash
+# Using pip
+pip install mcp httpx
+
+# Or using uv (recommended)
+uv sync
+```
+
+3. **Test the server:**
+```bash
+python3 pyth_mcp_server.py
+```
+
+## Integration Methods
+
+### With Claude Desktop
+
+Add to your Claude Desktop configuration file:
+
+**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`  
+**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "pyth-network": {
+      "command": "python3",
+      "args": ["pyth_mcp_server.py"],
+      "cwd": "/absolute/path/to/pyth-network-mcp"
+    }
+  }
+}
+```
+
+After restarting Claude Desktop, you can use natural language queries:
+
+```
+User: "What's the current Bitcoin price?"
+Claude: "BTC/USD is currently $113,395.22 with a confidence interval of ±$234.77"
+
+User: "Show me the 5-minute TWAP for Ethereum"
+Claude: "The 5-minute TWAP for ETH/USD is $4,119.23..."
+```
+
+### Programmatic Integration
+
+Use the MCP server in your Python applications:
+
+```python
+import asyncio
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+
+async def get_btc_price():
+    BTC_USD_ID = "e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43"
+    
+    server_params = StdioServerParameters(
+        command="python3",
+        args=["pyth_mcp_server.py"]
+    )
+    
+    async with stdio_client(server_params) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            
+            result = await session.call_tool(
+                "get_latest_price_updates",
+                arguments={"ids": [BTC_USD_ID], "parsed": True}
+            )
+            
+            import json
+            data = json.loads(result.content[0].text)
+            price_data = data["parsed"][0]["price"]
+            
+            # Convert to actual price
+            price = int(price_data["price"]) * (10 ** int(price_data["expo"]))
+            print(f"BTC/USD: ${price:,.2f}")
+
+asyncio.run(get_btc_price())
+```
+
+### With LangChain
+
+Integrate as a LangChain tool for AI agents:
+
+```python
+from langchain.tools import BaseTool
+from typing import Optional
+import asyncio
+
+class PythPriceTool(BaseTool):
+    name = "pyth_price"
+    description = "Get real-time cryptocurrency prices from Pyth Network"
+    
+    async def _arun(self, symbol: str) -> str:
+        # Fetch price using MCP server
+        # ... implementation ...
+        return f"{symbol} price: ${price:,.2f}"
+
+# Use with your AI agent
+tools = [PythPriceTool()]
+agent = initialize_agent(tools, llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION)
+```
+
+## Common Use Cases
+
+### AI Trading Agents
+
+Build autonomous trading bots that make decisions based on real-time Pyth price data:
+
+```python
+async def trading_strategy():
+    # Get current price
+    current_price = await get_price("BTC")
+    
+    # Get TWAP for trend analysis
+    twap_5min = await get_twap("BTC", window=300)
+    
+    if current_price > twap_5min * 1.02:
+        return "SELL"  # Price 2% above TWAP
+    elif current_price < twap_5min * 0.98:
+        return "BUY"   # Price 2% below TWAP
+    else:
+        return "HOLD"
+```
+
+### Portfolio Management
+
+Monitor and rebalance crypto portfolios automatically:
+
+```python
+async def monitor_portfolio(holdings):
+    total_value = 0
+    
+    for asset, amount in holdings.items():
+        price = await get_price(asset)
+        total_value += amount * price
+    
+    # Generate rebalancing recommendations
+    return analyze_allocations(holdings, total_value)
+```
+
+### DeFi Liquidation Monitoring
+
+Monitor DeFi positions for liquidation risk:
+
+```python
+async def check_position_health(collateral_id, debt_id, position_size):
+    collateral_price = await get_price(collateral_id)
+    debt_price = await get_price(debt_id)
+    
+    health_factor = calculate_health(
+        position_size * collateral_price,
+        debt_price
+    )
+    
+    if health_factor < 1.0:
+        await send_alert("Position at risk of liquidation!")
+```
+
+## Understanding the Data
+
+### Price Data Format
+
+All price updates include:
+
+```json
+{
+  "price": {
+    "price": "11339522000000",    // Raw price value
+    "conf": "23477142598",         // Confidence interval (±)
+    "expo": -8,                    // Decimal exponent
+    "publish_time": 1760133288     // Unix timestamp
+  }
+}
+```
+
+**Converting to Actual Price:**
+```python
+actual_price = int(price_value) * (10 ** int(expo))
+# Example: 11339522000000 × 10^-8 = 113,395.22
+```
+
+### Confidence Intervals
+
+The `conf` field represents uncertainty in the price. Lower confidence values indicate higher data quality:
+
+- **< 0.5% of price**: High quality, safe to use
+- **0.5-1% of price**: Medium quality, use with caution  
+- **> 1% of price**: Low quality, consider using TWAP
+
+### Finding Price Feed IDs
+
+Use the `get_price_feeds` tool to discover feed IDs:
+
+```python
+# Search for Bitcoin feeds
+result = await session.call_tool(
+    "get_price_feeds",
+    arguments={"query": "bitcoin", "asset_type": "crypto"}
+)
+```
+
+Or browse all feeds at: [pyth.network/price-feeds](https://pyth.network/price-feeds)
+
+**Common Feed IDs:**
+- BTC/USD: `e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43`
+- ETH/USD: `ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace`
+- SOL/USD: `ef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d`
+
+## Best Practices
+
+### Rate Limiting
+
+The MCP server uses the public Hermes API endpoint which has rate limits:
+- **Limit**: 30 requests per 10 seconds per IP
+- **Recommendation**: Implement caching for frequently accessed prices
+
+```python
+import asyncio
+from collections import deque
+import time
+
+class RateLimiter:
+    def __init__(self, max_requests=30, window=10):
+        self.max_requests = max_requests
+        self.window = window
+        self.requests = deque()
+    
+    async def acquire(self):
+        now = time.time()
+        # Remove old requests
+        while self.requests and self.requests[0] < now - self.window:
+            self.requests.popleft()
+        
+        # Wait if at limit
+        if len(self.requests) >= self.max_requests:
+            wait_time = self.requests[0] + self.window - now
+            if wait_time > 0:
+                await asyncio.sleep(wait_time)
+        
+        self.requests.append(now)
+```
+
+### Price Freshness
+
+Always verify price timestamps:
+
+```python
+import time
+
+def is_price_fresh(publish_time, max_age=60):
+    """Check if price is less than max_age seconds old."""
+    return (time.time() - publish_time) <= max_age
+```
+
+### Use TWAP for Stability
+
+For applications sensitive to short-term volatility, use TWAP:
+
+```python
+# Get 5-minute TWAP instead of spot price
+twap = await session.call_tool(
+    "get_twap_latest",
+    arguments={"window_seconds": 300, "ids": [feed_id]}
+)
+```
+
+## Production Deployment
+
+For production use, consider:
+
+1. **Self-Hosting Hermes**: Run your own Hermes instance to avoid public rate limits
+   - See: [Hermes Self-Hosting Guide](./hermes#self-hosting)
+
+2. **Node Providers**: Use professional node providers for higher reliability
+   - [Triton](https://triton.one)
+   - [P2P](https://p2p.org)
+   - [extrnode](https://extrnode.com/)
+   - [Liquify](https://www.liquify.io/)
+
+3. **Monitoring**: Implement logging and alerting for your MCP server
+
+4. **Error Handling**: Add retry logic with exponential backoff
+
+<Callout type="info">
+For production AI agents and autonomous systems, self-hosting or using a node provider is strongly recommended for maximum reliability and performance.
+</Callout>
+
+## Resources
+
+- **MCP Server Repository**: [github.com/itsomsarraf/pyth-network-mcp](https://github.com/itsomsarraf/pyth-network-mcp)
+- **MCP Protocol**: [modelcontextprotocol.io](https://modelcontextprotocol.io)
+- **Hermes API**: [hermes.pyth.network/docs](https://hermes.pyth.network/docs)
+- **Price Feeds**: [pyth.network/price-feeds](https://pyth.network/price-feeds)
+- **Author**: [@itsomsarraf](https://github.com/itsomsarraf)
+
+## Support
+
+For issues related to:
+- **MCP Server**: [GitHub Issues](https://github.com/itsomsarraf/pyth-network-mcp/issues)
+- **Pyth Network**: [Discord](https://discord.gg/pythnetwork)
+- **MCP Protocol**: [MCP Documentation](https://modelcontextprotocol.io)
+
