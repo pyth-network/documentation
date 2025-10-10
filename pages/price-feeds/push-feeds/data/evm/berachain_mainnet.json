@@ -56,6 +56,13 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "BYUSD/USD",
+    "id": "00456705ae9007ea761e95c724035a23a62fe9e444bbc744e11af7f050ab53c3",
+    "time_difference": 3600,
+    "price_deviation": 1,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "HONEY/USD.RR",
     "id": "8bb3695875f9c33594097b0e0a1daa881aa81290088f0eac3a07b700fc7612ba",
     "time_difference": 3600,
