@@ -115,6 +115,13 @@ Main aggregate price calculated from all contributing publishers
 - **Algorithm**: Refer to [price aggregation](../../price-feeds/how-pyth-works/price-aggregation) for the current algorithm
 - **Invariants**: Non-zero when present (null values filtered out)
 
+<Callout type="warning">
+  **Missing Price Field**: In some cases, the `price` field may be absent from
+  the response. This indicates that the price could not be computed at that
+  moment. When this occurs, you should either use the last valid price you
+  received or wait for a fresh update with a valid price.
+</Callout>
+
 #### Data Publisher Count - `publisher_count`
 
 Number of data publishers contributing to this price feed
