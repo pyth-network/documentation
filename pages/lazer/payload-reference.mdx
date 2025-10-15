@@ -77,6 +77,15 @@ Here's what a typical StreamUpdated response that contains a PriceFeed looks lik
         "publisherCount": 12,
         "exponent": -8,
         "confidence": 106965585
+      },
+      {
+        "priceFeedId": 3,
+        "price": null,
+        "bestBidPrice": null,
+        "bestAskPrice": null,
+        "publisherCount": 5,
+        "exponent": -8,
+        "confidence": null
       }
     ]
   },
@@ -86,6 +95,12 @@ Here's what a typical StreamUpdated response that contains a PriceFeed looks lik
   }
 }
 ```
+
+<Callout type="info">
+  In the example above, the third price feed shows `"price": null`, indicating
+  that the price could not be computed. When you encounter null values, use the
+  last valid price or wait for the next update.
+</Callout>
 
 <Callout type="warning">
   **Important**: The price is stored in two parts: an integer mantissa value
@@ -114,6 +129,15 @@ Main aggregate price calculated from all contributing publishers
 - **Availability**: Only included if requested in subscription properties
 - **Algorithm**: Refer to [price aggregation](../../price-feeds/how-pyth-works/price-aggregation) for the current algorithm
 - **Invariants**: Non-zero when present (null values filtered out)
+
+<Callout type="warning">
+  **Null Price Values**: In some cases, you may receive a `null` value for the
+  `price` field (shown as `"price": null` in JSON). This indicates that the
+  price could not be computed at that moment. When this occurs, you should
+  either use the last valid price you received or wait for a fresh update with
+  a valid price. Note that you may not always receive a price update in the
+  response if no valid price is available.
+</Callout>
 
 #### Data Publisher Count - `publisher_count`
 
