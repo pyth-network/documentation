@@ -1,44 +1,55 @@
+import { Callout } from "nextra/components";
+
 # How Pyth Lazer works
 
 Pyth Lazer is a permissioned service that provides ultra-low-latency market data to consumers.
 It aggregates data from multiple publishers and distributes it to consumers through a multi-tier architecture.
 
-## System Components
+## System Services
 
-The architecture consists of four main services that work together to provide ultra-low-latency data to consumers.
+The architecture consists of five main services that work together to provide ultra-low-latency data to consumers.
 
 ### INSERT DIAGRAM HERE
 
 ### Publishers
 
-Publishers are the entities that provide market data to Lazer. They submit price updates via authenticated WebSocket connections.
+Publishers are the entities that provide market data to Lazer. They submit updates via authenticated WebSocket connections.
 Each publisher is configured with specific permissions defining which feeds they can update.
 
 ### Relayers
 
-The Relayer is the ingestion layer that receives and validates all incoming updates from publishers.
+The Relayer service is the ingestion layer that receives and validates all incoming updates from publishers.
 
 **Key responsibilities:**
 
 - **Authentication**: Validates publisher access tokens and optional Ed25519 signatures.
-- **Rate limiting**: Enforces configurable limits of price updates per publisher.
-- **Message forwarding**: Publishes validated updates to NATS or Kafka.
-- **History Service**: Maintains a connection to the History Service to cache historical data for circuit breaker validation.
+- **Rate limiting**: Enforces configurable limits on publisher updates.
+- **Message forwarding**: Publishes validated updates to an internal message queue (a NATS cluster).
 
-The Relayer also maintains a connection to the History Service to cache historical data for circuit breaker validation.
+**Douro Labs** operates the relayer service for the Pyth Lazer network.
 
-### Aggregator Component
+<Callout type="info">
+  The Douro Labs-operated relayer follows a strict, deterministic processing model:
+  - **No price dropping**: All validated updates are forwarded to the message queue without dropping any prices.
+  - **FCFS processing**: Updates are processed on a first-come-first-served basis without prioritization.
+  - **Deterministic operation**: The relayer operates according to its configured logic and does not deviate from it.
 
-The Aggregator is a library component embedded within both the Router and History Service.
-It consumes publisher updates from the message bus and computes aggregated price feeds.
+This ensures reliable, predictable data flow from publishers to consumers.
 
-**Aggregation logic:**
-The Aggregator computes median prices, confidence intervals (using interquartile range), and best bid/ask prices from multiple publisher inputs.
-It filters out stale data and ensures minimum publisher requirements are met before publishing aggregated updates.
+</Callout>
 
-### Router Service
+### Message Queue
 
-The Router is the real-time distribution layer that serves price feeds to consumers.
+The system uses NATS JetStream as the primary message queue for pub/sub messaging with stream persistence.
+This allows the system to be deployed in a multi-datacenter environment and ensures reliable message delivery between services.
+
+**Message ordering**: NATS JetStream guarantees message ordering within a single stream, ensuring that updates from publishers are processed in the order they were received by the Relayer.
+This ordering guarantee is critical for maintaining consistent feed state across all aggregators.
+
+### Routers
+
+The Router is the real-time distribution layer that serves data to consumers.
+It embeds aggregation logic to compute median prices, confidence intervals (using interquartile range), and best bid/ask prices from multiple publisher inputs.
 
 **Key features:**
 
@@ -47,9 +58,20 @@ The Router is the real-time distribution layer that serves price feeds to consum
 - **Channel types**: Supports real-time and fixed-rate channels (1ms, 50ms, 200ms)
 - **Multi-chain support**: Generates on-chain payloads for Solana, EVM, and other chains
 
-### Message Transport Layer
+#### Aggregation logic
 
-The system supports dual message queue backends for flexibility. This allows the system to be deployed in a multi-datacenter environment.
+Each Router embeds an aggregator component that consumes publisher updates from NATS and computes aggregated data feeds. The aggregator:
 
-- **NATS Jetstream**: Provides pub/sub messaging with stream persistence.
-- **Apache Kafka**: Can be used instead of NATS for message transport.
+- Computes median values resistant to outlier data from individual publishers.
+- Calculates confidence intervals using interquartile range to measure data spread.
+- Determines best bid/ask values filtered to ensure market consistency.
+- Automatically removes stale publisher data based on configurable timeouts.
+
+### History Service
+
+The History Service provides persistence and historical data queries.
+
+**Key responsibilities:**
+
+- Data persistence: Stores all publisher updates, aggregated data, and transactions in ClickHouse.
+- Historical queries: Provides REST API for querying historical data.
