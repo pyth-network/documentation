@@ -38,16 +38,4 @@ export const EntropyDeploymentsConfig: Record<string, ChainOverride> = {
   "91342": {
     explorer: "https://sepolia-explorer.giwa.io",
   },
-  "91342": {
-    explorer: "https://sepolia-explorer.giwa.io",
-  },
-  "1992": {
-    explorer: "https://sanko-arb-sepolia.explorer.caldera.xyz",
-  },
-  "14601": {
-    explorer: "https://testnet.sonicscan.org",
-  },
-  "9788": {
-    explorer: "https://testnetv2.tabiscan.com",
-  },
 };
