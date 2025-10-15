@@ -77,11 +77,6 @@ Here's what a typical StreamUpdated response that contains a PriceFeed looks lik
         "publisherCount": 12,
         "exponent": -8,
         "confidence": 106965585
-      },
-      {
-        "priceFeedId": 3,
-        "publisherCount": 5,
-        "exponent": -8
       }
     ]
   },
@@ -91,13 +86,6 @@ Here's what a typical StreamUpdated response that contains a PriceFeed looks lik
   }
 }
 ```
-
-<Callout type="info">
-  In the example above, the third price feed has the `price`, `bestBidPrice`,
-  `bestAskPrice`, and `confidence` fields absent, indicating that these values
-  could not be computed. When you encounter missing price fields, use the last
-  valid price or wait for the next update.
-</Callout>
 
 <Callout type="warning">
   **Important**: The price is stored in two parts: an integer mantissa value
@@ -128,11 +116,10 @@ Main aggregate price calculated from all contributing publishers
 - **Invariants**: Non-zero when present (null values filtered out)
 
 <Callout type="warning">
-  **Missing Price Fields**: In some cases, the `price` field (and related
-  optional fields like `bestBidPrice`, `bestAskPrice`, and `confidence`) may be
-  absent from the response. This indicates that the price could not be computed
-  at that moment. When this occurs, you should either use the last valid price
-  you received or wait for a fresh update with a valid price.
+  **Missing Price Field**: In some cases, the `price` field may be absent from
+  the response. This indicates that the price could not be computed at that
+  moment. When this occurs, you should either use the last valid price you
+  received or wait for a fresh update with a valid price.
 </Callout>
 
 #### Data Publisher Count - `publisher_count`
