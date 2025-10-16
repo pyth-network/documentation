@@ -28,9 +28,8 @@ The Relayer service is the ingestion layer that receives and validates all incom
 
 Douro Labs operates the relayer service for the Pyth Lazer network. It follows a strict, deterministic processing model:
 
-- **No price dropping outside of circuit breakers**: All validated updates are forwarded to the message queue without dropping any prices.
+- **No price dropping outside of circuit breakers**: All validated updates are forwarded to the message queue without dropping any prices (except for when a circuit breaker is triggered).
 - **FCFS processing**: Updates are processed on a first-come-first-served basis without prioritization.
-- **Deterministic operation**: The relayer operates according to its configured logic and does not deviate from it.
 
 This ensures reliable, predictable data flow from publishers to consumers.
 
@@ -39,8 +38,9 @@ This ensures reliable, predictable data flow from publishers to consumers.
 The system uses a distributed message queue for pub/sub messaging with stream persistence.
 This allows the system to be deployed in a multi-datacenter environment and ensures reliable message delivery between services.
 
-**Message ordering**: The message queue guarantees message ordering within a single stream, ensuring that updates from publishers are processed in the order they were received by the Relayer.
-This ordering guarantee is critical for maintaining consistent feed state across all aggregators.
+**Message ordering**: The message queue ensures reliable delivery and maintains the exact sequence of messages within each data stream.
+This means every publisher update will be delivered at least once, and messages will be processed in the same order they arrived at the Relayer.
+This sequential processing is essential for keeping all aggregators synchronized with the same feed state.
 
 ### Routers
 
@@ -51,7 +51,7 @@ It embeds aggregation logic to compute median prices, confidence intervals (usin
 
 - **WebSocket streaming**: Provides `/v1/stream` endpoint for real-time price updates
 - **HTTP REST API**: Offers `/v1/latest_price` for on-demand price queries
-- **Channel types**: Supports real-time and fixed-rate channels (1ms, 50ms, 200ms)
+- **Channel types**: Supports real-time and fixed-rate channels (50ms, 200ms)
 - **Multi-chain support**: Generates on-chain payloads for Solana, EVM, and other chains
 
 #### Aggregation logic
@@ -63,6 +63,9 @@ Each Router embeds an aggregator component that consumes publisher updates from 
 - Determines best bid/ask values filtered to ensure market consistency.
 - Automatically removes stale publisher data based on configurable timeouts.
 
+Lazer guarantees deterministic aggregation: all aggregators produce the exact same aggregated results by relying solely on the consistent stream of price updates from the Message Queue.
+This ensures that every Router instance maintains identical feed state, providing consistent data to all consumers regardless of which Router they connect to.
+
 ### History Service
 
 The History Service provides persistence and historical data queries.
@@ -71,3 +74,4 @@ The History Service provides persistence and historical data queries.
 
 - Data persistence: Stores all publisher updates, aggregated data, and transactions.
 - Historical queries: Provides REST API for querying historical data.
+- OHLC API: Provides Open, High, Low, Close (OHLC) data for charting applications through the history service.
