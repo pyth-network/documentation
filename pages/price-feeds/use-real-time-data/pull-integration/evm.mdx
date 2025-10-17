@@ -46,10 +46,9 @@ Then add the following line to your `remappings.txt` file:
 @pythnetwork/pyth-sdk-solidity/=node_modules/@pythnetwork/pyth-sdk-solidity
 ```
 
-<Callout type="warning" emoji="⚠️">
-  **Why Update Prices?**
+## Why Update Prices
 
-**Pyth uses a pull-based oracle model**. Unlike traditional push oracles that automatically update prices on-chain at regular intervals, Pyth requires users to explicitly update the on-chain price before reading it.
+Pyth uses a pull-based oracle model. Unlike traditional push oracles that automatically update prices on-chain at regular intervals, Pyth requires users to explicitly update the on-chain price before reading it.
 
 This design offers several advantages:
 
@@ -63,8 +62,11 @@ In the Pull integration pattern, your contract must:
 2. Call `updatePriceFeeds()` to submit this data on-chain before reading prices
 3. Pay a small fee for each update (calculated via `getUpdateFee()`)
 
-**Important**: If you don't update the price or if the on-chain price becomes too stale, calls to `getPriceNoOlderThan()` will revert with a `StalePrice` error (0x19abf40e). See [how to fetch price updates](../../fetch-price-updates) for more details.
-
+<Callout type="warning" emoji="⚠️">
+  **Important**: If you don't update the price or if the on-chain price becomes
+  too stale, calls to `getPriceNoOlderThan()` will revert with a `StalePrice`
+  error (0x19abf40e). See [how to fetch price
+  updates](../../fetch-price-updates) for more details.
 </Callout>
 
 ## Write Contract Code
