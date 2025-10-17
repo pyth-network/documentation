@@ -47,7 +47,12 @@ Then add the following line to your `remappings.txt` file:
 ```
 
 <Callout type="warning" emoji="⚠️">
-  **Important**: Pyth uses a pull-based oracle model that requires users to update prices on-chain before reading them. If you don't update the price or if the on-chain price becomes too stale, calls to `getPriceNoOlderThan()` will revert with a `StalePrice` error (0x19abf40e). Learn more about [why you need to update prices](../../how-pyth-works/why-update-prices) and see [how to fetch price updates](../../fetch-price-updates) for implementation details.
+  **Important**: Pyth uses a pull-based oracle model that requires users to
+  update prices on-chain before reading them. If you don't update the price or
+  if the on-chain price becomes too stale, calls to `getPriceNoOlderThan()` will
+  revert with a `StalePrice` error (0x19abf40e). Learn more about [why you need
+  to update prices](../../how-pyth-works/why-update-prices) and see [how to
+  fetch price updates](../../fetch-price-updates) for implementation details.
 </Callout>
 
 ## Write Contract Code
