@@ -328,6 +328,22 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "INDEX.FORD/USD",
+    "account_address": "GUq4JEVMgC5AmZpKxjh1aJsabB9X7mBwPavKSsnz11DS",
+    "id": "84d8c84bfbe6f71af527493f9aaee09950ee3e09c8460b2b781ce65ea341c10a",
+    "time_difference": 60,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
+    "alias": "INDEX.GLXY/USD",
+    "account_address": "84NBovYcdtTdbb9vw9U7YeGPssTuCxcAMexw3PWDzWhR",
+    "id": "c59735498fa594a63e36382c12656e4313a7269ea1a1ed8fa583008e277f9cdb",
+    "time_difference": 60,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "SYRUPUSDC/USDC.RR",
     "account_address": "GWdwWDhYFUc8ZD6uCTtEAAwx97V1ZCsxPWGL7vhSha6w",
     "id": "2ad31d1c4a85fbf2156ce57fab4104124c5ef76a6386375ecfc8da1ed5ce1486",
