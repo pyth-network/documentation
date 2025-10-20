@@ -288,9 +288,9 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "WTIV5/USD",
-    "account_address": "79Qk7eiaFDTPdny4ha6vG3SYtRSdJ9tCqSpYPvxmq3WW",
-    "id": "1fd93efedb8b2db34465b5dbad8beca7288ad8bbcd47213ab1fdfe57ac86a240",
+    "alias": "WTIZ5/USD",
+    "account_address": "3MBVC4DW1KsJcH1CB61XNHMo7CPkKW21gFNUku1sJ33q",
+    "id": "0c62848c8afee091f2c132eef944e3075c6de476129efc872a4202d81ca34f99",
     "time_difference": 60,
     "price_deviation": 0.5,
     "confidence_ratio": 100
