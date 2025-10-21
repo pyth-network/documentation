@@ -118,6 +118,17 @@ const permanentRedirectArray = [
     "/home/oracle-integrity-staking/reward-examples",
   ],
   ["/guides", "/price-feeds"],
+
+  // Lazer (top-level) to Pyth Pro Redirects - MUST come before general price-feeds redirects
+  ["/lazer", "/price-feeds/pro"],
+  ["/lazer/:path*", "/price-feeds/pro/:path*"],
+
+  // Explicitly map legacy lazer paths under /price-feeds to Pro - MUST come before general price-feeds redirects
+  ["/price-feeds/lazer", "/price-feeds/pro"],
+  ["/price-feeds/lazer/:path*", "/price-feeds/pro/:path*"],
+
+  ["/price-feeds/:path((?!core|pro).*?)", "/price-feeds/core/:path*"],
+
   ["/benchmarks", "/price-feeds/use-historic-price-data"],
   [
     "/benchmarks/how-to-create-tradingview-charts",

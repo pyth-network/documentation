@@ -1,20 +1,20 @@
 import { Callout, Tabs, Steps } from "nextra/components";
 
-# Integrate Pyth Lazer as a Consumer on EVM chains
+# Integrate as a Consumer on EVM chains
 
-This guide is intended to serve users who wants to consume prices from the Pyth Lazer on **EVM chains**.
+This guide is intended to serve users who wants to consume prices from the Pyth Pro on **EVM chains**.
 
-Integrating with Pyth Lazer in smart contracts as a consumer is a three-step process:
+Integrating with Pyth Pro in smart contracts as a consumer is a three-step process:
 
 1. **Use** Pyth Lazer SDK in EVM smart contracts to parse the price updates.
-2. **Subscribe** to Pyth Lazer websocket to receive price updates on backend or frontend.
+2. **Subscribe** to Pyth Pro websocket to receive price updates on backend or frontend.
 3. **Include** the price updates into the smart contract transactions.
 
 <Steps>
 
 ### Use Pyth Lazer SDK in smart contracts
 
-Pyth Lazer provides a [Solidity SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/contracts/evm), which allows consumers to parse the price updates.
+Pyth Pro provides a [Solidity SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/contracts/evm), which allows consumers to parse the price updates.
 
 ```bash copy
 forge install pyth-network/pyth-crosschain
@@ -52,7 +52,7 @@ contract ExampleConsumer {
 
 ```
 
-Add an argument of type `bytes calldata{:solidity}` to the method which will receive the Pyth Lazer price udpate:
+Add an argument of type `bytes calldata{:solidity}` to the method which will receive the price update:
 
 ```solidity copy
 function updatePrice(bytes calldata priceUpdate) public payable {
@@ -125,11 +125,11 @@ for (uint8 i = 0; i < feedsLen; i++) {
   price updates via WebSocket. This will be explained in the next step.
 </Callout>
 
-### Subscribe to Pyth Lazer to receive Price Updates
+### Subscribe to Pyth Pro to receive Price Updates
 
-Pyth Lazer provides a websocket endpoint to receive price updates. Moreover, Pyth Lazer also provides a [Typescript SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/sdk/js) to subscribe to the websocket endpoint.
+Pyth Pro provides a websocket endpoint to receive price updates. Moreover, Pyth Pro also provides a [Typescript SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/sdk/js) to subscribe to the websocket endpoint.
 
-Consult [How to subscribe to price updates from Pyth Lazer](../subscribe-price-updates.mdx) for a complete step-by-step guide.
+Consult [How to subscribe to price updates](../subscribe-price-updates.mdx) for a complete step-by-step guide.
 
 ### Include the price updates into smart contract transactions
 
@@ -139,14 +139,14 @@ Now that you have the price updates, and your smart contract is able to parse th
 
 ## Additional Resources
 
-You may find these additional resources helpful for integrating Pyth Lazer into your EVM smart contracts.
+You may find these additional resources helpful for consuming prices from Pyth Pro into your EVM smart contracts.
 
 ### Price Feed IDs
 
-Pyth Lazer supports a wide range of price feeds. Consult the [Price Feed IDs](../price-feed-ids.mdx) page for a complete list of supported price feeds.
+Pyth Pro supports a wide range of price feeds. Consult the [Price Feed IDs](../price-feed-ids.mdx) page for a complete list of supported price feeds.
 
 ### Examples
 
-[Pyth-lazer-example-evm](https://github.com/pyth-network/pyth-examples/tree/main/lazer/evm) is a simple example contract that parses and consumes price updates from Pyth Lazer.
+[Pyth-lazer-example-evm](https://github.com/pyth-network/pyth-examples/tree/main/lazer/evm) is a simple example contract that parses and consumes price updates from Pyth Pro.
 
-[pyth-lazer-example-js](https://github.com/pyth-network/pyth-examples/tree/main/lazer/js) is a simple example for subscribing to the Pyth Lazer websocket.
+[pyth-lazer-example-js](https://github.com/pyth-network/pyth-examples/tree/main/lazer/js) is a simple example for subscribing to the Pyth Pro websocket.

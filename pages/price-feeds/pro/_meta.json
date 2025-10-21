@@ -1,13 +1,4 @@
 {
-  "documentation-home": {
-    "title": "← Documentation Home",
-    "href": "/home"
-  },
-
-  "-- Lazer": {
-    "title": "Lazer",
-    "type": "separator"
-  },
   "index": "Introduction",
   "getting-started": "Getting Started",
 
@@ -17,7 +8,7 @@
   },
 
   "acquire-access-token": "Acquire an Access Token",
-  "subscribe-price-updates": "Subscribe to Price Updates",
+  "subscribe-price-updates": "Subscribe to Prices",
   "integrate-as-consumer": "Integrate as a Consumer",
   "integrate-as-publisher": "Integrate as a Publisher",
 
@@ -25,7 +16,6 @@
     "title": "Reference Material",
     "type": "separator"
   },
-  "payload-reference": "Payload Reference",
   "price-feed-ids": "Price Feed IDs",
 
   "websocket-api-reference": {
@@ -39,10 +29,10 @@
     "href": "https://github.com/pyth-network/pyth-examples/tree/main/lazer",
     "newWindow": true
   },
-  "-- Understand Lazer": {
-    "title": "Understanding Lazer",
+  "-- Understand Pyth Pro": {
+    "title": "Understanding Pyth Pro",
     "type": "separator"
   },
 
-  "how-lazer-works": "How Lazer Works"
+  "how-lazer-works": "How Pyth Pro Works"
 }

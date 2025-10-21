@@ -1,9 +1,9 @@
 import { Callout, Steps } from "nextra/components";
 
-# Getting Started with Pyth Lazer
+# Getting Started with Pyth Pro
 
-Pyth Lazer is a high-performance, low-latency service that provides real-time financial market data.
-This guide will walk you through setting up and running a basic JavaScript example to subscribe to Lazer price feeds.
+Pyth Pro is a high-performance, low-latency service that provides real-time financial market data.
+This guide will walk you through setting up and running a basic JavaScript example to subscribe to Pyth Pro price feeds.
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ Before getting started, make sure you have the following installed:
 - **Node.js** (version 18 or higher)
 - **pnpm** package manager
 - **Git** for cloning the examples repository
-- A **Lazer Access Token** - see [How to Acquire an Access Token](./acquire-access-token) if you don't have one
+- A **Pyth Pro Access Token** - see [How to Acquire an Access Token](./acquire-access-token) if you don't have one
 
 <Steps>
 
@@ -33,35 +33,39 @@ Install the required dependencies using pnpm:
 pnpm install
 ```
 
-This will install `@pythnetwork/pyth-lazer-sdk`, which is the main Lazer SDK.
+This will install `@pythnetwork/pyth-lazer-sdk`, which will be used to subscribe to Pyth Pro prices.
+
+<Callout type="info">
+  **Pyth Pro was previously known as Pyth Lazer**. The SDK remains the same.
+</Callout>
 
 ### Configure Your Access Token
 
-Set your Lazer access token as an environment variable:
+Set your Pyth Pro access token as an environment variable:
 
 ```bash copy
 export ACCESS_TOKEN=your_actual_token_here
 ```
 
 <Callout type="warning" emoji="⚠️">
-  Replace `your_actual_token_here` with your actual Lazer access token. If you
+  Replace `your_actual_token_here` with your actual PythPro access token. If you
   don't have one, follow the [access token guide](./acquire-access-token) to
   obtain it.
 </Callout>
 
 ### Run the Basic WebSocket Example
 
-Now you can run the basic example that demonstrates connecting to Lazer and receiving price updates:
+Now you can run the basic example that demonstrates connecting to Pyth Pro and receiving price updates:
 
 ```bash copy
 pnpm run start
 ```
 
-This command will subscribe to Pyth Lazer updates for two price feeds, receiving streaming updates.
+This command will subscribe to Pyth Pro updates for two price feeds, receiving streaming updates.
 Each update is then printed to the terminal on receipt.
 You should see output similar to the following:
 
-```
+```bash
 got message: {
   type: 'json',
   value: {
@@ -98,7 +102,7 @@ stream updated for subscription 1 : [
 
 ### Understanding the Code
 
-The main example code in `src/index.ts` demonstrates the core Lazer integration pattern:
+The main example code in `src/index.ts` demonstrates the core Pyth Pro integration pattern:
 
 ```typescript
 import { PythLazerClient } from "@pythnetwork/pyth-lazer-sdk";
@@ -127,25 +131,27 @@ client.subscribe({
 });
 ```
 
+NOTE: Every property passed to `client.subscribe` are explained in the [API Reference](./websocket-api-reference).
+
 </Steps>
 
 ## What's Next?
 
-Now that you've successfully run the basic Lazer example, you can explore more advanced integration patterns:
+Now that you've successfully run the basic Pyth Pro example, you can explore more advanced integration patterns:
 
 ### More Information
 
-Explore additional Lazer capabilities:
+Explore additional Pyth Pro capabilities:
 
 - **[Subscribe to Price Updates](./subscribe-price-updates)** - Detailed guide on WebSocket subscriptions and message handling
 - **[Price Feed IDs](./price-feed-ids)** - Complete list of available price feeds and their identifiers
 
 ### Blockchain Integration
 
-Learn how to integrate Lazer price feeds into your smart contracts:
+Learn how to integrate Pyth Pro price feeds into your smart contracts:
 
-- **[Solana Integration](./integrate-as-consumer/svm)** - Build SVM smart contracts that consume Lazer price feeds with cryptographic verification
-- **[EVM Integration](./integrate-as-consumer/evm)** - Integrate Lazer into Ethereum and other EVM-compatible chains
+- **[Solana Integration](./integrate-as-consumer/svm)** - Build SVM smart contracts that consume Pyth Pro price feeds with cryptographic verification
+- **[EVM Integration](./integrate-as-consumer/evm)** - Integrate Pyth Pro into Ethereum and other EVM-compatible chains
 
 ### Example Applications
 
