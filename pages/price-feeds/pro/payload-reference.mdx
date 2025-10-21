@@ -112,7 +112,7 @@ Main aggregate price calculated from all contributing publishers
 
 - **Type**: `optional non-zero i64` (mantissa representation)
 - **Availability**: Only included if requested in subscription properties
-- **Algorithm**: Refer to [price aggregation](../../price-feeds/how-pyth-works/price-aggregation) for the current algorithm
+- **Algorithm**: Refer to [price aggregation](../../price-feeds/core/how-pyth-works/price-aggregation) for the current algorithm
 - **Invariants**: Non-zero when present (null values filtered out)
 
 <Callout type="warning">
@@ -146,7 +146,7 @@ Confidence interval representing price uncertainty
 
 - **Type**: `optional i64` (mantissa representation)
 - **Availability**: Only included if requested in subscription properties
-- **Algorithm**: Refer to [price aggregation](../../price-feeds/how-pyth-works/price-aggregation) for the current algorithm
+- **Algorithm**: Refer to [price aggregation](../../price-feeds/core/how-pyth-works/price-aggregation) for the current algorithm
 - **Invariants**: Positive when present
 - **Usage**: Risk management and price quality assessment
 
@@ -158,7 +158,7 @@ Highest bid price across all contributing publishers
 
 - **Type**: `optional non-zero i64` (mantissa representation)
 - **Availability**: Only included if requested in subscription properties
-- **Algorithm**: Refer to [price aggregation](../../price-feeds/how-pyth-works/price-aggregation) for the current algorithm
+- **Algorithm**: Refer to [price aggregation](../../price-feeds/core/how-pyth-works/price-aggregation) for the current algorithm
 - **Invariants**: Non-zero when present, typically ≤ current price
 
 #### Lowest Market Ask - `best_ask_price`
@@ -167,7 +167,7 @@ Lowest ask price across all contributing publishers
 
 - **Type**: `optional non-zero i64` (mantissa representation)
 - **Availability**: Only included if requested in subscription properties
-- **Algorithm**: Refer to [price aggregation](../../price-feeds/how-pyth-works/price-aggregation) for the current algorithm
+- **Algorithm**: Refer to [price aggregation](../../price-feeds/core/how-pyth-works/price-aggregation) for the current algorithm
 - **Invariants**: Non-zero when present, typically ≥ current price
 
 ### Derivatives Properties (FundingRate Feed Type Only)
