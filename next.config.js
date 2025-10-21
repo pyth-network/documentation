@@ -133,7 +133,10 @@ const permanentRedirectArray = [
     "/price-feeds/use-real-time-data/pull-integration/:path",
   ],
   // generic price feeds redirects
-  ["/price-feeds/:path((?!core|pro|push-feeds|use-real-time-data).*?)", "/price-feeds/core/:path*"],
+  [
+    "/price-feeds/:path((?!core|pro|push-feeds|use-real-time-data).*?)",
+    "/price-feeds/core/:path*",
+  ],
 
   ["/benchmarks", "/price-feeds/use-historic-price-data"],
   [
