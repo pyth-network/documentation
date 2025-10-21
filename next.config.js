@@ -126,8 +126,14 @@ const permanentRedirectArray = [
   // Explicitly map legacy lazer paths under /price-feeds to Pro - MUST come before general price-feeds redirects
   ["/price-feeds/lazer", "/price-feeds/pro"],
   ["/price-feeds/lazer/:path*", "/price-feeds/pro/:path*"],
-
-  ["/price-feeds/:path((?!core|pro).*?)", "/price-feeds/core/:path*"],
+  // some other price feed redirects
+  ["/price-feeds/sponsored-feeds", "/price-feeds/push-feeds"],
+  [
+    "/price-feeds/use-real-time-data/:path((?!pull-integration(?:/|$)).*)",
+    "/price-feeds/use-real-time-data/pull-integration/:path",
+  ],
+  // generic price feeds redirects
+  ["/price-feeds/:path((?!core|pro|push-feeds|use-real-time-data).*?)", "/price-feeds/core/:path*"],
 
   ["/benchmarks", "/price-feeds/use-historic-price-data"],
   [
@@ -137,12 +143,7 @@ const permanentRedirectArray = [
   ["/benchmarks/api-instances", "/price-feeds/api-reference/"],
   ["/benchmarks/rate-limits", "/price-feeds/rate-limits/"],
 
-  ["/price-feeds/sponsored-feeds", "/price-feeds/push-feeds"],
 
-  [
-    "/price-feeds/use-real-time-data/:path((?!pull-integration(?:/|$)).*)",
-    "/price-feeds/use-real-time-data/pull-integration/:path",
-  ],
 ];
 
 /** @type {import('next').NextConfig} */
