@@ -145,8 +145,6 @@ const permanentRedirectArray = [
   ],
   ["/benchmarks/api-instances", "/price-feeds/api-reference/"],
   ["/benchmarks/rate-limits", "/price-feeds/rate-limits/"],
-
-
 ];
 
 /** @type {import('next').NextConfig} */
