@@ -1,18 +1,18 @@
 import { Callout, Steps } from "nextra/components";
 
-# Lazer Payload Reference
+# Pyth Pro Payload Reference
 
-This page provides a comprehensive reference for understanding Pyth Lazer payload structure, field specifications, and available data formats. This information is essential for integrating with Lazer as a consumer and understanding the data you receive.
+This page provides a comprehensive reference for understanding Pyth Pro payload structure, field specifications, and available data formats. This information is essential for integrating with Pyth Pro as a consumer and understanding the data you receive.
 
 <Callout type="info">
   This reference is designed for both technical and non-technical stakeholders
-  to understand Pyth Lazer's data offering. For implementation details, see our
-  [integration guides](/lazer/integrate-as-consumer).
+  to understand Pyth Pro's data offering. For implementation details, see our
+  [integration guides](/price-feeds/pro/integrate-as-consumer).
 </Callout>
 
-## What is a Lazer Payload?
+## What is a Pyth Pro Payload?
 
-A Lazer payload is a real-time data update containing financial market information with cryptographic signatures for verification. When you subscribe to Lazer price feeds, you receive `StreamUpdated` messages containing this structured data.
+A Pyth Pro payload is a real-time data update containing financial market information with cryptographic signatures for verification on blockchain. When you subscribe to Pyth Pro price feeds, you receive `StreamUpdated` messages containing this structured data.
 
 ## Stream Response Structure
 
@@ -24,7 +24,7 @@ A Lazer payload is a real-time data update containing financial market informati
   request.
 </Callout>
 
-When you receive a `StreamUpdated` message from Lazer, it contains the following structure:
+When you receive a `StreamUpdated` message from Pyth Pro, it contains the following structure:
 
 ### Top-Level Response Fields
 
@@ -221,7 +221,7 @@ Based on the [API documentation](https://pyth-lazer.dourolabs.app/docs), you can
 
 ## Subscription Channels
 
-Lazer offers multiple delivery channels to match your latency and frequency requirements:
+Pyth Pro offers multiple delivery channels to match your latency and frequency requirements:
 
 | Channel            | Description                                                                                    | Use Cases                                   |
 | ------------------ | ---------------------------------------------------------------------------------------------- | ------------------------------------------- |
@@ -233,7 +233,7 @@ Lazer offers multiple delivery channels to match your latency and frequency requ
 
 ## Signature Schemes and Binary Formats
 
-Lazer provides multiple cryptographic formats to support different blockchain ecosystems. When you subscribe, you can request specific binary formats in the `chains` parameter:
+Pyth Pro provides multiple cryptographic formats to support different blockchain ecosystems. When you subscribe, you can request specific binary formats in the `chains` parameter:
 
 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
 

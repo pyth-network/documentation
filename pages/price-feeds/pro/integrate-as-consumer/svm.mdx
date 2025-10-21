@@ -1,20 +1,22 @@
 import { Callout, Tabs, Steps } from "nextra/components";
 
-# Integrate Pyth Lazer as a Consumer on Solana and Fogo
+# Integrate as a Consumer on Solana and Fogo
 
-This guide is intended to serve users who wants to consume prices from the Pyth Lazer on **Solana and Fogo**.
+This guide is intended to serve users who wants to consume prices from the Pyth Pro on **Solana and Fogo**.
 
-Integrating with Pyth Lazer in smart contracts as a consumer is a three-step process:
+<Callout type="info">Pyth Pro was previously known as Pyth Lazer.</Callout>
+
+Integrating with Pyth Pro in smart contracts as a consumer is a three-step process:
 
 1. **Use** Pyth Lazer SDK into SVM smart contracts to parse the price updates.
-2. **Subscribe** to Pyth Lazer websocket to receive price updates on backend or frontend.
+2. **Subscribe** to Pyth Pro websocket to receive price updates on backend or frontend.
 3. **Include** the price updates into the smart contract transactions.
 
 <Steps>
 
 ### Use Pyth Lazer SDK in smart contracts
 
-Pyth Lazer provides a [Solana SDK](https://docs.rs/pyth-lazer-solana-contract/latest/pyth_lazer_solana_contract/),
+Pyth Pro/Lazer provides a [Solana SDK](https://docs.rs/pyth-lazer-solana-contract/latest/pyth_lazer_solana_contract/),
 which allows consumers to parse and verify the price updates on Solana-compatible chains (such as Fogo).
 
 To start, add the following to your `Cargo.toml` file (please check the current latest version at [crates.io](https://crates.io/crates/pyth-lazer-solana-contract)):
@@ -24,10 +26,10 @@ To start, add the following to your `Cargo.toml` file (please check the current 
 pyth-lazer-solana-contract = { version = "x.y.z", features = ["no-entrypoint"] }
 ```
 
-Now you can create an instruction or multiple instructions that will receive Pyth Lazer messages.
-The instruction data sent to your program should include a byte array containing the Pyth Lazer message. The instruction data can also contain any other parameters your contracts may need.
+Now you can create an instruction or multiple instructions that will receive Pyth Pro messages.
+The instruction data sent to your program should include a byte array containing the Pyth Pro message. The instruction data can also contain any other parameters your contracts may need.
 
-In order to successfully validate the Pyth Lazer message, the instruction needs to receive the following accounts:
+In order to successfully validate price updates, the instruction needs to receive the following accounts:
 
 - Fee payer account
 - Pyth Lazer program ([`pytd2yyk641x7ak7mkaasSJVXh6YYZnC7wTmtgAyxPt`](https://solscan.io/account/pytd2yyk641x7ak7mkaasSJVXh6YYZnC7wTmtgAyxPt))
@@ -163,7 +165,7 @@ invoke(
   correctly called in the transaction.
 </Callout>
 
-Now parse the Pyth Lazer message.
+Now parse the message received from Pyth Pro.
 
 ```rust copy
 // Deserialize and use the payload.
@@ -200,14 +202,14 @@ state.latest_timestamp = data.timestamp_us.0;
 ```
 
 <Callout type="info" icon="💡">
-  Pyth Lazer also provides
+  Pyth Pro/Lazer also provides
   [pyth_lazer_protocol](https://docs.rs/pyth-lazer-protocol/latest/pyth_lazer_protocol/)
   Rust crate, which allows consumers to parse the price updates off-chain.
 </Callout>
 
-### Subscribe to Pyth Lazer to receive Price Updates
+### Subscribe to Pyth Pro to receive Price Updates
 
-Pyth Lazer provides a websocket endpoint to receive price updates. Moreover, Pyth Lazer also provides a [typescript SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/sdk/js) to subscribe to the websocket endpoint.
+Pyth Pro/Lazer provides a websocket endpoint to receive price updates. Moreover, Pyth Pro/Lazer also provides a [typescript SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/lazer/sdk/js) to subscribe to the websocket endpoint.
 
 Consult [How to subscribe to price updates from Pyth Lazer](../subscribe-price-updates.mdx) for a complete step-by-step guide.
 
@@ -268,14 +270,14 @@ let mut tx = Transaction::new_with_payer(
 
 ## Additional Resources
 
-You may find these additional resources helpful for integrating Pyth Lazer into your SVM smart contracts.
+You may find these additional resources helpful for verifying price updates on your SVM smart contracts.
 
 ### Price Feed IDs
 
-Pyth Lazer supports a wide range of price feeds. Consult the [Price Feed IDs](../price-feeds.mdx) page for a complete list of supported price feeds.
+Pyth Pro supports a wide range of price feeds. Consult the [Price Feed IDs](../price-feeds.mdx) page for a complete list of supported price feeds.
 
 ### Examples
 
-[pyth-lazer-example-solana](https://github.com/pyth-network/pyth-examples/tree/main/lazer/solana) is a simple example contract that parses and consumes price updates from Pyth Lazer.
+[pyth-lazer-example-solana](https://github.com/pyth-network/pyth-examples/tree/main/lazer/solana) is a simple example contract that parses and consumes price updates from Pyth Pro.
 
-[pyth-lazer-example-js](https://github.com/pyth-network/pyth-examples/tree/main/lazer/js) is a simple example for subscribing to the Pyth Lazer websocket.
+[pyth-lazer-example-js](https://github.com/pyth-network/pyth-examples/tree/main/lazer/js) is a simple example for subscribing to the Pyth Pro websocket.

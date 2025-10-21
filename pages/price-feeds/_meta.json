@@ -1,17 +1,17 @@
 {
-    "price": {
-      "title": "← Documentation Home",
-      "href": "/home"
-    },
-    "index": {
-      "title": "Introduction"
-    },
-    "pro": {
-      "title": "Pyth Pro →",
-      "href": "/price-feeds/pro"
-    },
-    "core": {
-      "title": "Pyth Core →",
-      "href": "/price-feeds/core"
-    }
+  "price": {
+    "title": "← Documentation Home",
+    "href": "/home"
+  },
+  "index": {
+    "title": "Introduction"
+  },
+  "pro": {
+    "title": "Pyth Pro →",
+    "href": "/price-feeds/pro"
+  },
+  "core": {
+    "title": "Pyth Core →",
+    "href": "/price-feeds/core"
   }
+}

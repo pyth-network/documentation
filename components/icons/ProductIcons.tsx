@@ -9,6 +9,11 @@ import {
   Clock,
   ArrowsOutCardinal,
   DiceSixIcon,
+  ListBullets,
+  Key,
+  Play,
+  BookOpen,
+  MoneyWavy,
 } from "@phosphor-icons/react";
 
 export function BarChartIcon() {
@@ -45,4 +50,24 @@ export function MultiChainIcon() {
 
 export function DiceIcon() {
   return <DiceSixIcon className="w-5 h-5" weight="regular" />;
+}
+
+export function ListIcon() {
+  return <ListBullets className="w-5 h-5" weight="regular" />;
+}
+
+export function KeyIcon() {
+  return <Key className="w-5 h-5" weight="regular" />;
+}
+
+export function PlayIcon() {
+  return <Play className="w-5 h-5" weight="regular" />;
+}
+
+export function BookIcon() {
+  return <BookOpen className="w-5 h-5" weight="regular" />;
+}
+
+export function MoneyWavyIcon() {
+  return <MoneyWavy className="w-5 h-5" weight="regular" />;
 }
