@@ -8,10 +8,10 @@
   },
   "pro": {
     "title": "Pyth Pro →",
-    "href": "/price-feeds/pro"
+    "href": "/pro"
   },
   "core": {
     "title": "Pyth Core →",
-    "href": "/price-feeds/core"
+    "href": "/core"
   }
 }
