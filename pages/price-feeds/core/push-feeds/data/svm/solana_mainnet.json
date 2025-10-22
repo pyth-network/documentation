@@ -344,6 +344,14 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "PST/USDC.RR",
+    "account_address": "CBGwQddTeYn3KdvxGWtU95fqCcavzHK9XPFBLENDF5JR",
+    "id": "675e36f84a6be779ed793c71eb5c03151e1866c125767f46933626e0610af84d",
+    "time_difference": 240,
+    "price_deviation": 0.05,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "SYRUPUSDC/USDC.RR",
     "account_address": "GWdwWDhYFUc8ZD6uCTtEAAwx97V1ZCsxPWGL7vhSha6w",
     "id": "2ad31d1c4a85fbf2156ce57fab4104124c5ef76a6386375ecfc8da1ed5ce1486",
