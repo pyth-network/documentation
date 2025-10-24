@@ -42,7 +42,9 @@ const FeeTable = ({
     }
   }, [deployments]);
 
-  const sortedDeployments = Object.entries(deployments).sort();
+  const sortedDeployments = Object.entries(deployments)
+    .filter(([name]) => name !== "etherlink-testnet")
+    .sort();
   return (
     <table>
       <thead>
