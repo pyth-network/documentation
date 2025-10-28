@@ -94,7 +94,11 @@ const permanentRedirectArray = [
   ],
   [
     "/documentation/pythnet-price-feeds/off-chain",
+    "/price-feeds/core/fetch-price-updates",
+  ],
+  [
     "/price-feeds/use-real-time-data/off-chain",
+    "/price-feeds/core/fetch-price-updates",
   ],
   [
     "/documentation/pythnet-price-feeds/evm",
