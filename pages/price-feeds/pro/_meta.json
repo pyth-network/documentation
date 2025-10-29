@@ -17,6 +17,7 @@
     "type": "separator"
   },
   "price-feed-ids": "Price Feed IDs",
+  "payload-reference": "Payload Reference",
 
   "websocket-api-reference": {
     "title": "Websocket API Reference ↗",
