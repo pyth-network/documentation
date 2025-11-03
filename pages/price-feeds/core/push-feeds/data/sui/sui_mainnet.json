@@ -14,13 +14,6 @@
     "confidence_ratio": 100
   },
   {
-    "alias": "BLUB/USD",
-    "id": "5fc11ffe4975b624be495be038da30e30bee2004d8ae6282b5364577ef4ca92c",
-    "time_difference": 60,
-    "price_deviation": 3,
-    "confidence_ratio": 100
-  },
-  {
     "alias": "BLUE/USD",
     "id": "04cfeb7b143eb9c48e9b074125c1a3447b85f59c31164dc20c1beaa6f21f2b6b",
     "time_difference": 60,
@@ -86,13 +79,6 @@
   {
     "alias": "FDUSD/USD",
     "id": "ccdc1a08923e2e4f4b1e6ea89de6acbc5fe1948e9706f5604b8cb50bc1ed3979",
-    "time_difference": 60,
-    "price_deviation": 0.5,
-    "confidence_ratio": 100
-  },
-  {
-    "alias": "FUD/USD",
-    "id": "6a4090703da959247727f2b490eb21aea95c8684ecfac675f432008830890c75",
     "time_difference": 60,
     "price_deviation": 0.5,
     "confidence_ratio": 100
