@@ -161,6 +161,13 @@
     "confidence_ratio": 100
   },
   {
+    "alias": "RION/USD",
+    "id": "2d8b864599418dc83cb33fe1d91f69e90c8c1c32123d74211950f52a5cef006a",
+    "time_difference": 15,
+    "price_deviation": 0.5,
+    "confidence_ratio": 100
+  },
+  {
     "alias": "KAPT/USD",
     "id": "a44d307a13145b84938740c93155fbea926e9fbdd46d50b67859b8fc47552959",
     "time_difference": 15,
