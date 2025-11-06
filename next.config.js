@@ -86,11 +86,19 @@ const permanentRedirectArray = [
   ["/pythnet-price-feeds/hermes", "/price-feeds/how-pyth-works/hermes"],
   [
     "/documentation/pythnet-price-feeds/scheduler",
+    "/price-feeds/schedule-price-updates/using-price-pusher",
+  ],
+  [
     "/price-feeds/schedule-price-updates/using-scheduler",
+    "/price-feeds/schedule-price-updates/using-price-pusher",
   ],
   [
     "/documentation/pythnet-price-feeds/off-chain",
+    "/price-feeds/core/fetch-price-updates",
+  ],
+  [
     "/price-feeds/use-real-time-data/off-chain",
+    "/price-feeds/core/fetch-price-updates",
   ],
   [
     "/documentation/pythnet-price-feeds/evm",
@@ -114,6 +122,23 @@ const permanentRedirectArray = [
     "/home/oracle-integrity-staking/reward-examples",
   ],
   ["/guides", "/price-feeds"],
+
+  // Lazer (top-level) to Pyth Pro Redirects - MUST come before general price-feeds redirects
+  ["/lazer", "/price-feeds/pro"],
+  ["/lazer/:path*", "/price-feeds/pro/:path*"],
+
+  // Explicitly map legacy lazer paths under /price-feeds to Pro - MUST come before general price-feeds redirects
+  ["/price-feeds/lazer", "/price-feeds/pro"],
+  ["/price-feeds/lazer/:path*", "/price-feeds/pro/:path*"],
+
+  ["/price-feeds/:path((?!core/|pro(?:/|$)).*)", "/price-feeds/core/:path"],
+  // some other price feed redirects
+  ["/price-feeds/sponsored-feeds", "/price-feeds/push-feeds"],
+  [
+    "/price-feeds/use-real-time-data/:path((?!pull-integration(?:/|$)).*)",
+    "/price-feeds/use-real-time-data/pull-integration/:path",
+  ],
+
   ["/benchmarks", "/price-feeds/use-historic-price-data"],
   [
     "/benchmarks/how-to-create-tradingview-charts",

@@ -1,3 +1,6 @@
+import Image from "next/image";
+import CommitRevealDiagram from "../../images/entropy/commit_and_reveal.png";
+
 # Protocol Design
 
 The Entropy protocol implements a secure 2-party random number generation procedure. The protocol
@@ -14,6 +17,15 @@ This protocol has the property that the result is random as long as either A or 
 Honesty means that (1) they draw their value at random, and (2) for A, they keep $x_A$ a secret until
 step 4. Thus, neither party needs to trust the other -- as long as they are themselves honest, they can
 ensure that the result $r$ is random.
+
+<br />
+
+<Image
+  src={CommitRevealDiagram}
+  alt="Entropy Protocol Commit and Reveal Flow"
+  sizes="100%"
+  placeholder="blur"
+/>
 
 Entropy implements a version of this protocol that is optimized for on-chain usage. The
 key difference is that one of the participants (the provider) commits to a sequence of random numbers

@@ -1,0 +1,340 @@
+import { Callout } from "nextra/components";
+
+# Test with MockEntropy
+
+This guide shows how to use the MockEntropy contract for local testing of your Entropy integration. MockEntropy is a lightweight testing implementation that allows you to write fast, deterministic tests without needing network access or paying fees.
+
+## Why Use MockEntropy?
+
+MockEntropy is ideal for local testing because it provides:
+
+- **No Network Dependency**: Test entirely offline without connecting to a blockchain
+- **Zero Fees**: All fee methods return 0, no native tokens required
+- **Deterministic Random Numbers**: You control exactly what random values are returned
+- **Fast Execution**: Callbacks are synchronous, no waiting for keeper transactions
+- **Full Control**: Manually trigger reveals in any order to test edge cases
+
+MockEntropy is perfect for unit tests and CI pipelines, but always test with the real Entropy contract on a testnet before deploying to production.
+
+## Prerequisites
+
+Before following this guide, you should:
+
+- Complete the basic setup from the [Generate Random Numbers in EVM Contracts](/entropy/generate-random-numbers/evm) guide
+- Have a Foundry-based testing environment set up
+- Be familiar with implementing `IEntropyConsumer` and `entropyCallback`
+
+## Installation
+
+MockEntropy is included in the Pyth Entropy Solidity SDK v2.1.0+. Install it using npm:
+
+```bash copy
+npm install @pythnetwork/entropy-sdk-solidity
+```
+
+For Foundry projects, add this line to your `remappings.txt`:
+
+```text copy
+@pythnetwork/entropy-sdk-solidity/=node_modules/@pythnetwork/entropy-sdk-solidity
+```
+
+## Basic Usage
+
+### 1. Import MockEntropy in Your Test
+
+```solidity copy
+import "forge-std/Test.sol";
+import "@pythnetwork/entropy-sdk-solidity/MockEntropy.sol";
+import "@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol";
+
+```
+
+### 2. Set Up MockEntropy in Your Test
+
+```solidity copy
+contract MyEntropyTest is Test {
+  MockEntropy public entropy;
+  MyEntropyConsumer public consumer;
+  address public provider;
+
+  function setUp() public {
+    // Use any address as the provider
+    provider = address(0x1234);
+
+    // Deploy MockEntropy with the provider address
+    entropy = new MockEntropy(provider);
+
+    // Deploy your consumer contract
+    consumer = new MyEntropyConsumer(address(entropy));
+  }
+}
+
+```
+
+### 3. Request and Reveal Pattern
+
+The basic testing pattern involves requesting a random number, then manually revealing it with `mockReveal()`:
+
+```solidity copy
+function testBasicRandomNumber() public {
+  // Request a random number
+  uint64 sequenceNumber = consumer.requestRandomNumber();
+
+  // Manually reveal with your chosen random value
+  bytes32 randomNumber = bytes32(uint256(42));
+  entropy.mockReveal(provider, sequenceNumber, randomNumber);
+
+  // Verify the callback was triggered with the correct value
+  assertEq(consumer.lastRandomNumber(), randomNumber);
+  assertEq(consumer.lastSequenceNumber(), sequenceNumber);
+}
+
+```
+
+The `mockReveal()` method signature is:
+
+```solidity
+function mockReveal(
+    address provider,
+    uint64 sequenceNumber,
+    bytes32 randomNumber
+) external
+```
+
+When called, it immediately triggers the `entropyCallback` on your consumer contract with the provided random number.
+
+## Advanced Testing Patterns
+
+### Pattern 1: Multiple Requests and Out-of-Order Reveals
+
+Test that your contract handles asynchronous callbacks correctly by revealing requests in a different order than they were made:
+
+```solidity copy
+function testOutOfOrderReveals() public {
+  // Request multiple random numbers
+  uint64 seq1 = consumer.requestRandomNumber();
+  uint64 seq2 = consumer.requestRandomNumber();
+  uint64 seq3 = consumer.requestRandomNumber();
+
+  // Reveal in different order: 2, 3, then 1
+  bytes32 random2 = bytes32(uint256(200));
+  bytes32 random3 = bytes32(uint256(300));
+  bytes32 random1 = bytes32(uint256(100));
+
+  entropy.mockReveal(provider, seq2, random2);
+  assertEq(consumer.lastRandomNumber(), random2);
+
+  entropy.mockReveal(provider, seq3, random3);
+  assertEq(consumer.lastRandomNumber(), random3);
+
+  entropy.mockReveal(provider, seq1, random1);
+  assertEq(consumer.lastRandomNumber(), random1);
+}
+
+```
+
+This pattern ensures your contract correctly handles callbacks arriving in any order.
+
+### Pattern 2: Testing with Multiple Providers
+
+Test your contract with different providers to ensure provider-specific logic works correctly:
+
+```solidity copy
+function testMultipleProviders() public {
+  address provider1 = address(0x1111);
+  address provider2 = address(0x2222);
+
+  // Request from different providers
+  uint64 seq1 = consumer.requestFromProvider(provider1, 100000);
+  uint64 seq2 = consumer.requestFromProvider(provider2, 100000);
+
+  // Each provider has independent sequence numbers
+  assertEq(seq1, 1);
+  assertEq(seq2, 1);
+
+  // Reveal from each provider
+  bytes32 random1 = bytes32(uint256(111));
+  bytes32 random2 = bytes32(uint256(222));
+
+  entropy.mockReveal(provider1, seq1, random1);
+  assertEq(consumer.lastRandomNumber(), random1);
+  assertEq(consumer.lastProvider(), provider1);
+
+  entropy.mockReveal(provider2, seq2, random2);
+  assertEq(consumer.lastRandomNumber(), random2);
+  assertEq(consumer.lastProvider(), provider2);
+}
+
+```
+
+### Pattern 3: Testing Gas Limit Configuration
+
+While MockEntropy doesn't enforce gas limits, you can verify that your contract correctly stores and passes gas limit parameters:
+
+```solidity copy
+function testGasLimitStorage() public {
+  uint32 customGasLimit = 200000;
+
+  // Request with custom gas limit
+  uint64 seq = consumer.requestWithGasLimit(customGasLimit);
+
+  // Verify gas limit was stored correctly
+  EntropyStructsV2.Request memory req = entropy.getRequestV2(provider, seq);
+  assertEq(req.gasLimit10k, 20); // 200000 / 10000 = 20
+
+  // Reveal works normally
+  bytes32 randomNumber = bytes32(uint256(999));
+  entropy.mockReveal(provider, seq, randomNumber);
+  assertEq(consumer.lastRandomNumber(), randomNumber);
+}
+
+```
+
+<Callout type="warning" emoji="⚠️">
+  MockEntropy does not enforce gas limits on callbacks. Make sure to test with
+  the real Entropy contract on a testnet before deploying to production to
+  verify your callback stays within gas limits.
+</Callout>
+
+### Pattern 4: Deterministic Testing with Specific Values
+
+Use deterministic random values to create reproducible tests and cover edge cases:
+
+```solidity copy
+function testEdgeCaseRandomValues() public {
+  // Test with zero
+  uint64 seq1 = consumer.requestRandomNumber();
+  entropy.mockReveal(provider, seq1, bytes32(0));
+  assertEq(consumer.lastRandomNumber(), bytes32(0));
+
+  // Test with maximum value
+  uint64 seq2 = consumer.requestRandomNumber();
+  entropy.mockReveal(provider, seq2, bytes32(type(uint256).max));
+  assertEq(consumer.lastRandomNumber(), bytes32(type(uint256).max));
+
+  // Test with hash-based values
+  uint64 seq3 = consumer.requestRandomNumber();
+  bytes32 hashValue = keccak256("deterministic test value");
+  entropy.mockReveal(provider, seq3, hashValue);
+  assertEq(consumer.lastRandomNumber(), hashValue);
+}
+
+```
+
+This approach ensures your contract handles all possible random values correctly.
+
+## Key Differences from Real Entropy
+
+MockEntropy simplifies testing but has important differences from the production Entropy contract:
+
+### 1. No Fees Required
+
+All `getFeeV2()` methods return 0:
+
+```solidity
+// MockEntropy always returns 0
+uint128 fee = entropy.getFeeV2(); // Returns 0
+uint128 feeWithGas = entropy.getFeeV2(100000); // Returns 0
+```
+
+You don't need to send native tokens with your requests during testing.
+
+### 2. No Gas Limit Enforcement
+
+MockEntropy stores gas limits but does **not** enforce them on callbacks. Your callback can use any amount of gas during testing.
+
+<Callout type="warning" emoji="⚠️">
+  Always test on a testnet with the real Entropy contract to verify your
+  callback respects gas limits. A callback that works in MockEntropy tests may
+  fail in production if it exceeds the gas limit.
+</Callout>
+
+### 3. Synchronous Callbacks
+
+`mockReveal()` immediately calls `entropyCallback` in the same transaction. The real Entropy contract uses keeper transactions that arrive asynchronously.
+
+### 4. Manual Random Number Control
+
+You decide exactly what random number is revealed and when. The real Entropy contract generates cryptographically secure random numbers.
+
+### 5. Simplified Provider Setup
+
+Providers in MockEntropy are just addresses with default configuration:
+
+- Default fee: 1 wei (not enforced)
+- Default gas limit: 100,000
+- Sequence numbers start at 1
+
+No keeper infrastructure is required.
+
+## Best Practices
+
+### 1. Test Edge Cases
+
+Use extreme random values to ensure your contract handles all cases:
+
+```solidity copy
+// Test boundary values
+bytes32[] memory testValues = new bytes32[](3);
+testValues[0] = bytes32(uint256(0));
+testValues[1] = bytes32(type(uint256).max);
+testValues[2] = bytes32(uint256(1));
+
+for (uint i = 0; i < testValues.length; i++) {
+    uint64 seq = consumer.requestRandomNumber();
+    entropy.mockReveal(provider, seq, testValues[i]);
+    // Verify your contract handles the value correctly
+}
+```
+
+### 2. Measure Callback Gas Usage
+
+Even though MockEntropy doesn't enforce limits, measure your callback's gas usage:
+
+```solidity copy
+function testCallbackGasUsage() public {
+  uint64 seq = consumer.requestRandomNumber();
+
+  uint256 gasBefore = gasleft();
+  entropy.mockReveal(provider, seq, bytes32(uint256(42)));
+  uint256 gasUsed = gasBefore - gasleft();
+
+  console.log("Callback gas used:", gasUsed);
+
+  // Ensure it's within your target gas limit
+  assertTrue(gasUsed < 100000, "Callback uses too much gas");
+}
+
+```
+
+### 3. Always Test on Testnet
+
+MockEntropy is useful for development, but always run integration tests on a testnet before deploying to production. This verifies:
+
+- Fee calculations work correctly
+- Callback gas usage is within limits
+- Keeper transactions are processed successfully
+- Your contract integrates properly with the real Entropy infrastructure
+
+See the [Contract Addresses](/entropy/contract-addresses) page for testnet deployment addresses.
+
+### 4. Use Deterministic Values for CI
+
+For reproducible CI tests, use deterministic random values instead of actual randomness:
+
+```solidity copy
+// Good for CI: deterministic and reproducible
+bytes32 testRandom = keccak256(abi.encodePacked("test-seed-", testName));
+
+// Avoid in CI: non-deterministic
+bytes32 actualRandom = keccak256(abi.encodePacked(block.timestamp, msg.sender));
+```
+
+## Additional Resources
+
+- [Generate Random Numbers in EVM Contracts](/entropy/generate-random-numbers/evm) - Full integration guide
+- [Set Custom Gas Limits](/entropy/set-custom-gas-limits) - Gas limit configuration for production
+- [Debug Callback Failures](/entropy/debug-callback-failures) - Troubleshooting callback issues
+- [Contract Addresses](/entropy/contract-addresses) - Testnet and mainnet Entropy contracts
+- [MockEntropy.sol](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/MockEntropy.sol) - Source code
+- [MockEntropy.t.sol](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/contracts/test/MockEntropy.t.sol) - Complete test examples

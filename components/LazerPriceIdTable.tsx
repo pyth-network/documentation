@@ -69,14 +69,24 @@ const LoadedLazerPriceIdTable = ({
   }, []);
 
   const filteredFeeds = useMemo(() => {
+    const searchTerms = search
+      .split(/[,\s]+/)
+      .map((term) => term.trim().toLowerCase())
+      .filter((term) => term.length > 0);
+
+    if (searchTerms.length === 0) {
+      return priceFeeds;
+    }
+
     return priceFeeds.filter((feed) => {
-      const searchLower = search.toLowerCase();
-      return (
-        feed.symbol.toLowerCase().includes(searchLower) ||
-        feed.name.toLowerCase().includes(searchLower) ||
-        feed.description.toLowerCase().includes(searchLower) ||
-        feed.pyth_lazer_id.toString().includes(searchLower)
-      );
+      return searchTerms.some((searchTerm) => {
+        return (
+          feed.symbol.toLowerCase().includes(searchTerm) ||
+          feed.name.toLowerCase().includes(searchTerm) ||
+          feed.description.toLowerCase().includes(searchTerm) ||
+          feed.pyth_lazer_id.toString().includes(searchTerm)
+        );
+      });
     });
   }, [priceFeeds, search]);
 
@@ -84,7 +94,7 @@ const LoadedLazerPriceIdTable = ({
     <div>
       <input
         type="text"
-        placeholder="Search by symbol, name, description, or pyth lazer id..."
+        placeholder="Search by symbol, name, description, or pyth pro id (comma or space separated for multiple)..."
         value={search}
         onChange={updateSearch}
         className="w-full p-2 mb-4 border border-gray-300 rounded-md"
@@ -96,7 +106,7 @@ const LoadedLazerPriceIdTable = ({
             <th>Description</th>
             <th>Name</th>
             <th>Symbol</th>
-            <th>Pyth Lazer Id</th>
+            <th>Pyth Pro Id</th>
             <th>Exponent</th>
           </tr>
         </thead>

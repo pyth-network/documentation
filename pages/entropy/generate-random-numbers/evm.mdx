@@ -82,20 +82,7 @@ function requestRandomNumber() external payable {
 
 This method returns a sequence number and emits a [`Requested`](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/EntropyEventsV2.sol#L30) event. You can store this sequence number to identify the request in next step.
 
-Note that there are several variants of `requestV2` that allow the caller to configure the provider fulfilling the request and the gas limit for the callback.
-
-<Callout type="info" emoji="ℹ️">
-Users can also request a random number with a custom gas limit by passing a **custom `gasLimit`** to the `requestV2(uint32 gasLimit){:bash}` call.
-For example,
-```solidity copy
-function requestRandomNumber(uint32 gasLimit) external payable {
-  uint256 fee = entropy.getFeeV2();
-
-uint64 sequenceNumber = entropy.requestV2{ value: fee }(gasLimit);
-}
-
-````
-</Callout>
+Note that there are several variants of `requestV2` that allow the caller to configure the provider fulfilling the request and the gas limit for the callback. Refer [request callback variants](../request-callback-variants.mdx) for more details.
 
 Please see the method documentation in the [IEntropyV2 interface](https://github.com/pyth-network/pyth-crosschain/blob/main/target_chains/ethereum/entropy_sdk/solidity/IEntropyV2.sol).
 
@@ -147,7 +134,7 @@ contract YourContract is IEntropyConsumer {
   }
 }
 
-````
+```
 
 When the final random number is ready to use, the entropyCallback function will be called by the Entropy contract. This will happen in a separate transaction submitted by the requested provider.
 
