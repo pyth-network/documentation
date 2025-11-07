@@ -126,23 +126,26 @@ This code snippet does the following:
 4. Prepares the update data and calculates the update fee.
 5. Updates the price feeds on the TON contract.
 
-
 ## Patterns for Providing Pyth Data to Your Contract
 
 There are typically two main scenarios: either you call a method supplying TON, or you transfer jettons.
 
 - **TON proxy**: `User → Pyth → EVAA Master → ... (further processing)`
-Use this method if you only need to send TON to your contract or simply call a contract method, without involving jettons.
+  Use this method if you only need to send TON to your contract or simply call a contract method, without involving jettons.
 
 - **Jetton on-chain getter**: `User → Jetton Wallet → EVAA Master → Pyth → EVAA Master → ... (further processing)`
-In this pattern, your contract first receives the Pyth data, then forwards it to the Pyth contract for validation, and finally gets the validated prices back.
-This approach is useful when you want to transfer jettons to your contract while also providing price data.
-<Callout type="info" emoji="ℹ️">
-This data flow is simplified. In reality, the "Jetton Wallet" step consists of a sequence of transactions: User's jetton wallet → EVAA jetton wallet → EVAA master. These internal details are omitted here to highlight the main flow and the interaction with Pyth.
-</Callout>
+  In this pattern, your contract first receives the Pyth data, then forwards it to the Pyth contract for validation, and finally gets the validated prices back.
+  This approach is useful when you want to transfer jettons to your contract while also providing price data.
+  <Callout type="info" emoji="ℹ️">
+    This data flow is simplified. In reality, the "Jetton Wallet" step consists
+    of a sequence of transactions: User's jetton wallet → EVAA jetton wallet →
+    EVAA master. These internal details are omitted here to highlight the main
+    flow and the interaction with Pyth.
+  </Callout>
 
 They both are demonstrated in the [Pyth Connector example](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/ton/pyth-connector). <br/>
-These same patterns are also used in the  [EVAA Protocol code](https://github.com/evaafi/contracts/tree/v8) for implementing following operations:
+These same patterns are also used in the [EVAA Protocol code](https://github.com/evaafi/contracts/tree/v8) for implementing following operations:
+
 - Pyth proxy pattern: liquidate TON / supply_withdraw TON.
 - Onchain-getter pattern: liquidate jetton / supply_withdraw jetton.
 
@@ -151,7 +154,9 @@ Choose the pattern that best fits your use case and how you want to handle asset
 Each operation described above can result in either a successful outcome or an error. It is important to consider and handle both scenarios for every pattern.
 
 ### Pyth proxy: Success
+
 #### EVAA flow
+
 In the EVAA protocol, the operations that implement the Pyth proxy pattern are <b>`liquidate (TON)`</b> and <b>`supply_withdraw (TON)`</b>. In these cases, the user sends a request to the Pyth contract using the native TON asset. As a result of the operation, the user may receive either TON or JETTON tokens back, depending on the outcome of the transaction.
 
 ```mermaid
@@ -174,8 +179,8 @@ sequenceDiagram
   - [process the supply_withdraw operation (TON): master.fc](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/master.fc#L192-L211)
   - [process the liquidate operation (TON): master.fc](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/master.fc#L171-L190)
 
-
 #### Pyth Connector flow
+
 The Pyth Connector example also has a similar flow. It has two main operations: proxy and onchain-getter.
 They have no practical purpose other than to demonstrate the patterns described above.
 The data flow is practically the same as the EVAA protocol, only operation codes are different.
@@ -201,6 +206,7 @@ sequenceDiagram
   - [process the connector_proxy_operation: proxy_operation.fc](https://github.com/pyth-network/pyth-examples/blob/main/price_feeds/ton/pyth-connector/contracts/PythConnector/operations/proxy_operation.fc#L17-L40)
 
 ### Pyth proxy: Error handling
+
 In the Pyth proxy pattern, when an error occurs (i.e., Pyth cannot process the request and sends a `response_error` with op 0x10002), the error report is sent directly back to the user who initiated the transaction, not to a contract. This is different from the on-chain getter pattern, where the error is returned to the EVAA Master contract for further handling and potential refund logic. In the proxy case, the user receives the error response from the Pyth contract, including the error code and the original query ID, allowing the user to identify and handle the failure on their side.
 
 ```mermaid
@@ -214,7 +220,9 @@ sequenceDiagram
 ```
 
 ### Pyth onchain-getter: Success
+
 #### EVAA flow
+
 ```mermaid
 sequenceDiagram
   autonumber
@@ -241,6 +249,7 @@ sequenceDiagram
   - [handle pyth response: liquidate_jetton and supply_withdraw_jetton](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/master.fc#L131-L167)
 
 #### Pyth Connector flow
+
 Pyth Connector's onchain-getter operation has a simplified flow compared to the EVAA protocol.
 
 ```mermaid
@@ -260,6 +269,7 @@ sequenceDiagram
   note over P: Pyth Contract validates update data and <br/> sends prices with payload to Pyth Connector contract
   note over M: Pyth Connector validates sender <br/> parses payload and <br/> processes the transaction
 ```
+
 - Related code (GitHub):
   - [entry for jetton-transfer notification: pyth_connector.fc](https://github.com/pyth-network/pyth-examples/blob/main/price_feeds/ton/pyth-connector/contracts/PythConnector/pyth_connector.fc#L109)
   - [onchain_getter_operation request: pyth-connector.fc](https://github.com/pyth-network/pyth-examples/blob/main/price_feeds/ton/pyth-connector/contracts/PythConnector/pyth_connector.fc#L126)
@@ -268,9 +278,11 @@ sequenceDiagram
   - [onchain_getter_operation process: pyth-connector.fc](https://github.com/pyth-network/pyth-examples/blob/main/price_feeds/ton/pyth-connector/contracts/PythConnector/pyth_connector.fc#L90)
 
 ### Pyth onchain-getter: Pyth error
+
 Pyth sends an error response (`response_error`, op 0x10002) when it cannot process the price feed update request. This can happen if the request is malformed, contains invalid or outdated feed data, or if the requested feeds are unavailable. In such cases, the error response includes an error code and the original operation payload, allowing the original sender to handle the failure and refund the user if necessary.
 
 #### EVAA flow
+
 The error response is sent directly back to the user who initiated the transaction, not to a contract. This is different from the proxy case, where the error is returned to the EVAA Master contract for further handling and potential refund logic. In the onchain-getter case, the user receives the error response from the Pyth contract, including the error code and the original query ID, allowing the user to identify and handle the failure on their side.
 
 ```mermaid
@@ -294,7 +306,9 @@ sequenceDiagram
   - [refund the supply_withdraw_jetton operation: master-supply-withdrawal.fc](https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/core/master-supply-withdrawal.fc#L899-L935)
 
 #### Pyth Connector
+
 The Pyth Connector error handling flow looks the same as the EVAA protocol.
+
 ```mermaid
 sequenceDiagram
   autonumber
@@ -309,9 +323,10 @@ sequenceDiagram
   P-->>M: response_error (op 0x10002)
   M-->>U: refund with error code
 ```
-  - [entry point for the Pyth error message: pyth_connector.fc](https://github.com/pyth-network/pyth-examples/blob/main/price_feeds/ton/pyth-connector/contracts/PythConnector/pyth_connector.fc#L31)
-  - [validate sender and detect onchain_getter_operation: pyth_connector.fc](https://github.com/pyth-network/pyth-examples/blob/main/price_feeds/ton/pyth-connector/contracts/PythConnector/pyth_connector.fc#L32-L43)
-  - [handle the operation failure, refund jettons: onchain_getter_operation.fc](https://github.com/pyth-network/pyth-examples/blob/main/price_feeds/ton/pyth-connector/contracts/PythConnector/operations/onchain_getter_operation.fc#L21-L35)
+
+- [entry point for the Pyth error message: pyth_connector.fc](https://github.com/pyth-network/pyth-examples/blob/main/price_feeds/ton/pyth-connector/contracts/PythConnector/pyth_connector.fc#L31)
+- [validate sender and detect onchain_getter_operation: pyth_connector.fc](https://github.com/pyth-network/pyth-examples/blob/main/price_feeds/ton/pyth-connector/contracts/PythConnector/pyth_connector.fc#L32-L43)
+- [handle the operation failure, refund jettons: onchain_getter_operation.fc](https://github.com/pyth-network/pyth-examples/blob/main/price_feeds/ton/pyth-connector/contracts/PythConnector/operations/onchain_getter_operation.fc#L21-L35)
 
 ## Additional Resources
 
