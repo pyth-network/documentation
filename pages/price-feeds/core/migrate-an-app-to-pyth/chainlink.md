@@ -98,5 +98,5 @@ Chainlink-compatible applications typically expect on-chain price feeds to updat
 When migrating to Pyth, apps may need to schedule these price updates themselves.
 This step is required because Pyth is a pull oracle; see [What is a pull oracle?](/price-feeds/core/pull-updates.mdx) to learn more about this topic.
 
-The [Sponsored Feeds](/price-feeds/core/sponsored-feeds.mdx) page shows a list of feeds that have scheduled on-chain updates.
+The [Push Feeds](/price-feeds/core/push-feeds.mdx) page shows a list of feeds that have scheduled on-chain updates.
 If the feeds your application needs are not on this list, see [Schedule Price Updates](/price-feeds/core/schedule-price-updates) for several options to solve this problem.

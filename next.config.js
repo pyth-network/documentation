@@ -134,6 +134,7 @@ const permanentRedirectArray = [
   ["/price-feeds/:path((?!core/|pro(?:/|$)).*)", "/price-feeds/core/:path"],
   // some other price feed redirects
   ["/price-feeds/sponsored-feeds", "/price-feeds/push-feeds"],
+  ["/price-feeds/core/sponsored-feeds", "/price-feeds/core/push-feeds"],
   [
     "/price-feeds/use-real-time-data/:path((?!pull-integration(?:/|$)).*)",
     "/price-feeds/use-real-time-data/pull-integration/:path",
