@@ -1,0 +1,92 @@
+# Price Aggregation
+
+Pyth Pro (formerly Lazer) aggregates price data from multiple publishers to produce reliable aggregate prices with confidence intervals and best bid/ask spreads. This page explains how the aggregation algorithm works.
+
+## Publisher Data Submission
+
+Publishers send three different optional prices to Pyth Pro:
+
+- **Best Bid**: The highest price at which the publisher is willing to buy the asset
+- **Price**: The publisher's view of the fair market price
+- **Best Ask**: The lowest price at which the publisher is willing to sell the asset
+
+Publishers may submit any combination of these three values. The aggregation algorithm is designed to handle cases where some publishers only provide certain price types.
+
+## Aggregation Algorithm
+
+Pyth Pro calculates the following properties from the submitted publisher data:
+
+### Aggregate Price
+
+The **aggregate price** is computed as the **median of all the prices combined** from all publishers. This approach provides robustness against outliers while still reflecting the consensus view of the market.
+
+The median calculation considers only the "price" values submitted by publishers. By using the median rather than the mean, the algorithm ensures that a single publisher submitting an extreme price cannot significantly skew the aggregate price.
+
+### Aggregate Best Bid Price
+
+The **aggregate best bid price** is the **maximum best bid price that is lower than the aggregate price**. This represents the highest price at which market participants are willing to buy, while ensuring it remains below the fair market price.
+
+This calculation:
+1. Filters all submitted best bid prices to only include those below the aggregate price
+2. Selects the maximum value from this filtered set
+
+If no best bid prices are below the aggregate price, this value may be undefined.
+
+### Aggregate Best Ask Price
+
+The **aggregate best ask price** is the **minimum best ask price that is higher than the aggregate price**. This represents the lowest price at which market participants are willing to sell, while ensuring it remains above the fair market price.
+
+This calculation:
+1. Filters all submitted best ask prices to only include those above the aggregate price
+2. Selects the minimum value from this filtered set
+
+If no best ask prices are above the aggregate price, this value may be undefined.
+
+### Confidence Interval
+
+The **confidence interval** represents the uncertainty in the aggregate price and is calculated as the **maximum distance between the 25th and 75th percentile of all the prices combined to the median**.
+
+Specifically:
+1. Calculate the 25th percentile of all submitted prices
+2. Calculate the 75th percentile of all submitted prices
+3. Compute the distance from the median (aggregate price) to the 25th percentile
+4. Compute the distance from the median (aggregate price) to the 75th percentile
+5. Take the maximum of these two distances as the confidence interval
+
+This approach ensures that the confidence interval reflects both the dispersion of publisher prices and any asymmetry in their distribution. When publishers agree closely, the confidence interval will be small. When there is significant disagreement or variation between publishers, the confidence interval widens to reflect this uncertainty.
+
+## Design Properties
+
+The Pyth Pro aggregation algorithm achieves several important properties:
+
+**Robustness to Outliers**: By using the median for the aggregate price, the algorithm is resistant to manipulation by individual publishers submitting extreme prices. The aggregate price will always lie between the 25th and 75th percentiles of publisher prices.
+
+**Reflects Market Consensus**: The median-based approach ensures that the aggregate price represents the consensus view of the majority of publishers, rather than being skewed by outliers.
+
+**Appropriate Bid-Ask Spread**: By selecting the best bid below the aggregate price and the best ask above it, the algorithm ensures a realistic spread that reflects actual market liquidity while maintaining consistency with the fair price.
+
+**Uncertainty Quantification**: The confidence interval based on the interquartile range provides a robust measure of price uncertainty that reflects the level of agreement between publishers. This helps consumers understand the reliability of the aggregate price.
+
+## Example Scenario
+
+Consider a scenario with five publishers submitting the following data for BTC/USD:
+
+- Publisher 1: Price = $50,000, Best Bid = $49,950, Best Ask = $50,050
+- Publisher 2: Price = $50,010, Best Bid = $49,980, Best Ask = $50,040
+- Publisher 3: Price = $49,995, Best Bid = $49,960, Best Ask = $50,030
+- Publisher 4: Price = $50,005, Best Bid = $49,990, Best Ask = $50,060
+- Publisher 5: Price = $50,020, Best Bid = $50,000, Best Ask = $50,070
+
+The aggregation algorithm would compute:
+
+1. **Aggregate Price**: Median of [$50,000, $50,010, $49,995, $50,005, $50,020] = $50,005
+2. **Aggregate Best Bid**: Maximum of bids below $50,005 = max([$49,950, $49,980, $49,960, $49,990, $50,000]) = $50,000
+3. **Aggregate Best Ask**: Minimum of asks above $50,005 = min([$50,050, $50,040, $50,030, $50,060, $50,070]) = $50,030
+4. **Confidence Interval**: 
+   - 25th percentile = $49,995
+   - 75th percentile = $50,010
+   - Distance to 25th: $50,005 - $49,995 = $10
+   - Distance to 75th: $50,010 - $50,005 = $5
+   - Confidence = max($10, $5) = $10
+
+The final aggregate result would be: Price = $50,005 ± $10, with Best Bid = $50,000 and Best Ask = $50,030.
