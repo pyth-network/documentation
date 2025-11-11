@@ -27,6 +27,7 @@ The median calculation considers only the "price" values submitted by publishers
 The **aggregate best bid price** is the **maximum best bid price that is lower than the aggregate price**. This represents the highest price at which market participants are willing to buy, while ensuring it remains below the fair market price.
 
 This calculation:
+
 1. Filters all submitted best bid prices to only include those below the aggregate price
 2. Selects the maximum value from this filtered set
 
@@ -37,6 +38,7 @@ If no best bid prices are below the aggregate price, this value may be undefined
 The **aggregate best ask price** is the **minimum best ask price that is higher than the aggregate price**. This represents the lowest price at which market participants are willing to sell, while ensuring it remains above the fair market price.
 
 This calculation:
+
 1. Filters all submitted best ask prices to only include those above the aggregate price
 2. Selects the minimum value from this filtered set
 
@@ -47,6 +49,7 @@ If no best ask prices are above the aggregate price, this value may be undefined
 The **confidence interval** represents the uncertainty in the aggregate price and is calculated as the **maximum distance between the 25th and 75th percentile of all the prices combined to the median**.
 
 Specifically:
+
 1. Calculate the 25th percentile of all submitted prices
 2. Calculate the 75th percentile of all submitted prices
 3. Compute the distance from the median (aggregate price) to the 25th percentile
@@ -82,7 +85,7 @@ The aggregation algorithm would compute:
 1. **Aggregate Price**: Median of [$50,000, $50,010, $49,995, $50,005, $50,020] = $50,005
 2. **Aggregate Best Bid**: Maximum of bids below $50,005 = max([$49,950, $49,980, $49,960, $49,990, $50,000]) = $50,000
 3. **Aggregate Best Ask**: Minimum of asks above $50,005 = min([$50,050, $50,040, $50,030, $50,060, $50,070]) = $50,030
-4. **Confidence Interval**: 
+4. **Confidence Interval**:
    - 25th percentile = $49,995
    - 75th percentile = $50,010
    - Distance to 25th: $50,005 - $49,995 = $10
