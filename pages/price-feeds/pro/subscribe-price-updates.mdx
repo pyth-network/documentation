@@ -32,6 +32,13 @@ Please fill out [this form](https://2fga8d.share-eu1.hsforms.com/2ftdPrASCTLCxtP
 
 Use the access token to authenticate the websocket connection by passing it as an `Authorization{:bash}` header with the value `Bearer {token}{:bash}`.
 
+<Callout type="warning" emoji="⚠️">
+  **Security Warning**: Never expose your access token in frontend applications
+  or client-side code. Access tokens should only be used in secure backend
+  environments. Exposing tokens in frontend code makes them publicly accessible
+  and compromises your account security.
+</Callout>
+
 ### 2. Configure subscription parameters
 
 Pyth Pro supports several request/subscription parameters to customize the received prices.
