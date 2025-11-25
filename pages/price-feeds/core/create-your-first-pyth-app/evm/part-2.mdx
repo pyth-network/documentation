@@ -176,7 +176,7 @@ Then open `src/mintNft.ts` and paste in the following content:
 import { createWalletClient, http, parseEther } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { optimismSepolia } from "viem/chains";
-import { EvmPriceServiceConnection } from "@pythnetwork/hermes-client";
+import { HermesClient } from "@pythnetwork/hermes-client";
 import { getContract } from "viem";
 
 export const abi = [
