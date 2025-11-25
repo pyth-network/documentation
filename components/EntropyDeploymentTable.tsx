@@ -9,7 +9,7 @@ const EntropyDeploymentTable = ({
   showReveal: boolean;
 }) => {
   const sortedDeployments = Object.entries(deployments)
-    .filter(([name]) => name !== "monad" && name !== "etherlink-testnet")
+    .filter(([name]) => name !== "etherlink-testnet")
     .sort();
   return (
     <table>
