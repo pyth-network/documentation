@@ -1,28 +1,7 @@
 # Pyth Network Documentation
 
-This repository contains interactive documentation for the [Pyth Network](https://www.pyth.network/) blockchain oracle.
+⚠️ **This repository has been archived.**
 
-## Documentation Format
+The documentation code has been moved to [`pyth-crosschain/apps/developer-hub`](https://github.com/pyth-network/pyth-crosschain/tree/main/apps/developer-hub).
 
-## Local Development
-
-First, run `npm i` to install the dependencies.
-
-Then, run `npm run dev` to start the development server and visit localhost:3000.
-
-## Deployment
-
-Use the `Dockerfile` in the root of the repository to build a docker image that can be run for production deployments.
-You can test out the docker build locally by running:
-
-```
-docker build -t documentation -f Dockerfile .
-docker run -d -p 3000:3000 documentation
-```
-
-Then navigate to localhost:3000 in the browser.
-
-## License
-
-This project is derived from the [Nextra Docs Template](https://github.com/shuding/nextra-docs-template).
-See `notices/` for mandatory license disclosures.
+Please refer to the new location for the latest documentation and development instructions.
