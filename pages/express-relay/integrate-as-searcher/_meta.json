@@ -1,3 +1,4 @@
 {
-  "svm": "Integrate on SVM chains"
+  "market-orders": "Integrate on Market Orders",
+  "limit-orders": "Integrate on Limit Orders"
 }
